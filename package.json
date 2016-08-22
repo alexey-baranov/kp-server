@@ -1,0 +1,29 @@
+{
+  "name": "kp-sequelizejs",
+  "version": "0.0.1",
+  "description": "копное право - сервер",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha",
+    "crossbar": "crossbar start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexey2baranov/kp-sequelizejs.git"
+  },
+  "author": "alexey2baranov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alexey2baranov/kp-sequelizejs/issues"
+  },
+  "homepage": "https://github.com/alexey2baranov/kp-sequelizejs#readme",
+  "dependencies": {
+    "autobahn": "^0.10.1",
+    "bcrypt": "^0.8.7",
+    "pg": "^6.0.3",
+    "pg-hstore": "^2.3.2",
+    "request": "^2.74.0",
+    "request-promise": "^4.1.1",
+    "sequelize": "^3.23.6"
+  }
+}
