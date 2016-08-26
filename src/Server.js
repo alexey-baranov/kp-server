@@ -36,6 +36,9 @@ class Server {
                 await session.register('api:model.get', this.promiseModel);
                 console.log("api:model.get registered");
 
+                await session.register('api:ping2pong', this.ping2pong);
+                console.log("api:ping registered");
+
                 /*                var x = 0;
                  self.INTERVAL = setInterval(function () {
                  session.publish("ru.myapp.oncounter", [++x], {}, {
@@ -59,6 +62,11 @@ class Server {
 
     connect() {
         this.WAMP.open();
+    }
+
+    ping2pong(args, kwargs){
+        console.log("ping-pong",args,kwargs);
+        return new autobahn.Result(args,kwargs);
     }
 
 
