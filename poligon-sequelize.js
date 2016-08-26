@@ -1,4 +1,4 @@
-let models = require('./models');
+let models = require('./model');
 
 async function poligon() {
     let alexey2baranov= await models.Kopnik.findById(1);

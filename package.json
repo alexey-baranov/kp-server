@@ -19,11 +19,15 @@
   "homepage": "https://github.com/alexey2baranov/kp-sequelizejs#readme",
   "dependencies": {
     "autobahn": "^0.10.1",
+    "babel-plugin-transform-es2015-parameters": "^6.11.4",
     "bcrypt": "^0.8.7",
     "pg": "^6.0.3",
     "pg-hstore": "^2.3.2",
     "request": "^2.74.0",
     "request-promise": "^4.1.1",
     "sequelize": "^3.23.6"
+  },
+  "devDependencies": {
+    "babel-plugin-transform-es2015-destructuring": "^6.9.0"
   }
 }

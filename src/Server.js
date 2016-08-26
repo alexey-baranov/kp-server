@@ -4,7 +4,7 @@
 var env = process.env.NODE_ENV || 'development';
 var autobahn = require('autobahn');
 let config = require("../config/config.json")[env];
-let models = require("./../models");
+let model = require("./model");
 
 class Server {
     constructor() {
@@ -28,77 +28,25 @@ class Server {
             max_retry_delay: 5
         });
 
-        this.WAMP.onopen = async function (session, details) {
+        this.WAMP.onopen = async(session, details)=> {
             try {
                 session.prefix('api', 'ru.kopa');
                 console.log("connection.onopen"/*, session._id, details*/);
 
-                await session.register('api:model.get', function (args, kwargs) {
-                    console.log(kwargs);
-                    switch (kwargs.model) {
-                        case "Zemla":
-                            break;
-                        case "Kopnik":
-                            /*
-                            sequelize.transaction(function (t1) {
-                                return sequelize.transaction(function (t2) {
-                                    // With CLS enable, queries here will by default use t2
-                                    // Pass in the `transaction` option to define/alter the transaction they belong to.
-                                    return Promise.all([
-                                        User.create({ name: 'Bob' }, { transaction: null }),
-                                        User.create({ name: 'Mallory' }, { transaction: t1 }),
-                                        User.create({ name: 'John' }) // this would default to t2
-                                    ]);
-                                });
-                            });
-                        */
-                            return models.sequelize.transaction(async function (t) {
-                                try{
-                                var result = await models.Kopnik.findById(kwargs.id, {
-                                    include: [ {
-                                        model: models.File,
-                                        as: 'attachments'
-                                    }] });
-                                result= result.get({plain:true});
-                                delete result.password;
-                                }
-                                catch(er){
-                                    console.error(er);
-                                }
-
-                                return result;
-                            });
-/*
-                            var result = models.Kopnik.findById(kwargs.id)
-                                .then(model=>{
-                                    return model.get({plain:true});
-                                });
-*/
-                            break;
-                        case "Kopa":
-                            break;
-                        case "Golos":
-                            break;
-                        case "Slovo":
-                            break;
-                        case "File":
-                            break;
-                    }
-                });
-                // .then(console.log("ru.kopa.model.get registered"), console.error);
+                await session.register('api:model.get', this.promiseModel);
                 console.log("api:model.get registered");
 
-/*                var x = 0;
-                self.INTERVAL = setInterval(function () {
-                    session.publish("ru.myapp.oncounter", [++x], {}, {
-                        acknowledge: true, //получить обещание - подтверждение
-                        exclude_me: false,  //получить самому свое сообщение
-                        disclose_me: true //открыть подписчикам свой Session#ID
-                    }).then((publication)=>console.log("ru.myapp.oncounter published", publication), session.log);
-                    console.log(x);
-                }, 5000)*/
+                /*                var x = 0;
+                 self.INTERVAL = setInterval(function () {
+                 session.publish("ru.myapp.oncounter", [++x], {}, {
+                 acknowledge: true, //получить обещание - подтверждение
+                 exclude_me: false,  //получить самому свое сообщение
+                 disclose_me: true //открыть подписчикам свой Session#ID
+                 }).then((publication)=>console.log("ru.myapp.oncounter published", publication), session.log);
+                 console.log(x);
+                 }, 5000)*/
             }
-            catch(er){
+            catch (er) {
                 console.error(er);
             }
         };
@@ -111,6 +59,60 @@ class Server {
 
     connect() {
         this.WAMP.open();
+    }
+
+
+    /**
+     * "Обещает" вернуть модель
+     *
+     * @param args
+     * @param kwargs
+     * @returns {*}
+     */
+    async promiseModel(args, kwargs) {
+        try {
+            console.log(args, kwargs);
+            // console.log(modelClassName, id);
+            var tran = await model.sequelize.transaction();
+            var result = null;
+
+            switch (kwargs.model) {
+                case "Zemla":
+                    result = await model.Zemla.findById(kwargs.id, {
+                        include: [{
+                            model: model.File,
+                            as: 'attachments'
+                        }]
+                    });
+                    result = result.get({plain: true});
+                    break;
+                case "Kopnik":
+                    result = await model.Kopnik.findById(kwargs.id, {
+                        include: [{
+                            model: model.File,
+                            as: 'attachments'
+                        }]
+                    });
+                    result = result.get({plain: true});
+                    delete result.password;
+                    break;
+                case "Kopa":
+                    break;
+                case "Golos":
+                    break;
+                case "Slovo":
+                    break;
+                case "File":
+                    break;
+            }
+            await tran.commit();
+            return result;
+        }
+        catch (er) {
+            console.error(er);
+            await tran.rollback();
+            return {error: er.message};
+        }
     }
 }
 

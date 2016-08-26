@@ -2,7 +2,7 @@
  * Created by alexey2baranov on 8/7/16.
  */
 
-let models = require('./../models');
+let models = require('./../model');
 let bcrypt= require("bcrypt");
 var podezd1=null;
 

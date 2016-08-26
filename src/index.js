@@ -3,7 +3,7 @@
  */
 
 process.on('unhandledRejection', (reason, promise) => {
-    console.error('Unhandel rejection in promise. Reason: ' + reason, promise);
+    console.error('Master: rejection in promise. Reason: ' + reason, promise);
 });
 
 let Server= require("./Server");

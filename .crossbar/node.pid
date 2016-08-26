@@ -1,19 +1,16 @@
 {
-    "pid": 5486, 
+    "pid": 89644, 
     "argv": [
         "/usr/local/bin/crossbar", 
-        "start", 
-        "--logtofile", 
-        "--logformat=standard", 
-        "--loglevel=warn"
+        "start"
     ], 
     "options": {
         "cdc": false, 
         "cbdir": "/home/alexey2baranov/htdocs/kp-sequelizejs/.crossbar", 
         "config": "config.json", 
         "logdir": null, 
-        "logtofile": true, 
-        "loglevel": "warn", 
+        "logtofile": false, 
+        "loglevel": "info", 
         "colour": "auto", 
         "logformat": "standard", 
         "command": "start", 
