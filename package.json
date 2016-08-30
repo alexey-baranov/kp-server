@@ -21,6 +21,8 @@
     "autobahn": "^0.10.1",
     "babel-plugin-transform-es2015-parameters": "^6.11.4",
     "bcrypt": "^0.8.7",
+    "lodash": "^4.15.0",
+    "log4js": "^0.6.38",
     "pg": "^6.0.3",
     "pg-hstore": "^2.3.2",
     "request": "^2.74.0",

@@ -1,14 +1,39 @@
 /**
  * Created by alexey2baranov on 8/7/16.
  */
-var env = process.env.NODE_ENV || 'development';
 var autobahn = require('autobahn');
-let config = require("../config/config.json")[env];
+let config = require("../cfg/config.json")[process.env.NODE_ENV || 'development'];
 let model = require("./model");
+let log4js = require("log4js");
+
+
+/**
+ * обертака над стандартной autobahn.Session#register()
+ * которая принимает контекст функции
+ * и конввертирует обычне Error в autobahn.Error
+ *
+ * @type {any}
+ */
+autobahn.Session.prototype.registerHelper = function (procedure, endpoint, options, context) {
+    return this.register(procedure, function endpointWithoutContext(args, kwargs) {
+        try {
+            if (context) {
+                return endpoint.call(context, args, kwargs);
+            }
+            else {
+                return endpoint(args, kwargs);
+            }
+        }
+        catch (err) {
+            throw new autobahn.Error(err.constructor.name, [], {message: err.message, stack: err.stack.split("\n")});
+        }
+    }, options);
+};
 
 class Server {
     constructor() {
-        var self = this;
+        this.log = log4js.getLogger(Server.name);
+        this.log.info("starting...");
 
         this.WAMP = new autobahn.Connection({
             url: `${config.WAMP.schema}://${config.WAMP.host}:${config.WAMP.port}/${config.WAMP.path}`,
@@ -31,44 +56,106 @@ class Server {
         this.WAMP.onopen = async(session, details)=> {
             try {
                 session.prefix('api', 'ru.kopa');
-                console.log("connection.onopen"/*, session._id, details*/);
+                this.log.info("connection.onopen()"/*, session._id, details*/);
 
-                await session.register('api:model.get', this.promiseModel);
-                console.log("api:model.get registered");
-
-                await session.register('api:ping2pong', this.ping2pong);
-                console.log("api:ping registered");
-
+                await this.registerHelper('api:model.get', this.promiseModel, null, this);
+                await this.registerHelper('api:pingPong', this.pingPong, null, this);
+                await this.registerHelper('api:pingPongDatabase', this.pingPongDatabase, null, this);
+                await this.registerHelper('api:error', this.error, null, this);
                 /*                var x = 0;
                  self.INTERVAL = setInterval(function () {
                  session.publish("ru.myapp.oncounter", [++x], {}, {
                  acknowledge: true, //получить обещание - подтверждение
                  exclude_me: false,  //получить самому свое сообщение
                  disclose_me: true //открыть подписчикам свой Session#ID
-                 }).then((publication)=>console.log("ru.myapp.oncounter published", publication), session.log);
-                 console.log(x);
+                 }).then((publication)=>this.log.debug("ru.myapp.oncounter published", publication), session.log);
+                 this.log.debug(x);
                  }, 5000)*/
             }
             catch (er) {
-                console.error(er);
+                this.log.error(er);
             }
         };
 
-        this.WAMP.onclose = function (reason, details) {
-            console.log("connection.onclose", reason, details);
-            clearInterval(INTERVAL);
+        this.WAMP.onclose = (reason, details)=> {
+            try {
+                this.log.info("connection.onclose()", reason, details);
+                clearInterval(INTERVAL);
+            }
+            catch (er) {
+                this.log.error(er);
+            }
         };
     }
 
-    connect() {
+    /**
+     * обертака над стандартной autobahn.Session#register()
+     * допом принимает контекст обработчика
+     * и конввертирует обычне Error в autobahn.Error, которые только одни передаются по WAMP
+     *
+     * @type {any}
+     */
+    async registerHelper(procedure, endpoint, options, context) {
+        let result= this.WAMP.session.register(procedure, (args, kwargs)=>{
+            try {
+                if (context) {
+                    return endpoint.call(context, args, kwargs);
+                }
+                else {
+                    return endpoint(args, kwargs);
+                }
+            }
+            catch (err) {
+                this.log.error(err);
+                throw new autobahn.Error(err.constructor.name, [], {
+                    message: err.message,
+                    stack: err.stack.split("\n")
+                });
+            }
+        }, options);
+        this.log.debug(procedure,"registered");
+        return result;
+    };
+
+    start() {
         this.WAMP.open();
     }
 
-    ping2pong(args, kwargs){
-        console.log("ping-pong",args,kwargs);
-        return new autobahn.Result(args,kwargs);
+    error(args, kwargs) {
+        class MySuperError extends Error {
+
+        }
+        this.log.debug("#error()", args, kwargs);
+        throw new MySuperError(args[0]);
     }
 
+    pingPong(args, kwargs) {
+        try {
+            this.log.debug("#pingPong()", args, kwargs);
+            return new autobahn.Result(args, kwargs);
+        }
+        catch (er) {
+            this.log.error(er);
+            return {error: er.message};
+        }
+    }
+
+
+    pingPongDatabase(args, kwargs) {
+        try {
+            this.log.debug("#pingPongDatabase()", args, kwargs);
+            return model.sequelize.query("select 'КОПА' as result", {type: model.Sequelize.QueryTypes.SELECT})
+                .then(result=> {
+                    return result[0].result;
+                }, er=> {
+                    this.log.error(er);
+                });
+        }
+        catch (er) {
+            this.log.error(er);
+            return {error: er.message};
+        }
+    }
 
     /**
      * "Обещает" вернуть модель
@@ -79,23 +166,18 @@ class Server {
      */
     async promiseModel(args, kwargs) {
         try {
-            console.log(args, kwargs);
-            // console.log(modelClassName, id);
+            this.log.debug("#promiseModel()", args, kwargs);
+
             var tran = await model.sequelize.transaction();
             var result = null;
 
             switch (kwargs.model) {
                 case "Zemla":
-                    result = await model.Zemla.findById(kwargs.id, {
-                        include: [{
-                            model: model.File,
-                            as: 'attachments'
-                        }]
-                    });
-                    result = result.get({plain: true});
-                    break;
+                case "Kopa":
+                case "Golos":
+                case "Slovo":
                 case "Kopnik":
-                    result = await model.Kopnik.findById(kwargs.id, {
+                    result = await model[kwargs.model].findById(kwargs.id, {
                         include: [{
                             model: model.File,
                             as: 'attachments'
@@ -104,20 +186,15 @@ class Server {
                     result = result.get({plain: true});
                     delete result.password;
                     break;
-                case "Kopa":
-                    break;
-                case "Golos":
-                    break;
-                case "Slovo":
-                    break;
                 case "File":
                     break;
             }
+
             await tran.commit();
             return result;
         }
         catch (er) {
-            console.error(er);
+            this.log.error(er);
             await tran.rollback();
             return {error: er.message};
         }

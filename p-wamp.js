@@ -4,7 +4,7 @@
 
 var env = process.env.NODE_ENV || 'development';
 var autobahn = require('autobahn');
-let config = require("../config/config.json")[env];
+let config = require("../cfg/config.json")[env];
 
 var connection = new autobahn.Connection({
     url: `${config.WAMP.schema}://${config.WAMP.host}:${config.WAMP.port}/${config.WAMP.path}`,

@@ -1,0 +1,1998 @@
+[2016-08-29 15:01:23.235] [ERROR] [default] - error from root logger
+[2016-08-29 15:01:23.240] [INFO] [default] - info from root logger
+[2016-08-29 15:01:23.242] [ERROR] view - error from root logger
+[2016-08-29 15:01:23.242] [INFO] view - multi info multi info multi info info from root logger
+[2016-08-29 15:01:23.242] [ERROR] view - some stupid error [Error: asdfasdfasdf]
+Error: asdfasdfasdf
+    at Object.<anonymous> (/home/alexey2baranov/htdocs/kp-sequelizejs/src/poligon-log4js.js:21:11)
+    at Module._compile (module.js:409:26)
+    at Object.Module._extensions..js (module.js:416:10)
+    at Module.load (module.js:343:32)
+    at Function.Module._load (module.js:300:12)
+    at Function.Module.runMain (module.js:441:10)
+    at startup (node.js:139:18)
+    at node.js:968:3
+[2016-08-29 15:01:23.251] [INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:01:37.138] [ERROR] [default] - error from root logger
+[2016-08-29 15:01:37.142] [INFO] [default] - info from root logger
+[2016-08-29 15:01:37.143] [ERROR] view - error from root logger
+[2016-08-29 15:01:37.143] [INFO] view - multi info multi info multi info info from root logger
+[2016-08-29 15:01:37.144] [INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:01:56.613] [ERROR] [default] - error from root logger
+[2016-08-29 15:01:56.617] [INFO] [default] - info from root logger
+[2016-08-29 15:01:56.618] [ERROR] view - error from root logger
+[2016-08-29 15:01:56.619] [INFO] view - multi info multi info multi info info from root logger
+[2016-08-29 15:01:56.619] [INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:17:44.084] [ERROR] [default] - error from root logger
+[2016-08-29 15:17:44.089] [INFO] [default] - info from root logger
+[2016-08-29 15:17:44.090] [ERROR] view - error from root logger
+[2016-08-29 15:17:44.091] [INFO] view - multi info multi info multi info info from root logger
+[2016-08-29 15:17:54.105] [INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:18:04.118] [ERROR] [default] - error from root logger
+[2016-08-29 15:18:04.124] [INFO] [default] - info from root logger
+[2016-08-29 15:18:04.125] [ERROR] view - error from root logger
+[2016-08-29 15:18:04.126] [INFO] view - multi info multi info multi info info from root logger
+[2016-08-29 15:18:09.134] [INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:18:14.147] [INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:18:19.155] [INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:18:24.166] [INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:18:29.170] [INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:18:34.178] [INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:18:39.189] [INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:18:44.194] [INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:18:49.202] [INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:18:54.211] [INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:18:59.219] [INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:19:04.225] [INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:19:09.230] [INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:19:14.248] [INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:19:19.257] [INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:19:19.969] [ERROR] [default] - error from root logger
+[2016-08-29 15:19:19.974] [INFO] [default] - info from root logger
+[2016-08-29 15:19:19.975] [ERROR] view - error from root logger
+[2016-08-29 15:19:19.975] [INFO] view - multi info multi info multi info info from root logger
+[2016-08-29 15:22:31.573] [ERROR] [default] - error from root logger
+[2016-08-29 15:22:31.589] [ INFO] [default] - info from root logger
+[2016-08-29 15:22:31.590] [ERROR] view - error from root logger
+[2016-08-29 15:22:31.591] [ INFO] view - multi info multi info multi info info from root logger
+[2016-08-29 15:22:34.096] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:22:36.606] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:22:39.112] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:22:41.621] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:22:44.125] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:22:46.093] [ERROR] [default] - error from root logger
+[2016-08-29 15:22:46.107] [ INFO] [default] - info from root logger
+[2016-08-29 15:22:46.109] [ERROR] view - error from root logger
+[2016-08-29 15:22:46.110] [ INFO] view - multi info multi info multi info info from root logger
+[2016-08-29 15:22:47.112] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:22:48.122] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:22:49.125] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:22:50.134] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:22:51.141] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:22:52.146] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:22:53.152] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:22:54.161] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:22:55.164] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:22:56.170] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:22:57.175] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:22:58.179] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:22:59.182] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:23:00.185] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:23:01.188] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:23:02.192] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:23:03.195] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:23:04.199] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:23:05.203] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:23:06.206] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:23:07.220] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:23:08.224] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:23:09.231] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:23:10.244] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:23:11.259] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:23:12.262] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:23:13.264] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:23:14.272] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:23:15.277] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:23:16.282] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:23:17.284] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:23:18.288] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:23:19.289] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:23:20.292] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:23:21.293] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:23:22.298] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:23:23.299] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:23:24.303] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:23:25.304] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:23:26.308] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:23:27.309] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:23:28.312] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:23:29.313] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:23:30.317] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:23:31.319] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:23:32.323] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:23:33.327] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:23:34.329] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:23:35.340] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:23:36.346] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:23:37.352] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:23:38.353] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:23:39.355] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:23:40.359] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:23:41.363] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:23:42.365] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:23:43.368] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:23:44.371] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:23:45.375] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:23:46.378] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:23:47.382] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:23:48.382] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:23:49.410] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:23:50.415] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:23:51.420] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:23:52.423] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:23:53.425] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:23:54.431] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:23:55.436] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:23:56.439] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:23:57.443] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:23:58.447] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:23:59.452] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:24:00.452] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:24:01.455] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:24:02.497] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:24:03.500] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:24:04.503] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:24:05.508] [ INFO] console - 1 'multi info' 'multi info' 'multi info' 'info from root logger'
+[2016-08-29 15:24:27.587] [ERROR] [default] - error from root logger
+[2016-08-29 15:24:27.607] [ INFO] [default] - info from root logger
+[2016-08-29 15:24:27.611] [ERROR] view - error from root logger
+[2016-08-29 15:24:27.612] [ INFO] view - multi info multi info multi info info from root logger
+[2016-08-29 15:25:23.371] [ERROR] [default] - error from root logger
+[2016-08-29 15:25:23.382] [ INFO] [default] - info from root logger
+[2016-08-29 15:25:23.384] [ERROR] view - error from root logger
+[2016-08-29 15:25:23.385] [ INFO] view - multi info multi info multi info info from root logger
+[2016-08-29 15:25:39.988] [ERROR] [default] - error from root logger
+[2016-08-29 15:25:40.009] [ INFO] [default] - info from root logger
+[2016-08-29 15:25:40.011] [ERROR] view - error from root logger
+[2016-08-29 15:25:40.011] [ INFO] view - multi info multi info multi info info from root logger
+[2016-08-29 15:25:41.015] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:25:42.016] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:25:43.018] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:25:44.020] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:25:45.029] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:25:46.035] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:25:47.036] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:25:48.038] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:25:49.039] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:25:50.040] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:25:51.041] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:25:52.043] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:25:53.045] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:25:54.046] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:25:55.051] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:25:56.053] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:25:57.055] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:25:58.055] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:25:59.057] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:26:00.058] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:26:01.059] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:26:02.059] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:26:03.060] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:26:04.074] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:26:05.086] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:26:06.094] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:26:07.096] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:26:08.096] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:26:09.097] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:26:10.099] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:26:11.100] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:26:12.100] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:26:13.106] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:26:14.107] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:26:15.109] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:26:16.111] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:26:17.112] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:26:18.125] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:26:19.126] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:26:20.127] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:26:21.129] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:26:22.130] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:26:23.131] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:26:24.132] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:26:25.134] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:26:26.137] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:26:27.139] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:26:28.140] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:26:29.140] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:26:30.141] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:26:31.144] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:26:32.145] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:26:33.146] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:26:34.147] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:26:35.149] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:26:36.151] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:26:37.152] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:26:38.167] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:26:39.169] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:26:40.171] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:26:41.171] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:26:42.172] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:26:43.175] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:26:44.177] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:26:45.178] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:26:46.185] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:26:47.188] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:26:48.189] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:26:49.192] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:26:50.193] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:26:51.195] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:26:52.196] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:26:53.196] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:26:54.202] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:26:55.203] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:26:56.204] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:26:57.206] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:26:58.207] [DEBUG] view - multi info multi info multi info info from root logger
+[2016-08-29 15:33:53.121] [ INFO] Function - starting...
+[2016-08-29 15:33:55.192] [ INFO] console - connection.onopen
+[2016-08-29 15:33:55.252] [ INFO] console - api:model.get registered
+[2016-08-29 15:33:55.263] [ INFO] console - api:pingPong registered
+[2016-08-29 15:33:55.286] [ INFO] console - api:pingPongDatabase registered
+[2016-08-29 15:34:40.542] [ INFO] Server - starting...
+[2016-08-29 15:34:41.051] [ INFO] console - connection.onopen
+[2016-08-29 15:34:41.068] [ INFO] console - api:model.get registered
+[2016-08-29 15:34:41.077] [ INFO] console - api:pingPong registered
+[2016-08-29 15:34:41.094] [ INFO] console - api:pingPongDatabase registered
+[2016-08-29 15:38:32.463] [ INFO] Server - starting...
+[2016-08-29 15:38:32.824] [ERROR] console - [TypeError: _this.info is not a function]
+TypeError: _this.info is not a function
+    at [object Object].<anonymous> (Server.js:35:22)
+    at [object Generator].next (native)
+    at step (/home/alexey2baranov/htdocs/kp-sequelizejs/src/Server.js:1:253)
+    at /home/alexey2baranov/htdocs/kp-sequelizejs/src/Server.js:1:513
+    at new wrappedPromise (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/index.js:372:16)
+    at [object Object].<anonymous> (/home/alexey2baranov/htdocs/kp-sequelizejs/src/Server.js:1:161)
+    at [object Object].onopen (Server.js:32:9)
+    at [object Object].Connection.open.self._session.onjoin (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/autobahn/lib/connection.js:317:21)
+    at Object.self._socket.onmessage (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/autobahn/lib/session.js:908:21)
+    at WebSocket.<anonymous> (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/autobahn/lib/transport/websocket.js:123:23)
+    at emitTwo (events.js:87:13)
+    at WebSocket.emit (events.js:172:7)
+    at Receiver.ontext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/ws/lib/WebSocket.js:841:10)
+    at /home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/ws/lib/Receiver.js:536:18
+    at Receiver.applyExtensions (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/ws/lib/Receiver.js:371:5)
+    at /home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/ws/lib/Receiver.js:508:14
+[2016-08-29 15:40:43.746] [ INFO] Server - starting...
+[2016-08-29 15:40:44.439] [ INFO] Server - connection.onopen
+[2016-08-29 15:40:44.463] [ERROR] Server - [TypeError: _this.debug is not a function]
+TypeError: _this.debug is not a function
+    at [object Object].<anonymous> (Server.js:38:22)
+    at [object Generator].next (native)
+    at step (/home/alexey2baranov/htdocs/kp-sequelizejs/src/Server.js:1:253)
+    at /home/alexey2baranov/htdocs/kp-sequelizejs/src/Server.js:1:430
+    at propagateAslWrapper (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/index.js:421:23)
+    at asyncWrap (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/glue.js:188:31)
+    at cbIdx (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/index.js:458:70)
+    at run (/usr/lib/node_modules/babel-cli/node_modules/core-js/modules/es6.promise.js:87:22)
+    at /usr/lib/node_modules/babel-cli/node_modules/core-js/modules/es6.promise.js:100:28
+    at module.exports.flush (/usr/lib/node_modules/babel-cli/node_modules/core-js/modules/_microtask.js:18:9)
+    at asyncWrap (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/glue.js:188:31)
+    at nextTickCallbackWith0Args (node.js:420:9)
+    at process._tickDomainCallback [as _tickCallback] (node.js:390:13)
+[2016-08-29 15:41:09.178] [ INFO] console - uncaughtException handler { [SyntaxError: /home/alexey2baranov/htdocs/kp-sequelizejs/src/Server.js: Unexpected token (38:25)]
+  pos: 1290,
+  loc: Position { line: 38, column: 25 },
+  _babel: true,
+  codeFrame: '\u001b[0m  36 | \n  37 |                 await session\u001b[1m.\u001b[22mregister\u001b[34m\u001b[1m(\u001b[22m\u001b[39m\u001b[31m\'api:model.get\'\u001b[39m\u001b[1m,\u001b[22m \u001b[34m\u001b[1m(\u001b[22m\u001b[39m\u001b[34m\u001b[1m)\u001b[22m\u001b[39m\u001b[1m=>\u001b[22m\u001b[36mthis\u001b[39m\u001b[1m.\u001b[22mpromiseModel\u001b[34m\u001b[1m(\u001b[22m\u001b[39m\u001b[34m\u001b[1m)\u001b[22m\u001b[39m\u001b[34m\u001b[1m)\u001b[22m\u001b[39m\u001b[1m;\u001b[22m\n> 38 |                 \u001b[36mthis\u001b[39m\u001b[1m.\u001b[22mlog\u001b[1m.\u001b[22m\u001b[34m\u001b[1m(\u001b[22m\u001b[39m\u001b[31m"api:model.get registered"\u001b[39m\u001b[34m\u001b[1m)\u001b[22m\u001b[39m\u001b[1m;\u001b[22m\n     |                          ^\n  39 | \n  40 |                 await session\u001b[1m.\u001b[22mregister\u001b[34m\u001b[1m(\u001b[22m\u001b[39m\u001b[31m\'api:pingPong\'\u001b[39m\u001b[1m,\u001b[22m \u001b[34m\u001b[1m(\u001b[22m\u001b[39m\u001b[34m\u001b[1m)\u001b[22m\u001b[39m\u001b[1m=>\u001b[22m\u001b[36mthis\u001b[39m\u001b[1m.\u001b[22mpingPong\u001b[34m\u001b[1m(\u001b[22m\u001b[39m\u001b[34m\u001b[1m)\u001b[22m\u001b[39m\u001b[34m\u001b[1m)\u001b[22m\u001b[39m\u001b[1m;\u001b[22m\n  41 |                 \u001b[36mthis\u001b[39m\u001b[1m.\u001b[22mlog\u001b[1m.\u001b[22m\u001b[34m\u001b[1m(\u001b[22m\u001b[39m\u001b[31m"api:pingPong registered"\u001b[39m\u001b[34m\u001b[1m)\u001b[22m\u001b[39m\u001b[1m;\u001b[22m\u001b[0m' }
+SyntaxError: /home/alexey2baranov/htdocs/kp-sequelizejs/src/Server.js: Unexpected token (38:25)
+[0m  36 | 
+  37 |                 await session[1m.[22mregister[34m[1m([22m[39m[31m'api:model.get'[39m[1m,[22m [34m[1m([22m[39m[34m[1m)[22m[39m[1m=>[22m[36mthis[39m[1m.[22mpromiseModel[34m[1m([22m[39m[34m[1m)[22m[39m[34m[1m)[22m[39m[1m;[22m
+> 38 |                 [36mthis[39m[1m.[22mlog[1m.[22m[34m[1m([22m[39m[31m"api:model.get registered"[39m[34m[1m)[22m[39m[1m;[22m
+     |                          ^
+  39 | 
+  40 |                 await session[1m.[22mregister[34m[1m([22m[39m[31m'api:pingPong'[39m[1m,[22m [34m[1m([22m[39m[34m[1m)[22m[39m[1m=>[22m[36mthis[39m[1m.[22mpingPong[34m[1m([22m[39m[34m[1m)[22m[39m[34m[1m)[22m[39m[1m;[22m
+  41 |                 [36mthis[39m[1m.[22mlog[1m.[22m[34m[1m([22m[39m[31m"api:pingPong registered"[39m[34m[1m)[22m[39m[1m;[22m[0m
+    at Parser.pp.raise (/usr/lib/node_modules/babel-cli/node_modules/babylon/lib/parser/location.js:22:13)
+    at Parser.pp.unexpected (/usr/lib/node_modules/babel-cli/node_modules/babylon/lib/parser/util.js:91:8)
+    at Parser.pp.parseIdentifier (/usr/lib/node_modules/babel-cli/node_modules/babylon/lib/parser/expression.js:1068:10)
+    at Parser.pp.parseSubscripts (/usr/lib/node_modules/babel-cli/node_modules/babylon/lib/parser/expression.js:301:30)
+    at Parser.pp.parseExprSubscripts (/usr/lib/node_modules/babel-cli/node_modules/babylon/lib/parser/expression.js:288:15)
+    at Parser.pp.parseMaybeUnary (/usr/lib/node_modules/babel-cli/node_modules/babylon/lib/parser/expression.js:258:19)
+    at Parser.pp.parseExprOps (/usr/lib/node_modules/babel-cli/node_modules/babylon/lib/parser/expression.js:188:19)
+    at Parser.pp.parseMaybeConditional (/usr/lib/node_modules/babel-cli/node_modules/babylon/lib/parser/expression.js:165:19)
+    at Parser.pp.parseMaybeAssign (/usr/lib/node_modules/babel-cli/node_modules/babylon/lib/parser/expression.js:128:19)
+    at Parser.pp.parseExpression (/usr/lib/node_modules/babel-cli/node_modules/babylon/lib/parser/expression.js:92:19)
+[2016-08-29 15:41:52.198] [ INFO] Server - starting...
+[2016-08-29 15:41:52.537] [ INFO] Server - connection.onopen
+[2016-08-29 15:41:52.601] [DEBUG] Server - api:model.get registered
+[2016-08-29 15:41:52.609] [DEBUG] Server - api:pingPong registered
+[2016-08-29 15:41:52.615] [DEBUG] Server - api:pingPongDatabase registered
+[2016-08-29 15:42:10.481] [DEBUG] Server - запускаю ошибку
+[2016-08-29 15:42:10.551] [DEBUG] Server - pingPongDatabase undefined undefined
+[2016-08-29 15:42:10.847] [ INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-29 15:42:10.883] [DEBUG] Server - undefined undefined
+[2016-08-29 15:42:10.891] [ INFO] console - Executing (a8635337-8b7f-49f0-8518-6327312317fc): START TRANSACTION;
+[2016-08-29 15:42:10.894] [ INFO] console - Executing (a8635337-8b7f-49f0-8518-6327312317fc): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+[2016-08-29 15:42:10.897] [ERROR] Server - [TypeError: Cannot read property 'model' of undefined]
+TypeError: Cannot read property 'model' of undefined
+    at Server.js:102:21
+    at [object Generator].next (native)
+    at step (/home/alexey2baranov/htdocs/kp-sequelizejs/src/Server.js:1:253)
+    at /home/alexey2baranov/htdocs/kp-sequelizejs/src/Server.js:1:430
+    at propagateAslWrapper (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/index.js:421:23)
+    at asyncWrap (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/glue.js:188:31)
+    at cbIdx (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/index.js:458:70)
+    at run (/usr/lib/node_modules/babel-cli/node_modules/core-js/modules/es6.promise.js:87:22)
+    at /usr/lib/node_modules/babel-cli/node_modules/core-js/modules/es6.promise.js:100:28
+    at module.exports.flush (/usr/lib/node_modules/babel-cli/node_modules/core-js/modules/_microtask.js:18:9)
+    at asyncWrap (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/glue.js:188:31)
+    at nextTickCallbackWith0Args (node.js:420:9)
+    at process._tickDomainCallback [as _tickCallback] (node.js:390:13)
+[2016-08-29 15:42:10.976] [ INFO] console - Executing (a8635337-8b7f-49f0-8518-6327312317fc): ROLLBACK;
+[2016-08-29 15:42:11.109] [DEBUG] Server - undefined undefined
+[2016-08-29 15:42:11.114] [ INFO] console - Executing (757402ed-e487-49f7-b055-5b0f878f866a): START TRANSACTION;
+[2016-08-29 15:42:11.118] [ INFO] console - Executing (757402ed-e487-49f7-b055-5b0f878f866a): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+[2016-08-29 15:42:11.120] [ERROR] Server - [TypeError: Cannot read property 'model' of undefined]
+TypeError: Cannot read property 'model' of undefined
+    at Server.js:102:21
+    at [object Generator].next (native)
+    at step (/home/alexey2baranov/htdocs/kp-sequelizejs/src/Server.js:1:253)
+    at /home/alexey2baranov/htdocs/kp-sequelizejs/src/Server.js:1:430
+    at propagateAslWrapper (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/index.js:421:23)
+    at asyncWrap (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/glue.js:188:31)
+    at cbIdx (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/index.js:458:70)
+    at run (/usr/lib/node_modules/babel-cli/node_modules/core-js/modules/es6.promise.js:87:22)
+    at /usr/lib/node_modules/babel-cli/node_modules/core-js/modules/es6.promise.js:100:28
+    at module.exports.flush (/usr/lib/node_modules/babel-cli/node_modules/core-js/modules/_microtask.js:18:9)
+    at asyncWrap (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/glue.js:188:31)
+    at nextTickCallbackWith0Args (node.js:420:9)
+    at process._tickDomainCallback [as _tickCallback] (node.js:390:13)
+[2016-08-29 15:42:11.130] [ INFO] console - Executing (757402ed-e487-49f7-b055-5b0f878f866a): ROLLBACK;
+[2016-08-29 15:42:16.128] [DEBUG] Server - undefined undefined
+[2016-08-29 15:42:16.132] [ INFO] console - Executing (d73bb81a-8e65-4994-a576-d34192242d2b): START TRANSACTION;
+[2016-08-29 15:42:16.135] [ INFO] console - Executing (d73bb81a-8e65-4994-a576-d34192242d2b): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+[2016-08-29 15:42:16.138] [ERROR] Server - [TypeError: Cannot read property 'model' of undefined]
+TypeError: Cannot read property 'model' of undefined
+    at Server.js:102:21
+    at [object Generator].next (native)
+    at step (/home/alexey2baranov/htdocs/kp-sequelizejs/src/Server.js:1:253)
+    at /home/alexey2baranov/htdocs/kp-sequelizejs/src/Server.js:1:430
+    at propagateAslWrapper (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/index.js:421:23)
+    at asyncWrap (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/glue.js:188:31)
+    at cbIdx (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/index.js:458:70)
+    at run (/usr/lib/node_modules/babel-cli/node_modules/core-js/modules/es6.promise.js:87:22)
+    at /usr/lib/node_modules/babel-cli/node_modules/core-js/modules/es6.promise.js:100:28
+    at module.exports.flush (/usr/lib/node_modules/babel-cli/node_modules/core-js/modules/_microtask.js:18:9)
+    at asyncWrap (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/glue.js:188:31)
+    at nextTickCallbackWith0Args (node.js:420:9)
+    at process._tickDomainCallback [as _tickCallback] (node.js:390:13)
+[2016-08-29 15:42:16.146] [ INFO] console - Executing (d73bb81a-8e65-4994-a576-d34192242d2b): ROLLBACK;
+[2016-08-29 15:42:21.137] [DEBUG] Server - undefined undefined
+[2016-08-29 15:42:21.140] [ INFO] console - Executing (422b0738-6c71-4728-9555-9689b2124ce4): START TRANSACTION;
+[2016-08-29 15:42:21.143] [ INFO] console - Executing (422b0738-6c71-4728-9555-9689b2124ce4): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+[2016-08-29 15:42:21.145] [ERROR] Server - [TypeError: Cannot read property 'model' of undefined]
+TypeError: Cannot read property 'model' of undefined
+    at Server.js:102:21
+    at [object Generator].next (native)
+    at step (/home/alexey2baranov/htdocs/kp-sequelizejs/src/Server.js:1:253)
+    at /home/alexey2baranov/htdocs/kp-sequelizejs/src/Server.js:1:430
+    at propagateAslWrapper (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/index.js:421:23)
+    at asyncWrap (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/glue.js:188:31)
+    at cbIdx (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/index.js:458:70)
+    at run (/usr/lib/node_modules/babel-cli/node_modules/core-js/modules/es6.promise.js:87:22)
+    at /usr/lib/node_modules/babel-cli/node_modules/core-js/modules/es6.promise.js:100:28
+    at module.exports.flush (/usr/lib/node_modules/babel-cli/node_modules/core-js/modules/_microtask.js:18:9)
+    at asyncWrap (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/glue.js:188:31)
+    at nextTickCallbackWith0Args (node.js:420:9)
+    at process._tickDomainCallback [as _tickCallback] (node.js:390:13)
+[2016-08-29 15:42:21.151] [ INFO] console - Executing (422b0738-6c71-4728-9555-9689b2124ce4): ROLLBACK;
+[2016-08-29 15:42:26.131] [DEBUG] Server - undefined undefined
+[2016-08-29 15:42:26.136] [ INFO] console - Executing (0185a34b-f0a2-4df3-80e9-564726f2c382): START TRANSACTION;
+[2016-08-29 15:42:26.139] [ INFO] console - Executing (0185a34b-f0a2-4df3-80e9-564726f2c382): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+[2016-08-29 15:42:26.142] [ERROR] Server - [TypeError: Cannot read property 'model' of undefined]
+TypeError: Cannot read property 'model' of undefined
+    at Server.js:102:21
+    at [object Generator].next (native)
+    at step (/home/alexey2baranov/htdocs/kp-sequelizejs/src/Server.js:1:253)
+    at /home/alexey2baranov/htdocs/kp-sequelizejs/src/Server.js:1:430
+    at propagateAslWrapper (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/index.js:421:23)
+    at asyncWrap (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/glue.js:188:31)
+    at cbIdx (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/index.js:458:70)
+    at run (/usr/lib/node_modules/babel-cli/node_modules/core-js/modules/es6.promise.js:87:22)
+    at /usr/lib/node_modules/babel-cli/node_modules/core-js/modules/es6.promise.js:100:28
+    at module.exports.flush (/usr/lib/node_modules/babel-cli/node_modules/core-js/modules/_microtask.js:18:9)
+    at asyncWrap (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/glue.js:188:31)
+    at nextTickCallbackWith0Args (node.js:420:9)
+    at process._tickDomainCallback [as _tickCallback] (node.js:390:13)
+[2016-08-29 15:42:26.148] [ INFO] console - Executing (0185a34b-f0a2-4df3-80e9-564726f2c382): ROLLBACK;
+[2016-08-29 15:42:58.765] [ INFO] Server - starting...
+[2016-08-29 15:42:59.183] [ INFO] Server - connection.onopen
+[2016-08-29 15:42:59.200] [DEBUG] Server - api:model.get registered
+[2016-08-29 15:42:59.210] [DEBUG] Server - api:pingPong registered
+[2016-08-29 15:42:59.216] [DEBUG] Server - api:pingPongDatabase registered
+[2016-08-29 16:08:12.228] [ INFO] console - AutobahnJS debug enabled
+[2016-08-29 16:08:14.761] [ INFO] Server - starting...
+[2016-08-29 16:08:14.764] [ INFO] console - trying to create WAMP transport of type: websocket
+[2016-08-29 16:08:15.149] [ INFO] console - using WAMP transport type: websocket
+[2016-08-29 16:08:15.415] [ INFO] console - [ 1,
+  'kopa',
+  { roles: 
+     { caller: [Object],
+       callee: [Object],
+       publisher: [Object],
+       subscriber: [Object] },
+    authmethods: [ 'ticket' ],
+    authid: 'server' } ]
+[2016-08-29 16:08:15.463] [ INFO] console - [ 5, 'server', {} ]
+[2016-08-29 16:08:15.659] [ INFO] Server - connection.onopen
+[2016-08-29 16:08:15.665] [ INFO] console - [ 64, 3698608681517056, {}, 'ru.kopa.model.get' ]
+[2016-08-29 16:08:15.695] [DEBUG] Server - api:model.get registered
+[2016-08-29 16:08:15.697] [ INFO] console - [ 64, 8841465893486592, {}, 'ru.kopa.pingPong' ]
+[2016-08-29 16:08:15.704] [DEBUG] Server - api:pingPong registered
+[2016-08-29 16:08:15.704] [ INFO] console - [ 64, 7925945402916864, {}, 'ru.kopa.pingPongDatabase' ]
+[2016-08-29 16:08:15.710] [DEBUG] Server - api:pingPongDatabase registered
+[2016-08-29 16:09:24.359] [DEBUG] Server - ping-pong undefined undefined
+[2016-08-29 16:09:24.367] [ INFO] console - [ 70, 195, {} ]
+[2016-08-29 16:09:24.443] [DEBUG] Server - pingPongDatabase undefined undefined
+[2016-08-29 16:09:24.758] [ INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-29 16:09:24.766] [ INFO] console - [ 70, 196, {}, [ 'КОПА' ] ]
+[2016-08-29 16:09:24.867] [DEBUG] Server - undefined undefined
+[2016-08-29 16:09:24.874] [ INFO] console - Executing (bbd077d9-f8c3-40b0-a5cb-71f026ee308e): START TRANSACTION;
+[2016-08-29 16:09:24.879] [ INFO] console - Executing (bbd077d9-f8c3-40b0-a5cb-71f026ee308e): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+[2016-08-29 16:09:24.882] [ERROR] Server - [TypeError: Cannot read property 'model' of undefined]
+TypeError: Cannot read property 'model' of undefined
+    at Server.js:112:21
+    at [object Generator].next (native)
+    at step (/home/alexey2baranov/htdocs/kp-sequelizejs/src/Server.js:1:253)
+    at /home/alexey2baranov/htdocs/kp-sequelizejs/src/Server.js:1:430
+    at propagateAslWrapper (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/index.js:421:23)
+    at asyncWrap (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/glue.js:188:31)
+    at cbIdx (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/index.js:458:70)
+    at run (/usr/lib/node_modules/babel-cli/node_modules/core-js/modules/es6.promise.js:87:22)
+    at /usr/lib/node_modules/babel-cli/node_modules/core-js/modules/es6.promise.js:100:28
+    at module.exports.flush (/usr/lib/node_modules/babel-cli/node_modules/core-js/modules/_microtask.js:18:9)
+    at asyncWrap (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/glue.js:188:31)
+    at nextTickCallbackWith0Args (node.js:420:9)
+    at process._tickDomainCallback [as _tickCallback] (node.js:390:13)
+[2016-08-29 16:09:25.027] [ INFO] console - Executing (bbd077d9-f8c3-40b0-a5cb-71f026ee308e): ROLLBACK;
+[2016-08-29 16:09:25.032] [ INFO] console - [ 70,
+  197,
+  {},
+  [ { error: 'Cannot read property \'model\' of undefined' } ] ]
+[2016-08-29 16:09:25.200] [DEBUG] Server - undefined undefined
+[2016-08-29 16:09:25.205] [ INFO] console - Executing (6097a19d-21d3-49d6-a6fe-eb9b56cda4e6): START TRANSACTION;
+[2016-08-29 16:09:25.209] [ INFO] console - Executing (6097a19d-21d3-49d6-a6fe-eb9b56cda4e6): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+[2016-08-29 16:09:25.214] [ERROR] Server - [TypeError: Cannot read property 'model' of undefined]
+TypeError: Cannot read property 'model' of undefined
+    at Server.js:112:21
+    at [object Generator].next (native)
+    at step (/home/alexey2baranov/htdocs/kp-sequelizejs/src/Server.js:1:253)
+    at /home/alexey2baranov/htdocs/kp-sequelizejs/src/Server.js:1:430
+    at propagateAslWrapper (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/index.js:421:23)
+    at asyncWrap (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/glue.js:188:31)
+    at cbIdx (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/index.js:458:70)
+    at run (/usr/lib/node_modules/babel-cli/node_modules/core-js/modules/es6.promise.js:87:22)
+    at /usr/lib/node_modules/babel-cli/node_modules/core-js/modules/es6.promise.js:100:28
+    at module.exports.flush (/usr/lib/node_modules/babel-cli/node_modules/core-js/modules/_microtask.js:18:9)
+    at asyncWrap (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/glue.js:188:31)
+    at nextTickCallbackWith0Args (node.js:420:9)
+    at process._tickDomainCallback [as _tickCallback] (node.js:390:13)
+[2016-08-29 16:09:25.228] [ INFO] console - Executing (6097a19d-21d3-49d6-a6fe-eb9b56cda4e6): ROLLBACK;
+[2016-08-29 16:09:25.231] [ INFO] console - [ 70,
+  198,
+  {},
+  [ { error: 'Cannot read property \'model\' of undefined' } ] ]
+[2016-08-29 16:09:30.224] [DEBUG] Server - undefined undefined
+[2016-08-29 16:09:30.229] [ INFO] console - Executing (73e76ed4-75e3-4a18-9b6c-b2b73168a94e): START TRANSACTION;
+[2016-08-29 16:09:30.232] [ INFO] console - Executing (73e76ed4-75e3-4a18-9b6c-b2b73168a94e): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+[2016-08-29 16:09:30.235] [ERROR] Server - [TypeError: Cannot read property 'model' of undefined]
+TypeError: Cannot read property 'model' of undefined
+    at Server.js:112:21
+    at [object Generator].next (native)
+    at step (/home/alexey2baranov/htdocs/kp-sequelizejs/src/Server.js:1:253)
+    at /home/alexey2baranov/htdocs/kp-sequelizejs/src/Server.js:1:430
+    at propagateAslWrapper (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/index.js:421:23)
+    at asyncWrap (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/glue.js:188:31)
+    at cbIdx (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/index.js:458:70)
+    at run (/usr/lib/node_modules/babel-cli/node_modules/core-js/modules/es6.promise.js:87:22)
+    at /usr/lib/node_modules/babel-cli/node_modules/core-js/modules/es6.promise.js:100:28
+    at module.exports.flush (/usr/lib/node_modules/babel-cli/node_modules/core-js/modules/_microtask.js:18:9)
+    at asyncWrap (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/glue.js:188:31)
+    at nextTickCallbackWith0Args (node.js:420:9)
+    at process._tickDomainCallback [as _tickCallback] (node.js:390:13)
+[2016-08-29 16:09:30.241] [ INFO] console - Executing (73e76ed4-75e3-4a18-9b6c-b2b73168a94e): ROLLBACK;
+[2016-08-29 16:09:30.243] [ INFO] console - [ 70,
+  199,
+  {},
+  [ { error: 'Cannot read property \'model\' of undefined' } ] ]
+[2016-08-29 16:09:35.265] [DEBUG] Server - undefined undefined
+[2016-08-29 16:09:35.274] [ INFO] console - Executing (bfe6579f-41b7-429b-b1fe-5c29f992d810): START TRANSACTION;
+[2016-08-29 16:09:35.278] [ INFO] console - Executing (bfe6579f-41b7-429b-b1fe-5c29f992d810): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+[2016-08-29 16:09:35.282] [ERROR] Server - [TypeError: Cannot read property 'model' of undefined]
+TypeError: Cannot read property 'model' of undefined
+    at Server.js:112:21
+    at [object Generator].next (native)
+    at step (/home/alexey2baranov/htdocs/kp-sequelizejs/src/Server.js:1:253)
+    at /home/alexey2baranov/htdocs/kp-sequelizejs/src/Server.js:1:430
+    at propagateAslWrapper (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/index.js:421:23)
+    at asyncWrap (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/glue.js:188:31)
+    at cbIdx (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/index.js:458:70)
+    at run (/usr/lib/node_modules/babel-cli/node_modules/core-js/modules/es6.promise.js:87:22)
+    at /usr/lib/node_modules/babel-cli/node_modules/core-js/modules/es6.promise.js:100:28
+    at module.exports.flush (/usr/lib/node_modules/babel-cli/node_modules/core-js/modules/_microtask.js:18:9)
+    at asyncWrap (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/glue.js:188:31)
+    at nextTickCallbackWith0Args (node.js:420:9)
+    at process._tickDomainCallback [as _tickCallback] (node.js:390:13)
+[2016-08-29 16:09:35.288] [ INFO] console - Executing (bfe6579f-41b7-429b-b1fe-5c29f992d810): ROLLBACK;
+[2016-08-29 16:09:35.290] [ INFO] console - [ 70,
+  200,
+  {},
+  [ { error: 'Cannot read property \'model\' of undefined' } ] ]
+[2016-08-29 16:09:40.252] [DEBUG] Server - undefined undefined
+[2016-08-29 16:09:40.257] [ INFO] console - Executing (6e05a61c-0b2f-4a28-8321-73594b095e99): START TRANSACTION;
+[2016-08-29 16:09:40.261] [ INFO] console - Executing (6e05a61c-0b2f-4a28-8321-73594b095e99): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+[2016-08-29 16:09:40.264] [ERROR] Server - [TypeError: Cannot read property 'model' of undefined]
+TypeError: Cannot read property 'model' of undefined
+    at Server.js:112:21
+    at [object Generator].next (native)
+    at step (/home/alexey2baranov/htdocs/kp-sequelizejs/src/Server.js:1:253)
+    at /home/alexey2baranov/htdocs/kp-sequelizejs/src/Server.js:1:430
+    at propagateAslWrapper (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/index.js:421:23)
+    at asyncWrap (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/glue.js:188:31)
+    at cbIdx (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/index.js:458:70)
+    at run (/usr/lib/node_modules/babel-cli/node_modules/core-js/modules/es6.promise.js:87:22)
+    at /usr/lib/node_modules/babel-cli/node_modules/core-js/modules/es6.promise.js:100:28
+    at module.exports.flush (/usr/lib/node_modules/babel-cli/node_modules/core-js/modules/_microtask.js:18:9)
+    at asyncWrap (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/glue.js:188:31)
+    at nextTickCallbackWith0Args (node.js:420:9)
+    at process._tickDomainCallback [as _tickCallback] (node.js:390:13)
+[2016-08-29 16:09:40.270] [ INFO] console - Executing (6e05a61c-0b2f-4a28-8321-73594b095e99): ROLLBACK;
+[2016-08-29 16:09:40.273] [ INFO] console - [ 70,
+  201,
+  {},
+  [ { error: 'Cannot read property \'model\' of undefined' } ] ]
+[2016-08-29 16:14:26.336] [ INFO] console - AutobahnJS debug enabled
+[2016-08-29 16:14:28.543] [ INFO] Server - starting...
+[2016-08-29 16:14:28.545] [ INFO] console - trying to create WAMP transport of type: websocket
+[2016-08-29 16:14:28.732] [ INFO] console - using WAMP transport type: websocket
+[2016-08-29 16:14:29.128] [ INFO] console - [ 1,
+  'kopa',
+  { roles: 
+     { caller: [Object],
+       callee: [Object],
+       publisher: [Object],
+       subscriber: [Object] },
+    authmethods: [ 'ticket' ],
+    authid: 'server' } ]
+[2016-08-29 16:14:29.212] [ INFO] console - [ 5, 'server', {} ]
+[2016-08-29 16:14:29.243] [ INFO] Server - connection.onopen
+[2016-08-29 16:14:29.245] [ INFO] console - [ 64, 8739079061504000, {}, 'ru.kopa.model.get' ]
+[2016-08-29 16:14:29.255] [DEBUG] Server - api:model.get registered
+[2016-08-29 16:14:29.256] [ INFO] console - [ 64, 4874386622382080, {}, 'ru.kopa.pingPong' ]
+[2016-08-29 16:14:29.263] [DEBUG] Server - api:pingPong registered
+[2016-08-29 16:14:29.264] [ INFO] console - [ 64, 8400307461554176, {}, 'ru.kopa.pingPongDatabase' ]
+[2016-08-29 16:14:29.270] [DEBUG] Server - api:pingPongDatabase registered
+[2016-08-29 16:14:56.905] [DEBUG] Server - pingPong [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-29 16:14:56.916] [ INFO] console - [ 70, 206, {}, [ 1, 2, 3 ], { x: 1, y: 2, z: 3 } ]
+[2016-08-29 16:14:56.976] [DEBUG] Server - pingPongDatabase [] {}
+[2016-08-29 16:14:57.161] [ INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-29 16:14:57.197] [ INFO] console - [ 70, 207, {}, [ 'КОПА' ] ]
+[2016-08-29 16:14:57.283] [DEBUG] Server - promiseModel [ 1, 2.3 ] { model: 'Kopnik', id: 2 }
+[2016-08-29 16:14:57.296] [ INFO] console - Executing (d0bab647-3c52-40e9-8c95-5a29f38bb513): START TRANSACTION;
+[2016-08-29 16:14:57.300] [ INFO] console - Executing (d0bab647-3c52-40e9-8c95-5a29f38bb513): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+[2016-08-29 16:14:57.451] [ INFO] console - Executing (default): SELECT "Kopnik"."id", "Kopnik"."email", "Kopnik"."password", "Kopnik"."name", "Kopnik"."surname", "Kopnik"."patronymic", "Kopnik"."birth", "Kopnik"."note", "Kopnik"."own_id", "Kopnik"."starshina_id", "attachments"."id" AS "attachments.id", "attachments"."path" AS "attachments.path", "attachments"."note" AS "attachments.note", "attachments"."zemla_id" AS "attachments.zemla_id", "attachments"."kopnik_id" AS "attachments.kopnik_id", "attachments"."kopa_id" AS "attachments.kopa_id", "attachments"."slovo_id" AS "attachments.slovo_id", "attachments"."predlozhenie_id" AS "attachments.predlozhenie_id", "attachments"."golos_id" AS "attachments.golos_id" FROM "Kopnik" AS "Kopnik" LEFT OUTER JOIN "File" AS "attachments" ON "Kopnik"."id" = "attachments"."kopnik_id" WHERE "Kopnik"."id" = 2;
+[2016-08-29 16:14:57.549] [ INFO] console - Executing (d0bab647-3c52-40e9-8c95-5a29f38bb513): COMMIT;
+[2016-08-29 16:14:57.560] [ INFO] console - [ 70,
+  208,
+  {},
+  [ { fullName: 'Unit Test',
+      id: '2',
+      email: 'unittest1@domain.ru',
+      name: 'Unit',
+      surname: 'Test',
+      patronymic: '1',
+      birth: 1983,
+      note: null,
+      own_id: '2',
+      starshina_id: null,
+      attachments: [] } ] ]
+[2016-08-29 16:14:57.586] [DEBUG] Server - promiseModel [ 1, 2.3 ] { model: 'Kopnik', id: 2 }
+[2016-08-29 16:14:57.592] [ INFO] console - Executing (34293fe7-cba8-4200-9bf8-45695c5349e6): START TRANSACTION;
+[2016-08-29 16:14:57.603] [ INFO] console - Executing (34293fe7-cba8-4200-9bf8-45695c5349e6): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+[2016-08-29 16:14:57.625] [ INFO] console - Executing (default): SELECT "Kopnik"."id", "Kopnik"."email", "Kopnik"."password", "Kopnik"."name", "Kopnik"."surname", "Kopnik"."patronymic", "Kopnik"."birth", "Kopnik"."note", "Kopnik"."own_id", "Kopnik"."starshina_id", "attachments"."id" AS "attachments.id", "attachments"."path" AS "attachments.path", "attachments"."note" AS "attachments.note", "attachments"."zemla_id" AS "attachments.zemla_id", "attachments"."kopnik_id" AS "attachments.kopnik_id", "attachments"."kopa_id" AS "attachments.kopa_id", "attachments"."slovo_id" AS "attachments.slovo_id", "attachments"."predlozhenie_id" AS "attachments.predlozhenie_id", "attachments"."golos_id" AS "attachments.golos_id" FROM "Kopnik" AS "Kopnik" LEFT OUTER JOIN "File" AS "attachments" ON "Kopnik"."id" = "attachments"."kopnik_id" WHERE "Kopnik"."id" = 2;
+[2016-08-29 16:14:57.638] [ INFO] console - Executing (34293fe7-cba8-4200-9bf8-45695c5349e6): COMMIT;
+[2016-08-29 16:14:57.641] [ INFO] console - [ 70,
+  209,
+  {},
+  [ { fullName: 'Unit Test',
+      id: '2',
+      email: 'unittest1@domain.ru',
+      name: 'Unit',
+      surname: 'Test',
+      patronymic: '1',
+      birth: 1983,
+      note: null,
+      own_id: '2',
+      starshina_id: null,
+      attachments: [] } ] ]
+[2016-08-29 16:14:57.663] [DEBUG] Server - promiseModel [ 1, 2.3 ] { model: 'Kopnik', id: 2 }
+[2016-08-29 16:14:57.670] [ INFO] console - Executing (89e8169e-59ad-438d-952e-83ae91dce9e6): START TRANSACTION;
+[2016-08-29 16:14:57.673] [ INFO] console - Executing (89e8169e-59ad-438d-952e-83ae91dce9e6): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+[2016-08-29 16:14:57.686] [ INFO] console - Executing (default): SELECT "Kopnik"."id", "Kopnik"."email", "Kopnik"."password", "Kopnik"."name", "Kopnik"."surname", "Kopnik"."patronymic", "Kopnik"."birth", "Kopnik"."note", "Kopnik"."own_id", "Kopnik"."starshina_id", "attachments"."id" AS "attachments.id", "attachments"."path" AS "attachments.path", "attachments"."note" AS "attachments.note", "attachments"."zemla_id" AS "attachments.zemla_id", "attachments"."kopnik_id" AS "attachments.kopnik_id", "attachments"."kopa_id" AS "attachments.kopa_id", "attachments"."slovo_id" AS "attachments.slovo_id", "attachments"."predlozhenie_id" AS "attachments.predlozhenie_id", "attachments"."golos_id" AS "attachments.golos_id" FROM "Kopnik" AS "Kopnik" LEFT OUTER JOIN "File" AS "attachments" ON "Kopnik"."id" = "attachments"."kopnik_id" WHERE "Kopnik"."id" = 2;
+[2016-08-29 16:14:57.699] [ INFO] console - Executing (89e8169e-59ad-438d-952e-83ae91dce9e6): COMMIT;
+[2016-08-29 16:14:57.702] [ INFO] console - [ 70,
+  210,
+  {},
+  [ { fullName: 'Unit Test',
+      id: '2',
+      email: 'unittest1@domain.ru',
+      name: 'Unit',
+      surname: 'Test',
+      patronymic: '1',
+      birth: 1983,
+      note: null,
+      own_id: '2',
+      starshina_id: null,
+      attachments: [] } ] ]
+[2016-08-29 16:14:57.735] [DEBUG] Server - promiseModel [ 1, 2.3 ] { model: 'Kopnik', id: 2 }
+[2016-08-29 16:14:57.751] [ INFO] console - Executing (c6e5cc16-d825-4ce7-816f-80702a6104f3): START TRANSACTION;
+[2016-08-29 16:14:57.759] [ INFO] console - Executing (c6e5cc16-d825-4ce7-816f-80702a6104f3): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+[2016-08-29 16:14:57.788] [ INFO] console - Executing (default): SELECT "Kopnik"."id", "Kopnik"."email", "Kopnik"."password", "Kopnik"."name", "Kopnik"."surname", "Kopnik"."patronymic", "Kopnik"."birth", "Kopnik"."note", "Kopnik"."own_id", "Kopnik"."starshina_id", "attachments"."id" AS "attachments.id", "attachments"."path" AS "attachments.path", "attachments"."note" AS "attachments.note", "attachments"."zemla_id" AS "attachments.zemla_id", "attachments"."kopnik_id" AS "attachments.kopnik_id", "attachments"."kopa_id" AS "attachments.kopa_id", "attachments"."slovo_id" AS "attachments.slovo_id", "attachments"."predlozhenie_id" AS "attachments.predlozhenie_id", "attachments"."golos_id" AS "attachments.golos_id" FROM "Kopnik" AS "Kopnik" LEFT OUTER JOIN "File" AS "attachments" ON "Kopnik"."id" = "attachments"."kopnik_id" WHERE "Kopnik"."id" = 2;
+[2016-08-29 16:14:57.810] [ INFO] console - Executing (c6e5cc16-d825-4ce7-816f-80702a6104f3): COMMIT;
+[2016-08-29 16:14:57.818] [ INFO] console - [ 70,
+  211,
+  {},
+  [ { fullName: 'Unit Test',
+      id: '2',
+      email: 'unittest1@domain.ru',
+      name: 'Unit',
+      surname: 'Test',
+      patronymic: '1',
+      birth: 1983,
+      note: null,
+      own_id: '2',
+      starshina_id: null,
+      attachments: [] } ] ]
+[2016-08-29 16:14:57.848] [DEBUG] Server - promiseModel [ 1, 2.3 ] { model: 'Kopnik', id: 2 }
+[2016-08-29 16:14:57.862] [ INFO] console - Executing (7551a7c5-a09c-419c-a64b-3f4a4445160f): START TRANSACTION;
+[2016-08-29 16:14:57.894] [ INFO] console - Executing (7551a7c5-a09c-419c-a64b-3f4a4445160f): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+[2016-08-29 16:14:57.938] [ INFO] console - Executing (default): SELECT "Kopnik"."id", "Kopnik"."email", "Kopnik"."password", "Kopnik"."name", "Kopnik"."surname", "Kopnik"."patronymic", "Kopnik"."birth", "Kopnik"."note", "Kopnik"."own_id", "Kopnik"."starshina_id", "attachments"."id" AS "attachments.id", "attachments"."path" AS "attachments.path", "attachments"."note" AS "attachments.note", "attachments"."zemla_id" AS "attachments.zemla_id", "attachments"."kopnik_id" AS "attachments.kopnik_id", "attachments"."kopa_id" AS "attachments.kopa_id", "attachments"."slovo_id" AS "attachments.slovo_id", "attachments"."predlozhenie_id" AS "attachments.predlozhenie_id", "attachments"."golos_id" AS "attachments.golos_id" FROM "Kopnik" AS "Kopnik" LEFT OUTER JOIN "File" AS "attachments" ON "Kopnik"."id" = "attachments"."kopnik_id" WHERE "Kopnik"."id" = 2;
+[2016-08-29 16:14:57.966] [ INFO] console - Executing (7551a7c5-a09c-419c-a64b-3f4a4445160f): COMMIT;
+[2016-08-29 16:14:57.970] [ INFO] console - [ 70,
+  212,
+  {},
+  [ { fullName: 'Unit Test',
+      id: '2',
+      email: 'unittest1@domain.ru',
+      name: 'Unit',
+      surname: 'Test',
+      patronymic: '1',
+      birth: 1983,
+      note: null,
+      own_id: '2',
+      starshina_id: null,
+      attachments: [] } ] ]
+[2016-08-29 16:17:44.641] [ INFO] console - AutobahnJS debug enabled
+[2016-08-29 16:17:46.595] [ INFO] Server - starting...
+[2016-08-29 16:17:46.598] [ INFO] console - trying to create WAMP transport of type: websocket
+[2016-08-29 16:17:46.727] [ INFO] console - using WAMP transport type: websocket
+[2016-08-29 16:17:46.905] [ INFO] console - [ 1,
+  'kopa',
+  { roles: 
+     { caller: [Object],
+       callee: [Object],
+       publisher: [Object],
+       subscriber: [Object] },
+    authmethods: [ 'ticket' ],
+    authid: 'server' } ]
+[2016-08-29 16:17:46.929] [ INFO] console - [ 5, 'server', {} ]
+[2016-08-29 16:17:46.946] [ INFO] Server - connection.onopen
+[2016-08-29 16:17:46.949] [ INFO] console - [ 64, 506291701153792, {}, 'ru.kopa.model.get' ]
+[2016-08-29 16:17:46.959] [DEBUG] Server - api:model.get registered
+[2016-08-29 16:17:46.960] [ INFO] console - [ 64, 4242089581740032, {}, 'ru.kopa.pingPong' ]
+[2016-08-29 16:17:46.969] [DEBUG] Server - api:pingPong registered
+[2016-08-29 16:17:46.970] [ INFO] console - [ 64, 704055875731456, {}, 'ru.kopa.pingPongDatabase' ]
+[2016-08-29 16:17:46.979] [DEBUG] Server - api:pingPongDatabase registered
+[2016-08-29 16:17:58.483] [DEBUG] Server - pingPong [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-29 16:17:58.494] [ INFO] console - [ 70, 217, {}, [ 1, 2, 3 ], { x: 1, y: 2, z: 3 } ]
+[2016-08-29 16:17:58.520] [DEBUG] Server - pingPongDatabase [] {}
+[2016-08-29 16:17:58.676] [ INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-29 16:17:58.687] [ INFO] console - [ 70, 218, {}, [ 'КОПА' ] ]
+[2016-08-29 16:17:58.747] [ INFO] console - [ 8,
+  68,
+  219,
+  {},
+  'wamp.error.runtime_error',
+  [ [TypeError: Cannot read property 'error' of undefined] ] ]
+[2016-08-29 16:17:58.883] [ INFO] console - [ 8,
+  68,
+  220,
+  {},
+  'wamp.error.runtime_error',
+  [ [TypeError: Cannot read property 'error' of undefined] ] ]
+[2016-08-29 16:18:03.885] [ INFO] console - [ 8,
+  68,
+  221,
+  {},
+  'wamp.error.runtime_error',
+  [ [TypeError: Cannot read property 'error' of undefined] ] ]
+[2016-08-29 16:18:08.892] [ INFO] console - [ 8,
+  68,
+  222,
+  {},
+  'wamp.error.runtime_error',
+  [ [TypeError: Cannot read property 'error' of undefined] ] ]
+[2016-08-29 16:18:13.896] [ INFO] console - [ 8,
+  68,
+  223,
+  {},
+  'wamp.error.runtime_error',
+  [ [TypeError: Cannot read property 'error' of undefined] ] ]
+[2016-08-29 16:23:30.690] [DEBUG] Server - pingPong [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-29 16:23:30.708] [ INFO] console - [ 70, 227, {}, [ 1, 2, 3 ], { x: 1, y: 2, z: 3 } ]
+[2016-08-29 16:23:30.731] [DEBUG] Server - pingPongDatabase [] {}
+[2016-08-29 16:23:30.868] [ INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-29 16:23:30.877] [ INFO] console - [ 70, 228, {}, [ 'КОПА' ] ]
+[2016-08-29 16:24:34.460] [ INFO] console - [ 8,
+  68,
+  229,
+  {},
+  'wamp.error.runtime_error',
+  [ [TypeError: Cannot read property 'error' of undefined] ] ]
+[2016-08-29 16:25:54.902] [ INFO] console - AutobahnJS debug enabled
+[2016-08-29 16:25:56.888] [ INFO] Server - starting...
+[2016-08-29 16:25:56.891] [ INFO] console - trying to create WAMP transport of type: websocket
+[2016-08-29 16:25:57.008] [ INFO] console - using WAMP transport type: websocket
+[2016-08-29 16:25:57.232] [ INFO] console - [ 1,
+  'kopa',
+  { roles: 
+     { caller: [Object],
+       callee: [Object],
+       publisher: [Object],
+       subscriber: [Object] },
+    authmethods: [ 'ticket' ],
+    authid: 'server' } ]
+[2016-08-29 16:25:57.254] [ INFO] console - [ 5, 'server', {} ]
+[2016-08-29 16:25:57.275] [ INFO] Server - connection.onopen
+[2016-08-29 16:25:57.276] [ INFO] console - [ 64, 8973231312601088, {}, 'ru.kopa.model.get' ]
+[2016-08-29 16:25:57.288] [DEBUG] Server - api:model.get registered
+[2016-08-29 16:25:57.291] [ INFO] console - [ 64, 1515159312924672, {}, 'ru.kopa.pingPong' ]
+[2016-08-29 16:25:57.304] [DEBUG] Server - api:pingPong registered
+[2016-08-29 16:25:57.305] [ INFO] console - [ 64, 4107865453232128, {}, 'ru.kopa.pingPongDatabase' ]
+[2016-08-29 16:25:57.316] [DEBUG] Server - api:pingPongDatabase registered
+[2016-08-29 16:29:10.431] [DEBUG] Server - pingPong [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-29 16:29:10.451] [ INFO] console - [ 70, 238, {}, [ 1, 2, 3 ], { x: 1, y: 2, z: 3 } ]
+[2016-08-29 16:29:10.486] [DEBUG] Server - pingPongDatabase [] {}
+[2016-08-29 16:29:10.636] [ INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-29 16:29:10.648] [ INFO] console - [ 70, 239, {}, [ 'КОПА' ] ]
+[2016-08-29 16:29:10.688] [DEBUG] Server - promiseModel [ 1, 2.3 ] { model: 'Kopnik', id: 2 }
+[2016-08-29 16:29:10.701] [ INFO] console - Executing (24f09ba8-9652-4b6d-becd-304faa7b87fe): START TRANSACTION;
+[2016-08-29 16:29:10.706] [ INFO] console - Executing (24f09ba8-9652-4b6d-becd-304faa7b87fe): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+[2016-08-29 16:29:10.834] [ INFO] console - Executing (default): SELECT "Kopnik"."id", "Kopnik"."email", "Kopnik"."password", "Kopnik"."name", "Kopnik"."surname", "Kopnik"."patronymic", "Kopnik"."birth", "Kopnik"."note", "Kopnik"."own_id", "Kopnik"."starshina_id", "attachments"."id" AS "attachments.id", "attachments"."path" AS "attachments.path", "attachments"."note" AS "attachments.note", "attachments"."zemla_id" AS "attachments.zemla_id", "attachments"."kopnik_id" AS "attachments.kopnik_id", "attachments"."kopa_id" AS "attachments.kopa_id", "attachments"."slovo_id" AS "attachments.slovo_id", "attachments"."predlozhenie_id" AS "attachments.predlozhenie_id", "attachments"."golos_id" AS "attachments.golos_id" FROM "Kopnik" AS "Kopnik" LEFT OUTER JOIN "File" AS "attachments" ON "Kopnik"."id" = "attachments"."kopnik_id" WHERE "Kopnik"."id" = 2;
+[2016-08-29 16:29:10.872] [ INFO] console - Executing (24f09ba8-9652-4b6d-becd-304faa7b87fe): COMMIT;
+[2016-08-29 16:29:10.891] [ INFO] console - [ 70,
+  240,
+  {},
+  [ { fullName: 'Unit Test',
+      id: '2',
+      email: 'unittest1@domain.ru',
+      name: 'Unit',
+      surname: 'Test',
+      patronymic: '1',
+      birth: 1983,
+      note: null,
+      own_id: '2',
+      starshina_id: null,
+      attachments: [] } ] ]
+[2016-08-29 16:29:10.933] [DEBUG] Server - promiseModel [ 1, 2.3 ] { model: 'Kopnik', id: 2 }
+[2016-08-29 16:29:10.943] [ INFO] console - Executing (07f54379-7a3c-42e3-941a-692898c0f3d2): START TRANSACTION;
+[2016-08-29 16:29:10.952] [ INFO] console - Executing (07f54379-7a3c-42e3-941a-692898c0f3d2): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+[2016-08-29 16:29:10.977] [ INFO] console - Executing (default): SELECT "Kopnik"."id", "Kopnik"."email", "Kopnik"."password", "Kopnik"."name", "Kopnik"."surname", "Kopnik"."patronymic", "Kopnik"."birth", "Kopnik"."note", "Kopnik"."own_id", "Kopnik"."starshina_id", "attachments"."id" AS "attachments.id", "attachments"."path" AS "attachments.path", "attachments"."note" AS "attachments.note", "attachments"."zemla_id" AS "attachments.zemla_id", "attachments"."kopnik_id" AS "attachments.kopnik_id", "attachments"."kopa_id" AS "attachments.kopa_id", "attachments"."slovo_id" AS "attachments.slovo_id", "attachments"."predlozhenie_id" AS "attachments.predlozhenie_id", "attachments"."golos_id" AS "attachments.golos_id" FROM "Kopnik" AS "Kopnik" LEFT OUTER JOIN "File" AS "attachments" ON "Kopnik"."id" = "attachments"."kopnik_id" WHERE "Kopnik"."id" = 2;
+[2016-08-29 16:29:10.990] [ INFO] console - Executing (07f54379-7a3c-42e3-941a-692898c0f3d2): COMMIT;
+[2016-08-29 16:29:10.994] [ INFO] console - [ 70,
+  241,
+  {},
+  [ { fullName: 'Unit Test',
+      id: '2',
+      email: 'unittest1@domain.ru',
+      name: 'Unit',
+      surname: 'Test',
+      patronymic: '1',
+      birth: 1983,
+      note: null,
+      own_id: '2',
+      starshina_id: null,
+      attachments: [] } ] ]
+[2016-08-29 16:29:11.019] [DEBUG] Server - promiseModel [ 1, 2.3 ] { model: 'Kopnik', id: 2 }
+[2016-08-29 16:29:11.029] [ INFO] console - Executing (a51fb9f9-b094-4320-b580-9b6d035d21cd): START TRANSACTION;
+[2016-08-29 16:29:11.037] [ INFO] console - Executing (a51fb9f9-b094-4320-b580-9b6d035d21cd): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+[2016-08-29 16:29:11.056] [ INFO] console - Executing (default): SELECT "Kopnik"."id", "Kopnik"."email", "Kopnik"."password", "Kopnik"."name", "Kopnik"."surname", "Kopnik"."patronymic", "Kopnik"."birth", "Kopnik"."note", "Kopnik"."own_id", "Kopnik"."starshina_id", "attachments"."id" AS "attachments.id", "attachments"."path" AS "attachments.path", "attachments"."note" AS "attachments.note", "attachments"."zemla_id" AS "attachments.zemla_id", "attachments"."kopnik_id" AS "attachments.kopnik_id", "attachments"."kopa_id" AS "attachments.kopa_id", "attachments"."slovo_id" AS "attachments.slovo_id", "attachments"."predlozhenie_id" AS "attachments.predlozhenie_id", "attachments"."golos_id" AS "attachments.golos_id" FROM "Kopnik" AS "Kopnik" LEFT OUTER JOIN "File" AS "attachments" ON "Kopnik"."id" = "attachments"."kopnik_id" WHERE "Kopnik"."id" = 2;
+[2016-08-29 16:29:11.068] [ INFO] console - Executing (a51fb9f9-b094-4320-b580-9b6d035d21cd): COMMIT;
+[2016-08-29 16:29:11.072] [ INFO] console - [ 70,
+  242,
+  {},
+  [ { fullName: 'Unit Test',
+      id: '2',
+      email: 'unittest1@domain.ru',
+      name: 'Unit',
+      surname: 'Test',
+      patronymic: '1',
+      birth: 1983,
+      note: null,
+      own_id: '2',
+      starshina_id: null,
+      attachments: [] } ] ]
+[2016-08-29 16:29:11.118] [DEBUG] Server - promiseModel [ 1, 2.3 ] { model: 'Kopnik', id: 2 }
+[2016-08-29 16:29:11.144] [ INFO] console - Executing (7a88002b-538b-4dd8-a013-bffcd014d866): START TRANSACTION;
+[2016-08-29 16:29:11.158] [ INFO] console - Executing (7a88002b-538b-4dd8-a013-bffcd014d866): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+[2016-08-29 16:29:11.176] [ INFO] console - Executing (default): SELECT "Kopnik"."id", "Kopnik"."email", "Kopnik"."password", "Kopnik"."name", "Kopnik"."surname", "Kopnik"."patronymic", "Kopnik"."birth", "Kopnik"."note", "Kopnik"."own_id", "Kopnik"."starshina_id", "attachments"."id" AS "attachments.id", "attachments"."path" AS "attachments.path", "attachments"."note" AS "attachments.note", "attachments"."zemla_id" AS "attachments.zemla_id", "attachments"."kopnik_id" AS "attachments.kopnik_id", "attachments"."kopa_id" AS "attachments.kopa_id", "attachments"."slovo_id" AS "attachments.slovo_id", "attachments"."predlozhenie_id" AS "attachments.predlozhenie_id", "attachments"."golos_id" AS "attachments.golos_id" FROM "Kopnik" AS "Kopnik" LEFT OUTER JOIN "File" AS "attachments" ON "Kopnik"."id" = "attachments"."kopnik_id" WHERE "Kopnik"."id" = 2;
+[2016-08-29 16:29:11.188] [ INFO] console - Executing (7a88002b-538b-4dd8-a013-bffcd014d866): COMMIT;
+[2016-08-29 16:29:11.199] [ INFO] console - [ 70,
+  243,
+  {},
+  [ { fullName: 'Unit Test',
+      id: '2',
+      email: 'unittest1@domain.ru',
+      name: 'Unit',
+      surname: 'Test',
+      patronymic: '1',
+      birth: 1983,
+      note: null,
+      own_id: '2',
+      starshina_id: null,
+      attachments: [] } ] ]
+[2016-08-29 16:29:11.227] [DEBUG] Server - promiseModel [ 1, 2.3 ] { model: 'Kopnik', id: 2 }
+[2016-08-29 16:29:11.239] [ INFO] console - Executing (3b9adfaf-14f4-4c6a-9bdb-94446c5e8041): START TRANSACTION;
+[2016-08-29 16:29:11.244] [ INFO] console - Executing (3b9adfaf-14f4-4c6a-9bdb-94446c5e8041): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+[2016-08-29 16:29:11.267] [ INFO] console - Executing (default): SELECT "Kopnik"."id", "Kopnik"."email", "Kopnik"."password", "Kopnik"."name", "Kopnik"."surname", "Kopnik"."patronymic", "Kopnik"."birth", "Kopnik"."note", "Kopnik"."own_id", "Kopnik"."starshina_id", "attachments"."id" AS "attachments.id", "attachments"."path" AS "attachments.path", "attachments"."note" AS "attachments.note", "attachments"."zemla_id" AS "attachments.zemla_id", "attachments"."kopnik_id" AS "attachments.kopnik_id", "attachments"."kopa_id" AS "attachments.kopa_id", "attachments"."slovo_id" AS "attachments.slovo_id", "attachments"."predlozhenie_id" AS "attachments.predlozhenie_id", "attachments"."golos_id" AS "attachments.golos_id" FROM "Kopnik" AS "Kopnik" LEFT OUTER JOIN "File" AS "attachments" ON "Kopnik"."id" = "attachments"."kopnik_id" WHERE "Kopnik"."id" = 2;
+[2016-08-29 16:29:11.276] [ INFO] console - Executing (3b9adfaf-14f4-4c6a-9bdb-94446c5e8041): COMMIT;
+[2016-08-29 16:29:11.280] [ INFO] console - [ 70,
+  244,
+  {},
+  [ { fullName: 'Unit Test',
+      id: '2',
+      email: 'unittest1@domain.ru',
+      name: 'Unit',
+      surname: 'Test',
+      patronymic: '1',
+      birth: 1983,
+      note: null,
+      own_id: '2',
+      starshina_id: null,
+      attachments: [] } ] ]
+[2016-08-29 16:36:48.632] [ INFO] console - uncaughtException handler { [SyntaxError: /home/alexey2baranov/htdocs/kp-sequelizejs/src/Server.js: Unexpected token (115:29)]
+  pos: 3750,
+  loc: Position { line: 115, column: 29 },
+  _babel: true,
+  codeFrame: '\u001b[0m  113 |         \u001b[36mtry\u001b[39m \u001b[32m{\u001b[39m\n  114 |             \u001b[36mthis\u001b[39m\u001b[1m.\u001b[22mlog\u001b[1m.\u001b[22mdebug\u001b[34m\u001b[1m(\u001b[22m\u001b[39m\u001b[31m"#promiseModel()"\u001b[39m\u001b[1m,\u001b[22m args\u001b[1m,\u001b[22m kwargs\u001b[34m\u001b[1m)\u001b[22m\u001b[39m\u001b[1m;\u001b[22m\n> 115 |             \u001b[36mvar\u001b[39m tran \u001b[1m=\u001b[22m await model\u001b[1m.\u001b[22msequelize\u001b[1m.\u001b[22mtransaction\u001b[34m\u001b[1m(\u001b[22m\u001b[39m\u001b[34m\u001b[1m)\u001b[22m\u001b[39m\u001b[1m;\u001b[22m\n      |                              ^\n  116 |             \u001b[36mvar\u001b[39m result \u001b[1m=\u001b[22m \u001b[36mnull\u001b[39m\u001b[1m;\u001b[22m\n  117 | \n  118 |             \u001b[36mswitch\u001b[39m \u001b[34m\u001b[1m(\u001b[22m\u001b[39mkwargs\u001b[1m.\u001b[22mmodel\u001b[34m\u001b[1m)\u001b[22m\u001b[39m \u001b[32m{\u001b[39m\u001b[0m' }
+SyntaxError: /home/alexey2baranov/htdocs/kp-sequelizejs/src/Server.js: Unexpected token (115:29)
+[0m  113 |         [36mtry[39m [32m{[39m
+  114 |             [36mthis[39m[1m.[22mlog[1m.[22mdebug[34m[1m([22m[39m[31m"#promiseModel()"[39m[1m,[22m args[1m,[22m kwargs[34m[1m)[22m[39m[1m;[22m
+> 115 |             [36mvar[39m tran [1m=[22m await model[1m.[22msequelize[1m.[22mtransaction[34m[1m([22m[39m[34m[1m)[22m[39m[1m;[22m
+      |                              ^
+  116 |             [36mvar[39m result [1m=[22m [36mnull[39m[1m;[22m
+  117 | 
+  118 |             [36mswitch[39m [34m[1m([22m[39mkwargs[1m.[22mmodel[34m[1m)[22m[39m [32m{[39m[0m
+    at Parser.pp.raise (/usr/lib/node_modules/babel-cli/node_modules/babylon/lib/parser/location.js:22:13)
+    at Parser.pp.unexpected (/usr/lib/node_modules/babel-cli/node_modules/babylon/lib/parser/util.js:91:8)
+    at Parser.pp.parseAwait (/usr/lib/node_modules/babel-cli/node_modules/babylon/lib/parser/expression.js:1085:10)
+    at Parser.pp.parseExprAtom (/usr/lib/node_modules/babel-cli/node_modules/babylon/lib/parser/expression.js:424:25)
+    at Parser.pp.parseExprSubscripts (/usr/lib/node_modules/babel-cli/node_modules/babylon/lib/parser/expression.js:278:19)
+    at Parser.pp.parseMaybeUnary (/usr/lib/node_modules/babel-cli/node_modules/babylon/lib/parser/expression.js:258:19)
+    at Parser.pp.parseExprOps (/usr/lib/node_modules/babel-cli/node_modules/babylon/lib/parser/expression.js:188:19)
+    at Parser.pp.parseMaybeConditional (/usr/lib/node_modules/babel-cli/node_modules/babylon/lib/parser/expression.js:165:19)
+    at Parser.pp.parseMaybeAssign (/usr/lib/node_modules/babel-cli/node_modules/babylon/lib/parser/expression.js:128:19)
+    at Parser.pp.parseVar (/usr/lib/node_modules/babel-cli/node_modules/babylon/lib/parser/statement.js:601:24)
+[2016-08-29 16:37:52.135] [ INFO] console - uncaughtException handler { [SyntaxError: /home/alexey2baranov/htdocs/kp-sequelizejs/src/Server.js: Unexpected token (116:29)]
+  pos: 3751,
+  loc: Position { line: 116, column: 29 },
+  _babel: true,
+  codeFrame: '\u001b[0m  114 |             \u001b[36mthis\u001b[39m\u001b[1m.\u001b[22mlog\u001b[1m.\u001b[22mdebug\u001b[34m\u001b[1m(\u001b[22m\u001b[39m\u001b[31m"#promiseModel()"\u001b[39m\u001b[1m,\u001b[22m args\u001b[1m,\u001b[22m kwargs\u001b[34m\u001b[1m)\u001b[22m\u001b[39m\u001b[1m;\u001b[22m\n  115 | \n> 116 |             \u001b[36mvar\u001b[39m tran \u001b[1m=\u001b[22m await model\u001b[1m.\u001b[22msequelize\u001b[1m.\u001b[22mtransaction\u001b[34m\u001b[1m(\u001b[22m\u001b[39m\u001b[34m\u001b[1m)\u001b[22m\u001b[39m\u001b[1m;\u001b[22m\n      |                              ^\n  117 |             \u001b[36mvar\u001b[39m result \u001b[1m=\u001b[22m \u001b[36mnull\u001b[39m\u001b[1m;\u001b[22m\n  118 | \n  119 |             \u001b[36mswitch\u001b[39m \u001b[34m\u001b[1m(\u001b[22m\u001b[39mkwargs\u001b[1m.\u001b[22mmodel\u001b[34m\u001b[1m)\u001b[22m\u001b[39m \u001b[32m{\u001b[39m\u001b[0m' }
+SyntaxError: /home/alexey2baranov/htdocs/kp-sequelizejs/src/Server.js: Unexpected token (116:29)
+[0m  114 |             [36mthis[39m[1m.[22mlog[1m.[22mdebug[34m[1m([22m[39m[31m"#promiseModel()"[39m[1m,[22m args[1m,[22m kwargs[34m[1m)[22m[39m[1m;[22m
+  115 | 
+> 116 |             [36mvar[39m tran [1m=[22m await model[1m.[22msequelize[1m.[22mtransaction[34m[1m([22m[39m[34m[1m)[22m[39m[1m;[22m
+      |                              ^
+  117 |             [36mvar[39m result [1m=[22m [36mnull[39m[1m;[22m
+  118 | 
+  119 |             [36mswitch[39m [34m[1m([22m[39mkwargs[1m.[22mmodel[34m[1m)[22m[39m [32m{[39m[0m
+    at Parser.pp.raise (/usr/lib/node_modules/babel-cli/node_modules/babylon/lib/parser/location.js:22:13)
+    at Parser.pp.unexpected (/usr/lib/node_modules/babel-cli/node_modules/babylon/lib/parser/util.js:91:8)
+    at Parser.pp.parseAwait (/usr/lib/node_modules/babel-cli/node_modules/babylon/lib/parser/expression.js:1085:10)
+    at Parser.pp.parseExprAtom (/usr/lib/node_modules/babel-cli/node_modules/babylon/lib/parser/expression.js:424:25)
+    at Parser.pp.parseExprSubscripts (/usr/lib/node_modules/babel-cli/node_modules/babylon/lib/parser/expression.js:278:19)
+    at Parser.pp.parseMaybeUnary (/usr/lib/node_modules/babel-cli/node_modules/babylon/lib/parser/expression.js:258:19)
+    at Parser.pp.parseExprOps (/usr/lib/node_modules/babel-cli/node_modules/babylon/lib/parser/expression.js:188:19)
+    at Parser.pp.parseMaybeConditional (/usr/lib/node_modules/babel-cli/node_modules/babylon/lib/parser/expression.js:165:19)
+    at Parser.pp.parseMaybeAssign (/usr/lib/node_modules/babel-cli/node_modules/babylon/lib/parser/expression.js:128:19)
+    at Parser.pp.parseVar (/usr/lib/node_modules/babel-cli/node_modules/babylon/lib/parser/statement.js:601:24)
+[2016-08-29 16:39:13.709] [ INFO] console - AutobahnJS debug enabled
+[2016-08-29 16:39:14.959] [ INFO] Server - starting...
+[2016-08-29 16:39:14.967] [ INFO] console - trying to create WAMP transport of type: websocket
+[2016-08-29 16:39:15.046] [ INFO] console - using WAMP transport type: websocket
+[2016-08-29 16:39:15.447] [ INFO] console - [ 1,
+  'kopa',
+  { roles: 
+     { caller: [Object],
+       callee: [Object],
+       publisher: [Object],
+       subscriber: [Object] },
+    authmethods: [ 'ticket' ],
+    authid: 'server' } ]
+[2016-08-29 16:39:15.507] [ INFO] console - [ 5, 'server', {} ]
+[2016-08-29 16:39:15.536] [ INFO] Server - connection.onopen()
+[2016-08-29 16:39:15.539] [ INFO] console - [ 64, 753302887202816, {}, 'ru.kopa.model.get' ]
+[2016-08-29 16:39:15.551] [DEBUG] Server - api:model.get registered
+[2016-08-29 16:39:15.555] [ INFO] console - [ 64, 7087292262907904, {}, 'ru.kopa.pingPong' ]
+[2016-08-29 16:39:15.569] [DEBUG] Server - api:pingPong registered
+[2016-08-29 16:39:15.570] [ INFO] console - [ 64, 8325089716076544, {}, 'ru.kopa.pingPongDatabase' ]
+[2016-08-29 16:39:15.577] [DEBUG] Server - api:pingPongDatabase registered
+[2016-08-29 16:39:53.888] [DEBUG] Server - #pingPong() [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-29 16:39:53.900] [ INFO] console - [ 70, 249, {}, [ 1, 2, 3 ], { x: 1, y: 2, z: 3 } ]
+[2016-08-29 16:39:54.049] [DEBUG] Server - #pingPongDatabase() [] {}
+[2016-08-29 16:39:54.966] [ INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-29 16:39:54.973] [ INFO] console - [ 70, 250, {}, [ 'КОПА' ] ]
+[2016-08-29 16:39:55.009] [DEBUG] Server - #promiseModel() [ 1, 2.3 ] { model: 'Kopnik', id: 2 }
+[2016-08-29 16:39:55.080] [ INFO] console - Executing (default): SELECT "Kopnik"."id", "Kopnik"."email", "Kopnik"."password", "Kopnik"."name", "Kopnik"."surname", "Kopnik"."patronymic", "Kopnik"."birth", "Kopnik"."note", "Kopnik"."own_id", "Kopnik"."starshina_id", "attachments"."id" AS "attachments.id", "attachments"."path" AS "attachments.path", "attachments"."note" AS "attachments.note", "attachments"."zemla_id" AS "attachments.zemla_id", "attachments"."kopnik_id" AS "attachments.kopnik_id", "attachments"."kopa_id" AS "attachments.kopa_id", "attachments"."slovo_id" AS "attachments.slovo_id", "attachments"."predlozhenie_id" AS "attachments.predlozhenie_id", "attachments"."golos_id" AS "attachments.golos_id" FROM "Kopnik" AS "Kopnik" LEFT OUTER JOIN "File" AS "attachments" ON "Kopnik"."id" = "attachments"."kopnik_id" WHERE "Kopnik"."id" = 2;
+[2016-08-29 16:39:55.102] [ERROR] Server - [ReferenceError: tran is not defined]
+ReferenceError: tran is not defined
+    at Server.js:137:19
+    at [object Generator].next (native)
+    at step (/home/alexey2baranov/htdocs/kp-sequelizejs/src/Server.js:1:253)
+    at /home/alexey2baranov/htdocs/kp-sequelizejs/src/Server.js:1:430
+    at propagateAslWrapper (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/index.js:421:23)
+    at /home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/glue.js:188:31
+    at /home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/index.js:458:70
+    at run (/usr/lib/node_modules/babel-cli/node_modules/core-js/modules/es6.promise.js:87:22)
+    at /usr/lib/node_modules/babel-cli/node_modules/core-js/modules/es6.promise.js:100:28
+    at flush (/usr/lib/node_modules/babel-cli/node_modules/core-js/modules/_microtask.js:18:9)
+    at /home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/glue.js:188:31
+    at nextTickCallbackWith0Args (node.js:420:9)
+    at process._tickDomainCallback [as _tickCallback] (node.js:390:13)
+[2016-08-29 16:39:55.220] [ INFO] console - [ 8,
+  68,
+  251,
+  {},
+  'wamp.error.runtime_error',
+  [ [ReferenceError: tran is not defined] ] ]
+[2016-08-29 16:39:55.332] [DEBUG] Server - #promiseModel() [ 1, 2.3 ] { model: 'Kopnik', id: 2 }
+[2016-08-29 16:39:55.388] [ INFO] console - Executing (default): SELECT "Kopnik"."id", "Kopnik"."email", "Kopnik"."password", "Kopnik"."name", "Kopnik"."surname", "Kopnik"."patronymic", "Kopnik"."birth", "Kopnik"."note", "Kopnik"."own_id", "Kopnik"."starshina_id", "attachments"."id" AS "attachments.id", "attachments"."path" AS "attachments.path", "attachments"."note" AS "attachments.note", "attachments"."zemla_id" AS "attachments.zemla_id", "attachments"."kopnik_id" AS "attachments.kopnik_id", "attachments"."kopa_id" AS "attachments.kopa_id", "attachments"."slovo_id" AS "attachments.slovo_id", "attachments"."predlozhenie_id" AS "attachments.predlozhenie_id", "attachments"."golos_id" AS "attachments.golos_id" FROM "Kopnik" AS "Kopnik" LEFT OUTER JOIN "File" AS "attachments" ON "Kopnik"."id" = "attachments"."kopnik_id" WHERE "Kopnik"."id" = 2;
+[2016-08-29 16:39:55.411] [ERROR] Server - [ReferenceError: tran is not defined]
+ReferenceError: tran is not defined
+    at Server.js:137:19
+    at [object Generator].next (native)
+    at step (/home/alexey2baranov/htdocs/kp-sequelizejs/src/Server.js:1:253)
+    at /home/alexey2baranov/htdocs/kp-sequelizejs/src/Server.js:1:430
+    at propagateAslWrapper (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/index.js:421:23)
+    at /home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/glue.js:188:31
+    at /home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/index.js:458:70
+    at run (/usr/lib/node_modules/babel-cli/node_modules/core-js/modules/es6.promise.js:87:22)
+    at /usr/lib/node_modules/babel-cli/node_modules/core-js/modules/es6.promise.js:100:28
+    at flush (/usr/lib/node_modules/babel-cli/node_modules/core-js/modules/_microtask.js:18:9)
+    at /home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/glue.js:188:31
+    at nextTickCallbackWith0Args (node.js:420:9)
+    at process._tickDomainCallback [as _tickCallback] (node.js:390:13)
+[2016-08-29 16:39:55.436] [ INFO] console - [ 8,
+  68,
+  252,
+  {},
+  'wamp.error.runtime_error',
+  [ [ReferenceError: tran is not defined] ] ]
+[2016-08-29 16:40:00.383] [DEBUG] Server - #promiseModel() [ 1, 2.3 ] { model: 'Kopnik', id: 2 }
+[2016-08-29 16:40:00.416] [ INFO] console - Executing (default): SELECT "Kopnik"."id", "Kopnik"."email", "Kopnik"."password", "Kopnik"."name", "Kopnik"."surname", "Kopnik"."patronymic", "Kopnik"."birth", "Kopnik"."note", "Kopnik"."own_id", "Kopnik"."starshina_id", "attachments"."id" AS "attachments.id", "attachments"."path" AS "attachments.path", "attachments"."note" AS "attachments.note", "attachments"."zemla_id" AS "attachments.zemla_id", "attachments"."kopnik_id" AS "attachments.kopnik_id", "attachments"."kopa_id" AS "attachments.kopa_id", "attachments"."slovo_id" AS "attachments.slovo_id", "attachments"."predlozhenie_id" AS "attachments.predlozhenie_id", "attachments"."golos_id" AS "attachments.golos_id" FROM "Kopnik" AS "Kopnik" LEFT OUTER JOIN "File" AS "attachments" ON "Kopnik"."id" = "attachments"."kopnik_id" WHERE "Kopnik"."id" = 2;
+[2016-08-29 16:40:00.425] [ERROR] Server - [ReferenceError: tran is not defined]
+ReferenceError: tran is not defined
+    at Server.js:137:19
+    at [object Generator].next (native)
+    at step (/home/alexey2baranov/htdocs/kp-sequelizejs/src/Server.js:1:253)
+    at /home/alexey2baranov/htdocs/kp-sequelizejs/src/Server.js:1:430
+    at propagateAslWrapper (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/index.js:421:23)
+    at /home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/glue.js:188:31
+    at /home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/index.js:458:70
+    at run (/usr/lib/node_modules/babel-cli/node_modules/core-js/modules/es6.promise.js:87:22)
+    at /usr/lib/node_modules/babel-cli/node_modules/core-js/modules/es6.promise.js:100:28
+    at flush (/usr/lib/node_modules/babel-cli/node_modules/core-js/modules/_microtask.js:18:9)
+    at /home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/glue.js:188:31
+    at nextTickCallbackWith0Args (node.js:420:9)
+    at process._tickDomainCallback [as _tickCallback] (node.js:390:13)
+[2016-08-29 16:40:00.432] [ INFO] console - [ 8,
+  68,
+  253,
+  {},
+  'wamp.error.runtime_error',
+  [ [ReferenceError: tran is not defined] ] ]
+[2016-08-29 16:40:05.627] [DEBUG] Server - #promiseModel() [ 1, 2.3 ] { model: 'Kopnik', id: 2 }
+[2016-08-29 16:40:05.658] [ INFO] console - Executing (default): SELECT "Kopnik"."id", "Kopnik"."email", "Kopnik"."password", "Kopnik"."name", "Kopnik"."surname", "Kopnik"."patronymic", "Kopnik"."birth", "Kopnik"."note", "Kopnik"."own_id", "Kopnik"."starshina_id", "attachments"."id" AS "attachments.id", "attachments"."path" AS "attachments.path", "attachments"."note" AS "attachments.note", "attachments"."zemla_id" AS "attachments.zemla_id", "attachments"."kopnik_id" AS "attachments.kopnik_id", "attachments"."kopa_id" AS "attachments.kopa_id", "attachments"."slovo_id" AS "attachments.slovo_id", "attachments"."predlozhenie_id" AS "attachments.predlozhenie_id", "attachments"."golos_id" AS "attachments.golos_id" FROM "Kopnik" AS "Kopnik" LEFT OUTER JOIN "File" AS "attachments" ON "Kopnik"."id" = "attachments"."kopnik_id" WHERE "Kopnik"."id" = 2;
+[2016-08-29 16:40:05.664] [ERROR] Server - [ReferenceError: tran is not defined]
+ReferenceError: tran is not defined
+    at Server.js:137:19
+    at [object Generator].next (native)
+    at step (/home/alexey2baranov/htdocs/kp-sequelizejs/src/Server.js:1:253)
+    at /home/alexey2baranov/htdocs/kp-sequelizejs/src/Server.js:1:430
+    at propagateAslWrapper (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/index.js:421:23)
+    at /home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/glue.js:188:31
+    at /home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/index.js:458:70
+    at run (/usr/lib/node_modules/babel-cli/node_modules/core-js/modules/es6.promise.js:87:22)
+    at /usr/lib/node_modules/babel-cli/node_modules/core-js/modules/es6.promise.js:100:28
+    at flush (/usr/lib/node_modules/babel-cli/node_modules/core-js/modules/_microtask.js:18:9)
+    at /home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/glue.js:188:31
+    at nextTickCallbackWith0Args (node.js:420:9)
+    at process._tickDomainCallback [as _tickCallback] (node.js:390:13)
+[2016-08-29 16:40:05.669] [ INFO] console - [ 8,
+  68,
+  254,
+  {},
+  'wamp.error.runtime_error',
+  [ [ReferenceError: tran is not defined] ] ]
+[2016-08-29 16:40:10.373] [DEBUG] Server - #promiseModel() [ 1, 2.3 ] { model: 'Kopnik', id: 2 }
+[2016-08-29 16:40:10.384] [ INFO] console - Executing (default): SELECT "Kopnik"."id", "Kopnik"."email", "Kopnik"."password", "Kopnik"."name", "Kopnik"."surname", "Kopnik"."patronymic", "Kopnik"."birth", "Kopnik"."note", "Kopnik"."own_id", "Kopnik"."starshina_id", "attachments"."id" AS "attachments.id", "attachments"."path" AS "attachments.path", "attachments"."note" AS "attachments.note", "attachments"."zemla_id" AS "attachments.zemla_id", "attachments"."kopnik_id" AS "attachments.kopnik_id", "attachments"."kopa_id" AS "attachments.kopa_id", "attachments"."slovo_id" AS "attachments.slovo_id", "attachments"."predlozhenie_id" AS "attachments.predlozhenie_id", "attachments"."golos_id" AS "attachments.golos_id" FROM "Kopnik" AS "Kopnik" LEFT OUTER JOIN "File" AS "attachments" ON "Kopnik"."id" = "attachments"."kopnik_id" WHERE "Kopnik"."id" = 2;
+[2016-08-29 16:40:10.395] [ERROR] Server - [ReferenceError: tran is not defined]
+ReferenceError: tran is not defined
+    at Server.js:137:19
+    at [object Generator].next (native)
+    at step (/home/alexey2baranov/htdocs/kp-sequelizejs/src/Server.js:1:253)
+    at /home/alexey2baranov/htdocs/kp-sequelizejs/src/Server.js:1:430
+    at propagateAslWrapper (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/index.js:421:23)
+    at /home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/glue.js:188:31
+    at /home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/index.js:458:70
+    at run (/usr/lib/node_modules/babel-cli/node_modules/core-js/modules/es6.promise.js:87:22)
+    at /usr/lib/node_modules/babel-cli/node_modules/core-js/modules/es6.promise.js:100:28
+    at flush (/usr/lib/node_modules/babel-cli/node_modules/core-js/modules/_microtask.js:18:9)
+    at /home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/glue.js:188:31
+    at nextTickCallbackWith0Args (node.js:420:9)
+    at process._tickDomainCallback [as _tickCallback] (node.js:390:13)
+[2016-08-29 16:40:10.400] [ INFO] console - [ 8,
+  68,
+  255,
+  {},
+  'wamp.error.runtime_error',
+  [ [ReferenceError: tran is not defined] ] ]
+[2016-08-29 16:40:41.284] [ INFO] console - AutobahnJS debug enabled
+[2016-08-29 16:40:43.254] [ INFO] Server - starting...
+[2016-08-29 16:40:43.259] [ INFO] console - trying to create WAMP transport of type: websocket
+[2016-08-29 16:40:43.388] [ INFO] console - using WAMP transport type: websocket
+[2016-08-29 16:40:43.690] [ INFO] console - [ 1,
+  'kopa',
+  { roles: 
+     { caller: [Object],
+       callee: [Object],
+       publisher: [Object],
+       subscriber: [Object] },
+    authmethods: [ 'ticket' ],
+    authid: 'server' } ]
+[2016-08-29 16:40:43.787] [ INFO] console - [ 5, 'server', {} ]
+[2016-08-29 16:40:43.816] [ INFO] Server - connection.onopen()
+[2016-08-29 16:40:43.819] [ INFO] console - [ 64, 599442250006528, {}, 'ru.kopa.model.get' ]
+[2016-08-29 16:40:43.838] [DEBUG] Server - api:model.get registered
+[2016-08-29 16:40:43.839] [ INFO] console - [ 64, 1645481205694464, {}, 'ru.kopa.pingPong' ]
+[2016-08-29 16:40:43.851] [DEBUG] Server - api:pingPong registered
+[2016-08-29 16:40:43.851] [ INFO] console - [ 64, 791376381870080, {}, 'ru.kopa.pingPongDatabase' ]
+[2016-08-29 16:40:43.861] [DEBUG] Server - api:pingPongDatabase registered
+[2016-08-29 16:41:00.175] [DEBUG] Server - #pingPong() [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-29 16:41:00.185] [ INFO] console - [ 70, 260, {}, [ 1, 2, 3 ], { x: 1, y: 2, z: 3 } ]
+[2016-08-29 16:41:00.212] [DEBUG] Server - #pingPongDatabase() [] {}
+[2016-08-29 16:41:00.505] [ INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-29 16:41:00.513] [ INFO] console - [ 70, 261, {}, [ 'КОПА' ] ]
+[2016-08-29 16:41:00.541] [DEBUG] Server - #promiseModel() [ 1, 2.3 ] { model: 'Kopnik', id: 2 }
+[2016-08-29 16:41:00.552] [ INFO] console - Executing (b972822f-dce2-4572-b698-9aef79e3a90f): START TRANSACTION;
+[2016-08-29 16:41:00.558] [ INFO] console - Executing (b972822f-dce2-4572-b698-9aef79e3a90f): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+[2016-08-29 16:41:00.658] [ INFO] console - Executing (default): SELECT "Kopnik"."id", "Kopnik"."email", "Kopnik"."password", "Kopnik"."name", "Kopnik"."surname", "Kopnik"."patronymic", "Kopnik"."birth", "Kopnik"."note", "Kopnik"."own_id", "Kopnik"."starshina_id", "attachments"."id" AS "attachments.id", "attachments"."path" AS "attachments.path", "attachments"."note" AS "attachments.note", "attachments"."zemla_id" AS "attachments.zemla_id", "attachments"."kopnik_id" AS "attachments.kopnik_id", "attachments"."kopa_id" AS "attachments.kopa_id", "attachments"."slovo_id" AS "attachments.slovo_id", "attachments"."predlozhenie_id" AS "attachments.predlozhenie_id", "attachments"."golos_id" AS "attachments.golos_id" FROM "Kopnik" AS "Kopnik" LEFT OUTER JOIN "File" AS "attachments" ON "Kopnik"."id" = "attachments"."kopnik_id" WHERE "Kopnik"."id" = 2;
+[2016-08-29 16:41:00.714] [ INFO] console - Executing (b972822f-dce2-4572-b698-9aef79e3a90f): COMMIT;
+[2016-08-29 16:41:00.721] [ INFO] console - [ 70,
+  262,
+  {},
+  [ { fullName: 'Unit Test',
+      id: '2',
+      email: 'unittest1@domain.ru',
+      name: 'Unit',
+      surname: 'Test',
+      patronymic: '1',
+      birth: 1983,
+      note: null,
+      own_id: '2',
+      starshina_id: null,
+      attachments: [] } ] ]
+[2016-08-29 16:41:00.798] [DEBUG] Server - #promiseModel() [ 1, 2.3 ] { model: 'Kopnik', id: 2 }
+[2016-08-29 16:41:00.803] [ INFO] console - Executing (c45fa98d-27e6-48b4-8d35-7f58d6929a8d): START TRANSACTION;
+[2016-08-29 16:41:00.815] [ INFO] console - Executing (c45fa98d-27e6-48b4-8d35-7f58d6929a8d): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+[2016-08-29 16:41:00.834] [ INFO] console - Executing (default): SELECT "Kopnik"."id", "Kopnik"."email", "Kopnik"."password", "Kopnik"."name", "Kopnik"."surname", "Kopnik"."patronymic", "Kopnik"."birth", "Kopnik"."note", "Kopnik"."own_id", "Kopnik"."starshina_id", "attachments"."id" AS "attachments.id", "attachments"."path" AS "attachments.path", "attachments"."note" AS "attachments.note", "attachments"."zemla_id" AS "attachments.zemla_id", "attachments"."kopnik_id" AS "attachments.kopnik_id", "attachments"."kopa_id" AS "attachments.kopa_id", "attachments"."slovo_id" AS "attachments.slovo_id", "attachments"."predlozhenie_id" AS "attachments.predlozhenie_id", "attachments"."golos_id" AS "attachments.golos_id" FROM "Kopnik" AS "Kopnik" LEFT OUTER JOIN "File" AS "attachments" ON "Kopnik"."id" = "attachments"."kopnik_id" WHERE "Kopnik"."id" = 2;
+[2016-08-29 16:41:00.856] [ INFO] console - Executing (c45fa98d-27e6-48b4-8d35-7f58d6929a8d): COMMIT;
+[2016-08-29 16:41:00.859] [ INFO] console - [ 70,
+  263,
+  {},
+  [ { fullName: 'Unit Test',
+      id: '2',
+      email: 'unittest1@domain.ru',
+      name: 'Unit',
+      surname: 'Test',
+      patronymic: '1',
+      birth: 1983,
+      note: null,
+      own_id: '2',
+      starshina_id: null,
+      attachments: [] } ] ]
+[2016-08-29 16:41:00.878] [DEBUG] Server - #promiseModel() [ 1, 2.3 ] { model: 'Kopnik', id: 2 }
+[2016-08-29 16:41:00.882] [ INFO] console - Executing (43b5ebc4-d70b-4d01-b583-0c3e89119a6f): START TRANSACTION;
+[2016-08-29 16:41:00.884] [ INFO] console - Executing (43b5ebc4-d70b-4d01-b583-0c3e89119a6f): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+[2016-08-29 16:41:00.918] [ INFO] console - Executing (default): SELECT "Kopnik"."id", "Kopnik"."email", "Kopnik"."password", "Kopnik"."name", "Kopnik"."surname", "Kopnik"."patronymic", "Kopnik"."birth", "Kopnik"."note", "Kopnik"."own_id", "Kopnik"."starshina_id", "attachments"."id" AS "attachments.id", "attachments"."path" AS "attachments.path", "attachments"."note" AS "attachments.note", "attachments"."zemla_id" AS "attachments.zemla_id", "attachments"."kopnik_id" AS "attachments.kopnik_id", "attachments"."kopa_id" AS "attachments.kopa_id", "attachments"."slovo_id" AS "attachments.slovo_id", "attachments"."predlozhenie_id" AS "attachments.predlozhenie_id", "attachments"."golos_id" AS "attachments.golos_id" FROM "Kopnik" AS "Kopnik" LEFT OUTER JOIN "File" AS "attachments" ON "Kopnik"."id" = "attachments"."kopnik_id" WHERE "Kopnik"."id" = 2;
+[2016-08-29 16:41:00.929] [ INFO] console - Executing (43b5ebc4-d70b-4d01-b583-0c3e89119a6f): COMMIT;
+[2016-08-29 16:41:00.931] [ INFO] console - [ 70,
+  264,
+  {},
+  [ { fullName: 'Unit Test',
+      id: '2',
+      email: 'unittest1@domain.ru',
+      name: 'Unit',
+      surname: 'Test',
+      patronymic: '1',
+      birth: 1983,
+      note: null,
+      own_id: '2',
+      starshina_id: null,
+      attachments: [] } ] ]
+[2016-08-29 16:41:00.953] [DEBUG] Server - #promiseModel() [ 1, 2.3 ] { model: 'Kopnik', id: 2 }
+[2016-08-29 16:41:00.962] [ INFO] console - Executing (53d46478-88bc-45dd-bba9-0bd41ed15e2b): START TRANSACTION;
+[2016-08-29 16:41:00.965] [ INFO] console - Executing (53d46478-88bc-45dd-bba9-0bd41ed15e2b): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+[2016-08-29 16:41:01.062] [ INFO] console - Executing (default): SELECT "Kopnik"."id", "Kopnik"."email", "Kopnik"."password", "Kopnik"."name", "Kopnik"."surname", "Kopnik"."patronymic", "Kopnik"."birth", "Kopnik"."note", "Kopnik"."own_id", "Kopnik"."starshina_id", "attachments"."id" AS "attachments.id", "attachments"."path" AS "attachments.path", "attachments"."note" AS "attachments.note", "attachments"."zemla_id" AS "attachments.zemla_id", "attachments"."kopnik_id" AS "attachments.kopnik_id", "attachments"."kopa_id" AS "attachments.kopa_id", "attachments"."slovo_id" AS "attachments.slovo_id", "attachments"."predlozhenie_id" AS "attachments.predlozhenie_id", "attachments"."golos_id" AS "attachments.golos_id" FROM "Kopnik" AS "Kopnik" LEFT OUTER JOIN "File" AS "attachments" ON "Kopnik"."id" = "attachments"."kopnik_id" WHERE "Kopnik"."id" = 2;
+[2016-08-29 16:41:01.070] [ INFO] console - Executing (53d46478-88bc-45dd-bba9-0bd41ed15e2b): COMMIT;
+[2016-08-29 16:41:01.072] [ INFO] console - [ 70,
+  265,
+  {},
+  [ { fullName: 'Unit Test',
+      id: '2',
+      email: 'unittest1@domain.ru',
+      name: 'Unit',
+      surname: 'Test',
+      patronymic: '1',
+      birth: 1983,
+      note: null,
+      own_id: '2',
+      starshina_id: null,
+      attachments: [] } ] ]
+[2016-08-29 16:41:01.084] [DEBUG] Server - #promiseModel() [ 1, 2.3 ] { model: 'Kopnik', id: 2 }
+[2016-08-29 16:41:01.095] [ INFO] console - Executing (7dd2a398-4f2d-409c-ae1b-3fc5b9bb07b5): START TRANSACTION;
+[2016-08-29 16:41:01.097] [ INFO] console - Executing (7dd2a398-4f2d-409c-ae1b-3fc5b9bb07b5): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+[2016-08-29 16:41:01.106] [ INFO] console - Executing (default): SELECT "Kopnik"."id", "Kopnik"."email", "Kopnik"."password", "Kopnik"."name", "Kopnik"."surname", "Kopnik"."patronymic", "Kopnik"."birth", "Kopnik"."note", "Kopnik"."own_id", "Kopnik"."starshina_id", "attachments"."id" AS "attachments.id", "attachments"."path" AS "attachments.path", "attachments"."note" AS "attachments.note", "attachments"."zemla_id" AS "attachments.zemla_id", "attachments"."kopnik_id" AS "attachments.kopnik_id", "attachments"."kopa_id" AS "attachments.kopa_id", "attachments"."slovo_id" AS "attachments.slovo_id", "attachments"."predlozhenie_id" AS "attachments.predlozhenie_id", "attachments"."golos_id" AS "attachments.golos_id" FROM "Kopnik" AS "Kopnik" LEFT OUTER JOIN "File" AS "attachments" ON "Kopnik"."id" = "attachments"."kopnik_id" WHERE "Kopnik"."id" = 2;
+[2016-08-29 16:41:01.114] [ INFO] console - Executing (7dd2a398-4f2d-409c-ae1b-3fc5b9bb07b5): COMMIT;
+[2016-08-29 16:41:01.116] [ INFO] console - [ 70,
+  266,
+  {},
+  [ { fullName: 'Unit Test',
+      id: '2',
+      email: 'unittest1@domain.ru',
+      name: 'Unit',
+      surname: 'Test',
+      patronymic: '1',
+      birth: 1983,
+      note: null,
+      own_id: '2',
+      starshina_id: null,
+      attachments: [] } ] ]
+[2016-08-29 16:47:40.924] [ INFO] console - AutobahnJS debug enabled
+[2016-08-29 16:47:42.834] [ INFO] Server - starting...
+[2016-08-29 16:47:42.837] [ INFO] console - trying to create WAMP transport of type: websocket
+[2016-08-29 16:47:42.992] [ INFO] console - using WAMP transport type: websocket
+[2016-08-29 16:47:43.237] [ INFO] console - [ 1,
+  'kopa',
+  { roles: 
+     { caller: [Object],
+       callee: [Object],
+       publisher: [Object],
+       subscriber: [Object] },
+    authmethods: [ 'ticket' ],
+    authid: 'server' } ]
+[2016-08-29 16:47:43.276] [ INFO] console - [ 5, 'server', {} ]
+[2016-08-29 16:47:43.327] [ INFO] Server - connection.onopen()
+[2016-08-29 16:47:43.328] [ INFO] console - [ 64, 4032609092894720, {}, 'ru.kopa.model.get' ]
+[2016-08-29 16:47:43.340] [DEBUG] Server - api:model.get registered
+[2016-08-29 16:47:43.342] [ INFO] console - [ 64, 7867645458120704, {}, 'ru.kopa.pingPong' ]
+[2016-08-29 16:47:43.350] [DEBUG] Server - api:pingPong registered
+[2016-08-29 16:47:43.352] [ INFO] console - [ 64, 6082851139223552, {}, 'ru.kopa.pingPongDatabase' ]
+[2016-08-29 16:47:43.361] [DEBUG] Server - api:pingPongDatabase registered
+[2016-08-29 16:48:33.717] [DEBUG] Server - #pingPong() [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-29 16:48:33.732] [ INFO] console - [ 70, 271, {}, [ 1, 2, 3 ], { x: 1, y: 2, z: 3 } ]
+[2016-08-29 16:48:33.765] [DEBUG] Server - #pingPongDatabase() [] {}
+[2016-08-29 16:48:34.013] [ INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-29 16:48:34.022] [ INFO] console - [ 70, 272, {}, [ 'КОПА' ] ]
+[2016-08-29 16:48:34.072] [DEBUG] Server - #promiseModel() [ 1, 2.3 ] { model: 'Kopnik', id: 2 }
+[2016-08-29 16:48:34.086] [ INFO] console - Executing (fe6b400b-05d4-456a-9fd8-d60421d7a3de): START TRANSACTION;
+[2016-08-29 16:48:34.093] [ INFO] console - Executing (fe6b400b-05d4-456a-9fd8-d60421d7a3de): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+[2016-08-29 16:48:34.145] [ INFO] console - Executing (default): SELECT "Kopnik"."id", "Kopnik"."email", "Kopnik"."password", "Kopnik"."name", "Kopnik"."surname", "Kopnik"."patronymic", "Kopnik"."birth", "Kopnik"."note", "Kopnik"."own_id", "Kopnik"."starshina_id", "attachments"."id" AS "attachments.id", "attachments"."path" AS "attachments.path", "attachments"."note" AS "attachments.note", "attachments"."zemla_id" AS "attachments.zemla_id", "attachments"."kopnik_id" AS "attachments.kopnik_id", "attachments"."kopa_id" AS "attachments.kopa_id", "attachments"."slovo_id" AS "attachments.slovo_id", "attachments"."predlozhenie_id" AS "attachments.predlozhenie_id", "attachments"."golos_id" AS "attachments.golos_id" FROM "Kopnik" AS "Kopnik" LEFT OUTER JOIN "File" AS "attachments" ON "Kopnik"."id" = "attachments"."kopnik_id" WHERE "Kopnik"."id" = 2;
+[2016-08-29 16:48:34.164] [ INFO] console - Executing (fe6b400b-05d4-456a-9fd8-d60421d7a3de): COMMIT;
+[2016-08-29 16:48:34.168] [ INFO] console - [ 70,
+  273,
+  {},
+  [ { fullName: 'Unit Test',
+      id: '2',
+      email: 'unittest1@domain.ru',
+      name: 'Unit',
+      surname: 'Test',
+      patronymic: '1',
+      birth: 1983,
+      note: null,
+      own_id: '2',
+      starshina_id: null,
+      attachments: [] } ] ]
+[2016-08-29 16:48:34.209] [DEBUG] Server - #promiseModel() [ 1, 2.3 ] { model: 'Kopnik', id: 2 }
+[2016-08-29 16:48:34.215] [ INFO] console - Executing (a9dac4ea-a834-46ca-83ba-5a941a7711e8): START TRANSACTION;
+[2016-08-29 16:48:34.218] [ INFO] console - Executing (a9dac4ea-a834-46ca-83ba-5a941a7711e8): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+[2016-08-29 16:48:34.249] [ INFO] console - Executing (default): SELECT "Kopnik"."id", "Kopnik"."email", "Kopnik"."password", "Kopnik"."name", "Kopnik"."surname", "Kopnik"."patronymic", "Kopnik"."birth", "Kopnik"."note", "Kopnik"."own_id", "Kopnik"."starshina_id", "attachments"."id" AS "attachments.id", "attachments"."path" AS "attachments.path", "attachments"."note" AS "attachments.note", "attachments"."zemla_id" AS "attachments.zemla_id", "attachments"."kopnik_id" AS "attachments.kopnik_id", "attachments"."kopa_id" AS "attachments.kopa_id", "attachments"."slovo_id" AS "attachments.slovo_id", "attachments"."predlozhenie_id" AS "attachments.predlozhenie_id", "attachments"."golos_id" AS "attachments.golos_id" FROM "Kopnik" AS "Kopnik" LEFT OUTER JOIN "File" AS "attachments" ON "Kopnik"."id" = "attachments"."kopnik_id" WHERE "Kopnik"."id" = 2;
+[2016-08-29 16:48:34.260] [ INFO] console - Executing (a9dac4ea-a834-46ca-83ba-5a941a7711e8): COMMIT;
+[2016-08-29 16:48:34.263] [ INFO] console - [ 70,
+  274,
+  {},
+  [ { fullName: 'Unit Test',
+      id: '2',
+      email: 'unittest1@domain.ru',
+      name: 'Unit',
+      surname: 'Test',
+      patronymic: '1',
+      birth: 1983,
+      note: null,
+      own_id: '2',
+      starshina_id: null,
+      attachments: [] } ] ]
+[2016-08-29 16:48:36.855] [DEBUG] Server - #promiseModel() [ 1, 2.3 ] { model: 'Kopnik', id: 2 }
+[2016-08-29 16:48:36.863] [ INFO] console - Executing (30346e92-304a-44bd-83a2-752794dc1a72): START TRANSACTION;
+[2016-08-29 16:48:36.866] [ INFO] console - Executing (30346e92-304a-44bd-83a2-752794dc1a72): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+[2016-08-29 16:48:36.878] [ INFO] console - Executing (default): SELECT "Kopnik"."id", "Kopnik"."email", "Kopnik"."password", "Kopnik"."name", "Kopnik"."surname", "Kopnik"."patronymic", "Kopnik"."birth", "Kopnik"."note", "Kopnik"."own_id", "Kopnik"."starshina_id", "attachments"."id" AS "attachments.id", "attachments"."path" AS "attachments.path", "attachments"."note" AS "attachments.note", "attachments"."zemla_id" AS "attachments.zemla_id", "attachments"."kopnik_id" AS "attachments.kopnik_id", "attachments"."kopa_id" AS "attachments.kopa_id", "attachments"."slovo_id" AS "attachments.slovo_id", "attachments"."predlozhenie_id" AS "attachments.predlozhenie_id", "attachments"."golos_id" AS "attachments.golos_id" FROM "Kopnik" AS "Kopnik" LEFT OUTER JOIN "File" AS "attachments" ON "Kopnik"."id" = "attachments"."kopnik_id" WHERE "Kopnik"."id" = 2;
+[2016-08-29 16:48:36.892] [ INFO] console - Executing (30346e92-304a-44bd-83a2-752794dc1a72): COMMIT;
+[2016-08-29 16:48:36.894] [ INFO] console - [ 70,
+  275,
+  {},
+  [ { fullName: 'Unit Test',
+      id: '2',
+      email: 'unittest1@domain.ru',
+      name: 'Unit',
+      surname: 'Test',
+      patronymic: '1',
+      birth: 1983,
+      note: null,
+      own_id: '2',
+      starshina_id: null,
+      attachments: [] } ] ]
+[2016-08-29 16:48:38.354] [DEBUG] Server - #promiseModel() [ 1, 2.3 ] { model: 'Kopnik', id: 2 }
+[2016-08-29 16:48:38.361] [ INFO] console - Executing (0860985b-aa7f-4a68-82c5-cd2617905c30): START TRANSACTION;
+[2016-08-29 16:48:38.364] [ INFO] console - Executing (0860985b-aa7f-4a68-82c5-cd2617905c30): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+[2016-08-29 16:48:38.378] [ INFO] console - Executing (default): SELECT "Kopnik"."id", "Kopnik"."email", "Kopnik"."password", "Kopnik"."name", "Kopnik"."surname", "Kopnik"."patronymic", "Kopnik"."birth", "Kopnik"."note", "Kopnik"."own_id", "Kopnik"."starshina_id", "attachments"."id" AS "attachments.id", "attachments"."path" AS "attachments.path", "attachments"."note" AS "attachments.note", "attachments"."zemla_id" AS "attachments.zemla_id", "attachments"."kopnik_id" AS "attachments.kopnik_id", "attachments"."kopa_id" AS "attachments.kopa_id", "attachments"."slovo_id" AS "attachments.slovo_id", "attachments"."predlozhenie_id" AS "attachments.predlozhenie_id", "attachments"."golos_id" AS "attachments.golos_id" FROM "Kopnik" AS "Kopnik" LEFT OUTER JOIN "File" AS "attachments" ON "Kopnik"."id" = "attachments"."kopnik_id" WHERE "Kopnik"."id" = 2;
+[2016-08-29 16:48:38.391] [ INFO] console - Executing (0860985b-aa7f-4a68-82c5-cd2617905c30): COMMIT;
+[2016-08-29 16:48:38.395] [ INFO] console - [ 70,
+  276,
+  {},
+  [ { fullName: 'Unit Test',
+      id: '2',
+      email: 'unittest1@domain.ru',
+      name: 'Unit',
+      surname: 'Test',
+      patronymic: '1',
+      birth: 1983,
+      note: null,
+      own_id: '2',
+      starshina_id: null,
+      attachments: [] } ] ]
+[2016-08-29 16:48:38.649] [DEBUG] Server - #promiseModel() [ 1, 2.3 ] { model: 'Kopnik', id: 2 }
+[2016-08-29 16:48:38.654] [ INFO] console - Executing (ab461516-dc7d-4d88-a417-43e677d1d6ad): START TRANSACTION;
+[2016-08-29 16:48:38.660] [ INFO] console - Executing (ab461516-dc7d-4d88-a417-43e677d1d6ad): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+[2016-08-29 16:48:38.673] [ INFO] console - Executing (default): SELECT "Kopnik"."id", "Kopnik"."email", "Kopnik"."password", "Kopnik"."name", "Kopnik"."surname", "Kopnik"."patronymic", "Kopnik"."birth", "Kopnik"."note", "Kopnik"."own_id", "Kopnik"."starshina_id", "attachments"."id" AS "attachments.id", "attachments"."path" AS "attachments.path", "attachments"."note" AS "attachments.note", "attachments"."zemla_id" AS "attachments.zemla_id", "attachments"."kopnik_id" AS "attachments.kopnik_id", "attachments"."kopa_id" AS "attachments.kopa_id", "attachments"."slovo_id" AS "attachments.slovo_id", "attachments"."predlozhenie_id" AS "attachments.predlozhenie_id", "attachments"."golos_id" AS "attachments.golos_id" FROM "Kopnik" AS "Kopnik" LEFT OUTER JOIN "File" AS "attachments" ON "Kopnik"."id" = "attachments"."kopnik_id" WHERE "Kopnik"."id" = 2;
+[2016-08-29 16:48:38.683] [ INFO] console - Executing (ab461516-dc7d-4d88-a417-43e677d1d6ad): COMMIT;
+[2016-08-29 16:48:38.685] [ INFO] console - [ 70,
+  277,
+  {},
+  [ { fullName: 'Unit Test',
+      id: '2',
+      email: 'unittest1@domain.ru',
+      name: 'Unit',
+      surname: 'Test',
+      patronymic: '1',
+      birth: 1983,
+      note: null,
+      own_id: '2',
+      starshina_id: null,
+      attachments: [] } ] ]
+[2016-08-29 17:22:57.838] [DEBUG] Server - #pingPong() [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-29 17:22:57.855] [ INFO] console - [ 70, 279, {}, [ 1, 2, 3 ], { x: 1, y: 2, z: 3 } ]
+[2016-08-29 17:22:57.886] [DEBUG] Server - #pingPongDatabase() [] {}
+[2016-08-29 17:22:58.039] [ INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-29 17:22:58.056] [ INFO] console - [ 70, 280, {}, [ 'КОПА' ] ]
+[2016-08-29 17:24:15.753] [DEBUG] Server - #pingPong() [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-29 17:24:15.772] [ INFO] console - [ 70, 282, {}, [ 1, 2, 3 ], { x: 1, y: 2, z: 3 } ]
+[2016-08-29 17:24:15.798] [DEBUG] Server - #pingPongDatabase() [] {}
+[2016-08-29 17:24:15.870] [ INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-29 17:24:15.876] [ INFO] console - [ 70, 283, {}, [ 'КОПА' ] ]
+[2016-08-29 17:24:28.746] [DEBUG] Server - #pingPong() [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-29 17:24:28.754] [ INFO] console - [ 70, 285, {}, [ 1, 2, 3 ], { x: 1, y: 2, z: 3 } ]
+[2016-08-29 17:24:28.790] [DEBUG] Server - #pingPongDatabase() [] {}
+[2016-08-29 17:24:28.840] [ INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-29 17:24:28.844] [ INFO] console - [ 70, 286, {}, [ 'КОПА' ] ]
+[2016-08-29 17:24:38.935] [DEBUG] Server - #pingPong() [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-29 17:24:38.950] [ INFO] console - [ 70, 288, {}, [ 1, 2, 3 ], { x: 1, y: 2, z: 3 } ]
+[2016-08-29 17:24:38.976] [DEBUG] Server - #pingPongDatabase() [] {}
+[2016-08-29 17:24:39.037] [ INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-29 17:24:39.045] [ INFO] console - [ 70, 289, {}, [ 'КОПА' ] ]
+[2016-08-29 17:24:47.300] [DEBUG] Server - #pingPong() [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-29 17:24:47.308] [ INFO] console - [ 70, 291, {}, [ 1, 2, 3 ], { x: 1, y: 2, z: 3 } ]
+[2016-08-29 17:24:47.344] [DEBUG] Server - #pingPongDatabase() [] {}
+[2016-08-29 17:24:47.352] [ INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-29 17:24:47.359] [ INFO] console - [ 70, 292, {}, [ 'КОПА' ] ]
+[2016-08-29 17:25:07.619] [ INFO] console - AutobahnJS debug enabled
+[2016-08-29 17:25:09.759] [ INFO] Server - starting...
+[2016-08-29 17:25:09.762] [ INFO] console - trying to create WAMP transport of type: websocket
+[2016-08-29 17:25:09.892] [ INFO] console - using WAMP transport type: websocket
+[2016-08-29 17:25:10.053] [ INFO] console - [ 1,
+  'kopa',
+  { roles: 
+     { caller: [Object],
+       callee: [Object],
+       publisher: [Object],
+       subscriber: [Object] },
+    authmethods: [ 'ticket' ],
+    authid: 'server' } ]
+[2016-08-29 17:25:10.073] [ INFO] console - [ 5, 'server', {} ]
+[2016-08-29 17:25:10.096] [ INFO] Server - connection.onopen()
+[2016-08-29 17:25:10.097] [ INFO] console - [ 64, 3327056897114112, {}, 'ru.kopa.model.get' ]
+[2016-08-29 17:25:10.125] [DEBUG] Server - api:model.get registered
+[2016-08-29 17:25:10.127] [ INFO] console - [ 64, 3415152571449344, {}, 'ru.kopa.pingPong' ]
+[2016-08-29 17:25:10.135] [DEBUG] Server - api:pingPong registered
+[2016-08-29 17:25:10.137] [ INFO] console - [ 64, 1664120080302080, {}, 'ru.kopa.pingPongDatabase' ]
+[2016-08-29 17:25:10.145] [DEBUG] Server - api:pingPongDatabase registered
+[2016-08-29 17:25:10.147] [ INFO] console - [ 64, 49290925834240, {}, 'ru.kopa.error' ]
+[2016-08-29 17:25:10.154] [DEBUG] Server - api:error registered
+[2016-08-29 17:25:31.937] [DEBUG] Server - #pingPong() [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-29 17:25:31.944] [ INFO] console - [ 70, 295, {}, [ 1, 2, 3 ], { x: 1, y: 2, z: 3 } ]
+[2016-08-29 17:25:31.964] [DEBUG] Server - #pingPongDatabase() [] {}
+[2016-08-29 17:25:32.095] [ INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-29 17:25:32.103] [ INFO] console - [ 70, 296, {}, [ 'КОПА' ] ]
+[2016-08-29 17:25:32.119] [ INFO] console - [ 8, 68, 297, {}, 'wamp.error.runtime_error', [ [Error] ] ]
+[2016-08-29 17:27:44.235] [DEBUG] Server - #pingPong() [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-29 17:27:44.243] [ INFO] console - [ 70, 299, {}, [ 1, 2, 3 ], { x: 1, y: 2, z: 3 } ]
+[2016-08-29 17:27:44.269] [DEBUG] Server - #pingPongDatabase() [] {}
+[2016-08-29 17:27:44.432] [ INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-29 17:27:44.442] [ INFO] console - [ 70, 300, {}, [ 'КОПА' ] ]
+[2016-08-29 17:27:44.463] [ INFO] console - [ 8, 68, 301, {}, 'wamp.error.runtime_error', [ [Error] ] ]
+[2016-08-29 17:28:04.189] [DEBUG] Server - #pingPong() [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-29 17:28:04.199] [ INFO] console - [ 70, 303, {}, [ 1, 2, 3 ], { x: 1, y: 2, z: 3 } ]
+[2016-08-29 17:28:04.250] [DEBUG] Server - #pingPongDatabase() [] {}
+[2016-08-29 17:28:04.304] [ INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-29 17:28:04.315] [ INFO] console - [ 70, 304, {}, [ 'КОПА' ] ]
+[2016-08-29 17:28:04.335] [ INFO] console - [ 8, 68, 305, {}, 'wamp.error.runtime_error', [ [Error] ] ]
+[2016-08-29 17:29:45.998] [ INFO] console - AutobahnJS debug enabled
+[2016-08-29 17:29:49.971] [ INFO] Server - starting...
+[2016-08-29 17:29:49.979] [ INFO] console - trying to create WAMP transport of type: websocket
+[2016-08-29 17:29:50.077] [ INFO] console - using WAMP transport type: websocket
+[2016-08-29 17:29:50.280] [ INFO] console - [ 1,
+  'kopa',
+  { roles: 
+     { caller: [Object],
+       callee: [Object],
+       publisher: [Object],
+       subscriber: [Object] },
+    authmethods: [ 'ticket' ],
+    authid: 'server' } ]
+[2016-08-29 17:29:50.342] [ INFO] console - [ 5, 'server', {} ]
+[2016-08-29 17:29:50.359] [ INFO] Server - connection.onopen()
+[2016-08-29 17:29:50.363] [ INFO] console - [ 64, 8586780609609728, {}, 'ru.kopa.model.get' ]
+[2016-08-29 17:29:50.374] [DEBUG] Server - api:model.get registered
+[2016-08-29 17:29:50.376] [ INFO] console - [ 64, 2756903906050048, {}, 'ru.kopa.pingPong' ]
+[2016-08-29 17:29:50.383] [DEBUG] Server - api:pingPong registered
+[2016-08-29 17:29:50.384] [ INFO] console - [ 64, 7670721044021248, {}, 'ru.kopa.pingPongDatabase' ]
+[2016-08-29 17:29:50.392] [DEBUG] Server - api:pingPongDatabase registered
+[2016-08-29 17:29:50.393] [ INFO] console - [ 64, 6852350524260352, {}, 'ru.kopa.error' ]
+[2016-08-29 17:29:50.398] [DEBUG] Server - api:error registered
+[2016-08-29 17:29:58.789] [DEBUG] Server - #pingPong() [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-29 17:29:58.796] [ INFO] console - [ 70, 309, {}, [ 1, 2, 3 ], { x: 1, y: 2, z: 3 } ]
+[2016-08-29 17:29:58.815] [DEBUG] Server - #pingPongDatabase() [] {}
+[2016-08-29 17:29:58.928] [ INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-29 17:29:58.937] [ INFO] console - [ 70, 310, {}, [ 'КОПА' ] ]
+[2016-08-29 17:29:58.949] [DEBUG] Server - #error() [] {}
+[2016-08-29 17:29:58.953] [ INFO] console - [ 8, 68, 311, {}, 'wamp.error.runtime_error', [ [Error] ] ]
+[2016-08-29 17:30:55.128] [DEBUG] Server - #pingPong() [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-29 17:30:55.139] [ INFO] console - [ 70, 313, {}, [ 1, 2, 3 ], { x: 1, y: 2, z: 3 } ]
+[2016-08-29 17:30:55.161] [DEBUG] Server - #pingPongDatabase() [] {}
+[2016-08-29 17:30:55.230] [ INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-29 17:30:55.235] [ INFO] console - [ 70, 314, {}, [ 'КОПА' ] ]
+[2016-08-29 17:31:12.948] [DEBUG] Server - #pingPong() [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-29 17:31:12.954] [ INFO] console - [ 70, 316, {}, [ 1, 2, 3 ], { x: 1, y: 2, z: 3 } ]
+[2016-08-29 17:31:12.970] [DEBUG] Server - #pingPongDatabase() [] {}
+[2016-08-29 17:31:13.011] [ INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-29 17:31:13.017] [ INFO] console - [ 70, 317, {}, [ 'КОПА' ] ]
+[2016-08-29 17:31:23.702] [DEBUG] Server - #pingPong() [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-29 17:31:23.709] [ INFO] console - [ 70, 319, {}, [ 1, 2, 3 ], { x: 1, y: 2, z: 3 } ]
+[2016-08-29 17:31:23.746] [DEBUG] Server - #pingPongDatabase() [] {}
+[2016-08-29 17:31:23.782] [ INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-29 17:31:23.786] [ INFO] console - [ 70, 320, {}, [ 'КОПА' ] ]
+[2016-08-29 17:31:47.303] [DEBUG] Server - #pingPong() [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-29 17:31:47.305] [ INFO] console - [ 70, 322, {}, [ 1, 2, 3 ], { x: 1, y: 2, z: 3 } ]
+[2016-08-29 17:31:47.336] [DEBUG] Server - #pingPongDatabase() [] {}
+[2016-08-29 17:31:47.370] [ INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-29 17:31:47.374] [ INFO] console - [ 70, 323, {}, [ 'КОПА' ] ]
+[2016-08-29 17:31:47.384] [DEBUG] Server - #error() [ 'Error text' ] {}
+[2016-08-29 17:31:47.388] [ INFO] console - [ 8,
+  68,
+  324,
+  {},
+  'wamp.error.runtime_error',
+  [ [Error: Error text] ] ]
+[2016-08-29 17:34:08.699] [ INFO] console - AutobahnJS debug enabled
+[2016-08-29 17:34:10.145] [ INFO] Server - starting...
+[2016-08-29 17:34:10.151] [ INFO] console - trying to create WAMP transport of type: websocket
+[2016-08-29 17:34:10.247] [ INFO] console - using WAMP transport type: websocket
+[2016-08-29 17:34:10.565] [ INFO] console - [ 1,
+  'kopa',
+  { roles: 
+     { caller: [Object],
+       callee: [Object],
+       publisher: [Object],
+       subscriber: [Object] },
+    authmethods: [ 'ticket' ],
+    authid: 'server' } ]
+[2016-08-29 17:34:10.668] [ INFO] console - [ 5, 'server', {} ]
+[2016-08-29 17:34:10.708] [ INFO] Server - connection.onopen()
+[2016-08-29 17:34:10.710] [ INFO] console - [ 64, 6537260262490112, {}, 'ru.kopa.model.get' ]
+[2016-08-29 17:34:10.716] [DEBUG] Server - api:model.get registered
+[2016-08-29 17:34:10.718] [ INFO] console - [ 64, 6238603814371328, {}, 'ru.kopa.pingPong' ]
+[2016-08-29 17:34:10.724] [DEBUG] Server - api:pingPong registered
+[2016-08-29 17:34:10.724] [ INFO] console - [ 64, 3152714227777536, {}, 'ru.kopa.pingPongDatabase' ]
+[2016-08-29 17:34:10.728] [DEBUG] Server - api:pingPongDatabase registered
+[2016-08-29 17:34:10.734] [ INFO] console - [ 64, 1789588584529920, {}, 'ru.kopa.error' ]
+[2016-08-29 17:34:10.738] [DEBUG] Server - api:error registered
+[2016-08-29 17:34:20.906] [DEBUG] Server - #pingPong() [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-29 17:34:20.912] [ INFO] console - [ 70, 327, {}, [ 1, 2, 3 ], { x: 1, y: 2, z: 3 } ]
+[2016-08-29 17:34:20.948] [DEBUG] Server - #pingPongDatabase() [] {}
+[2016-08-29 17:34:21.145] [ INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-29 17:34:21.152] [ INFO] console - [ 70, 328, {}, [ 'КОПА' ] ]
+[2016-08-29 17:34:21.168] [DEBUG] Server - #error() [ 'Error text' ] {}
+[2016-08-29 17:34:21.173] [ INFO] console - [ 8, 68, 329, {}, 'wamp.error.runtime_error', [ 'Error text' ] ]
+[2016-08-29 17:38:36.225] [ INFO] console - AutobahnJS debug enabled
+[2016-08-29 17:38:37.457] [ INFO] Server - starting...
+[2016-08-29 17:38:37.464] [ INFO] console - trying to create WAMP transport of type: websocket
+[2016-08-29 17:38:37.562] [ INFO] console - using WAMP transport type: websocket
+[2016-08-29 17:38:37.830] [ INFO] console - [ 1,
+  'kopa',
+  { roles: 
+     { caller: [Object],
+       callee: [Object],
+       publisher: [Object],
+       subscriber: [Object] },
+    authmethods: [ 'ticket' ],
+    authid: 'server' } ]
+[2016-08-29 17:38:37.898] [ INFO] console - [ 5, 'server', {} ]
+[2016-08-29 17:38:37.945] [ INFO] Server - connection.onopen()
+[2016-08-29 17:38:37.947] [ INFO] console - [ 64, 1105715410239488, {}, 'ru.kopa.model.get' ]
+[2016-08-29 17:38:37.957] [DEBUG] Server - api:model.get registered
+[2016-08-29 17:38:37.959] [ INFO] console - [ 64, 691457958608896, {}, 'ru.kopa.pingPong' ]
+[2016-08-29 17:38:37.964] [DEBUG] Server - api:pingPong registered
+[2016-08-29 17:38:37.967] [ INFO] console - [ 64, 684171259281408, {}, 'ru.kopa.pingPongDatabase' ]
+[2016-08-29 17:38:37.973] [DEBUG] Server - api:pingPongDatabase registered
+[2016-08-29 17:38:37.974] [ INFO] console - [ 64, 6866467175792640, {}, 'ru.kopa.error' ]
+[2016-08-29 17:38:37.980] [DEBUG] Server - api:error registered
+[2016-08-29 17:38:45.108] [DEBUG] Server - #pingPong() [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-29 17:38:45.114] [ INFO] console - [ 70, 332, {}, [ 1, 2, 3 ], { x: 1, y: 2, z: 3 } ]
+[2016-08-29 17:38:45.163] [DEBUG] Server - #pingPongDatabase() [] {}
+[2016-08-29 17:38:45.301] [ INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-29 17:38:45.309] [ INFO] console - [ 70, 333, {}, [ 'КОПА' ] ]
+[2016-08-29 17:38:45.344] [ INFO] console - [ 8,
+  68,
+  334,
+  {},
+  'wamp.error.runtime_error',
+  [ [ReferenceError: asfsdfasf is not defined] ] ]
+[2016-08-29 17:41:25.746] [ INFO] console - AutobahnJS debug enabled
+[2016-08-29 17:41:27.758] [ INFO] Server - starting...
+[2016-08-29 17:41:27.764] [ INFO] console - trying to create WAMP transport of type: websocket
+[2016-08-29 17:41:27.884] [ INFO] console - using WAMP transport type: websocket
+[2016-08-29 17:41:28.414] [ INFO] console - [ 1,
+  'kopa',
+  { roles: 
+     { caller: [Object],
+       callee: [Object],
+       publisher: [Object],
+       subscriber: [Object] },
+    authmethods: [ 'ticket' ],
+    authid: 'server' } ]
+[2016-08-29 17:41:28.689] [ INFO] console - [ 5, 'server', {} ]
+[2016-08-29 17:41:28.767] [ INFO] Server - connection.onopen()
+[2016-08-29 17:41:28.769] [ INFO] console - [ 64, 6941621635514368, {}, 'ru.kopa.model.get' ]
+[2016-08-29 17:41:28.786] [DEBUG] Server - api:model.get registered
+[2016-08-29 17:41:28.788] [ INFO] console - [ 64, 8910234609254400, {}, 'ru.kopa.pingPong' ]
+[2016-08-29 17:41:28.796] [DEBUG] Server - api:pingPong registered
+[2016-08-29 17:41:28.796] [ INFO] console - [ 64, 537172107067392, {}, 'ru.kopa.pingPongDatabase' ]
+[2016-08-29 17:41:28.802] [DEBUG] Server - api:pingPongDatabase registered
+[2016-08-29 17:41:28.802] [ INFO] console - [ 64, 7385522785746944, {}, 'ru.kopa.error' ]
+[2016-08-29 17:41:28.821] [DEBUG] Server - api:error registered
+[2016-08-29 17:41:40.828] [DEBUG] Server - #pingPong() [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-29 17:41:40.835] [ INFO] console - [ 70, 337, {}, [ 1, 2, 3 ], { x: 1, y: 2, z: 3 } ]
+[2016-08-29 17:41:40.855] [DEBUG] Server - #pingPongDatabase() [] {}
+[2016-08-29 17:41:41.073] [ INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-29 17:41:41.081] [ INFO] console - [ 70, 338, {}, [ 'КОПА' ] ]
+[2016-08-29 17:41:41.109] [DEBUG] Server - #error() [ 'Error text' ] {}
+[2016-08-29 17:41:41.123] [ INFO] console - [ 8, 68, 339, {}, 'String', [ undefined ], 'Error text' ]
+[2016-08-29 17:41:41.201] [ INFO] Server - connection.onclose() lost { reason: null,
+  message: null,
+  retry_delay: 1.5519265891486687,
+  retry_count: 1,
+  will_retry: true }
+[2016-08-29 17:41:41.209] [ERROR] Server - [ReferenceError: INTERVAL is not defined]
+ReferenceError: INTERVAL is not defined
+    at [object Object].Server.WAMP.onclose (Server.js:67:31)
+    at Object.self._transport.onclose (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/autobahn/lib/connection.js:370:41)
+    at WebSocket.<anonymous> (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/autobahn/lib/transport/websocket.js:135:23)
+    at emitTwo (events.js:87:13)
+    at WebSocket.emit (events.js:172:7)
+    at WebSocket.cleanupWebsocketResources (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/ws/lib/WebSocket.js:950:8)
+    at emitOne (events.js:77:13)
+    at Socket.emit (events.js:169:7)
+    at emitErrorNT (net.js:1269:8)
+    at /home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/glue.js:188:31
+    at nextTickCallbackWith2Args (node.js:442:9)
+    at process._tickDomainCallback [as _tickCallback] (node.js:397:17)
+[2016-08-29 17:41:41.256] [ INFO] console - retrying in 1.5519265891486687 s
+[2016-08-29 17:41:42.809] [ INFO] console - trying to create WAMP transport of type: websocket
+[2016-08-29 17:41:42.822] [ INFO] console - using WAMP transport type: websocket
+[2016-08-29 17:41:42.861] [ INFO] console - [ 1,
+  'kopa',
+  { roles: 
+     { caller: [Object],
+       callee: [Object],
+       publisher: [Object],
+       subscriber: [Object] },
+    authmethods: [ 'ticket' ],
+    authid: 'server' } ]
+[2016-08-29 17:41:42.869] [ INFO] console - [ 5, 'server', {} ]
+[2016-08-29 17:41:42.887] [ INFO] Server - connection.onopen()
+[2016-08-29 17:41:42.888] [ INFO] console - [ 64, 1803374559232, {}, 'ru.kopa.model.get' ]
+[2016-08-29 17:41:42.894] [DEBUG] Server - api:model.get registered
+[2016-08-29 17:41:42.895] [ INFO] console - [ 64, 2161413864816640, {}, 'ru.kopa.pingPong' ]
+[2016-08-29 17:41:42.906] [DEBUG] Server - api:pingPong registered
+[2016-08-29 17:41:42.907] [ INFO] console - [ 64, 8815995888074752, {}, 'ru.kopa.pingPongDatabase' ]
+[2016-08-29 17:41:42.914] [DEBUG] Server - api:pingPongDatabase registered
+[2016-08-29 17:41:42.915] [ INFO] console - [ 64, 2891459116138496, {}, 'ru.kopa.error' ]
+[2016-08-29 17:41:42.923] [DEBUG] Server - api:error registered
+[2016-08-29 17:41:54.996] [DEBUG] Server - #pingPong() [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-29 17:41:55.010] [ INFO] console - [ 70, 342, {}, [ 1, 2, 3 ], { x: 1, y: 2, z: 3 } ]
+[2016-08-29 17:41:55.033] [DEBUG] Server - #pingPongDatabase() [] {}
+[2016-08-29 17:41:55.092] [ INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-29 17:41:55.096] [ INFO] console - [ 70, 343, {}, [ 'КОПА' ] ]
+[2016-08-29 17:41:55.111] [DEBUG] Server - #error() [ 'Error text' ] {}
+[2016-08-29 17:41:55.115] [ INFO] console - [ 8, 68, 344, {}, 'String', [ undefined ], 'Error text' ]
+[2016-08-29 17:41:55.143] [ INFO] Server - connection.onclose() lost { reason: null,
+  message: null,
+  retry_delay: 1.6310358306983177,
+  retry_count: 1,
+  will_retry: true }
+[2016-08-29 17:41:55.145] [ERROR] Server - [ReferenceError: INTERVAL is not defined]
+ReferenceError: INTERVAL is not defined
+    at [object Object].Server.WAMP.onclose (Server.js:67:31)
+    at Object.self._transport.onclose (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/autobahn/lib/connection.js:370:41)
+    at WebSocket.<anonymous> (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/autobahn/lib/transport/websocket.js:135:23)
+    at emitTwo (events.js:87:13)
+    at WebSocket.emit (events.js:172:7)
+    at WebSocket.cleanupWebsocketResources (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/ws/lib/WebSocket.js:950:8)
+    at emitOne (events.js:77:13)
+    at Socket.emit (events.js:169:7)
+    at emitErrorNT (net.js:1269:8)
+    at /home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/glue.js:188:31
+    at nextTickCallbackWith2Args (node.js:442:9)
+    at process._tickDomainCallback [as _tickCallback] (node.js:397:17)
+[2016-08-29 17:41:55.152] [ INFO] console - retrying in 1.6310358306983177 s
+[2016-08-29 17:41:56.785] [ INFO] console - trying to create WAMP transport of type: websocket
+[2016-08-29 17:41:56.792] [ INFO] console - using WAMP transport type: websocket
+[2016-08-29 17:41:56.812] [ INFO] console - [ 1,
+  'kopa',
+  { roles: 
+     { caller: [Object],
+       callee: [Object],
+       publisher: [Object],
+       subscriber: [Object] },
+    authmethods: [ 'ticket' ],
+    authid: 'server' } ]
+[2016-08-29 17:41:56.829] [ INFO] console - [ 5, 'server', {} ]
+[2016-08-29 17:41:56.849] [ INFO] Server - connection.onopen()
+[2016-08-29 17:41:56.851] [ INFO] console - [ 64, 2294334619648000, {}, 'ru.kopa.model.get' ]
+[2016-08-29 17:41:56.859] [DEBUG] Server - api:model.get registered
+[2016-08-29 17:41:56.860] [ INFO] console - [ 64, 4454810579369984, {}, 'ru.kopa.pingPong' ]
+[2016-08-29 17:41:56.865] [DEBUG] Server - api:pingPong registered
+[2016-08-29 17:41:56.866] [ INFO] console - [ 64, 8825977152995328, {}, 'ru.kopa.pingPongDatabase' ]
+[2016-08-29 17:41:56.873] [DEBUG] Server - api:pingPongDatabase registered
+[2016-08-29 17:41:56.874] [ INFO] console - [ 64, 1448217365446656, {}, 'ru.kopa.error' ]
+[2016-08-29 17:41:56.879] [DEBUG] Server - api:error registered
+[2016-08-29 17:42:32.208] [DEBUG] Server - #pingPong() [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-29 17:42:32.216] [ INFO] console - [ 70, 347, {}, [ 1, 2, 3 ], { x: 1, y: 2, z: 3 } ]
+[2016-08-29 17:42:32.243] [DEBUG] Server - #pingPongDatabase() [] {}
+[2016-08-29 17:42:32.276] [ INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-29 17:42:32.281] [ INFO] console - [ 70, 348, {}, [ 'КОПА' ] ]
+[2016-08-29 17:42:32.302] [DEBUG] Server - #error() [ 'Error text' ] {}
+[2016-08-29 17:42:32.306] [ INFO] console - [ 8, 68, 349, {}, 'String', [ undefined ], 'Error text' ]
+[2016-08-29 17:42:32.320] [ INFO] Server - connection.onclose() lost { reason: null,
+  message: null,
+  retry_delay: 1.5957047901371175,
+  retry_count: 1,
+  will_retry: true }
+[2016-08-29 17:42:32.326] [ERROR] Server - [ReferenceError: INTERVAL is not defined]
+ReferenceError: INTERVAL is not defined
+    at [object Object].Server.WAMP.onclose (Server.js:67:31)
+    at Object.self._transport.onclose (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/autobahn/lib/connection.js:370:41)
+    at WebSocket.<anonymous> (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/autobahn/lib/transport/websocket.js:135:23)
+    at emitTwo (events.js:87:13)
+    at WebSocket.emit (events.js:172:7)
+    at WebSocket.cleanupWebsocketResources (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/ws/lib/WebSocket.js:950:8)
+    at emitOne (events.js:77:13)
+    at Socket.emit (events.js:169:7)
+    at emitErrorNT (net.js:1269:8)
+    at /home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/glue.js:188:31
+    at nextTickCallbackWith2Args (node.js:442:9)
+    at process._tickDomainCallback [as _tickCallback] (node.js:397:17)
+[2016-08-29 17:42:32.331] [ INFO] console - retrying in 1.5957047901371175 s
+[2016-08-29 17:42:33.927] [ INFO] console - trying to create WAMP transport of type: websocket
+[2016-08-29 17:42:33.930] [ INFO] console - using WAMP transport type: websocket
+[2016-08-29 17:42:33.958] [ INFO] console - [ 1,
+  'kopa',
+  { roles: 
+     { caller: [Object],
+       callee: [Object],
+       publisher: [Object],
+       subscriber: [Object] },
+    authmethods: [ 'ticket' ],
+    authid: 'server' } ]
+[2016-08-29 17:42:33.964] [ INFO] console - [ 5, 'server', {} ]
+[2016-08-29 17:42:33.985] [ INFO] Server - connection.onopen()
+[2016-08-29 17:42:33.986] [ INFO] console - [ 64, 234048792297472, {}, 'ru.kopa.model.get' ]
+[2016-08-29 17:42:33.994] [DEBUG] Server - api:model.get registered
+[2016-08-29 17:42:33.997] [ INFO] console - [ 64, 1483846461685760, {}, 'ru.kopa.pingPong' ]
+[2016-08-29 17:42:34.017] [DEBUG] Server - api:pingPong registered
+[2016-08-29 17:42:34.018] [ INFO] console - [ 64, 8321140449607680, {}, 'ru.kopa.pingPongDatabase' ]
+[2016-08-29 17:42:34.022] [DEBUG] Server - api:pingPongDatabase registered
+[2016-08-29 17:42:34.022] [ INFO] console - [ 64, 6949135672410112, {}, 'ru.kopa.error' ]
+[2016-08-29 17:42:34.047] [DEBUG] Server - api:error registered
+[2016-08-29 17:43:32.327] [ INFO] console - AutobahnJS debug enabled
+[2016-08-29 17:43:34.197] [ INFO] Server - starting...
+[2016-08-29 17:43:34.200] [ INFO] console - trying to create WAMP transport of type: websocket
+[2016-08-29 17:43:34.329] [ INFO] console - using WAMP transport type: websocket
+[2016-08-29 17:43:34.592] [ INFO] console - [ 1,
+  'kopa',
+  { roles: 
+     { caller: [Object],
+       callee: [Object],
+       publisher: [Object],
+       subscriber: [Object] },
+    authmethods: [ 'ticket' ],
+    authid: 'server' } ]
+[2016-08-29 17:43:34.627] [ INFO] console - [ 5, 'server', {} ]
+[2016-08-29 17:43:34.650] [ INFO] Server - connection.onopen()
+[2016-08-29 17:43:34.653] [ INFO] console - [ 64, 4433898429743104, {}, 'ru.kopa.model.get' ]
+[2016-08-29 17:43:34.667] [DEBUG] Server - api:model.get registered
+[2016-08-29 17:43:34.668] [ INFO] console - [ 64, 4613833467363328, {}, 'ru.kopa.pingPong' ]
+[2016-08-29 17:43:34.681] [DEBUG] Server - api:pingPong registered
+[2016-08-29 17:43:34.682] [ INFO] console - [ 64, 7497328227254272, {}, 'ru.kopa.pingPongDatabase' ]
+[2016-08-29 17:43:34.692] [DEBUG] Server - api:pingPongDatabase registered
+[2016-08-29 17:43:34.692] [ INFO] console - [ 64, 6362020205035520, {}, 'ru.kopa.error' ]
+[2016-08-29 17:43:34.704] [DEBUG] Server - api:error registered
+[2016-08-29 17:43:54.552] [DEBUG] Server - #pingPong() [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-29 17:43:54.563] [ INFO] console - [ 70, 354, {}, [ 1, 2, 3 ], { x: 1, y: 2, z: 3 } ]
+[2016-08-29 17:43:54.585] [DEBUG] Server - #pingPongDatabase() [] {}
+[2016-08-29 17:43:54.700] [ INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-29 17:43:54.709] [ INFO] console - [ 70, 355, {}, [ 'КОПА' ] ]
+[2016-08-29 17:43:54.729] [DEBUG] Server - #error() [ 'Error text' ] {}
+[2016-08-29 17:44:19.886] [ INFO] console - [ 8, 68, 356, {}, 'String' ]
+[2016-08-29 17:44:26.459] [ INFO] console - AutobahnJS debug enabled
+[2016-08-29 17:44:28.133] [ INFO] Server - starting...
+[2016-08-29 17:44:28.136] [ INFO] console - trying to create WAMP transport of type: websocket
+[2016-08-29 17:44:28.231] [ INFO] console - using WAMP transport type: websocket
+[2016-08-29 17:44:28.410] [ INFO] console - [ 1,
+  'kopa',
+  { roles: 
+     { caller: [Object],
+       callee: [Object],
+       publisher: [Object],
+       subscriber: [Object] },
+    authmethods: [ 'ticket' ],
+    authid: 'server' } ]
+[2016-08-29 17:44:28.431] [ INFO] console - [ 5, 'server', {} ]
+[2016-08-29 17:44:28.729] [ INFO] Server - connection.onopen()
+[2016-08-29 17:44:28.730] [ INFO] console - [ 64, 3927155742343168, {}, 'ru.kopa.model.get' ]
+[2016-08-29 17:44:28.740] [DEBUG] Server - api:model.get registered
+[2016-08-29 17:44:28.741] [ INFO] console - [ 64, 5237060105404416, {}, 'ru.kopa.pingPong' ]
+[2016-08-29 17:44:28.748] [DEBUG] Server - api:pingPong registered
+[2016-08-29 17:44:28.749] [ INFO] console - [ 64, 5286955730337792, {}, 'ru.kopa.pingPongDatabase' ]
+[2016-08-29 17:44:28.754] [DEBUG] Server - api:pingPongDatabase registered
+[2016-08-29 17:44:28.755] [ INFO] console - [ 64, 3176271613788160, {}, 'ru.kopa.error' ]
+[2016-08-29 17:44:28.763] [DEBUG] Server - api:error registered
+[2016-08-29 17:44:43.419] [DEBUG] Server - #pingPong() [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-29 17:44:43.431] [ INFO] console - [ 70, 359, {}, [ 1, 2, 3 ], { x: 1, y: 2, z: 3 } ]
+[2016-08-29 17:44:43.459] [DEBUG] Server - #pingPongDatabase() [] {}
+[2016-08-29 17:44:43.574] [ INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-29 17:44:43.588] [ INFO] console - [ 70, 360, {}, [ 'КОПА' ] ]
+[2016-08-29 17:44:43.604] [DEBUG] Server - #error() [ 'Error text' ] {}
+[2016-08-29 17:44:56.728] [ INFO] console - [ 8, 68, 361, {}, 'Error' ]
+[2016-08-29 17:45:16.753] [DEBUG] Server - #pingPong() [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-29 17:45:16.760] [ INFO] console - [ 70, 363, {}, [ 1, 2, 3 ], { x: 1, y: 2, z: 3 } ]
+[2016-08-29 17:45:16.780] [DEBUG] Server - #pingPongDatabase() [] {}
+[2016-08-29 17:45:16.814] [ INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-29 17:45:16.819] [ INFO] console - [ 70, 364, {}, [ 'КОПА' ] ]
+[2016-08-29 17:45:16.831] [DEBUG] Server - #error() [ 'Error text' ] {}
+[2016-08-29 17:45:54.079] [ INFO] console - [ 8, 68, 365, {}, 'Error' ]
+[2016-08-29 17:45:58.898] [DEBUG] Server - #pingPong() [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-29 17:45:58.915] [ INFO] console - [ 70, 367, {}, [ 1, 2, 3 ], { x: 1, y: 2, z: 3 } ]
+[2016-08-29 17:45:58.938] [DEBUG] Server - #pingPongDatabase() [] {}
+[2016-08-29 17:45:58.979] [ INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-29 17:45:58.982] [ INFO] console - [ 70, 368, {}, [ 'КОПА' ] ]
+[2016-08-29 17:45:59.003] [DEBUG] Server - #error() [ 'Error text' ] {}
+[2016-08-29 17:46:04.075] [ INFO] console - [ 8, 68, 369, {}, 'Error' ]
+[2016-08-29 17:46:09.372] [DEBUG] Server - #pingPong() [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-29 17:46:09.381] [ INFO] console - [ 70, 371, {}, [ 1, 2, 3 ], { x: 1, y: 2, z: 3 } ]
+[2016-08-29 17:46:09.409] [DEBUG] Server - #pingPongDatabase() [] {}
+[2016-08-29 17:46:09.479] [ INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-29 17:46:09.483] [ INFO] console - [ 70, 372, {}, [ 'КОПА' ] ]
+[2016-08-29 17:46:09.496] [DEBUG] Server - #error() [ 'Error text' ] {}
+[2016-08-29 17:46:09.501] [ INFO] console - [ 8, 68, 373, {}, 'Error' ]
+[2016-08-29 17:47:54.663] [ INFO] console - AutobahnJS debug enabled
+[2016-08-29 17:47:56.796] [ INFO] Server - starting...
+[2016-08-29 17:47:56.819] [ INFO] console - trying to create WAMP transport of type: websocket
+[2016-08-29 17:47:56.960] [ INFO] console - using WAMP transport type: websocket
+[2016-08-29 17:47:57.304] [ INFO] console - [ 1,
+  'kopa',
+  { roles: 
+     { caller: [Object],
+       callee: [Object],
+       publisher: [Object],
+       subscriber: [Object] },
+    authmethods: [ 'ticket' ],
+    authid: 'server' } ]
+[2016-08-29 17:47:57.330] [ INFO] console - [ 5, 'server', {} ]
+[2016-08-29 17:47:57.351] [ INFO] Server - connection.onopen()
+[2016-08-29 17:47:57.352] [ INFO] console - [ 64, 8706257456201728, {}, 'ru.kopa.model.get' ]
+[2016-08-29 17:47:57.365] [DEBUG] Server - api:model.get registered
+[2016-08-29 17:47:57.367] [ INFO] console - [ 64, 4819270322094080, {}, 'ru.kopa.pingPong' ]
+[2016-08-29 17:47:57.462] [DEBUG] Server - api:pingPong registered
+[2016-08-29 17:47:57.465] [ INFO] console - [ 64, 2020233212592128, {}, 'ru.kopa.pingPongDatabase' ]
+[2016-08-29 17:47:57.480] [DEBUG] Server - api:pingPongDatabase registered
+[2016-08-29 17:47:57.483] [ INFO] console - [ 64, 6125850107838464, {}, 'ru.kopa.error' ]
+[2016-08-29 17:47:57.491] [DEBUG] Server - api:error registered
+[2016-08-29 17:48:00.037] [DEBUG] Server - #pingPong() [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-29 17:48:00.050] [ INFO] console - [ 70, 376, {}, [ 1, 2, 3 ], { x: 1, y: 2, z: 3 } ]
+[2016-08-29 17:48:00.074] [DEBUG] Server - #pingPongDatabase() [] {}
+[2016-08-29 17:48:00.175] [ INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-29 17:48:00.180] [ INFO] console - [ 70, 377, {}, [ 'КОПА' ] ]
+[2016-08-29 17:48:00.192] [DEBUG] Server - #error() [ 'Error text' ] {}
+[2016-08-29 17:48:00.350] [ INFO] console - [ 8,
+  68,
+  378,
+  {},
+  'Error',
+  [ 'Error: Error text\n    at Server.error (Server.js:82:19)\n    at Object.<anonymous> (Server.js:46:74)\n    at tryCatchResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:46:23)\n    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:30:12)\n    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)\n    at tryCatchReject3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:856:7)\n    at runContinuation3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:814:4)\n    at Fulfilled.fold (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:588:4)\n    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:34:12)\n    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)\n    at tryCatchReject3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:856:7)\n    at runContinuation3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:814:4)\n    at Fulfilled.fold (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:588:4)\n    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:34:12)\n    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)\n    at tryCatchReject3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:856:7)' ],
+  { fileName: undefined, lineNumber: undefined } ]
+[2016-08-29 17:49:55.687] [ INFO] console - AutobahnJS debug enabled
+[2016-08-29 17:49:57.044] [ INFO] Server - starting...
+[2016-08-29 17:49:57.050] [ INFO] console - trying to create WAMP transport of type: websocket
+[2016-08-29 17:49:57.130] [ INFO] console - using WAMP transport type: websocket
+[2016-08-29 17:49:57.358] [ INFO] console - [ 1,
+  'kopa',
+  { roles: 
+     { caller: [Object],
+       callee: [Object],
+       publisher: [Object],
+       subscriber: [Object] },
+    authmethods: [ 'ticket' ],
+    authid: 'server' } ]
+[2016-08-29 17:49:57.432] [ INFO] console - [ 5, 'server', {} ]
+[2016-08-29 17:49:57.454] [ INFO] Server - connection.onopen()
+[2016-08-29 17:49:57.456] [ INFO] console - [ 64, 7856441815728128, {}, 'ru.kopa.model.get' ]
+[2016-08-29 17:49:57.466] [DEBUG] Server - api:model.get registered
+[2016-08-29 17:49:57.467] [ INFO] console - [ 64, 6344386990309376, {}, 'ru.kopa.pingPong' ]
+[2016-08-29 17:49:57.475] [DEBUG] Server - api:pingPong registered
+[2016-08-29 17:49:57.475] [ INFO] console - [ 64, 19762075664384, {}, 'ru.kopa.pingPongDatabase' ]
+[2016-08-29 17:49:57.480] [DEBUG] Server - api:pingPongDatabase registered
+[2016-08-29 17:49:57.481] [ INFO] console - [ 64, 3044187494678528, {}, 'ru.kopa.error' ]
+[2016-08-29 17:49:57.486] [DEBUG] Server - api:error registered
+[2016-08-29 17:50:05.563] [DEBUG] Server - #pingPong() [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-29 17:50:05.574] [ INFO] console - [ 70, 381, {}, [ 1, 2, 3 ], { x: 1, y: 2, z: 3 } ]
+[2016-08-29 17:50:05.617] [DEBUG] Server - #pingPongDatabase() [] {}
+[2016-08-29 17:50:05.744] [ INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-29 17:50:05.753] [ INFO] console - [ 70, 382, {}, [ 'КОПА' ] ]
+[2016-08-29 17:50:05.762] [DEBUG] Server - #error() [ 'Error text' ] {}
+[2016-08-29 17:50:05.908] [ INFO] console - [ 8,
+  68,
+  383,
+  {},
+  'Error',
+  [ 'Error: Error text',
+    '    at Server.error (Server.js:82:19)',
+    '    at Object.<anonymous> (Server.js:46:74)',
+    '    at tryCatchResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:46:23)',
+    '    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:30:12)',
+    '    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)',
+    '    at tryCatchReject3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:856:7)',
+    '    at runContinuation3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:814:4)',
+    '    at Fulfilled.fold (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:588:4)',
+    '    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:34:12)',
+    '    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)',
+    '    at tryCatchReject3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:856:7)',
+    '    at runContinuation3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:814:4)',
+    '    at Fulfilled.fold (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:588:4)',
+    '    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:34:12)',
+    '    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)',
+    '    at tryCatchReject3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:856:7)' ],
+  { fileName: undefined, lineNumber: undefined } ]
+[2016-08-29 17:52:07.347] [ INFO] console - AutobahnJS debug enabled
+[2016-08-29 17:52:08.668] [ INFO] Server - starting...
+[2016-08-29 17:52:08.673] [ INFO] console - trying to create WAMP transport of type: websocket
+[2016-08-29 17:52:08.763] [ INFO] console - using WAMP transport type: websocket
+[2016-08-29 17:52:08.992] [ INFO] console - [ 1,
+  'kopa',
+  { roles: 
+     { caller: [Object],
+       callee: [Object],
+       publisher: [Object],
+       subscriber: [Object] },
+    authmethods: [ 'ticket' ],
+    authid: 'server' } ]
+[2016-08-29 17:52:09.061] [ INFO] console - [ 5, 'server', {} ]
+[2016-08-29 17:52:09.120] [ INFO] Server - connection.onopen()
+[2016-08-29 17:52:09.124] [ INFO] console - [ 64, 4444486520274944, {}, 'ru.kopa.model.get' ]
+[2016-08-29 17:52:09.142] [DEBUG] Server - api:model.get registered
+[2016-08-29 17:52:09.145] [ INFO] console - [ 64, 3791884644253696, {}, 'ru.kopa.pingPong' ]
+[2016-08-29 17:52:09.151] [DEBUG] Server - api:pingPong registered
+[2016-08-29 17:52:09.154] [ INFO] console - [ 64, 726318073249792, {}, 'ru.kopa.pingPongDatabase' ]
+[2016-08-29 17:52:09.163] [DEBUG] Server - api:pingPongDatabase registered
+[2016-08-29 17:52:09.165] [ INFO] console - [ 64, 4345031089455104, {}, 'ru.kopa.error' ]
+[2016-08-29 17:52:09.171] [DEBUG] Server - api:error registered
+[2016-08-29 17:52:18.256] [DEBUG] Server - #pingPong() [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-29 17:52:18.273] [ INFO] console - [ 70, 386, {}, [ 1, 2, 3 ], { x: 1, y: 2, z: 3 } ]
+[2016-08-29 17:52:18.296] [DEBUG] Server - #pingPongDatabase() [] {}
+[2016-08-29 17:52:18.440] [ INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-29 17:52:18.449] [ INFO] console - [ 70, 387, {}, [ 'КОПА' ] ]
+[2016-08-29 17:52:18.532] [DEBUG] Server - #error() [ 'Error text' ] {}
+[2016-08-29 17:52:18.686] [ INFO] console - [ 8,
+  68,
+  388,
+  {},
+  'Error',
+  [ 'Error: Error text',
+    '    at Server.error (Server.js:82:19)',
+    '    at Object.<anonymous> (Server.js:46:74)',
+    '    at tryCatchResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:46:23)',
+    '    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:30:12)',
+    '    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)',
+    '    at tryCatchReject3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:856:7)',
+    '    at runContinuation3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:814:4)',
+    '    at Fulfilled.fold (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:588:4)',
+    '    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:34:12)',
+    '    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)',
+    '    at tryCatchReject3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:856:7)',
+    '    at runContinuation3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:814:4)',
+    '    at Fulfilled.fold (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:588:4)',
+    '    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:34:12)',
+    '    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)',
+    '    at tryCatchReject3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:856:7)' ],
+  { fileName: undefined, lineNumber: undefined } ]
+[2016-08-29 17:52:26.134] [DEBUG] Server - #pingPong() [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-29 17:52:26.153] [ INFO] console - [ 70, 390, {}, [ 1, 2, 3 ], { x: 1, y: 2, z: 3 } ]
+[2016-08-29 17:52:26.182] [DEBUG] Server - #pingPongDatabase() [] {}
+[2016-08-29 17:52:26.204] [ INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-29 17:52:26.214] [ INFO] console - [ 70, 391, {}, [ 'КОПА' ] ]
+[2016-08-29 17:52:26.270] [DEBUG] Server - #error() [ 'Error text' ] {}
+[2016-08-29 17:52:26.276] [ INFO] console - [ 8,
+  68,
+  392,
+  {},
+  'Error',
+  [ 'Error: Error text',
+    '    at Server.error (Server.js:82:19)',
+    '    at Object.<anonymous> (Server.js:46:74)',
+    '    at tryCatchResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:46:23)',
+    '    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:30:12)',
+    '    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)',
+    '    at tryCatchReject3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:856:7)',
+    '    at runContinuation3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:814:4)',
+    '    at Fulfilled.fold (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:588:4)',
+    '    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:34:12)',
+    '    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)',
+    '    at tryCatchReject3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:856:7)',
+    '    at runContinuation3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:814:4)',
+    '    at Fulfilled.fold (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:588:4)',
+    '    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:34:12)',
+    '    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)',
+    '    at tryCatchReject3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:856:7)' ],
+  { fileName: undefined, lineNumber: undefined } ]
+[2016-08-29 17:52:46.902] [ INFO] console - AutobahnJS debug enabled
+[2016-08-29 17:52:48.113] [ INFO] Server - starting...
+[2016-08-29 17:52:48.124] [ INFO] console - trying to create WAMP transport of type: websocket
+[2016-08-29 17:52:48.202] [ INFO] console - using WAMP transport type: websocket
+[2016-08-29 17:52:48.423] [ INFO] console - [ 1,
+  'kopa',
+  { roles: 
+     { caller: [Object],
+       callee: [Object],
+       publisher: [Object],
+       subscriber: [Object] },
+    authmethods: [ 'ticket' ],
+    authid: 'server' } ]
+[2016-08-29 17:52:48.588] [ INFO] console - [ 5, 'server', {} ]
+[2016-08-29 17:52:48.635] [ INFO] Server - connection.onopen()
+[2016-08-29 17:52:48.637] [ INFO] console - [ 64, 1948077896237056, {}, 'ru.kopa.model.get' ]
+[2016-08-29 17:52:48.656] [DEBUG] Server - api:model.get registered
+[2016-08-29 17:52:48.659] [ INFO] console - [ 64, 5859957637382144, {}, 'ru.kopa.pingPong' ]
+[2016-08-29 17:52:48.684] [DEBUG] Server - api:pingPong registered
+[2016-08-29 17:52:48.685] [ INFO] console - [ 64, 3742730035396608, {}, 'ru.kopa.pingPongDatabase' ]
+[2016-08-29 17:52:48.694] [DEBUG] Server - api:pingPongDatabase registered
+[2016-08-29 17:52:48.695] [ INFO] console - [ 64, 938267855814656, {}, 'ru.kopa.error' ]
+[2016-08-29 17:52:48.701] [DEBUG] Server - api:error registered
+[2016-08-29 17:52:53.814] [DEBUG] Server - #pingPong() [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-29 17:52:53.818] [ INFO] console - [ 70, 395, {}, [ 1, 2, 3 ], { x: 1, y: 2, z: 3 } ]
+[2016-08-29 17:52:53.837] [DEBUG] Server - #pingPongDatabase() [] {}
+[2016-08-29 17:52:53.959] [ INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-29 17:52:53.966] [ INFO] console - [ 70, 396, {}, [ 'КОПА' ] ]
+[2016-08-29 17:52:53.978] [DEBUG] Server - #error() [ 'Error text' ] {}
+[2016-08-29 17:52:53.981] [ INFO] console - [ 8, 68, 397, {}, 'com.myapp.error', [ 'fuck' ], { a: 23, b: 9 } ]
+[2016-08-29 17:53:18.404] [DEBUG] Server - #pingPong() [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-29 17:53:18.417] [ INFO] console - [ 70, 399, {}, [ 1, 2, 3 ], { x: 1, y: 2, z: 3 } ]
+[2016-08-29 17:53:18.437] [DEBUG] Server - #pingPongDatabase() [] {}
+[2016-08-29 17:53:18.471] [ INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-29 17:53:18.476] [ INFO] console - [ 70, 400, {}, [ 'КОПА' ] ]
+[2016-08-29 17:53:18.489] [DEBUG] Server - #error() [ 'Error text' ] {}
+[2016-08-29 17:53:18.492] [ INFO] console - [ 8, 68, 401, {}, 'com.myapp.error', [ 'fuck' ], { a: 23, b: 9 } ]
+[2016-08-29 17:53:35.373] [ INFO] console - AutobahnJS debug enabled
+[2016-08-29 17:53:36.911] [ INFO] Server - starting...
+[2016-08-29 17:53:36.913] [ INFO] console - trying to create WAMP transport of type: websocket
+[2016-08-29 17:53:37.015] [ INFO] console - using WAMP transport type: websocket
+[2016-08-29 17:53:37.167] [ INFO] console - [ 1,
+  'kopa',
+  { roles: 
+     { caller: [Object],
+       callee: [Object],
+       publisher: [Object],
+       subscriber: [Object] },
+    authmethods: [ 'ticket' ],
+    authid: 'server' } ]
+[2016-08-29 17:53:37.187] [ INFO] console - [ 5, 'server', {} ]
+[2016-08-29 17:53:37.262] [ INFO] Server - connection.onopen()
+[2016-08-29 17:53:37.264] [ INFO] console - [ 64, 3190326858612736, {}, 'ru.kopa.model.get' ]
+[2016-08-29 17:53:37.275] [DEBUG] Server - api:model.get registered
+[2016-08-29 17:53:37.276] [ INFO] console - [ 64, 3093897964158976, {}, 'ru.kopa.pingPong' ]
+[2016-08-29 17:53:37.284] [DEBUG] Server - api:pingPong registered
+[2016-08-29 17:53:37.285] [ INFO] console - [ 64, 8710101934276608, {}, 'ru.kopa.pingPongDatabase' ]
+[2016-08-29 17:53:37.290] [DEBUG] Server - api:pingPongDatabase registered
+[2016-08-29 17:53:37.291] [ INFO] console - [ 64, 8055439939862528, {}, 'ru.kopa.error' ]
+[2016-08-29 17:53:37.296] [DEBUG] Server - api:error registered
+[2016-08-29 17:53:46.032] [DEBUG] Server - #pingPong() [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-29 17:53:46.043] [ INFO] console - [ 70, 404, {}, [ 1, 2, 3 ], { x: 1, y: 2, z: 3 } ]
+[2016-08-29 17:53:46.069] [DEBUG] Server - #pingPongDatabase() [] {}
+[2016-08-29 17:53:46.162] [ INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-29 17:53:46.167] [ INFO] console - [ 70, 405, {}, [ 'КОПА' ] ]
+[2016-08-29 17:53:46.182] [DEBUG] Server - #error() [ 'Error text' ] {}
+[2016-08-29 17:59:28.394] [ INFO] console - AutobahnJS debug enabled
+[2016-08-29 17:59:30.022] [ INFO] Server - starting...
+[2016-08-29 17:59:30.025] [ INFO] console - trying to create WAMP transport of type: websocket
+[2016-08-29 17:59:30.123] [ INFO] console - using WAMP transport type: websocket
+[2016-08-29 17:59:30.295] [ INFO] console - [ 1,
+  'kopa',
+  { roles: 
+     { caller: [Object],
+       callee: [Object],
+       publisher: [Object],
+       subscriber: [Object] },
+    authmethods: [ 'ticket' ],
+    authid: 'server' } ]
+[2016-08-29 17:59:30.318] [ INFO] console - [ 5, 'server', {} ]
+[2016-08-29 17:59:30.340] [ INFO] Server - connection.onopen()
+[2016-08-29 17:59:30.342] [ INFO] console - [ 64, 4208676606836736, {}, 'ru.kopa.model.get' ]
+[2016-08-29 17:59:30.351] [DEBUG] Server - api:model.get registered
+[2016-08-29 17:59:30.352] [ INFO] console - [ 64, 5996272326541312, {}, 'ru.kopa.pingPong' ]
+[2016-08-29 17:59:30.359] [DEBUG] Server - api:pingPong registered
+[2016-08-29 17:59:30.360] [ INFO] console - [ 64, 7858010359595008, {}, 'ru.kopa.pingPongDatabase' ]
+[2016-08-29 17:59:30.367] [DEBUG] Server - api:pingPongDatabase registered
+[2016-08-29 17:59:30.368] [ INFO] console - [ 64, 7301209052413952, {}, 'ru.kopa.error' ]
+[2016-08-29 17:59:30.380] [DEBUG] Server - api:error registered
+[2016-08-29 17:59:39.410] [DEBUG] Server - #pingPong() [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-29 17:59:39.418] [ INFO] console - [ 70, 409, {}, [ 1, 2, 3 ], { x: 1, y: 2, z: 3 } ]
+[2016-08-29 17:59:39.435] [DEBUG] Server - #pingPongDatabase() [] {}
+[2016-08-29 17:59:39.558] [ INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-29 17:59:39.567] [ INFO] console - [ 70, 410, {}, [ 'КОПА' ] ]
+[2016-08-29 17:59:39.589] [DEBUG] Server - #error() [ 'Error text' ] {}
+[2016-08-29 17:59:39.594] [ INFO] console - [ 8, 68, 411, {}, 'com.myapp.error', [ 'fuck' ], { a: 23, b: 9 } ]
+[2016-08-29 18:06:58.385] [DEBUG] Server - #pingPong() [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-29 18:06:58.403] [ INFO] console - [ 70, 413, {}, [ 1, 2, 3 ], { x: 1, y: 2, z: 3 } ]
+[2016-08-29 18:06:58.424] [DEBUG] Server - #pingPongDatabase() [] {}
+[2016-08-29 18:06:58.475] [ INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-29 18:06:58.484] [ INFO] console - [ 70, 414, {}, [ 'КОПА' ] ]
+[2016-08-29 18:06:58.499] [DEBUG] Server - #error() [ 'Error text' ] {}
+[2016-08-29 18:06:58.503] [ INFO] console - [ 8, 68, 415, {}, 'com.myapp.error', [ 'fuck' ], { a: 23, b: 9 } ]

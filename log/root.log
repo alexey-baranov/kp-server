@@ -1,0 +1,1424 @@
+[2016-08-30 08:37:17.066] [DEBUG] Server - #pingPong() [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-30 08:37:17.102] [INFO] console - [ 70, 417, {}, [ 1, 2, 3 ], { x: 1, y: 2, z: 3 } ]
+[2016-08-30 08:37:17.145] [DEBUG] Server - #pingPongDatabase() [] {}
+[2016-08-30 08:37:17.360] [INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-30 08:37:17.378] [INFO] console - [ 70, 418, {}, [ 'КОПА' ] ]
+[2016-08-30 08:37:17.399] [DEBUG] Server - #error() [ 'Error text' ] {}
+[2016-08-30 08:37:17.403] [INFO] console - [ 8, 68, 419, {}, 'com.myapp.error', [ 'fuck' ], { a: 23, b: 9 } ]
+[2016-08-30 08:38:23.492] [INFO] console - AutobahnJS debug enabled
+[2016-08-30 08:38:25.703] [INFO] Server - starting...
+[2016-08-30 08:38:25.705] [INFO] console - trying to create WAMP transport of type: websocket
+[2016-08-30 08:38:25.829] [INFO] console - using WAMP transport type: websocket
+[2016-08-30 08:38:26.046] [INFO] console - [ 1,
+  'kopa',
+  { roles: 
+     { caller: [Object],
+       callee: [Object],
+       publisher: [Object],
+       subscriber: [Object] },
+    authmethods: [ 'ticket' ],
+    authid: 'server' } ]
+[2016-08-30 08:38:26.074] [INFO] console - [ 5, 'server', {} ]
+[2016-08-30 08:38:26.096] [INFO] Server - connection.onopen()
+[2016-08-30 08:38:26.102] [INFO] console - [ 64, 6546776314085376, {}, 'ru.kopa.model.get' ]
+[2016-08-30 08:38:26.135] [DEBUG] Server - api:model.get registered
+[2016-08-30 08:38:26.136] [INFO] console - [ 64, 7644798315921408, {}, 'ru.kopa.pingPong' ]
+[2016-08-30 08:38:26.145] [DEBUG] Server - api:pingPong registered
+[2016-08-30 08:38:26.146] [INFO] console - [ 64, 8690573546356736, {}, 'ru.kopa.pingPongDatabase' ]
+[2016-08-30 08:38:26.154] [DEBUG] Server - api:pingPongDatabase registered
+[2016-08-30 08:38:26.155] [INFO] console - [ 64, 5728182971924480, {}, 'ru.kopa.error' ]
+[2016-08-30 08:38:26.161] [DEBUG] Server - api:error registered
+[2016-08-30 08:38:41.890] [INFO] console - AutobahnJS debug enabled
+[2016-08-30 08:38:43.413] [INFO] Server - starting...
+[2016-08-30 08:38:43.416] [INFO] console - trying to create WAMP transport of type: websocket
+[2016-08-30 08:38:43.520] [INFO] console - using WAMP transport type: websocket
+[2016-08-30 08:38:43.795] [INFO] console - [ 1,
+  'kopa',
+  { roles: 
+     { caller: [Object],
+       callee: [Object],
+       publisher: [Object],
+       subscriber: [Object] },
+    authmethods: [ 'ticket' ],
+    authid: 'server' } ]
+[2016-08-30 08:38:43.819] [INFO] console - [ 5, 'server', {} ]
+[2016-08-30 08:38:43.862] [INFO] Server - connection.onopen()
+[2016-08-30 08:38:43.863] [INFO] console - [ 64, 8516636082438144, {}, 'ru.kopa.model.get' ]
+[2016-08-30 08:38:43.872] [DEBUG] Server - api:model.get registered
+[2016-08-30 08:38:43.872] [INFO] console - [ 64, 6580354343239680, {}, 'ru.kopa.pingPong' ]
+[2016-08-30 08:38:43.878] [DEBUG] Server - api:pingPong registered
+[2016-08-30 08:38:43.879] [INFO] console - [ 64, 5568553296068608, {}, 'ru.kopa.pingPongDatabase' ]
+[2016-08-30 08:38:43.884] [DEBUG] Server - api:pingPongDatabase registered
+[2016-08-30 08:38:43.884] [INFO] console - [ 64, 2421005851033600, {}, 'ru.kopa.error' ]
+[2016-08-30 08:38:43.890] [DEBUG] Server - api:error registered
+[2016-08-30 08:39:08.902] [DEBUG] Server - #pingPong() [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-30 08:39:08.916] [INFO] console - [ 70, 423, {}, [ 1, 2, 3 ], { x: 1, y: 2, z: 3 } ]
+[2016-08-30 08:39:08.937] [DEBUG] Server - #pingPongDatabase() [] {}
+[2016-08-30 08:39:09.169] [INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-30 08:39:09.176] [INFO] console - [ 70, 424, {}, [ 'КОПА' ] ]
+[2016-08-30 08:39:09.231] [DEBUG] Server - #error() [ 'Error text' ] {}
+[2016-08-30 08:39:09.370] [INFO] console - [ 8,
+  68,
+  425,
+  {},
+  'Error',
+  [],
+  { message: 'Error text',
+    stack: 'Error: Error text\n    at Server.error (Server.js:82:19)\n    at Object.<anonymous> (Server.js:46:74)\n    at tryCatchResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:46:23)\n    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:30:12)\n    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)\n    at tryCatchReject3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:856:7)\n    at runContinuation3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:814:4)\n    at Fulfilled.fold (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:588:4)\n    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:34:12)\n    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)\n    at tryCatchReject3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:856:7)\n    at runContinuation3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:814:4)\n    at Fulfilled.fold (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:588:4)\n    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:34:12)\n    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)\n    at tryCatchReject3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:856:7)' } ]
+[2016-08-30 08:40:24.438] [INFO] console - AutobahnJS debug enabled
+[2016-08-30 08:40:26.151] [INFO] Server - starting...
+[2016-08-30 08:40:26.154] [INFO] console - trying to create WAMP transport of type: websocket
+[2016-08-30 08:40:26.256] [INFO] console - using WAMP transport type: websocket
+[2016-08-30 08:40:26.602] [INFO] console - [ 1,
+  'kopa',
+  { roles: 
+     { caller: [Object],
+       callee: [Object],
+       publisher: [Object],
+       subscriber: [Object] },
+    authmethods: [ 'ticket' ],
+    authid: 'server' } ]
+[2016-08-30 08:40:26.703] [INFO] console - [ 5, 'server', {} ]
+[2016-08-30 08:40:26.736] [INFO] Server - connection.onopen()
+[2016-08-30 08:40:26.739] [INFO] console - [ 64, 3970152213250048, {}, 'ru.kopa.model.get' ]
+[2016-08-30 08:40:26.751] [DEBUG] Server - api:model.get registered
+[2016-08-30 08:40:26.753] [INFO] console - [ 64, 1432848428957696, {}, 'ru.kopa.pingPong' ]
+[2016-08-30 08:40:26.764] [DEBUG] Server - api:pingPong registered
+[2016-08-30 08:40:26.765] [INFO] console - [ 64, 1013760122683392, {}, 'ru.kopa.pingPongDatabase' ]
+[2016-08-30 08:40:26.776] [DEBUG] Server - api:pingPongDatabase registered
+[2016-08-30 08:40:26.778] [INFO] console - [ 64, 4096092006252544, {}, 'ru.kopa.error' ]
+[2016-08-30 08:40:26.787] [DEBUG] Server - api:error registered
+[2016-08-30 08:40:35.605] [DEBUG] Server - #pingPong() [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-30 08:40:35.613] [INFO] console - [ 70, 428, {}, [ 1, 2, 3 ], { x: 1, y: 2, z: 3 } ]
+[2016-08-30 08:40:35.649] [DEBUG] Server - #pingPongDatabase() [] {}
+[2016-08-30 08:40:35.763] [INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-30 08:40:35.770] [INFO] console - [ 70, 429, {}, [ 'КОПА' ] ]
+[2016-08-30 08:40:35.789] [DEBUG] Server - #error() [ 'Error text' ] {}
+[2016-08-30 08:40:35.923] [INFO] console - [ 8,
+  68,
+  430,
+  {},
+  'Error',
+  [],
+  { message: 'Error text',
+    stack: 
+     [ 'Error: Error text',
+       '    at Server.error (Server.js:82:19)',
+       '    at Object.<anonymous> (Server.js:46:74)',
+       '    at tryCatchResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:46:23)',
+       '    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:30:12)',
+       '    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)',
+       '    at tryCatchReject3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:856:7)',
+       '    at runContinuation3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:814:4)',
+       '    at Fulfilled.fold (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:588:4)',
+       '    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:34:12)',
+       '    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)',
+       '    at tryCatchReject3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:856:7)',
+       '    at runContinuation3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:814:4)',
+       '    at Fulfilled.fold (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:588:4)',
+       '    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:34:12)',
+       '    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)',
+       '    at tryCatchReject3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:856:7)' ] } ]
+[2016-08-30 08:45:58.616] [DEBUG] Server - #pingPong() [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-30 08:45:58.629] [INFO] console - [ 70, 432, {}, [ 1, 2, 3 ], { x: 1, y: 2, z: 3 } ]
+[2016-08-30 08:45:58.735] [DEBUG] Server - #pingPongDatabase() [] {}
+[2016-08-30 08:45:58.899] [INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-30 08:45:58.918] [INFO] console - [ 70, 433, {}, [ 'КОПА' ] ]
+[2016-08-30 08:45:58.953] [DEBUG] Server - #error() [ 'sadkljfaskldjfs;af' ] {}
+[2016-08-30 08:45:58.971] [INFO] console - [ 8,
+  68,
+  434,
+  {},
+  'Error',
+  [],
+  { message: 'sadkljfaskldjfs;af',
+    stack: 
+     [ 'Error: sadkljfaskldjfs;af',
+       '    at Server.error (Server.js:82:19)',
+       '    at Object.<anonymous> (Server.js:46:74)',
+       '    at tryCatchResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:46:23)',
+       '    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:30:12)',
+       '    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)',
+       '    at tryCatchReject3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:856:7)',
+       '    at runContinuation3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:814:4)',
+       '    at Fulfilled.fold (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:588:4)',
+       '    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:34:12)',
+       '    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)',
+       '    at tryCatchReject3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:856:7)',
+       '    at runContinuation3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:814:4)',
+       '    at Fulfilled.fold (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:588:4)',
+       '    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:34:12)',
+       '    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)',
+       '    at tryCatchReject3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:856:7)' ] } ]
+[2016-08-30 08:46:24.757] [DEBUG] Server - #pingPong() [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-30 08:46:24.770] [INFO] console - [ 70, 436, {}, [ 1, 2, 3 ], { x: 1, y: 2, z: 3 } ]
+[2016-08-30 08:46:24.793] [DEBUG] Server - #pingPongDatabase() [] {}
+[2016-08-30 08:46:24.843] [INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-30 08:46:24.850] [INFO] console - [ 70, 437, {}, [ 'КОПА' ] ]
+[2016-08-30 08:46:24.865] [DEBUG] Server - #error() [ 'sadkljfaskldjfs;af' ] {}
+[2016-08-30 08:46:24.871] [INFO] console - [ 8,
+  68,
+  438,
+  {},
+  'Error',
+  [],
+  { message: 'sadkljfaskldjfs;af',
+    stack: 
+     [ 'Error: sadkljfaskldjfs;af',
+       '    at Server.error (Server.js:82:19)',
+       '    at Object.<anonymous> (Server.js:46:74)',
+       '    at tryCatchResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:46:23)',
+       '    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:30:12)',
+       '    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)',
+       '    at tryCatchReject3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:856:7)',
+       '    at runContinuation3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:814:4)',
+       '    at Fulfilled.fold (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:588:4)',
+       '    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:34:12)',
+       '    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)',
+       '    at tryCatchReject3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:856:7)',
+       '    at runContinuation3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:814:4)',
+       '    at Fulfilled.fold (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:588:4)',
+       '    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:34:12)',
+       '    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)',
+       '    at tryCatchReject3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:856:7)' ] } ]
+[2016-08-30 08:46:43.584] [DEBUG] Server - #pingPong() [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-30 08:46:43.596] [INFO] console - [ 70, 440, {}, [ 1, 2, 3 ], { x: 1, y: 2, z: 3 } ]
+[2016-08-30 08:46:43.647] [DEBUG] Server - #pingPongDatabase() [] {}
+[2016-08-30 08:46:43.697] [INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-30 08:46:43.705] [INFO] console - [ 70, 441, {}, [ 'КОПА' ] ]
+[2016-08-30 08:46:43.722] [DEBUG] Server - #error() [ 'sadkljfaskldjfs;af' ] {}
+[2016-08-30 08:50:18.792] [INFO] console - [ 8,
+  68,
+  442,
+  {},
+  'Error',
+  [],
+  { message: 'sadkljfaskldjfs;af',
+    stack: 
+     [ 'Error: sadkljfaskldjfs;af',
+       '    at Server.error (Server.js:82:19)',
+       '    at Object.<anonymous> (Server.js:46:74)',
+       '    at tryCatchResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:46:23)',
+       '    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:30:12)',
+       '    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)',
+       '    at tryCatchReject3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:856:7)',
+       '    at runContinuation3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:814:4)',
+       '    at Fulfilled.fold (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:588:4)',
+       '    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:34:12)',
+       '    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)',
+       '    at tryCatchReject3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:856:7)',
+       '    at runContinuation3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:814:4)',
+       '    at Fulfilled.fold (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:588:4)',
+       '    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:34:12)',
+       '    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)',
+       '    at tryCatchReject3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:856:7)' ] } ]
+[2016-08-30 08:50:29.309] [INFO] console - AutobahnJS debug enabled
+[2016-08-30 08:50:31.626] [INFO] Server - starting...
+[2016-08-30 08:50:31.629] [INFO] console - trying to create WAMP transport of type: websocket
+[2016-08-30 08:50:31.744] [INFO] console - using WAMP transport type: websocket
+[2016-08-30 08:50:31.923] [INFO] console - [ 1,
+  'kopa',
+  { roles: 
+     { caller: [Object],
+       callee: [Object],
+       publisher: [Object],
+       subscriber: [Object] },
+    authmethods: [ 'ticket' ],
+    authid: 'server' } ]
+[2016-08-30 08:50:31.945] [INFO] console - [ 5, 'server', {} ]
+[2016-08-30 08:50:31.977] [INFO] Server - connection.onopen()
+[2016-08-30 08:50:31.979] [INFO] console - [ 64, 4330824530919424, {}, 'ru.kopa.model.get' ]
+[2016-08-30 08:50:31.992] [DEBUG] Server - api:model.get registered
+[2016-08-30 08:50:31.995] [INFO] console - [ 64, 6901799038484480, {}, 'ru.kopa.pingPong' ]
+[2016-08-30 08:50:32.012] [DEBUG] Server - api:pingPong registered
+[2016-08-30 08:50:32.015] [INFO] console - [ 64, 5243050813030400, {}, 'ru.kopa.pingPongDatabase' ]
+[2016-08-30 08:50:32.022] [DEBUG] Server - api:pingPongDatabase registered
+[2016-08-30 08:50:32.022] [INFO] console - [ 64, 7278995926155264, {}, 'ru.kopa.error' ]
+[2016-08-30 08:50:32.027] [DEBUG] Server - api:error registered
+[2016-08-30 08:50:42.348] [DEBUG] Server - #pingPong() [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-30 08:50:42.391] [INFO] console - [ 70, 445, {}, [ 1, 2, 3 ], { x: 1, y: 2, z: 3 } ]
+[2016-08-30 08:50:42.631] [DEBUG] Server - #pingPongDatabase() [] {}
+[2016-08-30 08:50:42.753] [INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-30 08:50:42.759] [INFO] console - [ 70, 446, {}, [ 'КОПА' ] ]
+[2016-08-30 08:50:42.771] [DEBUG] Server - #error() [ 'sadkljfaskldjfs;af' ] {}
+[2016-08-30 08:53:29.790] [INFO] console - [ 8,
+  68,
+  447,
+  {},
+  'Error',
+  [],
+  { message: 'sadkljfaskldjfs;af',
+    stack: 
+     [ 'Error: sadkljfaskldjfs;af',
+       '    at MySuperError (Server.js:80:9)',
+       '    at Server.error (Server.js:85:19)',
+       '    at Object.<anonymous> (Server.js:46:74)',
+       '    at tryCatchResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:46:23)',
+       '    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:30:12)',
+       '    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)',
+       '    at tryCatchReject3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:856:7)',
+       '    at runContinuation3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:814:4)',
+       '    at Fulfilled.fold (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:588:4)',
+       '    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:34:12)',
+       '    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)',
+       '    at tryCatchReject3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:856:7)',
+       '    at runContinuation3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:814:4)',
+       '    at Fulfilled.fold (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:588:4)',
+       '    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:34:12)',
+       '    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)' ] } ]
+[2016-08-30 08:53:36.469] [DEBUG] Server - #pingPong() [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-30 08:53:36.482] [INFO] console - [ 70, 449, {}, [ 1, 2, 3 ], { x: 1, y: 2, z: 3 } ]
+[2016-08-30 08:53:36.602] [DEBUG] Server - #pingPongDatabase() [] {}
+[2016-08-30 08:53:36.667] [INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-30 08:53:36.677] [INFO] console - [ 70, 450, {}, [ 'КОПА' ] ]
+[2016-08-30 08:53:36.694] [DEBUG] Server - #error() [ 'sadkljfaskldjfs;af' ] {}
+[2016-08-30 08:53:36.705] [INFO] console - [ 8,
+  68,
+  451,
+  {},
+  'Error',
+  [],
+  { message: 'sadkljfaskldjfs;af',
+    stack: 
+     [ 'Error: sadkljfaskldjfs;af',
+       '    at MySuperError (Server.js:80:9)',
+       '    at Server.error (Server.js:85:19)',
+       '    at Object.<anonymous> (Server.js:46:74)',
+       '    at tryCatchResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:46:23)',
+       '    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:30:12)',
+       '    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)',
+       '    at tryCatchReject3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:856:7)',
+       '    at runContinuation3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:814:4)',
+       '    at Fulfilled.fold (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:588:4)',
+       '    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:34:12)',
+       '    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)',
+       '    at tryCatchReject3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:856:7)',
+       '    at runContinuation3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:814:4)',
+       '    at Fulfilled.fold (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:588:4)',
+       '    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:34:12)',
+       '    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)' ] } ]
+[2016-08-30 08:53:44.327] [INFO] console - AutobahnJS debug enabled
+[2016-08-30 08:53:46.904] [INFO] Server - starting...
+[2016-08-30 08:53:46.906] [INFO] console - trying to create WAMP transport of type: websocket
+[2016-08-30 08:53:47.017] [INFO] console - using WAMP transport type: websocket
+[2016-08-30 08:53:47.400] [INFO] console - [ 1,
+  'kopa',
+  { roles: 
+     { caller: [Object],
+       callee: [Object],
+       publisher: [Object],
+       subscriber: [Object] },
+    authmethods: [ 'ticket' ],
+    authid: 'server' } ]
+[2016-08-30 08:53:47.426] [INFO] console - [ 5, 'server', {} ]
+[2016-08-30 08:53:47.448] [INFO] Server - connection.onopen()
+[2016-08-30 08:53:47.449] [INFO] console - [ 64, 7592705219624960, {}, 'ru.kopa.model.get' ]
+[2016-08-30 08:53:47.460] [DEBUG] Server - api:model.get registered
+[2016-08-30 08:53:47.461] [INFO] console - [ 64, 1958549762605056, {}, 'ru.kopa.pingPong' ]
+[2016-08-30 08:53:47.470] [DEBUG] Server - api:pingPong registered
+[2016-08-30 08:53:47.471] [INFO] console - [ 64, 3648991677906944, {}, 'ru.kopa.pingPongDatabase' ]
+[2016-08-30 08:53:47.478] [DEBUG] Server - api:pingPongDatabase registered
+[2016-08-30 08:53:47.478] [INFO] console - [ 64, 7978520980488192, {}, 'ru.kopa.error' ]
+[2016-08-30 08:53:47.483] [DEBUG] Server - api:error registered
+[2016-08-30 08:54:36.421] [DEBUG] Server - #pingPong() [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-30 08:54:36.442] [INFO] console - [ 70, 454, {}, [ 1, 2, 3 ], { x: 1, y: 2, z: 3 } ]
+[2016-08-30 08:54:36.485] [DEBUG] Server - #pingPongDatabase() [] {}
+[2016-08-30 08:54:36.614] [INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-30 08:54:36.620] [INFO] console - [ 70, 455, {}, [ 'КОПА' ] ]
+[2016-08-30 08:54:36.644] [DEBUG] Server - #error() [ 'sadkljfaskldjfs;af' ] {}
+[2016-08-30 08:54:36.774] [INFO] console - [ 8,
+  68,
+  456,
+  {},
+  'MySuperError',
+  [],
+  { message: 'sadkljfaskldjfs;af',
+    stack: 
+     [ 'Error: sadkljfaskldjfs;af',
+       '    at MySuperError (Server.js:80:9)',
+       '    at Server.error (Server.js:85:19)',
+       '    at Object.<anonymous> (Server.js:46:74)',
+       '    at tryCatchResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:46:23)',
+       '    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:30:12)',
+       '    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)',
+       '    at tryCatchReject3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:856:7)',
+       '    at runContinuation3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:814:4)',
+       '    at Fulfilled.fold (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:588:4)',
+       '    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:34:12)',
+       '    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)',
+       '    at tryCatchReject3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:856:7)',
+       '    at runContinuation3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:814:4)',
+       '    at Fulfilled.fold (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:588:4)',
+       '    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:34:12)',
+       '    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)' ] } ]
+[2016-08-30 08:56:55.730] [DEBUG] Server - #pingPong() [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-30 08:56:55.743] [INFO] console - [ 70, 458, {}, [ 1, 2, 3 ], { x: 1, y: 2, z: 3 } ]
+[2016-08-30 08:56:55.781] [DEBUG] Server - #pingPongDatabase() [] {}
+[2016-08-30 08:56:55.836] [INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-30 08:56:55.843] [INFO] console - [ 70, 459, {}, [ 'КОПА' ] ]
+[2016-08-30 08:56:55.868] [DEBUG] Server - #error() [ 'sadkljfaskldjfs;af' ] {}
+[2016-08-30 08:56:55.880] [INFO] console - [ 8,
+  68,
+  460,
+  {},
+  'MySuperError',
+  [],
+  { message: 'sadkljfaskldjfs;af',
+    stack: 
+     [ 'Error: sadkljfaskldjfs;af',
+       '    at MySuperError (Server.js:80:9)',
+       '    at Server.error (Server.js:85:19)',
+       '    at Object.<anonymous> (Server.js:46:74)',
+       '    at tryCatchResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:46:23)',
+       '    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:30:12)',
+       '    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)',
+       '    at tryCatchReject3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:856:7)',
+       '    at runContinuation3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:814:4)',
+       '    at Fulfilled.fold (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:588:4)',
+       '    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:34:12)',
+       '    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)',
+       '    at tryCatchReject3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:856:7)',
+       '    at runContinuation3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:814:4)',
+       '    at Fulfilled.fold (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:588:4)',
+       '    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:34:12)',
+       '    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)' ] } ]
+[2016-08-30 08:58:38.621] [DEBUG] Server - #pingPong() [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-30 08:58:38.628] [INFO] console - [ 70, 462, {}, [ 1, 2, 3 ], { x: 1, y: 2, z: 3 } ]
+[2016-08-30 08:58:38.660] [DEBUG] Server - #pingPongDatabase() [] {}
+[2016-08-30 08:58:38.704] [INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-30 08:58:38.708] [INFO] console - [ 70, 463, {}, [ 'КОПА' ] ]
+[2016-08-30 08:58:38.757] [DEBUG] Server - #error() [ 'sadkljfaskldjfs;af' ] {}
+[2016-08-30 08:58:38.766] [INFO] console - [ 8,
+  68,
+  464,
+  {},
+  'MySuperError',
+  [],
+  { message: 'sadkljfaskldjfs;af',
+    stack: 
+     [ 'Error: sadkljfaskldjfs;af',
+       '    at MySuperError (Server.js:80:9)',
+       '    at Server.error (Server.js:85:19)',
+       '    at Object.<anonymous> (Server.js:46:74)',
+       '    at tryCatchResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:46:23)',
+       '    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:30:12)',
+       '    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)',
+       '    at tryCatchReject3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:856:7)',
+       '    at runContinuation3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:814:4)',
+       '    at Fulfilled.fold (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:588:4)',
+       '    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:34:12)',
+       '    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)',
+       '    at tryCatchReject3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:856:7)',
+       '    at runContinuation3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:814:4)',
+       '    at Fulfilled.fold (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:588:4)',
+       '    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:34:12)',
+       '    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)' ] } ]
+[2016-08-30 09:37:37.393] [INFO] console - AutobahnJS debug enabled
+[2016-08-30 09:37:39.496] [INFO] Server - starting...
+[2016-08-30 09:37:39.499] [INFO] console - trying to create WAMP transport of type: websocket
+[2016-08-30 09:37:39.632] [INFO] console - using WAMP transport type: websocket
+[2016-08-30 09:37:39.833] [INFO] console - [ 1,
+  'kopa',
+  { roles: 
+     { caller: [Object],
+       callee: [Object],
+       publisher: [Object],
+       subscriber: [Object] },
+    authmethods: [ 'ticket' ],
+    authid: 'server' } ]
+[2016-08-30 09:37:39.861] [INFO] console - [ 5, 'server', {} ]
+[2016-08-30 09:37:39.909] [INFO] Server - connection.onopen()
+[2016-08-30 09:37:39.915] [INFO] console - [ 64, 4433037802602496, {}, 'ru.kopa.model.get' ]
+[2016-08-30 09:37:39.933] [DEBUG] Server - api:model.get registered
+[2016-08-30 09:37:39.934] [INFO] console - [ 64, 7247941712478208, {}, 'ru.kopa.pingPong' ]
+[2016-08-30 09:37:39.941] [DEBUG] Server - api:pingPong registered
+[2016-08-30 09:37:39.941] [INFO] console - [ 64, 3328570487209984, {}, 'ru.kopa.pingPongDatabase' ]
+[2016-08-30 09:37:39.950] [DEBUG] Server - api:pingPongDatabase registered
+[2016-08-30 09:37:39.951] [INFO] console - [ 64, 5871516277276672, {}, 'ru.kopa.error' ]
+[2016-08-30 09:37:39.955] [DEBUG] Server - api:error registered
+[2016-08-30 09:41:15.539] [INFO] console - AutobahnJS debug enabled
+[2016-08-30 09:41:17.234] [INFO] Server - starting...
+[2016-08-30 09:41:17.236] [INFO] console - trying to create WAMP transport of type: websocket
+[2016-08-30 09:41:17.333] [INFO] console - using WAMP transport type: websocket
+[2016-08-30 09:41:17.585] [INFO] console - [ 1,
+  'kopa',
+  { roles: 
+     { caller: [Object],
+       callee: [Object],
+       publisher: [Object],
+       subscriber: [Object] },
+    authmethods: [ 'ticket' ],
+    authid: 'server' } ]
+[2016-08-30 09:41:17.614] [INFO] console - [ 5, 'server', {} ]
+[2016-08-30 09:41:17.655] [INFO] Server - connection.onopen()
+[2016-08-30 09:41:17.658] [INFO] console - [ 64, 1163847159250944, {}, 'ru.kopa.model.get' ]
+[2016-08-30 09:41:17.672] [DEBUG] Server - api:model.get registered
+[2016-08-30 09:41:17.673] [INFO] console - [ 64, 3222401137508352, {}, 'ru.kopa.pingPong' ]
+[2016-08-30 09:41:17.682] [DEBUG] Server - api:pingPong registered
+[2016-08-30 09:41:17.683] [INFO] console - [ 64, 2562366059315200, {}, 'ru.kopa.pingPongDatabase' ]
+[2016-08-30 09:41:17.690] [DEBUG] Server - api:pingPongDatabase registered
+[2016-08-30 09:41:17.691] [INFO] console - [ 64, 6220111801221120, {}, 'ru.kopa.error' ]
+[2016-08-30 09:41:17.699] [DEBUG] Server - api:error registered
+[2016-08-30 09:41:35.395] [DEBUG] Server - #pingPong() [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-30 09:41:35.404] [INFO] console - [ 70, 470, {}, [ 1, 2, 3 ], { x: 1, y: 2, z: 3 } ]
+[2016-08-30 09:41:35.425] [DEBUG] Server - #pingPongDatabase() [] {}
+[2016-08-30 09:41:35.649] [INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-30 09:41:35.655] [INFO] console - [ 70, 471, {}, [ 'КОПА' ] ]
+[2016-08-30 09:41:35.674] [DEBUG] Server - #error() [ 'sadkljfaskldjfs;af' ] {}
+[2016-08-30 09:41:35.800] [INFO] console - [ 8,
+  68,
+  472,
+  {},
+  'MySuperError',
+  [],
+  { message: 'sadkljfaskldjfs;af',
+    stack: 
+     [ 'Error: sadkljfaskldjfs;af',
+       '    at MySuperError (Server.js:104:9)',
+       '    at Server.error (Server.js:109:19)',
+       '    at Object.<anonymous> (Server.js:70:74)',
+       '    at tryCatchResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:46:23)',
+       '    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:30:12)',
+       '    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)',
+       '    at tryCatchReject3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:856:7)',
+       '    at runContinuation3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:814:4)',
+       '    at Fulfilled.fold (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:588:4)',
+       '    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:34:12)',
+       '    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)',
+       '    at tryCatchReject3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:856:7)',
+       '    at runContinuation3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:814:4)',
+       '    at Fulfilled.fold (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:588:4)',
+       '    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:34:12)',
+       '    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)' ] } ]
+[2016-08-30 09:41:35.938] [DEBUG] Server - #promiseModel() [ 1, 2.3 ] { model: 'Kopnik', id: 2 }
+[2016-08-30 09:41:35.944] [INFO] console - [ 70, 473, {}, [ undefined ] ]
+[2016-08-30 09:41:35.952] [INFO] console - Executing (d7a4656a-66bc-444d-b857-019ed76fb4d8): START TRANSACTION;
+[2016-08-30 09:41:35.956] [INFO] console - Executing (d7a4656a-66bc-444d-b857-019ed76fb4d8): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+[2016-08-30 09:41:35.989] [DEBUG] Server - #promiseModel() [ 1, 2.3 ] { model: 'Kopnik', id: 2 }
+[2016-08-30 09:41:35.999] [INFO] console - [ 70, 474, {}, [ undefined ] ]
+[2016-08-30 09:41:36.038] [INFO] console - Executing (default): SELECT "Kopnik"."id", "Kopnik"."email", "Kopnik"."password", "Kopnik"."name", "Kopnik"."surname", "Kopnik"."patronymic", "Kopnik"."birth", "Kopnik"."note", "Kopnik"."own_id", "Kopnik"."starshina_id", "attachments"."id" AS "attachments.id", "attachments"."path" AS "attachments.path", "attachments"."note" AS "attachments.note", "attachments"."zemla_id" AS "attachments.zemla_id", "attachments"."kopnik_id" AS "attachments.kopnik_id", "attachments"."kopa_id" AS "attachments.kopa_id", "attachments"."slovo_id" AS "attachments.slovo_id", "attachments"."predlozhenie_id" AS "attachments.predlozhenie_id", "attachments"."golos_id" AS "attachments.golos_id" FROM "Kopnik" AS "Kopnik" LEFT OUTER JOIN "File" AS "attachments" ON "Kopnik"."id" = "attachments"."kopnik_id" WHERE "Kopnik"."id" = 2;
+[2016-08-30 09:41:36.067] [INFO] console - Executing (39a6a2c0-c162-4947-bedd-99f143a0a289): START TRANSACTION;
+[2016-08-30 09:41:36.075] [INFO] console - Executing (d7a4656a-66bc-444d-b857-019ed76fb4d8): COMMIT;
+[2016-08-30 09:41:36.081] [INFO] console - Executing (39a6a2c0-c162-4947-bedd-99f143a0a289): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+[2016-08-30 09:41:36.099] [INFO] console - Executing (default): SELECT "Kopnik"."id", "Kopnik"."email", "Kopnik"."password", "Kopnik"."name", "Kopnik"."surname", "Kopnik"."patronymic", "Kopnik"."birth", "Kopnik"."note", "Kopnik"."own_id", "Kopnik"."starshina_id", "attachments"."id" AS "attachments.id", "attachments"."path" AS "attachments.path", "attachments"."note" AS "attachments.note", "attachments"."zemla_id" AS "attachments.zemla_id", "attachments"."kopnik_id" AS "attachments.kopnik_id", "attachments"."kopa_id" AS "attachments.kopa_id", "attachments"."slovo_id" AS "attachments.slovo_id", "attachments"."predlozhenie_id" AS "attachments.predlozhenie_id", "attachments"."golos_id" AS "attachments.golos_id" FROM "Kopnik" AS "Kopnik" LEFT OUTER JOIN "File" AS "attachments" ON "Kopnik"."id" = "attachments"."kopnik_id" WHERE "Kopnik"."id" = 2;
+[2016-08-30 09:41:36.113] [INFO] console - Executing (39a6a2c0-c162-4947-bedd-99f143a0a289): COMMIT;
+[2016-08-30 09:41:37.994] [DEBUG] Server - #promiseModel() [ 1, 2.3 ] { model: 'Kopnik', id: 2 }
+[2016-08-30 09:41:37.999] [INFO] console - [ 70, 475, {}, [ undefined ] ]
+[2016-08-30 09:41:38.005] [INFO] console - Executing (612cd937-b076-422d-bd54-09884c2c677c): START TRANSACTION;
+[2016-08-30 09:41:38.008] [INFO] console - Executing (612cd937-b076-422d-bd54-09884c2c677c): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+[2016-08-30 09:41:38.024] [INFO] console - Executing (default): SELECT "Kopnik"."id", "Kopnik"."email", "Kopnik"."password", "Kopnik"."name", "Kopnik"."surname", "Kopnik"."patronymic", "Kopnik"."birth", "Kopnik"."note", "Kopnik"."own_id", "Kopnik"."starshina_id", "attachments"."id" AS "attachments.id", "attachments"."path" AS "attachments.path", "attachments"."note" AS "attachments.note", "attachments"."zemla_id" AS "attachments.zemla_id", "attachments"."kopnik_id" AS "attachments.kopnik_id", "attachments"."kopa_id" AS "attachments.kopa_id", "attachments"."slovo_id" AS "attachments.slovo_id", "attachments"."predlozhenie_id" AS "attachments.predlozhenie_id", "attachments"."golos_id" AS "attachments.golos_id" FROM "Kopnik" AS "Kopnik" LEFT OUTER JOIN "File" AS "attachments" ON "Kopnik"."id" = "attachments"."kopnik_id" WHERE "Kopnik"."id" = 2;
+[2016-08-30 09:41:38.034] [INFO] console - Executing (612cd937-b076-422d-bd54-09884c2c677c): COMMIT;
+[2016-08-30 09:41:39.983] [DEBUG] Server - #promiseModel() [ 1, 2.3 ] { model: 'Kopnik', id: 2 }
+[2016-08-30 09:41:39.988] [INFO] console - [ 70, 476, {}, [ undefined ] ]
+[2016-08-30 09:41:39.995] [INFO] console - Executing (14723bc5-fe37-44c5-a9a1-26c7b8a973d1): START TRANSACTION;
+[2016-08-30 09:41:40.000] [INFO] console - Executing (14723bc5-fe37-44c5-a9a1-26c7b8a973d1): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+[2016-08-30 09:41:40.016] [INFO] console - Executing (default): SELECT "Kopnik"."id", "Kopnik"."email", "Kopnik"."password", "Kopnik"."name", "Kopnik"."surname", "Kopnik"."patronymic", "Kopnik"."birth", "Kopnik"."note", "Kopnik"."own_id", "Kopnik"."starshina_id", "attachments"."id" AS "attachments.id", "attachments"."path" AS "attachments.path", "attachments"."note" AS "attachments.note", "attachments"."zemla_id" AS "attachments.zemla_id", "attachments"."kopnik_id" AS "attachments.kopnik_id", "attachments"."kopa_id" AS "attachments.kopa_id", "attachments"."slovo_id" AS "attachments.slovo_id", "attachments"."predlozhenie_id" AS "attachments.predlozhenie_id", "attachments"."golos_id" AS "attachments.golos_id" FROM "Kopnik" AS "Kopnik" LEFT OUTER JOIN "File" AS "attachments" ON "Kopnik"."id" = "attachments"."kopnik_id" WHERE "Kopnik"."id" = 2;
+[2016-08-30 09:41:40.027] [INFO] console - Executing (14723bc5-fe37-44c5-a9a1-26c7b8a973d1): COMMIT;
+[2016-08-30 09:41:41.987] [DEBUG] Server - #promiseModel() [ 1, 2.3 ] { model: 'Kopnik', id: 2 }
+[2016-08-30 09:41:41.993] [INFO] console - [ 70, 477, {}, [ undefined ] ]
+[2016-08-30 09:41:41.999] [INFO] console - Executing (2f994f2f-06f7-4758-b5a6-d5e6b8f94fee): START TRANSACTION;
+[2016-08-30 09:41:42.004] [INFO] console - Executing (2f994f2f-06f7-4758-b5a6-d5e6b8f94fee): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+[2016-08-30 09:41:42.020] [INFO] console - Executing (default): SELECT "Kopnik"."id", "Kopnik"."email", "Kopnik"."password", "Kopnik"."name", "Kopnik"."surname", "Kopnik"."patronymic", "Kopnik"."birth", "Kopnik"."note", "Kopnik"."own_id", "Kopnik"."starshina_id", "attachments"."id" AS "attachments.id", "attachments"."path" AS "attachments.path", "attachments"."note" AS "attachments.note", "attachments"."zemla_id" AS "attachments.zemla_id", "attachments"."kopnik_id" AS "attachments.kopnik_id", "attachments"."kopa_id" AS "attachments.kopa_id", "attachments"."slovo_id" AS "attachments.slovo_id", "attachments"."predlozhenie_id" AS "attachments.predlozhenie_id", "attachments"."golos_id" AS "attachments.golos_id" FROM "Kopnik" AS "Kopnik" LEFT OUTER JOIN "File" AS "attachments" ON "Kopnik"."id" = "attachments"."kopnik_id" WHERE "Kopnik"."id" = 2;
+[2016-08-30 09:41:42.032] [INFO] console - Executing (2f994f2f-06f7-4758-b5a6-d5e6b8f94fee): COMMIT;
+[2016-08-30 09:42:37.500] [INFO] console - AutobahnJS debug enabled
+[2016-08-30 09:42:39.518] [INFO] Server - starting...
+[2016-08-30 09:42:39.522] [INFO] console - trying to create WAMP transport of type: websocket
+[2016-08-30 09:42:39.676] [INFO] console - using WAMP transport type: websocket
+[2016-08-30 09:42:40.032] [INFO] console - [ 1,
+  'kopa',
+  { roles: 
+     { caller: [Object],
+       callee: [Object],
+       publisher: [Object],
+       subscriber: [Object] },
+    authmethods: [ 'ticket' ],
+    authid: 'server' } ]
+[2016-08-30 09:42:40.065] [INFO] console - [ 5, 'server', {} ]
+[2016-08-30 09:42:40.098] [INFO] Server - connection.onopen()
+[2016-08-30 09:42:40.100] [INFO] console - [ 64, 6350865703108608, {}, 'ru.kopa.model.get' ]
+[2016-08-30 09:42:40.113] [DEBUG] Server - api:model.get registered
+[2016-08-30 09:42:40.115] [INFO] console - [ 64, 2544641670905856, {}, 'ru.kopa.pingPong' ]
+[2016-08-30 09:42:40.130] [DEBUG] Server - api:pingPong registered
+[2016-08-30 09:42:40.133] [INFO] console - [ 64, 8553268626063360, {}, 'ru.kopa.pingPongDatabase' ]
+[2016-08-30 09:42:40.142] [DEBUG] Server - api:pingPongDatabase registered
+[2016-08-30 09:42:40.143] [INFO] console - [ 64, 3966512138289152, {}, 'ru.kopa.error' ]
+[2016-08-30 09:42:40.180] [DEBUG] Server - api:error registered
+[2016-08-30 09:42:42.978] [INFO] console - [ 8,
+  68,
+  480,
+  {},
+  'wamp.error.runtime_error',
+  [ [TypeError: Cannot read property 'error' of undefined] ] ]
+[2016-08-30 09:42:43.055] [DEBUG] Server - #pingPongDatabase() [] {}
+[2016-08-30 09:42:43.177] [INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-30 09:42:43.185] [INFO] console - [ 70, 481, {}, [ 'КОПА' ] ]
+[2016-08-30 09:42:43.202] [DEBUG] Server - #error() [ 'sadkljfaskldjfs;af' ] {}
+[2016-08-30 09:42:43.344] [INFO] console - [ 8,
+  68,
+  482,
+  {},
+  'MySuperError',
+  [],
+  { message: 'sadkljfaskldjfs;af',
+    stack: 
+     [ 'Error: sadkljfaskldjfs;af',
+       '    at MySuperError (Server.js:104:9)',
+       '    at Server.error (Server.js:109:19)',
+       '    at Object.<anonymous> (Server.js:70:74)',
+       '    at tryCatchResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:46:23)',
+       '    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:30:12)',
+       '    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)',
+       '    at tryCatchReject3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:856:7)',
+       '    at runContinuation3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:814:4)',
+       '    at Fulfilled.fold (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:588:4)',
+       '    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:34:12)',
+       '    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)',
+       '    at tryCatchReject3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:856:7)',
+       '    at runContinuation3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:814:4)',
+       '    at Fulfilled.fold (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:588:4)',
+       '    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:34:12)',
+       '    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)' ] } ]
+[2016-08-30 09:43:28.065] [INFO] console - AutobahnJS debug enabled
+[2016-08-30 09:43:29.759] [INFO] Server - starting...
+[2016-08-30 09:43:29.762] [INFO] console - trying to create WAMP transport of type: websocket
+[2016-08-30 09:43:29.861] [INFO] console - using WAMP transport type: websocket
+[2016-08-30 09:43:30.029] [INFO] console - [ 1,
+  'kopa',
+  { roles: 
+     { caller: [Object],
+       callee: [Object],
+       publisher: [Object],
+       subscriber: [Object] },
+    authmethods: [ 'ticket' ],
+    authid: 'server' } ]
+[2016-08-30 09:43:30.047] [INFO] console - [ 5, 'server', {} ]
+[2016-08-30 09:43:30.060] [INFO] Server - connection.onopen()
+[2016-08-30 09:43:30.064] [INFO] console - [ 64, 1283825189519360, {}, 'ru.kopa.model.get' ]
+[2016-08-30 09:43:30.079] [DEBUG] Server - api:model.get registered
+[2016-08-30 09:43:30.080] [INFO] console - [ 64, 4148886935437312, {}, 'ru.kopa.pingPong' ]
+[2016-08-30 09:43:30.087] [DEBUG] Server - api:pingPong registered
+[2016-08-30 09:43:30.087] [INFO] console - [ 64, 1218088355758080, {}, 'ru.kopa.pingPongDatabase' ]
+[2016-08-30 09:43:30.093] [DEBUG] Server - api:pingPongDatabase registered
+[2016-08-30 09:43:30.093] [INFO] console - [ 64, 3245426845155328, {}, 'ru.kopa.error' ]
+[2016-08-30 09:43:30.098] [DEBUG] Server - api:error registered
+[2016-08-30 09:44:15.451] [DEBUG] Server - #pingPong() [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-30 09:44:39.652] [INFO] console - [ 70, 485, {}, [ undefined ] ]
+[2016-08-30 09:44:48.881] [DEBUG] Server - #pingPong() [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-30 09:44:48.905] [INFO] console - [ 70, 487, {}, [ undefined ] ]
+[2016-08-30 09:44:48.939] [DEBUG] Server - #pingPongDatabase() [] {}
+[2016-08-30 09:44:49.058] [INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-30 09:44:49.063] [INFO] console - [ 70, 488, {}, [ 'КОПА' ] ]
+[2016-08-30 09:44:49.078] [DEBUG] Server - #error() [ 'sadkljfaskldjfs;af' ] {}
+[2016-08-30 09:44:49.145] [INFO] console - [ 8,
+  68,
+  489,
+  {},
+  'MySuperError',
+  [],
+  { message: 'sadkljfaskldjfs;af',
+    stack: 
+     [ 'Error: sadkljfaskldjfs;af',
+       '    at MySuperError (Server.js:104:9)',
+       '    at Server.error (Server.js:109:19)',
+       '    at Object.<anonymous> (Server.js:70:74)',
+       '    at tryCatchResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:46:23)',
+       '    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:30:12)',
+       '    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)',
+       '    at tryCatchReject3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:856:7)',
+       '    at runContinuation3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:814:4)',
+       '    at Fulfilled.fold (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:588:4)',
+       '    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:34:12)',
+       '    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)',
+       '    at tryCatchReject3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:856:7)',
+       '    at runContinuation3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:814:4)',
+       '    at Fulfilled.fold (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:588:4)',
+       '    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:34:12)',
+       '    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)' ] } ]
+[2016-08-30 09:45:33.085] [INFO] console - AutobahnJS debug enabled
+[2016-08-30 09:45:34.757] [INFO] Server - starting...
+[2016-08-30 09:45:34.759] [INFO] console - trying to create WAMP transport of type: websocket
+[2016-08-30 09:45:34.853] [INFO] console - using WAMP transport type: websocket
+[2016-08-30 09:45:35.000] [INFO] console - [ 1,
+  'kopa',
+  { roles: 
+     { caller: [Object],
+       callee: [Object],
+       publisher: [Object],
+       subscriber: [Object] },
+    authmethods: [ 'ticket' ],
+    authid: 'server' } ]
+[2016-08-30 09:45:35.028] [INFO] console - [ 5, 'server', {} ]
+[2016-08-30 09:45:35.046] [INFO] Server - connection.onopen()
+[2016-08-30 09:45:35.048] [INFO] console - [ 64, 644218041139200, {}, 'ru.kopa.model.get' ]
+[2016-08-30 09:45:35.059] [DEBUG] Server - api:model.get registered
+[2016-08-30 09:45:35.060] [INFO] console - [ 64, 4295111206764544, {}, 'ru.kopa.pingPong' ]
+[2016-08-30 09:45:35.066] [DEBUG] Server - api:pingPong registered
+[2016-08-30 09:45:35.067] [INFO] console - [ 64, 1210263856480256, {}, 'ru.kopa.pingPongDatabase' ]
+[2016-08-30 09:45:35.072] [DEBUG] Server - api:pingPongDatabase registered
+[2016-08-30 09:45:35.073] [INFO] console - [ 64, 5736959232180224, {}, 'ru.kopa.error' ]
+[2016-08-30 09:45:35.078] [DEBUG] Server - api:error registered
+[2016-08-30 09:45:45.824] [DEBUG] Server - #pingPong() [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-30 09:45:45.832] [INFO] console - [ 70, 493, {}, [ 1, 2, 3 ], { x: 1, y: 2, z: 3 } ]
+[2016-08-30 09:45:45.889] [DEBUG] Server - #pingPongDatabase() [] {}
+[2016-08-30 09:45:45.992] [INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-30 09:45:45.999] [INFO] console - [ 70, 494, {}, [ 'КОПА' ] ]
+[2016-08-30 09:45:46.013] [DEBUG] Server - #error() [ 'sadkljfaskldjfs;af' ] {}
+[2016-08-30 09:45:46.155] [INFO] console - [ 8,
+  68,
+  495,
+  {},
+  'MySuperError',
+  [],
+  { message: 'sadkljfaskldjfs;af',
+    stack: 
+     [ 'Error: sadkljfaskldjfs;af',
+       '    at MySuperError (Server.js:104:9)',
+       '    at Server.error (Server.js:109:19)',
+       '    at Object.<anonymous> (Server.js:70:74)',
+       '    at tryCatchResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:46:23)',
+       '    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:30:12)',
+       '    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)',
+       '    at tryCatchReject3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:856:7)',
+       '    at runContinuation3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:814:4)',
+       '    at Fulfilled.fold (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:588:4)',
+       '    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:34:12)',
+       '    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)',
+       '    at tryCatchReject3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:856:7)',
+       '    at runContinuation3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:814:4)',
+       '    at Fulfilled.fold (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:588:4)',
+       '    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:34:12)',
+       '    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)' ] } ]
+[2016-08-30 09:46:11.654] [INFO] console - AutobahnJS debug enabled
+[2016-08-30 09:46:13.412] [INFO] Server - starting...
+[2016-08-30 09:46:13.414] [INFO] console - trying to create WAMP transport of type: websocket
+[2016-08-30 09:46:13.515] [INFO] console - using WAMP transport type: websocket
+[2016-08-30 09:46:13.696] [INFO] console - [ 1,
+  'kopa',
+  { roles: 
+     { caller: [Object],
+       callee: [Object],
+       publisher: [Object],
+       subscriber: [Object] },
+    authmethods: [ 'ticket' ],
+    authid: 'server' } ]
+[2016-08-30 09:46:13.811] [INFO] console - [ 5, 'server', {} ]
+[2016-08-30 09:46:13.846] [INFO] Server - connection.onopen()
+[2016-08-30 09:46:13.848] [INFO] console - [ 64, 8158154256809984, {}, 'ru.kopa.model.get' ]
+[2016-08-30 09:46:13.861] [DEBUG] Server - api:model.get registered
+[2016-08-30 09:46:13.863] [INFO] console - [ 64, 3295072330186752, {}, 'ru.kopa.pingPong' ]
+[2016-08-30 09:46:13.878] [DEBUG] Server - api:pingPong registered
+[2016-08-30 09:46:13.879] [INFO] console - [ 64, 705400955469824, {}, 'ru.kopa.pingPongDatabase' ]
+[2016-08-30 09:46:13.893] [DEBUG] Server - api:pingPongDatabase registered
+[2016-08-30 09:46:13.894] [INFO] console - [ 64, 3336513488158720, {}, 'ru.kopa.error' ]
+[2016-08-30 09:46:13.901] [DEBUG] Server - api:error registered
+[2016-08-30 09:46:20.741] [DEBUG] Server - #pingPong() [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-30 09:46:20.758] [INFO] console - [ 70, 498, {}, [ 1, 2, 3 ], { x: 1, y: 2, z: 3 } ]
+[2016-08-30 09:46:20.773] [DEBUG] Server - #pingPongDatabase() [] {}
+[2016-08-30 09:46:20.882] [INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-30 09:46:20.887] [INFO] console - [ 70, 499, {}, [ 'КОПА' ] ]
+[2016-08-30 09:46:20.901] [DEBUG] Server - #error() [ 'sadkljfaskldjfs;af' ] {}
+[2016-08-30 09:46:21.061] [INFO] console - [ 8,
+  68,
+  500,
+  {},
+  'MySuperError',
+  [],
+  { message: 'sadkljfaskldjfs;af',
+    stack: 
+     [ 'Error: sadkljfaskldjfs;af',
+       '    at MySuperError (Server.js:104:9)',
+       '    at Server.error (Server.js:109:19)',
+       '    at Object.<anonymous> (Server.js:70:74)',
+       '    at tryCatchResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:46:23)',
+       '    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:30:12)',
+       '    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)',
+       '    at tryCatchReject3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:856:7)',
+       '    at runContinuation3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:814:4)',
+       '    at Fulfilled.fold (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:588:4)',
+       '    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:34:12)',
+       '    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)',
+       '    at tryCatchReject3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:856:7)',
+       '    at runContinuation3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:814:4)',
+       '    at Fulfilled.fold (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:588:4)',
+       '    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:34:12)',
+       '    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)' ] } ]
+[2016-08-30 09:48:38.947] [INFO] console - AutobahnJS debug enabled
+[2016-08-30 09:48:40.601] [INFO] Server - starting...
+[2016-08-30 09:48:40.604] [INFO] console - trying to create WAMP transport of type: websocket
+[2016-08-30 09:48:40.706] [INFO] console - using WAMP transport type: websocket
+[2016-08-30 09:48:40.901] [INFO] console - [ 1,
+  'kopa',
+  { roles: 
+     { caller: [Object],
+       callee: [Object],
+       publisher: [Object],
+       subscriber: [Object] },
+    authmethods: [ 'ticket' ],
+    authid: 'server' } ]
+[2016-08-30 09:48:40.928] [INFO] console - [ 5, 'server', {} ]
+[2016-08-30 09:48:40.980] [INFO] Server - connection.onopen()
+[2016-08-30 09:48:40.982] [INFO] console - [ 64, 8315256279400448, {}, 'ru.kopa.model.get' ]
+[2016-08-30 09:48:40.992] [DEBUG] Server - api:model.get registered
+[2016-08-30 09:48:40.996] [INFO] console - [ 64, 4000117864529920, {}, 'ru.kopa.pingPong' ]
+[2016-08-30 09:48:41.010] [DEBUG] Server - api:pingPong registered
+[2016-08-30 09:48:41.013] [INFO] console - [ 64, 4944218694877184, {}, 'ru.kopa.pingPongDatabase' ]
+[2016-08-30 09:48:41.024] [DEBUG] Server - api:pingPongDatabase registered
+[2016-08-30 09:48:41.031] [INFO] console - [ 64, 944976116580352, {}, 'ru.kopa.error' ]
+[2016-08-30 09:48:41.048] [DEBUG] Server - api:error registered
+[2016-08-30 09:48:49.240] [DEBUG] Server - #pingPong() [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-30 09:48:49.251] [INFO] console - [ 70, 503, {}, [ 1, 2, 3 ], { x: 1, y: 2, z: 3 } ]
+[2016-08-30 09:48:49.272] [DEBUG] Server - #pingPongDatabase() [] {}
+[2016-08-30 09:48:49.404] [INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-30 09:48:49.415] [INFO] console - [ 70, 504, {}, [ 'КОПА' ] ]
+[2016-08-30 09:48:49.431] [DEBUG] Server - #error() [ 'sadkljfaskldjfs;af' ] {}
+[2016-08-30 09:48:49.565] [INFO] console - [ 8,
+  68,
+  505,
+  {},
+  'MySuperError',
+  [],
+  { message: 'sadkljfaskldjfs;af',
+    stack: 
+     [ 'Error: sadkljfaskldjfs;af',
+       '    at MySuperError (Server.js:104:9)',
+       '    at Server.error (Server.js:108:15)',
+       '    at Object.endpointWithoutContext (Server.js:21:33)',
+       '    at tryCatchResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:46:23)',
+       '    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:30:12)',
+       '    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)',
+       '    at tryCatchReject3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:856:7)',
+       '    at runContinuation3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:814:4)',
+       '    at Fulfilled.fold (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:588:4)',
+       '    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:34:12)',
+       '    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)',
+       '    at tryCatchReject3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:856:7)',
+       '    at runContinuation3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:814:4)',
+       '    at Fulfilled.fold (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:588:4)',
+       '    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:34:12)',
+       '    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)' ] } ]
+[2016-08-30 09:49:22.740] [DEBUG] Server - #pingPong() [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-30 09:49:22.747] [INFO] console - [ 70, 509, {}, [ 1, 2, 3 ], { x: 1, y: 2, z: 3 } ]
+[2016-08-30 09:49:22.768] [DEBUG] Server - #pingPongDatabase() [] {}
+[2016-08-30 09:49:22.850] [INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-30 09:49:22.857] [INFO] console - [ 70, 510, {}, [ 'КОПА' ] ]
+[2016-08-30 09:49:22.893] [DEBUG] Server - #error() [ 'sadkljfaskldjfs;af' ] {}
+[2016-08-30 09:49:22.902] [INFO] console - [ 8,
+  68,
+  511,
+  {},
+  'MySuperError',
+  [],
+  { message: 'sadkljfaskldjfs;af',
+    stack: 
+     [ 'Error: sadkljfaskldjfs;af',
+       '    at MySuperError (Server.js:104:9)',
+       '    at Server.error (Server.js:108:15)',
+       '    at Object.endpointWithoutContext (Server.js:21:33)',
+       '    at tryCatchResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:46:23)',
+       '    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:30:12)',
+       '    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)',
+       '    at tryCatchReject3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:856:7)',
+       '    at runContinuation3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:814:4)',
+       '    at Fulfilled.fold (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:588:4)',
+       '    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:34:12)',
+       '    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)',
+       '    at tryCatchReject3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:856:7)',
+       '    at runContinuation3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:814:4)',
+       '    at Fulfilled.fold (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:588:4)',
+       '    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:34:12)',
+       '    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)' ] } ]
+[2016-08-30 09:49:22.972] [DEBUG] Server - #promiseModel() [ 1, 2.3 ] { model: 'Kopnik', id: 2 }
+[2016-08-30 09:49:22.983] [INFO] console - Executing (20ae14a4-c25b-4a5f-a55f-839a9ca1f303): START TRANSACTION;
+[2016-08-30 09:49:22.987] [INFO] console - Executing (20ae14a4-c25b-4a5f-a55f-839a9ca1f303): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+[2016-08-30 09:49:23.049] [INFO] console - Executing (default): SELECT "Kopnik"."id", "Kopnik"."email", "Kopnik"."password", "Kopnik"."name", "Kopnik"."surname", "Kopnik"."patronymic", "Kopnik"."birth", "Kopnik"."note", "Kopnik"."own_id", "Kopnik"."starshina_id", "attachments"."id" AS "attachments.id", "attachments"."path" AS "attachments.path", "attachments"."note" AS "attachments.note", "attachments"."zemla_id" AS "attachments.zemla_id", "attachments"."kopnik_id" AS "attachments.kopnik_id", "attachments"."kopa_id" AS "attachments.kopa_id", "attachments"."slovo_id" AS "attachments.slovo_id", "attachments"."predlozhenie_id" AS "attachments.predlozhenie_id", "attachments"."golos_id" AS "attachments.golos_id" FROM "Kopnik" AS "Kopnik" LEFT OUTER JOIN "File" AS "attachments" ON "Kopnik"."id" = "attachments"."kopnik_id" WHERE "Kopnik"."id" = 2;
+[2016-08-30 09:49:23.064] [INFO] console - Executing (20ae14a4-c25b-4a5f-a55f-839a9ca1f303): COMMIT;
+[2016-08-30 09:49:23.066] [INFO] console - [ 70,
+  512,
+  {},
+  [ { fullName: 'Unit Test',
+      id: '2',
+      email: 'unittest1@domain.ru',
+      name: 'Unit',
+      surname: 'Test',
+      patronymic: '1',
+      birth: 1983,
+      note: null,
+      own_id: '2',
+      starshina_id: null,
+      attachments: [] } ] ]
+[2016-08-30 09:49:23.087] [DEBUG] Server - #promiseModel() [ 1, 2.3 ] { model: 'Kopnik', id: 2 }
+[2016-08-30 09:49:23.101] [INFO] console - Executing (faf00952-e919-4a33-9c4f-41547585f3b0): START TRANSACTION;
+[2016-08-30 09:49:23.104] [INFO] console - Executing (faf00952-e919-4a33-9c4f-41547585f3b0): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+[2016-08-30 09:49:23.120] [INFO] console - Executing (default): SELECT "Kopnik"."id", "Kopnik"."email", "Kopnik"."password", "Kopnik"."name", "Kopnik"."surname", "Kopnik"."patronymic", "Kopnik"."birth", "Kopnik"."note", "Kopnik"."own_id", "Kopnik"."starshina_id", "attachments"."id" AS "attachments.id", "attachments"."path" AS "attachments.path", "attachments"."note" AS "attachments.note", "attachments"."zemla_id" AS "attachments.zemla_id", "attachments"."kopnik_id" AS "attachments.kopnik_id", "attachments"."kopa_id" AS "attachments.kopa_id", "attachments"."slovo_id" AS "attachments.slovo_id", "attachments"."predlozhenie_id" AS "attachments.predlozhenie_id", "attachments"."golos_id" AS "attachments.golos_id" FROM "Kopnik" AS "Kopnik" LEFT OUTER JOIN "File" AS "attachments" ON "Kopnik"."id" = "attachments"."kopnik_id" WHERE "Kopnik"."id" = 2;
+[2016-08-30 09:49:23.133] [INFO] console - Executing (faf00952-e919-4a33-9c4f-41547585f3b0): COMMIT;
+[2016-08-30 09:49:23.135] [INFO] console - [ 70,
+  513,
+  {},
+  [ { fullName: 'Unit Test',
+      id: '2',
+      email: 'unittest1@domain.ru',
+      name: 'Unit',
+      surname: 'Test',
+      patronymic: '1',
+      birth: 1983,
+      note: null,
+      own_id: '2',
+      starshina_id: null,
+      attachments: [] } ] ]
+[2016-08-30 09:49:23.151] [DEBUG] Server - #promiseModel() [ 1, 2.3 ] { model: 'Kopnik', id: 2 }
+[2016-08-30 09:49:23.157] [INFO] console - Executing (3da08f25-6457-421f-a3f5-63c1120233c0): START TRANSACTION;
+[2016-08-30 09:49:23.161] [INFO] console - Executing (3da08f25-6457-421f-a3f5-63c1120233c0): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+[2016-08-30 09:49:23.174] [INFO] console - Executing (default): SELECT "Kopnik"."id", "Kopnik"."email", "Kopnik"."password", "Kopnik"."name", "Kopnik"."surname", "Kopnik"."patronymic", "Kopnik"."birth", "Kopnik"."note", "Kopnik"."own_id", "Kopnik"."starshina_id", "attachments"."id" AS "attachments.id", "attachments"."path" AS "attachments.path", "attachments"."note" AS "attachments.note", "attachments"."zemla_id" AS "attachments.zemla_id", "attachments"."kopnik_id" AS "attachments.kopnik_id", "attachments"."kopa_id" AS "attachments.kopa_id", "attachments"."slovo_id" AS "attachments.slovo_id", "attachments"."predlozhenie_id" AS "attachments.predlozhenie_id", "attachments"."golos_id" AS "attachments.golos_id" FROM "Kopnik" AS "Kopnik" LEFT OUTER JOIN "File" AS "attachments" ON "Kopnik"."id" = "attachments"."kopnik_id" WHERE "Kopnik"."id" = 2;
+[2016-08-30 09:49:23.183] [INFO] console - Executing (3da08f25-6457-421f-a3f5-63c1120233c0): COMMIT;
+[2016-08-30 09:49:23.186] [INFO] console - [ 70,
+  514,
+  {},
+  [ { fullName: 'Unit Test',
+      id: '2',
+      email: 'unittest1@domain.ru',
+      name: 'Unit',
+      surname: 'Test',
+      patronymic: '1',
+      birth: 1983,
+      note: null,
+      own_id: '2',
+      starshina_id: null,
+      attachments: [] } ] ]
+[2016-08-30 09:49:23.209] [DEBUG] Server - #promiseModel() [ 1, 2.3 ] { model: 'Kopnik', id: 2 }
+[2016-08-30 09:49:23.219] [INFO] console - Executing (10117e24-f78f-42a0-a0f5-da3707e3bbc2): START TRANSACTION;
+[2016-08-30 09:49:23.222] [INFO] console - Executing (10117e24-f78f-42a0-a0f5-da3707e3bbc2): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+[2016-08-30 09:49:23.245] [INFO] console - Executing (default): SELECT "Kopnik"."id", "Kopnik"."email", "Kopnik"."password", "Kopnik"."name", "Kopnik"."surname", "Kopnik"."patronymic", "Kopnik"."birth", "Kopnik"."note", "Kopnik"."own_id", "Kopnik"."starshina_id", "attachments"."id" AS "attachments.id", "attachments"."path" AS "attachments.path", "attachments"."note" AS "attachments.note", "attachments"."zemla_id" AS "attachments.zemla_id", "attachments"."kopnik_id" AS "attachments.kopnik_id", "attachments"."kopa_id" AS "attachments.kopa_id", "attachments"."slovo_id" AS "attachments.slovo_id", "attachments"."predlozhenie_id" AS "attachments.predlozhenie_id", "attachments"."golos_id" AS "attachments.golos_id" FROM "Kopnik" AS "Kopnik" LEFT OUTER JOIN "File" AS "attachments" ON "Kopnik"."id" = "attachments"."kopnik_id" WHERE "Kopnik"."id" = 2;
+[2016-08-30 09:49:23.256] [INFO] console - Executing (10117e24-f78f-42a0-a0f5-da3707e3bbc2): COMMIT;
+[2016-08-30 09:49:23.260] [INFO] console - [ 70,
+  515,
+  {},
+  [ { fullName: 'Unit Test',
+      id: '2',
+      email: 'unittest1@domain.ru',
+      name: 'Unit',
+      surname: 'Test',
+      patronymic: '1',
+      birth: 1983,
+      note: null,
+      own_id: '2',
+      starshina_id: null,
+      attachments: [] } ] ]
+[2016-08-30 09:49:23.276] [DEBUG] Server - #promiseModel() [ 1, 2.3 ] { model: 'Kopnik', id: 2 }
+[2016-08-30 09:49:23.282] [INFO] console - Executing (d87aa9dc-ed11-4dc5-b1e8-64f3c29ce86e): START TRANSACTION;
+[2016-08-30 09:49:23.285] [INFO] console - Executing (d87aa9dc-ed11-4dc5-b1e8-64f3c29ce86e): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+[2016-08-30 09:49:23.298] [INFO] console - Executing (default): SELECT "Kopnik"."id", "Kopnik"."email", "Kopnik"."password", "Kopnik"."name", "Kopnik"."surname", "Kopnik"."patronymic", "Kopnik"."birth", "Kopnik"."note", "Kopnik"."own_id", "Kopnik"."starshina_id", "attachments"."id" AS "attachments.id", "attachments"."path" AS "attachments.path", "attachments"."note" AS "attachments.note", "attachments"."zemla_id" AS "attachments.zemla_id", "attachments"."kopnik_id" AS "attachments.kopnik_id", "attachments"."kopa_id" AS "attachments.kopa_id", "attachments"."slovo_id" AS "attachments.slovo_id", "attachments"."predlozhenie_id" AS "attachments.predlozhenie_id", "attachments"."golos_id" AS "attachments.golos_id" FROM "Kopnik" AS "Kopnik" LEFT OUTER JOIN "File" AS "attachments" ON "Kopnik"."id" = "attachments"."kopnik_id" WHERE "Kopnik"."id" = 2;
+[2016-08-30 09:49:23.307] [INFO] console - Executing (d87aa9dc-ed11-4dc5-b1e8-64f3c29ce86e): COMMIT;
+[2016-08-30 09:49:23.309] [INFO] console - [ 70,
+  516,
+  {},
+  [ { fullName: 'Unit Test',
+      id: '2',
+      email: 'unittest1@domain.ru',
+      name: 'Unit',
+      surname: 'Test',
+      patronymic: '1',
+      birth: 1983,
+      note: null,
+      own_id: '2',
+      starshina_id: null,
+      attachments: [] } ] ]
+[2016-08-30 10:05:27.324] [INFO] console - AutobahnJS debug enabled
+[2016-08-30 10:05:29.919] [INFO] Server - starting...
+[2016-08-30 10:05:29.923] [INFO] console - trying to create WAMP transport of type: websocket
+[2016-08-30 10:05:30.053] [INFO] console - using WAMP transport type: websocket
+[2016-08-30 10:05:30.305] [INFO] console - [ 1,
+  'kopa',
+  { roles: 
+     { caller: [Object],
+       callee: [Object],
+       publisher: [Object],
+       subscriber: [Object] },
+    authmethods: [ 'ticket' ],
+    authid: 'server' } ]
+[2016-08-30 10:05:30.361] [INFO] console - [ 5, 'server', {} ]
+[2016-08-30 10:05:30.394] [INFO] Server - connection.onopen()
+[2016-08-30 10:05:30.397] [ERROR] Server - [TypeError: _this.registerHelper is not a function]
+TypeError: _this.registerHelper is not a function
+    at [object Object].<anonymous> (Server.js:61:28)
+    at [object Generator].next (native)
+    at step (/home/alexey2baranov/htdocs/kp-sequelizejs/src/Server.js:1:253)
+    at /home/alexey2baranov/htdocs/kp-sequelizejs/src/Server.js:1:513
+    at new wrappedPromise (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/async-listener/index.js:372:16)
+    at [object Object].<anonymous> (/home/alexey2baranov/htdocs/kp-sequelizejs/src/Server.js:1:161)
+    at [object Object].onopen (Server.js:56:9)
+    at [object Object].Connection.open.self._session.onjoin (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/autobahn/lib/connection.js:317:21)
+    at Object.self._socket.onmessage (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/autobahn/lib/session.js:908:21)
+    at WebSocket.<anonymous> (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/autobahn/lib/transport/websocket.js:123:23)
+    at emitTwo (events.js:87:13)
+    at WebSocket.emit (events.js:172:7)
+    at Receiver.ontext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/ws/lib/WebSocket.js:841:10)
+    at /home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/ws/lib/Receiver.js:536:18
+    at Receiver.applyExtensions (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/ws/lib/Receiver.js:371:5)
+    at /home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/ws/lib/Receiver.js:508:14
+[2016-08-30 10:06:03.068] [INFO] console - AutobahnJS debug enabled
+[2016-08-30 10:06:04.778] [INFO] Server - starting...
+[2016-08-30 10:06:04.780] [INFO] console - trying to create WAMP transport of type: websocket
+[2016-08-30 10:06:04.893] [INFO] console - using WAMP transport type: websocket
+[2016-08-30 10:06:05.176] [INFO] console - [ 1,
+  'kopa',
+  { roles: 
+     { caller: [Object],
+       callee: [Object],
+       publisher: [Object],
+       subscriber: [Object] },
+    authmethods: [ 'ticket' ],
+    authid: 'server' } ]
+[2016-08-30 10:06:05.201] [INFO] console - [ 5, 'server', {} ]
+[2016-08-30 10:06:05.230] [INFO] Server - connection.onopen()
+[2016-08-30 10:06:05.232] [INFO] console - [ 64, 3601869727334400, {}, 'ru.kopa.model.get' ]
+[2016-08-30 10:06:05.242] [DEBUG] Server - api:model.get registered
+[2016-08-30 10:06:05.248] [DEBUG] Server - api:model.get registered
+[2016-08-30 10:06:05.249] [INFO] console - [ 64, 4868091416674304, {}, 'ru.kopa.pingPong' ]
+[2016-08-30 10:06:05.257] [DEBUG] Server - api:pingPong registered
+[2016-08-30 10:06:05.262] [DEBUG] Server - api:pingPong registered
+[2016-08-30 10:06:05.264] [INFO] console - [ 64, 1751985829183488, {}, 'ru.kopa.pingPongDatabase' ]
+[2016-08-30 10:06:05.266] [DEBUG] Server - api:pingPongDatabase registered
+[2016-08-30 10:06:05.270] [DEBUG] Server - api:pingPongDatabase registered
+[2016-08-30 10:06:05.271] [INFO] console - [ 64, 2868276501676032, {}, 'ru.kopa.error' ]
+[2016-08-30 10:06:05.274] [DEBUG] Server - api:error registered
+[2016-08-30 10:06:05.277] [DEBUG] Server - api:error registered
+[2016-08-30 10:06:21.490] [DEBUG] Server - #pingPong() [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-30 10:06:21.508] [INFO] console - [ 70, 522, {}, [ 1, 2, 3 ], { x: 1, y: 2, z: 3 } ]
+[2016-08-30 10:06:21.533] [DEBUG] Server - #pingPongDatabase() [] {}
+[2016-08-30 10:06:21.722] [INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-30 10:06:21.732] [INFO] console - [ 70, 523, {}, [ 'КОПА' ] ]
+[2016-08-30 10:06:21.755] [DEBUG] Server - #error() [ 'sadkljfaskldjfs;af' ] {}
+[2016-08-30 10:06:21.761] [INFO] console - [ 8,
+  68,
+  524,
+  {},
+  'wamp.error.runtime_error',
+  [ [TypeError: Cannot read property 'error' of undefined] ] ]
+[2016-08-30 10:06:21.906] [DEBUG] Server - #promiseModel() [ 1, 2.3 ] { model: 'Kopnik', id: 2 }
+[2016-08-30 10:06:21.914] [INFO] console - Executing (458fc86a-d452-48ca-97bf-b5bb55f8c115): START TRANSACTION;
+[2016-08-30 10:06:21.918] [INFO] console - Executing (458fc86a-d452-48ca-97bf-b5bb55f8c115): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+[2016-08-30 10:06:21.987] [INFO] console - Executing (default): SELECT "Kopnik"."id", "Kopnik"."email", "Kopnik"."password", "Kopnik"."name", "Kopnik"."surname", "Kopnik"."patronymic", "Kopnik"."birth", "Kopnik"."note", "Kopnik"."own_id", "Kopnik"."starshina_id", "attachments"."id" AS "attachments.id", "attachments"."path" AS "attachments.path", "attachments"."note" AS "attachments.note", "attachments"."zemla_id" AS "attachments.zemla_id", "attachments"."kopnik_id" AS "attachments.kopnik_id", "attachments"."kopa_id" AS "attachments.kopa_id", "attachments"."slovo_id" AS "attachments.slovo_id", "attachments"."predlozhenie_id" AS "attachments.predlozhenie_id", "attachments"."golos_id" AS "attachments.golos_id" FROM "Kopnik" AS "Kopnik" LEFT OUTER JOIN "File" AS "attachments" ON "Kopnik"."id" = "attachments"."kopnik_id" WHERE "Kopnik"."id" = 2;
+[2016-08-30 10:06:22.010] [INFO] console - Executing (458fc86a-d452-48ca-97bf-b5bb55f8c115): COMMIT;
+[2016-08-30 10:06:22.019] [INFO] console - [ 70,
+  525,
+  {},
+  [ { fullName: 'Unit Test',
+      id: '2',
+      email: 'unittest1@domain.ru',
+      name: 'Unit',
+      surname: 'Test',
+      patronymic: '1',
+      birth: 1983,
+      note: null,
+      own_id: '2',
+      starshina_id: null,
+      attachments: [] } ] ]
+[2016-08-30 10:06:22.045] [DEBUG] Server - #promiseModel() [ 1, 2.3 ] { model: 'Kopnik', id: 2 }
+[2016-08-30 10:06:22.061] [INFO] console - Executing (78207bb1-5443-4010-9ccd-05fcb9345bd4): START TRANSACTION;
+[2016-08-30 10:06:22.064] [INFO] console - Executing (78207bb1-5443-4010-9ccd-05fcb9345bd4): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+[2016-08-30 10:06:22.078] [INFO] console - Executing (default): SELECT "Kopnik"."id", "Kopnik"."email", "Kopnik"."password", "Kopnik"."name", "Kopnik"."surname", "Kopnik"."patronymic", "Kopnik"."birth", "Kopnik"."note", "Kopnik"."own_id", "Kopnik"."starshina_id", "attachments"."id" AS "attachments.id", "attachments"."path" AS "attachments.path", "attachments"."note" AS "attachments.note", "attachments"."zemla_id" AS "attachments.zemla_id", "attachments"."kopnik_id" AS "attachments.kopnik_id", "attachments"."kopa_id" AS "attachments.kopa_id", "attachments"."slovo_id" AS "attachments.slovo_id", "attachments"."predlozhenie_id" AS "attachments.predlozhenie_id", "attachments"."golos_id" AS "attachments.golos_id" FROM "Kopnik" AS "Kopnik" LEFT OUTER JOIN "File" AS "attachments" ON "Kopnik"."id" = "attachments"."kopnik_id" WHERE "Kopnik"."id" = 2;
+[2016-08-30 10:06:22.095] [INFO] console - Executing (78207bb1-5443-4010-9ccd-05fcb9345bd4): COMMIT;
+[2016-08-30 10:06:22.098] [INFO] console - [ 70,
+  526,
+  {},
+  [ { fullName: 'Unit Test',
+      id: '2',
+      email: 'unittest1@domain.ru',
+      name: 'Unit',
+      surname: 'Test',
+      patronymic: '1',
+      birth: 1983,
+      note: null,
+      own_id: '2',
+      starshina_id: null,
+      attachments: [] } ] ]
+[2016-08-30 10:06:22.302] [DEBUG] Server - #promiseModel() [ 1, 2.3 ] { model: 'Kopnik', id: 2 }
+[2016-08-30 10:06:22.308] [INFO] console - Executing (e24fbe8e-bc12-4c6d-abd7-ba24591eb297): START TRANSACTION;
+[2016-08-30 10:06:22.313] [INFO] console - Executing (e24fbe8e-bc12-4c6d-abd7-ba24591eb297): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+[2016-08-30 10:06:22.333] [INFO] console - Executing (default): SELECT "Kopnik"."id", "Kopnik"."email", "Kopnik"."password", "Kopnik"."name", "Kopnik"."surname", "Kopnik"."patronymic", "Kopnik"."birth", "Kopnik"."note", "Kopnik"."own_id", "Kopnik"."starshina_id", "attachments"."id" AS "attachments.id", "attachments"."path" AS "attachments.path", "attachments"."note" AS "attachments.note", "attachments"."zemla_id" AS "attachments.zemla_id", "attachments"."kopnik_id" AS "attachments.kopnik_id", "attachments"."kopa_id" AS "attachments.kopa_id", "attachments"."slovo_id" AS "attachments.slovo_id", "attachments"."predlozhenie_id" AS "attachments.predlozhenie_id", "attachments"."golos_id" AS "attachments.golos_id" FROM "Kopnik" AS "Kopnik" LEFT OUTER JOIN "File" AS "attachments" ON "Kopnik"."id" = "attachments"."kopnik_id" WHERE "Kopnik"."id" = 2;
+[2016-08-30 10:06:22.349] [INFO] console - Executing (e24fbe8e-bc12-4c6d-abd7-ba24591eb297): COMMIT;
+[2016-08-30 10:06:22.352] [INFO] console - [ 70,
+  527,
+  {},
+  [ { fullName: 'Unit Test',
+      id: '2',
+      email: 'unittest1@domain.ru',
+      name: 'Unit',
+      surname: 'Test',
+      patronymic: '1',
+      birth: 1983,
+      note: null,
+      own_id: '2',
+      starshina_id: null,
+      attachments: [] } ] ]
+[2016-08-30 10:06:22.370] [DEBUG] Server - #promiseModel() [ 1, 2.3 ] { model: 'Kopnik', id: 2 }
+[2016-08-30 10:06:22.383] [INFO] console - Executing (699e9afe-b302-4b42-82e2-5b30f368a049): START TRANSACTION;
+[2016-08-30 10:06:22.387] [INFO] console - Executing (699e9afe-b302-4b42-82e2-5b30f368a049): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+[2016-08-30 10:06:22.403] [INFO] console - Executing (default): SELECT "Kopnik"."id", "Kopnik"."email", "Kopnik"."password", "Kopnik"."name", "Kopnik"."surname", "Kopnik"."patronymic", "Kopnik"."birth", "Kopnik"."note", "Kopnik"."own_id", "Kopnik"."starshina_id", "attachments"."id" AS "attachments.id", "attachments"."path" AS "attachments.path", "attachments"."note" AS "attachments.note", "attachments"."zemla_id" AS "attachments.zemla_id", "attachments"."kopnik_id" AS "attachments.kopnik_id", "attachments"."kopa_id" AS "attachments.kopa_id", "attachments"."slovo_id" AS "attachments.slovo_id", "attachments"."predlozhenie_id" AS "attachments.predlozhenie_id", "attachments"."golos_id" AS "attachments.golos_id" FROM "Kopnik" AS "Kopnik" LEFT OUTER JOIN "File" AS "attachments" ON "Kopnik"."id" = "attachments"."kopnik_id" WHERE "Kopnik"."id" = 2;
+[2016-08-30 10:06:22.418] [INFO] console - Executing (699e9afe-b302-4b42-82e2-5b30f368a049): COMMIT;
+[2016-08-30 10:06:22.422] [INFO] console - [ 70,
+  528,
+  {},
+  [ { fullName: 'Unit Test',
+      id: '2',
+      email: 'unittest1@domain.ru',
+      name: 'Unit',
+      surname: 'Test',
+      patronymic: '1',
+      birth: 1983,
+      note: null,
+      own_id: '2',
+      starshina_id: null,
+      attachments: [] } ] ]
+[2016-08-30 10:06:22.445] [DEBUG] Server - #promiseModel() [ 1, 2.3 ] { model: 'Kopnik', id: 2 }
+[2016-08-30 10:06:22.452] [INFO] console - Executing (7a3da9cf-8d37-4f5b-962b-46447327695b): START TRANSACTION;
+[2016-08-30 10:06:22.455] [INFO] console - Executing (7a3da9cf-8d37-4f5b-962b-46447327695b): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+[2016-08-30 10:06:22.468] [INFO] console - Executing (default): SELECT "Kopnik"."id", "Kopnik"."email", "Kopnik"."password", "Kopnik"."name", "Kopnik"."surname", "Kopnik"."patronymic", "Kopnik"."birth", "Kopnik"."note", "Kopnik"."own_id", "Kopnik"."starshina_id", "attachments"."id" AS "attachments.id", "attachments"."path" AS "attachments.path", "attachments"."note" AS "attachments.note", "attachments"."zemla_id" AS "attachments.zemla_id", "attachments"."kopnik_id" AS "attachments.kopnik_id", "attachments"."kopa_id" AS "attachments.kopa_id", "attachments"."slovo_id" AS "attachments.slovo_id", "attachments"."predlozhenie_id" AS "attachments.predlozhenie_id", "attachments"."golos_id" AS "attachments.golos_id" FROM "Kopnik" AS "Kopnik" LEFT OUTER JOIN "File" AS "attachments" ON "Kopnik"."id" = "attachments"."kopnik_id" WHERE "Kopnik"."id" = 2;
+[2016-08-30 10:06:22.480] [INFO] console - Executing (7a3da9cf-8d37-4f5b-962b-46447327695b): COMMIT;
+[2016-08-30 10:06:22.483] [INFO] console - [ 70,
+  529,
+  {},
+  [ { fullName: 'Unit Test',
+      id: '2',
+      email: 'unittest1@domain.ru',
+      name: 'Unit',
+      surname: 'Test',
+      patronymic: '1',
+      birth: 1983,
+      note: null,
+      own_id: '2',
+      starshina_id: null,
+      attachments: [] } ] ]
+[2016-08-30 10:06:49.358] [DEBUG] Server - #pingPong() [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-30 10:06:49.376] [INFO] console - [ 70, 533, {}, [ 1, 2, 3 ], { x: 1, y: 2, z: 3 } ]
+[2016-08-30 10:06:49.408] [DEBUG] Server - #pingPongDatabase() [] {}
+[2016-08-30 10:06:49.486] [INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-30 10:06:49.498] [INFO] console - [ 70, 534, {}, [ 'КОПА' ] ]
+[2016-08-30 10:06:49.510] [DEBUG] Server - #error() [ 'sadkljfaskldjfs;af' ] {}
+[2016-08-30 10:06:49.514] [INFO] console - [ 8,
+  68,
+  535,
+  {},
+  'wamp.error.runtime_error',
+  [ [TypeError: Cannot read property 'error' of undefined] ] ]
+[2016-08-30 10:08:59.727] [DEBUG] Server - #pingPong() [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-30 10:08:59.738] [INFO] console - [ 70, 537, {}, [ 1, 2, 3 ], { x: 1, y: 2, z: 3 } ]
+[2016-08-30 10:08:59.777] [DEBUG] Server - #pingPongDatabase() [] {}
+[2016-08-30 10:08:59.838] [INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-30 10:08:59.844] [INFO] console - [ 70, 538, {}, [ 'КОПА' ] ]
+[2016-08-30 10:08:59.856] [DEBUG] Server - #error() [ 'sadkljfaskldjfs;af' ] {}
+[2016-08-30 10:09:25.029] [INFO] console - AutobahnJS debug enabled
+[2016-08-30 10:09:27.093] [INFO] Server - starting...
+[2016-08-30 10:09:27.100] [INFO] console - trying to create WAMP transport of type: websocket
+[2016-08-30 10:09:27.208] [INFO] console - using WAMP transport type: websocket
+[2016-08-30 10:09:27.551] [INFO] console - [ 1,
+  'kopa',
+  { roles: 
+     { caller: [Object],
+       callee: [Object],
+       publisher: [Object],
+       subscriber: [Object] },
+    authmethods: [ 'ticket' ],
+    authid: 'server' } ]
+[2016-08-30 10:09:27.585] [INFO] console - [ 5, 'server', {} ]
+[2016-08-30 10:09:27.682] [INFO] Server - connection.onopen()
+[2016-08-30 10:09:27.684] [INFO] console - [ 64, 612944301785088, {}, 'ru.kopa.model.get' ]
+[2016-08-30 10:09:27.690] [DEBUG] Server - api:model.get registered
+[2016-08-30 10:09:27.695] [DEBUG] Server - api:model.get registered
+[2016-08-30 10:09:27.696] [INFO] console - [ 64, 2847701167243264, {}, 'ru.kopa.pingPong' ]
+[2016-08-30 10:09:27.699] [DEBUG] Server - api:pingPong registered
+[2016-08-30 10:09:27.705] [DEBUG] Server - api:pingPong registered
+[2016-08-30 10:09:27.706] [INFO] console - [ 64, 2807593256878080, {}, 'ru.kopa.pingPongDatabase' ]
+[2016-08-30 10:09:27.710] [DEBUG] Server - api:pingPongDatabase registered
+[2016-08-30 10:09:27.712] [DEBUG] Server - api:pingPongDatabase registered
+[2016-08-30 10:09:27.712] [INFO] console - [ 64, 1038292248166400, {}, 'ru.kopa.error' ]
+[2016-08-30 10:09:27.715] [DEBUG] Server - api:error registered
+[2016-08-30 10:09:27.731] [DEBUG] Server - api:error registered
+[2016-08-30 10:09:39.800] [DEBUG] Server - #pingPong() [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-30 10:09:39.809] [INFO] console - [ 70, 542, {}, [ 1, 2, 3 ], { x: 1, y: 2, z: 3 } ]
+[2016-08-30 10:09:39.827] [DEBUG] Server - #pingPongDatabase() [] {}
+[2016-08-30 10:09:39.935] [INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-30 10:09:39.942] [INFO] console - [ 70, 543, {}, [ 'КОПА' ] ]
+[2016-08-30 10:09:39.961] [DEBUG] Server - #error() [ 'sadkljfaskldjfs;af' ] {}
+[2016-08-30 10:10:24.456] [INFO] console - [ 8,
+  68,
+  544,
+  {},
+  'wamp.error.runtime_error',
+  [ [TypeError: Cannot read property 'error' of undefined] ] ]
+[2016-08-30 10:10:49.297] [DEBUG] Server - #pingPong() [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-30 10:10:49.301] [INFO] console - [ 70, 546, {}, [ 1, 2, 3 ], { x: 1, y: 2, z: 3 } ]
+[2016-08-30 10:10:49.326] [DEBUG] Server - #pingPongDatabase() [] {}
+[2016-08-30 10:10:49.368] [INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-30 10:10:49.374] [INFO] console - [ 70, 547, {}, [ 'КОПА' ] ]
+[2016-08-30 10:10:49.389] [DEBUG] Server - #error() [ 'sadkljfaskldjfs;af' ] {}
+[2016-08-30 10:11:12.512] [INFO] console - [ 8,
+  68,
+  548,
+  {},
+  'wamp.error.runtime_error',
+  [ [TypeError: Cannot read property 'error' of undefined] ] ]
+[2016-08-30 10:11:29.949] [DEBUG] Server - #pingPong() [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-30 10:11:29.958] [INFO] console - [ 70, 550, {}, [ 1, 2, 3 ], { x: 1, y: 2, z: 3 } ]
+[2016-08-30 10:11:29.985] [DEBUG] Server - #pingPongDatabase() [] {}
+[2016-08-30 10:11:30.025] [INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-30 10:11:30.028] [INFO] console - [ 70, 551, {}, [ 'КОПА' ] ]
+[2016-08-30 10:11:36.841] [INFO] console - AutobahnJS debug enabled
+[2016-08-30 10:11:38.734] [INFO] Server - starting...
+[2016-08-30 10:11:38.737] [INFO] console - trying to create WAMP transport of type: websocket
+[2016-08-30 10:11:38.874] [INFO] console - using WAMP transport type: websocket
+[2016-08-30 10:11:39.170] [INFO] console - [ 1,
+  'kopa',
+  { roles: 
+     { caller: [Object],
+       callee: [Object],
+       publisher: [Object],
+       subscriber: [Object] },
+    authmethods: [ 'ticket' ],
+    authid: 'server' } ]
+[2016-08-30 10:11:39.204] [INFO] console - [ 5, 'server', {} ]
+[2016-08-30 10:11:39.223] [INFO] Server - connection.onopen()
+[2016-08-30 10:11:39.224] [INFO] console - [ 64, 888850775801856, {}, 'ru.kopa.model.get' ]
+[2016-08-30 10:11:39.227] [DEBUG] Server - api:model.get registered
+[2016-08-30 10:11:39.242] [DEBUG] Server - api:model.get registered
+[2016-08-30 10:11:39.244] [INFO] console - [ 64, 7245613523533824, {}, 'ru.kopa.pingPong' ]
+[2016-08-30 10:11:39.251] [DEBUG] Server - api:pingPong registered
+[2016-08-30 10:11:39.253] [DEBUG] Server - api:pingPong registered
+[2016-08-30 10:11:39.254] [INFO] console - [ 64, 8434784447496192, {}, 'ru.kopa.pingPongDatabase' ]
+[2016-08-30 10:11:39.258] [DEBUG] Server - api:pingPongDatabase registered
+[2016-08-30 10:11:39.261] [DEBUG] Server - api:pingPongDatabase registered
+[2016-08-30 10:11:39.261] [INFO] console - [ 64, 6711571807993856, {}, 'ru.kopa.error' ]
+[2016-08-30 10:11:39.265] [DEBUG] Server - api:error registered
+[2016-08-30 10:11:39.269] [DEBUG] Server - api:error registered
+[2016-08-30 10:11:50.694] [DEBUG] Server - #pingPong() [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-30 10:11:50.703] [INFO] console - [ 70, 555, {}, [ 1, 2, 3 ], { x: 1, y: 2, z: 3 } ]
+[2016-08-30 10:11:50.726] [DEBUG] Server - #pingPongDatabase() [] {}
+[2016-08-30 10:11:50.838] [INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-30 10:11:50.845] [INFO] console - [ 70, 556, {}, [ 'КОПА' ] ]
+[2016-08-30 10:11:50.858] [DEBUG] Server - #error() [ 'sadkljfaskldjfs;af' ] {}
+[2016-08-30 10:13:01.177] [INFO] console - [ 8,
+  68,
+  557,
+  {},
+  'wamp.error.runtime_error',
+  [ [TypeError: Cannot read property 'error' of undefined] ] ]
+[2016-08-30 10:13:28.831] [INFO] console - AutobahnJS debug enabled
+[2016-08-30 10:13:30.501] [INFO] Server - starting...
+[2016-08-30 10:13:30.505] [INFO] console - trying to create WAMP transport of type: websocket
+[2016-08-30 10:13:30.618] [INFO] console - using WAMP transport type: websocket
+[2016-08-30 10:13:30.875] [INFO] console - [ 1,
+  'kopa',
+  { roles: 
+     { caller: [Object],
+       callee: [Object],
+       publisher: [Object],
+       subscriber: [Object] },
+    authmethods: [ 'ticket' ],
+    authid: 'server' } ]
+[2016-08-30 10:13:30.901] [INFO] console - [ 5, 'server', {} ]
+[2016-08-30 10:13:30.936] [INFO] Server - connection.onopen()
+[2016-08-30 10:13:30.939] [INFO] console - [ 64, 1140869031788544, {}, 'ru.kopa.model.get' ]
+[2016-08-30 10:13:30.943] [DEBUG] Server - api:model.get registered
+[2016-08-30 10:13:30.952] [DEBUG] Server - api:model.get registered
+[2016-08-30 10:13:30.953] [INFO] console - [ 64, 6964913238966272, {}, 'ru.kopa.pingPong' ]
+[2016-08-30 10:13:30.957] [DEBUG] Server - api:pingPong registered
+[2016-08-30 10:13:30.961] [DEBUG] Server - api:pingPong registered
+[2016-08-30 10:13:30.963] [INFO] console - [ 64, 5990508425904128, {}, 'ru.kopa.pingPongDatabase' ]
+[2016-08-30 10:13:30.967] [DEBUG] Server - api:pingPongDatabase registered
+[2016-08-30 10:13:30.975] [DEBUG] Server - api:pingPongDatabase registered
+[2016-08-30 10:13:30.976] [INFO] console - [ 64, 3006200876630016, {}, 'ru.kopa.error' ]
+[2016-08-30 10:13:30.979] [DEBUG] Server - api:error registered
+[2016-08-30 10:13:30.988] [DEBUG] Server - api:error registered
+[2016-08-30 10:13:56.549] [DEBUG] Server - #pingPong() [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-30 10:13:56.561] [INFO] console - [ 70, 560, {}, [ 1, 2, 3 ], { x: 1, y: 2, z: 3 } ]
+[2016-08-30 10:13:56.584] [DEBUG] Server - #pingPongDatabase() [] {}
+[2016-08-30 10:13:56.743] [INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-30 10:13:56.750] [INFO] console - [ 70, 561, {}, [ 'КОПА' ] ]
+[2016-08-30 10:13:56.781] [DEBUG] Server - #error() [ 'sadkljfaskldjfs;af' ] {}
+[2016-08-30 10:13:56.784] [ERROR] Server - [Error: sadkljfaskldjfs;af]
+Error: sadkljfaskldjfs;af
+    at MySuperError (Server.js:133:9)
+    at Server.error (Server.js:137:15)
+    at Object.<anonymous> (Server.js:110:37)
+    at tryCatchResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:46:23)
+    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:30:12)
+    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)
+    at tryCatchReject3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:856:7)
+    at runContinuation3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:814:4)
+    at Fulfilled.fold (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:588:4)
+    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:34:12)
+    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)
+    at tryCatchReject3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:856:7)
+    at runContinuation3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:814:4)
+    at Fulfilled.fold (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:588:4)
+    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:34:12)
+    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)
+[2016-08-30 10:13:56.948] [INFO] console - [ 8,
+  68,
+  562,
+  {},
+  'MySuperError',
+  [],
+  { message: 'sadkljfaskldjfs;af',
+    stack: 
+     [ 'Error: sadkljfaskldjfs;af',
+       '    at MySuperError (Server.js:133:9)',
+       '    at Server.error (Server.js:137:15)',
+       '    at Object.<anonymous> (Server.js:110:37)',
+       '    at tryCatchResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:46:23)',
+       '    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:30:12)',
+       '    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)',
+       '    at tryCatchReject3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:856:7)',
+       '    at runContinuation3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:814:4)',
+       '    at Fulfilled.fold (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:588:4)',
+       '    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:34:12)',
+       '    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)',
+       '    at tryCatchReject3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:856:7)',
+       '    at runContinuation3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:814:4)',
+       '    at Fulfilled.fold (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:588:4)',
+       '    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:34:12)',
+       '    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)' ] } ]
+[2016-08-30 10:14:09.123] [DEBUG] Server - #pingPong() [ 1, 2, 3 ] { x: 1, y: 2, z: 3 }
+[2016-08-30 10:14:09.135] [INFO] console - [ 70, 566, {}, [ 1, 2, 3 ], { x: 1, y: 2, z: 3 } ]
+[2016-08-30 10:14:09.157] [DEBUG] Server - #pingPongDatabase() [] {}
+[2016-08-30 10:14:09.229] [INFO] console - Executing (default): select 'КОПА' as result
+[2016-08-30 10:14:09.239] [INFO] console - [ 70, 567, {}, [ 'КОПА' ] ]
+[2016-08-30 10:14:09.324] [DEBUG] Server - #error() [ 'sadkljfaskldjfs;af' ] {}
+[2016-08-30 10:14:09.331] [ERROR] Server - [Error: sadkljfaskldjfs;af]
+Error: sadkljfaskldjfs;af
+    at MySuperError (Server.js:133:9)
+    at Server.error (Server.js:137:15)
+    at Object.<anonymous> (Server.js:110:37)
+    at tryCatchResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:46:23)
+    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:30:12)
+    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)
+    at tryCatchReject3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:856:7)
+    at runContinuation3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:814:4)
+    at Fulfilled.fold (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:588:4)
+    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:34:12)
+    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)
+    at tryCatchReject3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:856:7)
+    at runContinuation3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:814:4)
+    at Fulfilled.fold (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:588:4)
+    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:34:12)
+    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)
+[2016-08-30 10:14:09.345] [INFO] console - [ 8,
+  68,
+  568,
+  {},
+  'MySuperError',
+  [],
+  { message: 'sadkljfaskldjfs;af',
+    stack: 
+     [ 'Error: sadkljfaskldjfs;af',
+       '    at MySuperError (Server.js:133:9)',
+       '    at Server.error (Server.js:137:15)',
+       '    at Object.<anonymous> (Server.js:110:37)',
+       '    at tryCatchResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:46:23)',
+       '    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:30:12)',
+       '    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)',
+       '    at tryCatchReject3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:856:7)',
+       '    at runContinuation3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:814:4)',
+       '    at Fulfilled.fold (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:588:4)',
+       '    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:34:12)',
+       '    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)',
+       '    at tryCatchReject3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:856:7)',
+       '    at runContinuation3 (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:814:4)',
+       '    at Fulfilled.fold (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/makePromise.js:588:4)',
+       '    at callAndResolve (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:34:12)',
+       '    at callAndResolveNext (/home/alexey2baranov/htdocs/kp-sequelizejs/node_modules/when/lib/apply.js:40:4)' ] } ]
+[2016-08-30 10:14:09.551] [DEBUG] Server - #promiseModel() [ 1, 2.3 ] { model: 'Kopnik', id: 2 }
+[2016-08-30 10:14:09.565] [INFO] console - Executing (02dbfc3f-d969-47a7-b3e9-edc4d67d2c96): START TRANSACTION;
+[2016-08-30 10:14:09.570] [INFO] console - Executing (02dbfc3f-d969-47a7-b3e9-edc4d67d2c96): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+[2016-08-30 10:14:09.689] [INFO] console - Executing (default): SELECT "Kopnik"."id", "Kopnik"."email", "Kopnik"."password", "Kopnik"."name", "Kopnik"."surname", "Kopnik"."patronymic", "Kopnik"."birth", "Kopnik"."note", "Kopnik"."own_id", "Kopnik"."starshina_id", "attachments"."id" AS "attachments.id", "attachments"."path" AS "attachments.path", "attachments"."note" AS "attachments.note", "attachments"."zemla_id" AS "attachments.zemla_id", "attachments"."kopnik_id" AS "attachments.kopnik_id", "attachments"."kopa_id" AS "attachments.kopa_id", "attachments"."slovo_id" AS "attachments.slovo_id", "attachments"."predlozhenie_id" AS "attachments.predlozhenie_id", "attachments"."golos_id" AS "attachments.golos_id" FROM "Kopnik" AS "Kopnik" LEFT OUTER JOIN "File" AS "attachments" ON "Kopnik"."id" = "attachments"."kopnik_id" WHERE "Kopnik"."id" = 2;
+[2016-08-30 10:14:09.710] [INFO] console - Executing (02dbfc3f-d969-47a7-b3e9-edc4d67d2c96): COMMIT;
+[2016-08-30 10:14:09.718] [INFO] console - [ 70,
+  569,
+  {},
+  [ { fullName: 'Unit Test',
+      id: '2',
+      email: 'unittest1@domain.ru',
+      name: 'Unit',
+      surname: 'Test',
+      patronymic: '1',
+      birth: 1983,
+      note: null,
+      own_id: '2',
+      starshina_id: null,
+      attachments: [] } ] ]
+[2016-08-30 10:14:09.747] [DEBUG] Server - #promiseModel() [ 1, 2.3 ] { model: 'Kopnik', id: 2 }
+[2016-08-30 10:14:09.759] [INFO] console - Executing (174fd24d-ecb6-4158-9d79-eb5292f432be): START TRANSACTION;
+[2016-08-30 10:14:09.772] [INFO] console - Executing (174fd24d-ecb6-4158-9d79-eb5292f432be): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+[2016-08-30 10:14:09.822] [INFO] console - Executing (default): SELECT "Kopnik"."id", "Kopnik"."email", "Kopnik"."password", "Kopnik"."name", "Kopnik"."surname", "Kopnik"."patronymic", "Kopnik"."birth", "Kopnik"."note", "Kopnik"."own_id", "Kopnik"."starshina_id", "attachments"."id" AS "attachments.id", "attachments"."path" AS "attachments.path", "attachments"."note" AS "attachments.note", "attachments"."zemla_id" AS "attachments.zemla_id", "attachments"."kopnik_id" AS "attachments.kopnik_id", "attachments"."kopa_id" AS "attachments.kopa_id", "attachments"."slovo_id" AS "attachments.slovo_id", "attachments"."predlozhenie_id" AS "attachments.predlozhenie_id", "attachments"."golos_id" AS "attachments.golos_id" FROM "Kopnik" AS "Kopnik" LEFT OUTER JOIN "File" AS "attachments" ON "Kopnik"."id" = "attachments"."kopnik_id" WHERE "Kopnik"."id" = 2;
+[2016-08-30 10:14:09.835] [INFO] console - Executing (174fd24d-ecb6-4158-9d79-eb5292f432be): COMMIT;
+[2016-08-30 10:14:09.839] [INFO] console - [ 70,
+  570,
+  {},
+  [ { fullName: 'Unit Test',
+      id: '2',
+      email: 'unittest1@domain.ru',
+      name: 'Unit',
+      surname: 'Test',
+      patronymic: '1',
+      birth: 1983,
+      note: null,
+      own_id: '2',
+      starshina_id: null,
+      attachments: [] } ] ]
+[2016-08-30 10:14:09.981] [DEBUG] Server - #promiseModel() [ 1, 2.3 ] { model: 'Kopnik', id: 2 }
+[2016-08-30 10:14:10.008] [INFO] console - Executing (5c1163cc-387d-4208-a284-a96d477c8500): START TRANSACTION;
+[2016-08-30 10:14:10.014] [INFO] console - Executing (5c1163cc-387d-4208-a284-a96d477c8500): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+[2016-08-30 10:14:10.081] [INFO] console - Executing (default): SELECT "Kopnik"."id", "Kopnik"."email", "Kopnik"."password", "Kopnik"."name", "Kopnik"."surname", "Kopnik"."patronymic", "Kopnik"."birth", "Kopnik"."note", "Kopnik"."own_id", "Kopnik"."starshina_id", "attachments"."id" AS "attachments.id", "attachments"."path" AS "attachments.path", "attachments"."note" AS "attachments.note", "attachments"."zemla_id" AS "attachments.zemla_id", "attachments"."kopnik_id" AS "attachments.kopnik_id", "attachments"."kopa_id" AS "attachments.kopa_id", "attachments"."slovo_id" AS "attachments.slovo_id", "attachments"."predlozhenie_id" AS "attachments.predlozhenie_id", "attachments"."golos_id" AS "attachments.golos_id" FROM "Kopnik" AS "Kopnik" LEFT OUTER JOIN "File" AS "attachments" ON "Kopnik"."id" = "attachments"."kopnik_id" WHERE "Kopnik"."id" = 2;
+[2016-08-30 10:14:10.100] [INFO] console - Executing (5c1163cc-387d-4208-a284-a96d477c8500): COMMIT;
+[2016-08-30 10:14:10.104] [INFO] console - [ 70,
+  571,
+  {},
+  [ { fullName: 'Unit Test',
+      id: '2',
+      email: 'unittest1@domain.ru',
+      name: 'Unit',
+      surname: 'Test',
+      patronymic: '1',
+      birth: 1983,
+      note: null,
+      own_id: '2',
+      starshina_id: null,
+      attachments: [] } ] ]
+[2016-08-30 10:14:10.177] [DEBUG] Server - #promiseModel() [ 1, 2.3 ] { model: 'Kopnik', id: 2 }
+[2016-08-30 10:14:10.192] [INFO] console - Executing (2e83fe4b-3cf6-4276-90f4-d28f24a094f8): START TRANSACTION;
+[2016-08-30 10:14:10.195] [INFO] console - Executing (2e83fe4b-3cf6-4276-90f4-d28f24a094f8): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+[2016-08-30 10:14:10.240] [INFO] console - Executing (default): SELECT "Kopnik"."id", "Kopnik"."email", "Kopnik"."password", "Kopnik"."name", "Kopnik"."surname", "Kopnik"."patronymic", "Kopnik"."birth", "Kopnik"."note", "Kopnik"."own_id", "Kopnik"."starshina_id", "attachments"."id" AS "attachments.id", "attachments"."path" AS "attachments.path", "attachments"."note" AS "attachments.note", "attachments"."zemla_id" AS "attachments.zemla_id", "attachments"."kopnik_id" AS "attachments.kopnik_id", "attachments"."kopa_id" AS "attachments.kopa_id", "attachments"."slovo_id" AS "attachments.slovo_id", "attachments"."predlozhenie_id" AS "attachments.predlozhenie_id", "attachments"."golos_id" AS "attachments.golos_id" FROM "Kopnik" AS "Kopnik" LEFT OUTER JOIN "File" AS "attachments" ON "Kopnik"."id" = "attachments"."kopnik_id" WHERE "Kopnik"."id" = 2;
+[2016-08-30 10:14:10.339] [INFO] console - Executing (2e83fe4b-3cf6-4276-90f4-d28f24a094f8): COMMIT;
+[2016-08-30 10:14:10.342] [INFO] console - [ 70,
+  572,
+  {},
+  [ { fullName: 'Unit Test',
+      id: '2',
+      email: 'unittest1@domain.ru',
+      name: 'Unit',
+      surname: 'Test',
+      patronymic: '1',
+      birth: 1983,
+      note: null,
+      own_id: '2',
+      starshina_id: null,
+      attachments: [] } ] ]
+[2016-08-30 10:14:10.362] [DEBUG] Server - #promiseModel() [ 1, 2.3 ] { model: 'Kopnik', id: 2 }
+[2016-08-30 10:14:10.369] [INFO] console - Executing (a15a4f96-6758-4a2f-96e2-c9a6e3fd8d16): START TRANSACTION;
+[2016-08-30 10:14:10.373] [INFO] console - Executing (a15a4f96-6758-4a2f-96e2-c9a6e3fd8d16): SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+[2016-08-30 10:14:10.400] [INFO] console - Executing (default): SELECT "Kopnik"."id", "Kopnik"."email", "Kopnik"."password", "Kopnik"."name", "Kopnik"."surname", "Kopnik"."patronymic", "Kopnik"."birth", "Kopnik"."note", "Kopnik"."own_id", "Kopnik"."starshina_id", "attachments"."id" AS "attachments.id", "attachments"."path" AS "attachments.path", "attachments"."note" AS "attachments.note", "attachments"."zemla_id" AS "attachments.zemla_id", "attachments"."kopnik_id" AS "attachments.kopnik_id", "attachments"."kopa_id" AS "attachments.kopa_id", "attachments"."slovo_id" AS "attachments.slovo_id", "attachments"."predlozhenie_id" AS "attachments.predlozhenie_id", "attachments"."golos_id" AS "attachments.golos_id" FROM "Kopnik" AS "Kopnik" LEFT OUTER JOIN "File" AS "attachments" ON "Kopnik"."id" = "attachments"."kopnik_id" WHERE "Kopnik"."id" = 2;
+[2016-08-30 10:14:10.411] [INFO] console - Executing (a15a4f96-6758-4a2f-96e2-c9a6e3fd8d16): COMMIT;
+[2016-08-30 10:14:10.415] [INFO] console - [ 70,
+  573,
+  {},
+  [ { fullName: 'Unit Test',
+      id: '2',
+      email: 'unittest1@domain.ru',
+      name: 'Unit',
+      surname: 'Test',
+      patronymic: '1',
+      birth: 1983,
+      note: null,
+      own_id: '2',
+      starshina_id: null,
+      attachments: [] } ] ]
