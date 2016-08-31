@@ -1,6 +1,21 @@
 /**
  * Created by alexey2baranov on 8/29/16.
  */
+new Promise(function(res){
+    let x=1;
+
+})
+    .then((result)=>{
+        console.log("promise done "+result);
+    },(result)=>{
+        console.log("promise errror "+result);
+    });
+
+
+
+/*
+
+
 let log4js= require("log4js");
 
 log4js.configure(__dirname+'/../cfg/log.json', {
@@ -25,3 +40,4 @@ catch(er){
 setInterval(()=>{
     serverLogger.debug("multi info", "multi info","multi info","info from root logger");
 },1000);
+*/

@@ -17,11 +17,13 @@ module.exports = function(sequelize, DataTypes) {
         question: {
             type: DataTypes.TEXT
         },
-        /** заявителем была предложена () */
-        birth: {
+        /** заявителем была предложена ()
+         * скорее всего это поле не понадобится потому что есть created_at
+         */
+/*        birth: {
             type: DataTypes.DATE,
             allowNull: false
-        },
+        },*/
         /** запланирована на */
         planned: {
             type: DataTypes.DATE,

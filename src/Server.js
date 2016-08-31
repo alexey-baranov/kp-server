@@ -60,6 +60,7 @@ class Server {
 
                 await this.registerHelper('api:model.get', this.promiseModel, null, this);
                 await this.registerHelper('api:pingPong', this.pingPong, null, this);
+                await this.registerHelper('api:discloseCaller', this.discloseCaller, null, this);
                 await this.registerHelper('api:pingPongDatabase', this.pingPongDatabase, null, this);
                 await this.registerHelper('api:error', this.error, null, this);
                 /*                var x = 0;
@@ -96,13 +97,14 @@ class Server {
      * @type {any}
      */
     async registerHelper(procedure, endpoint, options, context) {
-        let result= await this.WAMP.session.register(procedure, async (args, kwargs)=>{
+        let result = await this.WAMP.session.register(procedure, async(args, kwargs, details)=> {
             try {
                 if (context) {
-                    return await endpoint.call(context, args, kwargs);
+                    return await endpoint.call(context, args, kwargs, details);
                 }
                 else {
-                    return await endpoint(args, kwargs);
+                    throw new Error("not tested");
+                    return await endpoint(args, kwargs, details);
                 }
             }
             catch (err) {
@@ -112,7 +114,7 @@ class Server {
                 });
             }
         }, options);
-        this.log.debug(procedure,"registered");
+        this.log.debug(procedure, "registered");
         return result;
     };
 
@@ -125,9 +127,16 @@ class Server {
 
         }
         this.log.debug("#error()", args, kwargs);
-        return new Promise(function(){
+        return new Promise(function () {
             throw new MySuperError(args[0]);
         });
+    }
+
+    discloseCaller(args, kwargs, details) {
+        if (!details.caller){
+            throw new Error("disclose me not works");
+        }
+        return details.caller_authid;
     }
 
     pingPong(args, kwargs) {
@@ -135,10 +144,41 @@ class Server {
         return new autobahn.Result(args, kwargs);
     }
 
-
     async pingPongDatabase(args, kwargs) {
-        let results = await model.sequelize.query(`select '${args[0]}' as result`, {type: model.Sequelize.QueryTypes.SELECT})
+        let results = await model.sequelize.query(`select '${args[0]}' as result`, {type: model.Sequelize.QueryTypes.SELECT});
         return results[0].result;
+    }
+
+    async promiseKopas(args, {PLACE, FROM}, {caller_authid}) {
+        let resultAsArray= await model.sequelize.query(`
+        select kopa.* 
+            from "Kopa" as kopa
+            join "Kopnik" as kopnik on kopnik.id= kopa.initiator_id 
+        where
+            kopa.id>${FROM}
+            and(
+                kopa.started is not null
+                or kopnik.email='${caller_authid}'
+            )
+        order by
+            kopa.started,
+            kopa.created_at
+            `, {type: model.Sequelize.QueryTypes.SELECT});
+        return resultAsArray;
+        let RESULT= resultAsArray.map(each=>each.id);
+        let result = await model.Kopa.findAll({
+            where: {
+                id: {
+                    $in: RESULT
+                },
+            },
+            order: [
+                ['started', 'ASC'],
+                ['created_at', 'ASC']
+            ],
+        });
+        result = result.map(eachResult=>eachResult.get({plain: true}));
+        return result;
     }
 
     /**
@@ -149,39 +189,32 @@ class Server {
      * @returns {*}
      */
     async promiseModel(args, kwargs) {
-        try {
-            this.log.debug("#promiseModel()", args, kwargs);
+        this.log.debug("#promiseModel()", args, kwargs);
 
-            var tran = await model.sequelize.transaction();
-            var result = null;
+        var tran = await model.sequelize.transaction();
+        var result = null;
 
-            switch (kwargs.model) {
-                case "Zemla":
-                case "Kopa":
-                case "Golos":
-                case "Slovo":
-                case "Kopnik":
-                    result = await model[kwargs.model].findById(kwargs.id, {
-                        include: [{
-                            model: model.File,
-                            as: 'attachments'
-                        }]
-                    });
-                    result = result.get({plain: true});
-                    delete result.password;
-                    break;
-                case "File":
-                    break;
-            }
-
-            await tran.commit();
-            return result;
+        switch (kwargs.model) {
+            case "Zemla":
+            case "Kopa":
+            case "Golos":
+            case "Slovo":
+            case "Kopnik":
+                result = await model[kwargs.model].findById(kwargs.id, {
+                    include: [{
+                        model: model.File,
+                        as: 'attachments'
+                    }]
+                });
+                result = result.get({plain: true});
+                delete result.password;
+                break;
+            case "File":
+                break;
         }
-        catch (er) {
-            this.log.error(er);
-            await tran.rollback();
-            return {error: er.message};
-        }
+
+        await tran.commit();
+        return result;
     }
 }
 
