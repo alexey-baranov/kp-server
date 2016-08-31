@@ -96,19 +96,18 @@ class Server {
      * @type {any}
      */
     async registerHelper(procedure, endpoint, options, context) {
-        let result= this.WAMP.session.register(procedure, (args, kwargs)=>{
+        let result= await this.WAMP.session.register(procedure, async (args, kwargs)=>{
             try {
                 if (context) {
-                    return endpoint.call(context, args, kwargs);
+                    return await endpoint.call(context, args, kwargs);
                 }
                 else {
-                    return endpoint(args, kwargs);
+                    return await endpoint(args, kwargs);
                 }
             }
             catch (err) {
                 this.log.error(err);
-                throw new autobahn.Error(err.constructor.name, [], {
-                    message: err.message,
+                throw new autobahn.Error(err.constructor.name || err.name, [err.message], {
                     stack: err.stack.split("\n")
                 });
             }
@@ -126,35 +125,20 @@ class Server {
 
         }
         this.log.debug("#error()", args, kwargs);
-        throw new MySuperError(args[0]);
+        return new Promise(function(){
+            throw new MySuperError(args[0]);
+        });
     }
 
     pingPong(args, kwargs) {
-        try {
-            this.log.debug("#pingPong()", args, kwargs);
-            return new autobahn.Result(args, kwargs);
-        }
-        catch (er) {
-            this.log.error(er);
-            return {error: er.message};
-        }
+        this.log.debug("#pingPong()", args, kwargs);
+        return new autobahn.Result(args, kwargs);
     }
 
 
-    pingPongDatabase(args, kwargs) {
-        try {
-            this.log.debug("#pingPongDatabase()", args, kwargs);
-            return model.sequelize.query("select 'КОПА' as result", {type: model.Sequelize.QueryTypes.SELECT})
-                .then(result=> {
-                    return result[0].result;
-                }, er=> {
-                    this.log.error(er);
-                });
-        }
-        catch (er) {
-            this.log.error(er);
-            return {error: er.message};
-        }
+    async pingPongDatabase(args, kwargs) {
+        let results = await model.sequelize.query(`select '${args[0]}' as result`, {type: model.Sequelize.QueryTypes.SELECT})
+        return results[0].result;
     }
 
     /**
