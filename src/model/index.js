@@ -56,7 +56,7 @@ module.exports = db;
 
     db.Zemla.hasMany(db.Kopa, {
         as: "kopas",
-        foreignKey: "place_id"
+        foreignKey: "UNIT_TEST_ZEMLA_2"
     });
 
     db.Zemla.hasMany(db.File, {
@@ -111,7 +111,7 @@ module.exports = db;
 {
     db.Kopa.belongsTo(db.Zemla, {
         as: "place",
-        foreignKey: "place_id"
+        foreignKey: "UNIT_TEST_ZEMLA_2"
     });
 
     db.Kopa.belongsTo(db.Kopnik, {

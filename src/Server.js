@@ -133,7 +133,7 @@ class Server {
     }
 
     discloseCaller(args, kwargs, details) {
-        if (!details.caller){
+        if (!details.caller) {
             throw new Error("disclose me not works");
         }
         return details.caller_authid;
@@ -149,23 +149,51 @@ class Server {
         return results[0].result;
     }
 
-    async promiseKopas(args, {PLACE, FROM}, {caller_authid}) {
-        let resultAsArray= await model.sequelize.query(`
+    /**
+     * Копы открытые до BEFORE или ен открытые но мои
+     * отсортированные по дате (стартонутости или запланированности) в обратном порядке
+     * @param args
+     * @param PLACE
+     * @param BEFORE
+     * @param caller_authid
+     * @returns {*}
+     */
+    async promiseKopas(args, {PLACE, BEFORE}, {caller_authid}) {
+        var BEFORE_FILTER;
+        if (!BEFORE) {
+            BEFORE_FILTER = `(
+            kopa.started is not null 
+            or (
+                kopa.started is null 
+                and kopnik.email=:caller_authid
+                )
+            )`;
+        }
+        else {
+            BEFORE_FILTER = `kopa.started <  to_timestamp(:BEFORE)`;
+        }
+
+        let resultAsArray = await model.sequelize.query(`
         select kopa.* 
             from "Kopa" as kopa
             join "Kopnik" as kopnik on kopnik.id= kopa.initiator_id 
         where
-            kopa.id>${FROM}
-            and(
-                kopa.started is not null
-                or kopnik.email='${caller_authid}'
-            )
+            kopa.place_id=:PLACE
+            and ${BEFORE_FILTER}
         order by
-            kopa.started,
-            kopa.created_at
-            `, {type: model.Sequelize.QueryTypes.SELECT});
+            kopa.started desc nulls first,
+            kopa.planned desc
+            `,
+            {
+                replacements: {
+                    "PLACE": PLACE,
+                    "BEFORE": BEFORE / 1000,
+                    "caller_authid": caller_authid
+                },
+                type: model.Sequelize.QueryTypes.SELECT
+            });
         return resultAsArray;
-        let RESULT= resultAsArray.map(each=>each.id);
+        let RESULT = resultAsArray.map(each=>each.id);
         let result = await model.Kopa.findAll({
             where: {
                 id: {

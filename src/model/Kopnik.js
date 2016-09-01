@@ -7,8 +7,8 @@
  * @param {Object} DataTypes
  * @returns {Model}
  */
-module.exports = function(sequelize, DataTypes) {
-    return sequelize.define('Kopnik', {
+module.exports = function (sequelize, DataTypes) {
+    let Kopnik = sequelize.define('Kopnik', {
         id: {
             type: DataTypes.BIGINT,
             primaryKey: true,
@@ -17,7 +17,7 @@ module.exports = function(sequelize, DataTypes) {
         email: {
             type: DataTypes.STRING
         },
-        password:{
+        password: {
             type: DataTypes.STRING
         },
         name: {
@@ -33,27 +33,31 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.INTEGER,
             allowNull: false,
             validate: {
-                isOlder: function(value){
-                    if (new Date().getFullYear()-value < 30){
+                isOlder: function (value) {
+                    if (new Date().getFullYear() - value < 30) {
                         throw new Error("Возраст копного мужа должен быть от 30 лет и больше");
                     }
                 }
             }
         },
-        note:{
+        note: {
             type: DataTypes.TEXT
         }
     }, {
         underscored: true,
-        getterMethods:{
-            fullName:function(){return `${this.name} ${this.surname}`;}
+        getterMethods: {
+            fullName: function () {
+                return `${this.name} ${this.surname}`;
+            }
         },
         validate: {
-            totalValidation: function() {
+            totalValidation: function () {
                 if (!this.name || !this.surname) {
                     throw new Error('Не указано имя')
                 }
             }
         }
     });
+
+    return Kopnik;
 };

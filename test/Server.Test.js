@@ -5,44 +5,85 @@
 var assert = require('chai').assert;
 let autobahn = require("autobahn");
 let config = require("../cfg/config.json")[process.env.NODE_ENV || 'development'];
-let _=require("lodash");
-let model=require("../src/model");
+let _ = require("lodash");
+let model = require("../src/model");
 
 let WAMP = require("../src/WAMPFactory");
-let Server= require("../src/Server");
-let server= new Server();
+let Server = require("../src/Server");
+let server = new Server();
 
-let place_id=7,
-    alexey2baranov,
-    ALEXEY2BARANOV=1;
+let UNIT_TEST_ZEMLA_2 = 2,
+    unitTestKopnik2,
+    UNIT_TEST_KOPNIK_2 = 2;
 
 
 describe('Server', function () {
-    before(function(){
-        // alexey2baranov = model.Kopnik.getReference(1);
+    before(function () {
     });
 
     describe('#promiseKopas()', function (done) {
         let result;
-        it("should return array < Object>, ordered by started ASC, started or initier=me", async function (done) {
+        it("should return array of obj, started or initier=me", async function (done) {
             try {
-                result = await server.promiseKopas(null, {PLACE: place_id, FROM: 1}, {caller_authid:"alexey_baranov@inbox.ru"});
+                let CHE = new Date(2016, 9 - 1, 1).getTime();
+                result = await server.promiseKopas(null, {
+                    PLACE: UNIT_TEST_ZEMLA_2,
+                    // TIME: null
+                }, {caller_authid: "unittest2@domain.ru"});
 
                 assert.equal(_.isArray(result), true);
-                for(var eachResult of result){
+                for (var eachResult of result) {
                     assert.equal(_.isObject(result[0]), true);
-                    assert.equal(eachResult.id>1, true);
-                    assert.equal(eachResult.initiator_id==ALEXEY2BARANOV || eachResult.started!=null, true);
+                    // assert.equal(!eachResult.started || eachResult.started < CHE, true);
+                    assert.equal(eachResult.initiator_id == UNIT_TEST_KOPNIK_2 || eachResult.started != null, true);
                 }
                 done();
             }
-            catch(err){
+            catch (err) {
                 done(err);
             }
         });
 
-        it('should be ordered by started ASC', function () {
-            assert.equal(result[0].started< result[1].started, true);
+        it('size should be 4 ', function () {
+            assert.equal(result.length, 4);
+        });
+
+        it('should be ordered my planned desc followed by started desc', function () {
+            assert.equal(!result[0].started, true);
+            assert.equal(result[1].started > result[2].started, true);
+            assert.equal(result[2].started > result[3].started, true);
+        });
+    });
+
+    describe('#promiseKopas(BEFORE)', function (done) {
+        let result;
+        it("should return array of obj, started", async function (done) {
+            try {
+                let CHE = new Date(2016, 9 - 1, 1).getTime();
+                result = await server.promiseKopas(null, {
+                    PLACE: UNIT_TEST_ZEMLA_2,
+                    BEFORE: CHE
+                }, {caller_authid: "unittest2@domain.ru"});
+
+                assert.equal(_.isArray(result), true);
+                for (var eachResult of result) {
+                    assert.equal(_.isObject(result[0]), true);
+                    assert.equal(eachResult.started != null, true);
+                    assert.equal(eachResult.started < CHE, true);
+                }
+                done();
+            }
+            catch (err) {
+                done(err);
+            }
+        });
+
+        it('size should be 2 ', function () {
+            assert.equal(result.length, 2);
+        });
+
+        it('should be ordered my planned desc followed by started desc', function () {
+            assert.equal(result[0].started > result[1].started, true);
         });
     });
 });
