@@ -14,7 +14,7 @@ module.exports = function(sequelize, DataTypes) {
             primaryKey: true,
             autoIncrement: true
         },
-        text: {
+        value: {
             type: DataTypes.TEXT,
             allowNull: false
         },

@@ -47,6 +47,10 @@ PRINCIPALS_DB = {
       u"ticket": u"***",
       u"role": u"kopnik"
    },
+   u"unittest2@domain.ru": {
+      u"ticket": u"***",
+      u"role": u"kopnik"
+   },
    u"server": {
       u"ticket": u"***",
       u"role": u"server"

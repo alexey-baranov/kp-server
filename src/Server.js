@@ -3,7 +3,7 @@
  */
 var autobahn = require('autobahn');
 let config = require("../cfg/config.json")[process.env.NODE_ENV || 'development'];
-let model = require("./model");
+let models = require("./model");
 let log4js = require("log4js");
 
 
@@ -58,11 +58,19 @@ class Server {
                 session.prefix('api', 'ru.kopa');
                 this.log.info("connection.onopen()"/*, session._id, details*/);
 
+                await this.registerHelper('api:model.create', this.model_create, null, this);
                 await this.registerHelper('api:model.get', this.promiseModel, null, this);
+                await this.registerHelper('api:model.save', this.model_save, null, this);
                 await this.registerHelper('api:pingPong', this.pingPong, null, this);
                 await this.registerHelper('api:discloseCaller', this.discloseCaller, null, this);
                 await this.registerHelper('api:pingPongDatabase', this.pingPongDatabase, null, this);
                 await this.registerHelper('api:error', this.error, null, this);
+                await this.registerHelper('api:promiseKopas', this.promiseKopas, null, this);
+                await this.registerHelper('api:unitTest.cleanTempData', this.cleanTempData, null, this);
+
+                //kopa
+                await this.registerHelper('api:model.Kopa.setQuestion', this.Kopa_setQuestion, null, this);
+
                 /*                var x = 0;
                  self.INTERVAL = setInterval(function () {
                  session.publish("ru.myapp.oncounter", [++x], {}, {
@@ -87,6 +95,230 @@ class Server {
                 this.log.error(er);
             }
         };
+    }
+
+    async Kopa_setQuestion(args, {id, value}, details){
+        var tran = await models.sequelize.transaction();
+
+        try {
+            var kopa = await models.Kopa.findById(id);
+            kopa.question= value;
+
+            await kopa.save();
+            await tran.commit();
+        }
+        catch (err) {
+            tran.rollback();
+            throw err;
+        }
+        await this.WAMP.session.publish(`api:model.Kopa.id${id}.change`, null, {question:kopa.question});
+    }
+
+    /**
+     * "Обещает" сохранить модель
+     * @param args
+     * @param type
+     * @param plain
+     */
+    async model_save(args, {type, plain}) {
+        var tran = await models.sequelize.transaction();
+
+       try {
+           let model = await models[type].findById(plain.id);
+           await model.update(plain);
+           await tran.commit();
+
+           await this.WAMP.session.publish(`api:model.${type}.id${plain.id}.change`, null, null, {acknowledge: true});
+
+           switch (type) {
+                case "Zemla":
+                case "Kopa":
+                case "Golos":
+                    break;
+                case "Slovo":
+                    break;
+                case "Kopnik":
+                    break;
+                case "File":
+                    break;
+            }
+        }
+        catch (err) {
+            if (!tran.finished) {
+                try {
+                    await tran.rollback();
+                }
+                catch (err2) {
+                    this.error("save model error", err, err2);
+                }
+            }
+            throw err;
+        }
+    }
+
+    /**
+     * "Обещает" создать модель
+     * @param args
+     * @param type тип модели
+     * @param plain модель в плоском виде
+     * @return {*}
+     */
+    async model_create(args, {type, plain}) {
+        var tran = await models.sequelize.transaction();
+        var result = null;
+
+        try {
+            let result = await models[type].create(plain);
+
+            switch (type) {
+                case "Slovo":
+                    await tran.commit();
+                    await this.WAMP.session.publish(`api:model.Kopa.id${plain.place_id}.slovoAdd`, [result.id], null, {acknowledge: true});
+                    break;
+                case "Zemla":
+                case "Kopa":
+                case "Golos":
+                case "Kopnik":
+                case "File":
+                    await tran.commit();
+                    break;
+            }
+            return result.id;
+        }
+        catch (err) {
+            if (!tran.finished) {
+                try {
+                    await tran.rollback();
+                }
+                catch (err2) {
+                    this.error("create model error", err, err2);
+                }
+            }
+            throw err;
+        }
+    }
+
+    /**
+     * Копы открытые до BEFORE или ен открытые но мои
+     * отсортированные по дате (стартонутости или запланированности) в обратном порядке
+     * @param args
+     * @param PLACE
+     * @param BEFORE
+     * @param caller_authid
+     * @returns {*}
+     */
+    async promiseKopas(args, {PLACE, BEFORE}, {caller_authid}) {
+        var BEFORE_FILTER;
+        if (!BEFORE) {
+            BEFORE_FILTER = `(
+            kopa.started is not null 
+            or (
+                kopa.started is null 
+                and kopnik.email=:caller_authid
+                )
+            )`;
+        }
+        else {
+            BEFORE_FILTER = `kopa.started <  to_timestamp(:BEFORE)`;
+        }
+
+        let resultAsArray = await models.sequelize.query(`
+        select kopa.* 
+            from "Kopa" as kopa
+            join "Kopnik" as kopnik on kopnik.id= kopa.inviter_id 
+        where
+            kopa.place_id=:PLACE
+            and ${BEFORE_FILTER}
+        order by
+            kopa.started,
+            kopa.planned
+            `,
+            {
+                replacements: {
+                    "PLACE": PLACE,
+                    "BEFORE": BEFORE / 1000,
+                    "caller_authid": caller_authid
+                },
+                type: models.Sequelize.QueryTypes.SELECT
+            });
+        // return resultAsArray;
+        let RESULT = resultAsArray.map(each=>each.id);
+        let result = await models.Kopa.findAll({
+            where: {
+                id: {
+                    $in: RESULT
+                },
+            },
+            order: [
+                ['started', 'asc'],
+                ['planned', 'asc']
+            ],
+        });
+        result = result.map(eachResult=>eachResult.get({plain: true}));
+        return result;
+    }
+
+    error(args, kwargs) {
+        class MySuperError extends Error {
+
+        }
+        this.log.debug("#error()", args, kwargs);
+        return new Promise(function () {
+            throw new MySuperError(args[0]);
+        });
+    }
+
+    discloseCaller(args, kwargs, details) {
+        if (!details.caller) {
+            throw new Error("disclose me not works");
+        }
+        return details.caller_authid;
+    }
+
+    pingPong(args, kwargs) {
+        this.log.debug("#pingPong()", args, kwargs);
+        return new autobahn.Result(args, kwargs);
+    }
+
+    async pingPongDatabase(args, kwargs) {
+        let results = await models.sequelize.query(`select '${args[0]}' as result`, {type: models.Sequelize.QueryTypes.SELECT});
+        return results[0].result;
+    }
+
+    /**
+     * "Обещает" вернуть модель
+     *
+     * @param args
+     * @param kwargs
+     * @returns {*}
+     */
+    async promiseModel(args, kwargs) {
+        this.log.debug("#promiseModel()", args, kwargs);
+
+        var tran = await models.sequelize.transaction();
+        var result = null;
+
+        switch (kwargs.model) {
+            case "Zemla":
+            case "Kopa":
+            case "Golos":
+            case "Slovo":
+            case "Kopnik":
+                result = await models[kwargs.model].findById(kwargs.id, {
+                    include: [{
+                        model: models.File,
+                        as: 'attachments'
+                    }]
+                });
+                result = result.get({plain: true});
+                delete result.password;
+                break;
+            case "File":
+                break;
+        }
+
+        await tran.commit();
+        return result;
     }
 
     /**
@@ -118,132 +350,27 @@ class Server {
         return result;
     };
 
+    /**
+     * Удаляет все временные объекты после юнит тестов
+     * временные объекты заканчиваются на "temp" и находятся в юниттестовых поддеревьях
+     */
+    async cleanTempData(args) {
+        if (args.length==0 || args.indexOf("Slovo") != -1) {
+            await models.sequelize.query(`
+                delete from "Slovo"
+                where
+                    place_id=3
+                    and value like '%temp'
+                 `,
+                {type: models.Sequelize.QueryTypes.DELETE});
+        }
+    }
+
     start() {
         this.WAMP.open();
     }
 
-    error(args, kwargs) {
-        class MySuperError extends Error {
 
-        }
-        this.log.debug("#error()", args, kwargs);
-        return new Promise(function () {
-            throw new MySuperError(args[0]);
-        });
-    }
-
-    discloseCaller(args, kwargs, details) {
-        if (!details.caller) {
-            throw new Error("disclose me not works");
-        }
-        return details.caller_authid;
-    }
-
-    pingPong(args, kwargs) {
-        this.log.debug("#pingPong()", args, kwargs);
-        return new autobahn.Result(args, kwargs);
-    }
-
-    async pingPongDatabase(args, kwargs) {
-        let results = await model.sequelize.query(`select '${args[0]}' as result`, {type: model.Sequelize.QueryTypes.SELECT});
-        return results[0].result;
-    }
-
-    /**
-     * Копы открытые до BEFORE или ен открытые но мои
-     * отсортированные по дате (стартонутости или запланированности) в обратном порядке
-     * @param args
-     * @param PLACE
-     * @param BEFORE
-     * @param caller_authid
-     * @returns {*}
-     */
-    async promiseKopas(args, {PLACE, BEFORE}, {caller_authid}) {
-        var BEFORE_FILTER;
-        if (!BEFORE) {
-            BEFORE_FILTER = `(
-            kopa.started is not null 
-            or (
-                kopa.started is null 
-                and kopnik.email=:caller_authid
-                )
-            )`;
-        }
-        else {
-            BEFORE_FILTER = `kopa.started <  to_timestamp(:BEFORE)`;
-        }
-
-        let resultAsArray = await model.sequelize.query(`
-        select kopa.* 
-            from "Kopa" as kopa
-            join "Kopnik" as kopnik on kopnik.id= kopa.initiator_id 
-        where
-            kopa.place_id=:PLACE
-            and ${BEFORE_FILTER}
-        order by
-            kopa.started desc nulls first,
-            kopa.planned desc
-            `,
-            {
-                replacements: {
-                    "PLACE": PLACE,
-                    "BEFORE": BEFORE / 1000,
-                    "caller_authid": caller_authid
-                },
-                type: model.Sequelize.QueryTypes.SELECT
-            });
-        return resultAsArray;
-        let RESULT = resultAsArray.map(each=>each.id);
-        let result = await model.Kopa.findAll({
-            where: {
-                id: {
-                    $in: RESULT
-                },
-            },
-            order: [
-                ['started', 'ASC'],
-                ['created_at', 'ASC']
-            ],
-        });
-        result = result.map(eachResult=>eachResult.get({plain: true}));
-        return result;
-    }
-
-    /**
-     * "Обещает" вернуть модель
-     *
-     * @param args
-     * @param kwargs
-     * @returns {*}
-     */
-    async promiseModel(args, kwargs) {
-        this.log.debug("#promiseModel()", args, kwargs);
-
-        var tran = await model.sequelize.transaction();
-        var result = null;
-
-        switch (kwargs.model) {
-            case "Zemla":
-            case "Kopa":
-            case "Golos":
-            case "Slovo":
-            case "Kopnik":
-                result = await model[kwargs.model].findById(kwargs.id, {
-                    include: [{
-                        model: model.File,
-                        as: 'attachments'
-                    }]
-                });
-                result = result.get({plain: true});
-                delete result.password;
-                break;
-            case "File":
-                break;
-        }
-
-        await tran.commit();
-        return result;
-    }
 }
 
 module.exports = Server;

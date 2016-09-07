@@ -34,8 +34,7 @@ describe('Server', function () {
                 assert.equal(_.isArray(result), true);
                 for (var eachResult of result) {
                     assert.equal(_.isObject(result[0]), true);
-                    // assert.equal(!eachResult.started || eachResult.started < CHE, true);
-                    assert.equal(eachResult.initiator_id == UNIT_TEST_KOPNIK_2 || eachResult.started != null, true);
+                    assert.equal(eachResult.inviter_id == UNIT_TEST_KOPNIK_2 || eachResult.started != null, true);
                 }
                 done();
             }
@@ -48,10 +47,10 @@ describe('Server', function () {
             assert.equal(result.length, 4);
         });
 
-        it('should be ordered my planned desc followed by started desc', function () {
-            assert.equal(!result[0].started, true);
-            assert.equal(result[1].started > result[2].started, true);
-            assert.equal(result[2].started > result[3].started, true);
+        it('should be ordered started followed by my planned', function () {
+            assert.equal(result[0].started < result[1].started, true);
+            assert.equal(result[1].started < result[2].started, true);
+            assert.equal(!result[3].started, true);
         });
     });
 
@@ -82,8 +81,8 @@ describe('Server', function () {
             assert.equal(result.length, 2);
         });
 
-        it('should be ordered my planned desc followed by started desc', function () {
-            assert.equal(result[0].started > result[1].started, true);
+        it('should be ordered started', function () {
+            assert.equal(result[0].started < result[1].started, true);
         });
     });
 });

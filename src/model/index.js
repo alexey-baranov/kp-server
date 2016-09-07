@@ -56,7 +56,7 @@ module.exports = db;
 
     db.Zemla.hasMany(db.Kopa, {
         as: "kopas",
-        foreignKey: "UNIT_TEST_ZEMLA_2"
+        foreignKey: "place_id"
     });
 
     db.Zemla.hasMany(db.File, {
@@ -85,13 +85,13 @@ module.exports = db;
     });
 
     db.Kopnik.hasMany(db.Kopa, {
-        as: "initiated",
-        foreignKey: "initiator_id"
+        as: "invited",
+        foreignKey: "inviter_id"
     });
 
     db.Kopnik.hasMany(db.Predlozhenie, {
-        as: "offers",
-        foreignKey: "owner_id"
+        as: "initiated",
+        foreignKey: "initiator_id"
     });
 
     db.Kopnik.hasMany(db.Slovo, {
@@ -111,17 +111,22 @@ module.exports = db;
 {
     db.Kopa.belongsTo(db.Zemla, {
         as: "place",
-        foreignKey: "UNIT_TEST_ZEMLA_2"
+        foreignKey: "place_id"
     });
 
     db.Kopa.belongsTo(db.Kopnik, {
-        as: "initiator",
-        foreignKey: "initiator_id"
+        as: "inviter",
+        foreignKey: "inviter_id"
     });
 
     db.Kopa.hasMany(db.Predlozhenie, {
-        as: "offers",
-        foreignKey: "kopa_id"
+        as: "results",
+        foreignKey: "place_id"
+    });
+
+    db.Kopa.hasMany(db.Slovo, {
+        as: "dialog",
+        foreignKey: "place_id"
     });
 
     db.Kopa.hasMany(db.File, {
@@ -131,12 +136,14 @@ module.exports = db;
 }
 
 /**
- * сообщение
+ * Слово
  */
 {
     db.Slovo.belongsTo(db.Kopa, {
-        // as: "Location"
+        as: "place",
+        foreignKey: "place_id"
     });
+
     db.Slovo.belongsTo(db.Kopnik, {
         as: "owner"
     });
@@ -151,12 +158,12 @@ module.exports = db;
  */
 {
     db.Predlozhenie.belongsTo(db.Kopa, {
-        // as: "Location"
-        foreignKey: "kopa_id"
+        as: "place",
+        foreignKey: "place_id"
     });
     db.Predlozhenie.belongsTo(db.Kopnik, {
-        as: "owner",
-        foreignKey: "owner_id"
+        as: "initiator",
+        foreignKey: "initiator_id"
     });
 
     db.Predlozhenie.hasMany(db.Golos, {
