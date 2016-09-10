@@ -7,7 +7,7 @@
  * @param {Object} DataTypes
  * @returns {Model}
  */
-module.exports = function(sequelize, DataTypes) {
+module.exports = function (sequelize, DataTypes) {
     return sequelize.define('Golos', {
         id: {
             type: DataTypes.BIGINT,
@@ -17,6 +17,9 @@ module.exports = function(sequelize, DataTypes) {
         value: {
             type: DataTypes.INTEGER,
             allowNull: false
+        },
+        reason: {
+            type: DataTypes.TEXT,
         },
         note: {
             type: DataTypes.TEXT

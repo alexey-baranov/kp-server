@@ -20,7 +20,7 @@ var connection = new autobahn.Connection({
 });
 
 //self._options., self._options.authid
-var INTERVAL;
+var tickInterval;
 
 connection.onopen = function (session, details) {
     console.log("connection.onopen"/*, session, details*/);
@@ -29,7 +29,7 @@ connection.onopen = function (session, details) {
         return args[0] + args[1];
     }).then (()=>console.log('com.myapp.add2 registered'), console.error);
     var x=0;
-    INTERVAL= setInterval(function(){
+    tickInterval= setInterval(function(){
         session.publish("com.myapp.oncounter", [++x], {}, {
             acknowledge: true, //получить обещание - подтверждение
             exclude_me: false,  //получить самому свое сообщение
@@ -42,7 +42,7 @@ connection.onopen = function (session, details) {
 
 connection.onclose = function (reason, details) {
     console.log("connection.onclose", reason, details);
-    clearInterval(INTERVAL);
+    clearInterval(tickInterval);
 };
 
 connection.open();

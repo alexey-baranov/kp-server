@@ -120,7 +120,7 @@ module.exports = db;
     });
 
     db.Kopa.hasMany(db.Predlozhenie, {
-        as: "results",
+        as: "result",
         foreignKey: "place_id"
     });
 
@@ -167,8 +167,8 @@ module.exports = db;
     });
 
     db.Predlozhenie.hasMany(db.Golos, {
-        as: "votes",
-        foreignKey: "target_id"
+        as: "golosa",
+        foreignKey: "for_id"
     });
 
     db.Predlozhenie.hasMany(db.File, {
@@ -186,8 +186,8 @@ module.exports = db;
     });
 
     db.Golos.belongsTo(db.Predlozhenie, {
-        as: "target",
-        foreignKey: "target_id"
+        as: "for",
+        foreignKey: "for_id"
     });
 
     db.Golos.hasMany(db.File, {

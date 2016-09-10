@@ -5,6 +5,7 @@ var autobahn = require('autobahn');
 let config = require("../cfg/config.json")[process.env.NODE_ENV || 'development'];
 let models = require("./model");
 let log4js = require("log4js");
+let Cleaner = require("./Cleaner");
 
 
 /**
@@ -66,20 +67,25 @@ class Server {
                 await this.registerHelper('api:pingPongDatabase', this.pingPongDatabase, null, this);
                 await this.registerHelper('api:error', this.error, null, this);
                 await this.registerHelper('api:promiseKopas', this.promiseKopas, null, this);
-                await this.registerHelper('api:unitTest.cleanTempData', this.cleanTempData, null, this);
+                await this.registerHelper('api:unitTest.cleanTempData', this.Cleaner_clean, null, this);
 
                 //kopa
                 await this.registerHelper('api:model.Kopa.setQuestion', this.Kopa_setQuestion, null, this);
 
-                /*                var x = 0;
-                 self.INTERVAL = setInterval(function () {
-                 session.publish("ru.myapp.oncounter", [++x], {}, {
-                 acknowledge: true, //получить обещание - подтверждение
-                 exclude_me: false,  //получить самому свое сообщение
-                 disclose_me: true //открыть подписчикам свой Session#ID
-                 }).then((publication)=>this.log.debug("ru.myapp.oncounter published", publication), session.log);
-                 this.log.debug(x);
-                 }, 5000)*/
+                let tick = 0;
+                this.tickInterval = setInterval(()=> {
+                    /*
+                     session.publish("ru.kopa.tick", [tick++], {}, {
+                     acknowledge: true, //получить обещание - подтверждение
+                     exclude_me: false,  //получить самому свое сообщение
+                     disclose_me: true //открыть подписчикам свой Session#ID
+                     })
+                     .then((publication)=>{})
+                     .catch(session.log);
+                     */
+                }, 1000);
+
+                this.log.info("started");
             }
             catch (er) {
                 this.log.error(er);
@@ -89,7 +95,7 @@ class Server {
         this.WAMP.onclose = (reason, details)=> {
             try {
                 this.log.info("connection.onclose()", reason, details);
-                clearInterval(INTERVAL);
+                clearInterval(tickInterval);
             }
             catch (er) {
                 this.log.error(er);
@@ -97,12 +103,12 @@ class Server {
         };
     }
 
-    async Kopa_setQuestion(args, {id, value}, details){
+    async Kopa_setQuestion(args, {id, value}, details) {
         var tran = await models.sequelize.transaction();
 
         try {
             var kopa = await models.Kopa.findById(id);
-            kopa.question= value;
+            kopa.question = value;
 
             await kopa.save();
             await tran.commit();
@@ -111,7 +117,7 @@ class Server {
             tran.rollback();
             throw err;
         }
-        await this.WAMP.session.publish(`api:model.Kopa.id${id}.change`, null, {question:kopa.question});
+        await this.WAMP.session.publish(`api:model.Kopa.id${id}.change`, null, {question: kopa.question});
     }
 
     /**
@@ -123,14 +129,14 @@ class Server {
     async model_save(args, {type, plain}) {
         var tran = await models.sequelize.transaction();
 
-       try {
-           let model = await models[type].findById(plain.id);
-           await model.update(plain);
-           await tran.commit();
+        try {
+            let model = await models[type].findById(plain.id);
+            await model.update(plain);
+            await tran.commit();
 
-           await this.WAMP.session.publish(`api:model.${type}.id${plain.id}.change`, null, null, {acknowledge: true});
+            await this.WAMP.session.publish(`api:model.${type}.id${plain.id}.change`, null, null, {acknowledge: true});
 
-           switch (type) {
+            switch (type) {
                 case "Zemla":
                 case "Kopa":
                 case "Golos":
@@ -165,24 +171,60 @@ class Server {
      */
     async model_create(args, {type, plain}) {
         var tran = await models.sequelize.transaction();
-        var result = null;
 
         try {
             let result = await models[type].create(plain);
+            await tran.commit();
 
-            switch (type) {
-                case "Slovo":
-                    await tran.commit();
-                    await this.WAMP.session.publish(`api:model.Kopa.id${plain.place_id}.slovoAdd`, [result.id], null, {acknowledge: true});
-                    break;
-                case "Zemla":
-                case "Kopa":
-                case "Golos":
-                case "Kopnik":
-                case "File":
-                    await tran.commit();
-                    break;
-            }
+            /**
+             * событие о том что создался новый объект ".*Add" должно уходить после того
+             * как ".model.create" завершится и вернет ответ клиенту
+             * только в этом случае в момент события ".*Add" новая модель будет доступна
+             * на клиенте из кэша RemoteModel
+             */
+            // setTimeout(async ()=> {
+            setImmediate(async()=> {
+                try {
+                    switch (type) {
+                        case "Kopnik":
+                            let starshiniAsPlain = await models.sequelize.query(`
+                                select k.*, (select count(*) from "Kopnik" as k2 where k2.path like k.path||k.id||'/%') as voisko_size
+                                    from "Kopnik" as k
+                                where
+                                    :path like k.path||k.id||'/%'
+                                order by
+                                    k.path desc`,
+                                {
+                                    replacements: {
+                                        "path": result.path,
+                                    },
+                                    type: models.Sequelize.QueryTypes.SELECT
+                                });
+                            for(let eachStarshinaAsPlain of starshiniAsPlain){
+                                await this.WAMP.session.publish(`api:model.Kopnik.id${eachStarshinaAsPlain.id}.voiskoChange`, [], {voiskoSize: eachStarshinaAsPlain.voisko_size}, {acknowledge: true});
+                            }
+                            break;
+                        case "Slovo":
+                            await this.WAMP.session.publish(`api:model.Kopa.id${plain.place_id}.slovoAdd`, [result.id], null, {acknowledge: true});
+                            break;
+                        case "Predlozhenie":
+                            await this.WAMP.session.publish(`api:model.Kopa.id${plain.place_id}.predlozhenieAdd`, [result.id], null, {acknowledge: true});
+                            break;
+                        case "Golos":
+                            await this.WAMP.session.publish(`api:model.Predlozhenie.id${plain.for_id}.golosAdd`, [result.id], null, {acknowledge: true});
+                            break;
+                        case "Zemla":
+                        case "Kopa":
+                        case "Kopnik":
+                        case "File":
+                            break;
+                    }
+                }
+                catch (err) {
+                    this.log.error(err);
+                }
+            }, 1000);
+
             return result.id;
         }
         catch (err) {
@@ -304,6 +346,7 @@ class Server {
             case "Golos":
             case "Slovo":
             case "Kopnik":
+            case "Predlozhenie":
                 result = await models[kwargs.model].findById(kwargs.id, {
                     include: [{
                         model: models.File,
@@ -314,6 +357,8 @@ class Server {
                 delete result.password;
                 break;
             case "File":
+                result = await models[kwargs.model].findById(kwargs.id);
+                result = result.get({plain: true});
                 break;
         }
 
@@ -354,16 +399,8 @@ class Server {
      * Удаляет все временные объекты после юнит тестов
      * временные объекты заканчиваются на "temp" и находятся в юниттестовых поддеревьях
      */
-    async cleanTempData(args) {
-        if (args.length==0 || args.indexOf("Slovo") != -1) {
-            await models.sequelize.query(`
-                delete from "Slovo"
-                where
-                    place_id=3
-                    and value like '%temp'
-                 `,
-                {type: models.Sequelize.QueryTypes.DELETE});
-        }
+    async Cleaner_clean(args) {
+        Cleaner.clean(args);
     }
 
     start() {
