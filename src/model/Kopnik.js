@@ -54,6 +54,43 @@ module.exports = function (sequelize, DataTypes) {
         }
     }, {
         instanceMethods: {
+            /**
+             * поднимает войско старшины и его старшин на величину своего войска
+             * (после входа в дружину)
+             * @return {Promise}
+             */
+            voiskoUp: function(){
+                return sequelize.query(`
+                                update "Kopnik"
+                                    set "voiskoSize"= "voiskoSize"+${this.voiskoSize+1}
+                                where
+                                    :path like path||id||'/%'`,
+                    {
+                        replacements: {
+                            "path": this.path
+                        },
+                        type: sequelize.Sequelize.QueryTypes.UPDATE
+                    });
+            },
+
+            /**
+             * опускает войско старшины и его старшин на величину своего войска
+             * (после выхода из дружины)
+             * @return {Promise}
+             */
+            voiskoDown: function(){
+                return sequelize.query(`
+                                update "Kopnik"
+                                    set "voiskoSize"= "voiskoSize"-${this.voiskoSize+1}
+                                where
+                                    :path like path||id||'/%'`,
+                    {
+                        replacements: {
+                            "path": this.path
+                        },
+                        type: sequelize.Sequelize.QueryTypes.UPDATE
+                    });
+            },
             setupPath: async function (starshina) {
                 if (starshina === undefined) {
                     starshina = await this.getStarshina();
@@ -67,6 +104,9 @@ module.exports = function (sequelize, DataTypes) {
              * @param {Kopnik} value
              */
             setStarshina2: async function (value) {
+                //сначала уронил войско старшины
+                await this.voiskoDown();
+
                 this._starshina = value;
                 if (value) {
                     this.starshina_id = value.id;
@@ -77,11 +117,45 @@ module.exports = function (sequelize, DataTypes) {
                 await this.setupPath(value);
                 await this.save(["path", "starshina_id"]);
 
+                //теперь поднял войско нового старшины
+                await this.voiskoUp();
+
                 let druzhina = await this.getDruzhina();
 
                 for (let eachDruzhe of druzhina) {
-                    await (eachDruzhe.setStarshina2(this));
+                    await eachDruzhe.setupPath(this);
+                    await eachDruzhe.save(["path"]);
                 }
+            },
+
+            /**
+             * возвращает массив старшин от непосредственного до самого верхнего
+             * @return {*}
+             */
+            getStarshini: async function(){
+                let starshiniAsPlain = await sequelize.query(`
+                                select k.*
+                                    from "Kopnik" as k
+                                where
+                                    :path like k.path||k.id||'/%'
+                                `,
+                    {
+                        replacements: {
+                            "path": this.path,
+                        },
+                        type: sequelize.Sequelize.QueryTypes.SELECT
+                    });
+                let STARSHINI= starshiniAsPlain.map(eachStarshinaAsPlain=>eachStarshinaAsPlain.id);
+                let result= Kopnik.findAll({
+                    where:{
+                        id:{
+                            $in:STARSHINI
+                        }
+                    },
+                    order:[["path", "desc"]]
+                });
+
+                return result;
             },
 
             /**
@@ -91,6 +165,8 @@ module.exports = function (sequelize, DataTypes) {
              * @param {Kopnik} value
              */
             getVoisko: async function () {
+                throw new Error("getVoisko может возвращать несколько миллионов копников поэтому нужно избегать этого метода");
+
                 let result = Kopnik.findAll({
                     where: {
                         path: {
@@ -104,17 +180,7 @@ module.exports = function (sequelize, DataTypes) {
         hooks: {
             beforeCreate: async function (sender, options) {
                 await sender.setupPath();
-                await sequelize.query(`
-                                update "Kopnik"
-                                    set "voiskoSize"= "voiskoSize"+1
-                                where
-                                    :path like path||id||'/%'`,
-                    {
-                        replacements: {
-                            "path": sender.path,
-                        },
-                        type: sequelize.Sequelize.QueryTypes.UPDATE
-                    });
+                await sender.voiskoUp();
             },
             beforeUpdate: function (sender, options) {
                 // return sender.setupPath();

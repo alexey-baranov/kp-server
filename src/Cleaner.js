@@ -29,7 +29,7 @@ class Cleaner{
                  `,
                 {type: models.Sequelize.QueryTypes.DELETE});
 
-            await sequelize.query(`
+            await models.sequelize.query(`
                 update "Kopnik"
                 set 
                     "voiskoSize"= case when id=2 then 1 ELSE 0 END
@@ -37,8 +37,9 @@ class Cleaner{
                     id>1 
                     and id<=5`,
                 {
-                    type: sequelize.Sequelize.QueryTypes.UPDATE
+                    type: models.sequelize.Sequelize.QueryTypes.UPDATE
                 });
+            let x=1;
         }
 
     }

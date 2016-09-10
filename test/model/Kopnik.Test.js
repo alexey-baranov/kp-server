@@ -14,14 +14,17 @@ let kopnik2,
     kopnik4,
     KOPNIK = 2,
     KOPNIK2 = 2,
-    KOPNIK3 = 3;
+    KOPNIK3 = 3,
+    KOPNIK4=4;
 
 describe('Kopnik', function () {
     before(function(){
-        Cleaner.clean("Kopnik");
+        let result= Cleaner.clean("Kopnik");
+        return result;
     });
 
-    let someKopnik;
+    let someKopnik1,
+        someKopnik2;
 
     describe('#create()', function () {
 
@@ -29,7 +32,7 @@ describe('Kopnik', function () {
             try {
                 kopnik2 = await models.Kopnik.findById(KOPNIK2);
 
-                someKopnik = await models.Kopnik.create({
+                someKopnik1 = await models.Kopnik.create({
                     name: "temp",
                     surname: "temp",
                     patronymic: "temp",
@@ -37,10 +40,27 @@ describe('Kopnik', function () {
                     rodina_id: kopnik2.rodina_id,
                     starshina_id: kopnik2.id
                 });
-                assert.equal(someKopnik.path, "/2/");
+                assert.equal(someKopnik1.path, "/2/");
+                assert.equal(someKopnik1.voiskoSize, 0, "someKopnik.voiskoSize, 0");
 
                 await kopnik2.reload();
                 assert.equal(kopnik2.voiskoSize, 2, "kopnik2.voiskoSize, 2");
+
+                someKopnik2 = await models.Kopnik.create({
+                    name: "temp",
+                    surname: "temp",
+                    patronymic: "temp",
+                    birth: 1900,
+                    rodina_id: kopnik2.rodina_id,
+                    starshina_id: someKopnik1.id
+                });
+                assert.equal(someKopnik2.path, `/2/${someKopnik1.id}/`);
+
+                await someKopnik1.reload();
+                assert.equal(someKopnik1.voiskoSize, 1, "someKopnik1.voiskoSize, 1");
+
+                await kopnik2.reload();
+                assert.equal(kopnik2.voiskoSize, 3, "kopnik2.voiskoSize, 3");
                 done();
             }
             catch (err) {
@@ -48,8 +68,8 @@ describe('Kopnik', function () {
             }
         });
 
-         it('voisko size should bo 0', async function (done) {
-             assert.equal(0, someKopnik.voiskoSize);
+         it('voisko size should bo 0', async function () {
+             assert.equal(0, someKopnik2.voiskoSize);
          });
     });
 
@@ -57,44 +77,34 @@ describe('Kopnik', function () {
         /*
          * перекидываю со второго на четвертого копника
          */
-        it('should setupPath after change voiska starshin', async function (done) {
+        it('should change voiskoSize', async function (done) {
             try {
                 kopnik4 = await models.Kopnik.findById(KOPNIK4);
 
-                await someKopnik.setStarshina2(kopnik4);
+                await someKopnik1.setStarshina2(kopnik4);
 
-                await someKopnik.reload();
+                await someKopnik1.reload();
                 await kopnik2.reload();
                 await kopnik4.reload();
 
-                assert.equal(someKopnik.voiskoSize, 1, "someKopnik.voiskoSize, 1");
                 assert.equal(kopnik2.voiskoSize, 1, "kopnik2.voiskoSize, 1");
                 assert.equal(kopnik4.voiskoSize, 2, "kopnik4.voiskoSize, 2");
 
-                assert.equal(someKopnik.path, "/4/", 'someKopnik.path, "/4/"');
                 done();
             }
             catch (err) {
                 done(err);
             }
+        });
+
+        it('should setupPath', function(){
+            assert.equal(someKopnik1.path, "/4/", 'someKopnik.path, "/4/"');
         });
 
         it('should setup druzhe path after change starshina', async function (done) {
             try {
-                let druzhe= await models.Kopnik.create({
-                    name: "temp",
-                    surname: "temp",
-                    patronymic: "temp",
-                    birth: 1900,
-                    rodina_id: kopnik.rodina_id,
-                    starshina_id: kopnik.id
-                });
-
-                await kopnik.setStarshina2(kopnik2);
-
-                await druzhe.reload();
-
-                assert.equal(druzhe.path, `/2/${kopnik.id}/`);
+                await someKopnik2.reload();
+                assert.equal(someKopnik2.path, `/4/${someKopnik1.id}/`);
                 done();
             }
             catch (err) {
@@ -102,11 +112,27 @@ describe('Kopnik', function () {
             }
         });
 
-        it('should return Voisko', async function (done) {
+/*        it('should return Voisko', async function (done) {
             try {
+                throw new Error("getVoisko может возвращать несколько миллионов копников поэтому нужно избегать этого метода");
                 let voisko= await kopnik2.getVoisko();
 
                 assert.equal(voisko.length, 3);
+                done();
+            }
+            catch (err) {
+                done(err);
+            }
+        });*/
+    });
+
+    describe("getStarshini()", function(done){
+        it('should return starshini from closer', async function (done) {
+            try {
+                let starshini= await someKopnik2.getStarshini();
+                assert.equal(starshini.length, 2, "");
+                assert.equal(starshini[0], someKopnik1, "starshini[0], someKopnik1");
+                assert.equal(starshini[1], kopnik4, "starshini[1], kopnik4");
                 done();
             }
             catch (err) {

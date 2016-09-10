@@ -69,7 +69,10 @@ class Server {
                 await this.registerHelper('api:promiseKopas', this.promiseKopas, null, this);
                 await this.registerHelper('api:unitTest.cleanTempData', this.Cleaner_clean, null, this);
 
-                //kopa
+                //Kopnik
+                await this.registerHelper('api:model.Kopnik.setStarshina', this.Kopnik_setStarshina, null, this);
+
+                //Kopa
                 await this.registerHelper('api:model.Kopa.setQuestion', this.Kopa_setQuestion, null, this);
 
                 let tick = 0;
@@ -101,6 +104,46 @@ class Server {
                 this.log.error(er);
             }
         };
+    }
+
+    async Kopnik_setStarshina(args, {KOPNIK, STARSHINA}, details) {
+        let tran = await models.sequelize.transaction();
+
+        try {
+            var kopnik = await models.Kopnik.findById(KOPNIK);
+            let starshina = await models.Kopnik.findById(STARSHINA);
+
+            //старшины запоминаются на момент транзакции. в момент публикаций их войско будет уже меньше на войско копника
+            var prevStarshini= await kopnik.getStarshini();
+            await kopnik.setStarshina2(starshina);
+            var starshini= await kopnik.getStarshini();
+
+            await tran.commit();
+        }
+        catch (err) {
+            tran.rollback();
+            throw err;
+        }
+
+        /**
+         * событие о изменения прилетает после того как клиент дождался ответа
+         * об изменения
+         */
+        setImmediate(async()=> {
+            try {
+                //сначала роняю войско
+                for (let eachStarshina of prevStarshini) {
+                    //старшины запоминались на момент транзакции. в момент публикаций их войско будет уже меньше на войско копника
+                    await this.WAMP.session.publish(`api:model.Kopnik.id${eachStarshina.id}.voiskoChange`, [], {voiskoSize: eachStarshina.voiskoSize-kopnik.voiskoSize-1}, {acknowledge: true});
+                }
+                for (let eachStarshina of starshini) {
+                    await this.WAMP.session.publish(`api:model.Kopnik.id${eachStarshina.id}.voiskoChange`, [], {voiskoSize: eachStarshina.voiskoSize}, {acknowledge: true});
+                }
+            }
+            catch (err) {
+                this.log.error("Kopnik_setStarshina error", KOPNIK, STARSHINA, err);
+            }
+        });
     }
 
     async Kopa_setQuestion(args, {id, value}, details) {
@@ -179,29 +222,21 @@ class Server {
             /**
              * событие о том что создался новый объект ".*Add" должно уходить после того
              * как ".model.create" завершится и вернет ответ клиенту
-             * только в этом случае в момент события ".*Add" новая модель будет доступна
-             * на клиенте из кэша RemoteModel
+             * только в этом случае клиент, отправивший запрос получит событие ".*Add"
+             * когда новая модель уже будет доступна из кэша RemoteModel
              */
+
+            // задерживать на секунду не получается
+            // потому что два события над одним объектом прилетают в обратном порядке!
             // setTimeout(async ()=> {
+
             setImmediate(async()=> {
                 try {
                     switch (type) {
                         case "Kopnik":
-                            let starshiniAsPlain = await models.sequelize.query(`
-                                select k.*, (select count(*) from "Kopnik" as k2 where k2.path like k.path||k.id||'/%') as voisko_size
-                                    from "Kopnik" as k
-                                where
-                                    :path like k.path||k.id||'/%'
-                                order by
-                                    k.path desc`,
-                                {
-                                    replacements: {
-                                        "path": result.path,
-                                    },
-                                    type: models.Sequelize.QueryTypes.SELECT
-                                });
-                            for(let eachStarshinaAsPlain of starshiniAsPlain){
-                                await this.WAMP.session.publish(`api:model.Kopnik.id${eachStarshinaAsPlain.id}.voiskoChange`, [], {voiskoSize: eachStarshinaAsPlain.voisko_size}, {acknowledge: true});
+                            let starshini = await result.getStarshini();
+                            for (let eachStarshina of starshini) {
+                                await this.WAMP.session.publish(`api:model.Kopnik.id${eachStarshina.id}.voiskoChange`, [], {voiskoSize: eachStarshina.voiskoSize}, {acknowledge: true});
                             }
                             break;
                         case "Slovo":
@@ -221,7 +256,7 @@ class Server {
                     }
                 }
                 catch (err) {
-                    this.log.error(err);
+                    this.log.error( "model_create error", args, {typs:type, plain:plain}, err);
                 }
             }, 1000);
 
