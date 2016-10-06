@@ -1,9 +1,13 @@
 {
-//  "presets": ["es2015"],
-  "plugins": ["transform-async-to-generator", "transform-es2015-parameters", "transform-es2015-destructuring"],
-//  "plugins": ["syntax-async-functions","transform-regenerator"],
-//  "plugins": ["fast-async"],
-  "ignore": [
-    "./node_modules/**/*.js"
-  ]
+    //  "presets": ["es2015"],
+    "plugins": [
+        "transform-async-to-generator",
+        "transform-es2015-parameters",
+        "transform-es2015-destructuring"
+    ],
+    //  "plugins": ["syntax-async-functions","transform-regenerator"],
+    //  "plugins": ["fast-async"],
+    "ignore": [
+        "./node_modules/**/*.js"
+    ]
 }

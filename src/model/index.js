@@ -52,12 +52,12 @@ module.exports = db;
     });
 
     db.Zemla.hasMany(db.Kopnik, {
-        as: "rod",
-        foreignKey: "rodina_id"
+        as: "obshina",
+        foreignKey: "dom_id"
     });
 
     db.Zemla.hasMany(db.Kopa, {
-        as: "kopas",
+        as: "kopi",
         foreignKey: "place_id"
     });
 
@@ -73,8 +73,8 @@ module.exports = db;
 {
 
     db.Kopnik.belongsTo(db.Zemla, {
-        as: "rodina",
-        foreignKey: "rodina_id"
+        as: "dom",
+        foreignKey: "dom_id"
     });
 
     db.Kopnik.belongsTo(db.Kopnik, {
@@ -92,8 +92,8 @@ module.exports = db;
     });
 
     db.Kopnik.hasMany(db.Predlozhenie, {
-        as: "initiated",
-        foreignKey: "initiator_id"
+        as: "authored",
+        foreignKey: "author_id"
     });
 
     db.Kopnik.hasMany(db.Slovo, {
@@ -164,8 +164,8 @@ module.exports = db;
         foreignKey: "place_id"
     });
     db.Predlozhenie.belongsTo(db.Kopnik, {
-        as: "initiator",
-        foreignKey: "initiator_id"
+        as: "author",
+        foreignKey: "author_id"
     });
 
     db.Predlozhenie.hasMany(db.Golos, {
@@ -186,7 +186,13 @@ module.exports = db;
     db.Golos.belongsTo(db.Kopnik, {
         as: "owner"
     });
-
+    db.Golos.belongsTo(db.Golos, {
+        as: "parent"
+    });
+    db.Golos.hasMany(db.Golos, {
+        as: "children",
+        foreignKey: "parent_id"
+    });
     db.Golos.belongsTo(db.Predlozhenie, {
         as: "for",
         foreignKey: "for_id"

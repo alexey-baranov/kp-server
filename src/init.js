@@ -12,11 +12,14 @@ var Zemla,
     podezd1;
 var alexey2baranov = null;
 var unitTestZemla2 = null;
-var unitTestZemla3 = null;
+var unitTestZemla3 = null,
+    unitTestZemla4;
+
 var kopnik2;
 var kopnik3;
 var kopnik4;
-var kopnik5;
+var kopnik5,
+    kopnik6;
 
 let zemla,
     kopnik,
@@ -32,14 +35,15 @@ async function initZemla() {
     Zemla = await models.Zemla.create({name: 'Земля', path: "/"});
     //unit test
     {
-        zemla= unitTestZemla2 = await (await models.Zemla.create({name: 'UnitTest2'})).setParentAndPath(Zemla);    //unit test
-        unitTestZemla3 = await (await models.Zemla.create({name: 'UnitTest3'})).setParentAndPath(unitTestZemla2);
+        zemla = unitTestZemla2 = await (await models.Zemla.create({name: 'UnitTest2'})).setParent2(Zemla);    //unit test
+        unitTestZemla3 = await (await models.Zemla.create({name: 'UnitTest3'})).setParent2(unitTestZemla2);
+        unitTestZemla4 = await (await models.Zemla.create({name: 'UnitTest4'})).setParent2(Zemla);    //unit test
     }
-    Russia = await (await models.Zemla.create({name: 'Россия'})).setParentAndPath(Zemla);
-    Surgut = await (await models.Zemla.create({name: 'Сургут'})).setParentAndPath(Russia);
-    Dzerzhinskogo = await (await models.Zemla.create({name: 'ул. Дзержинского'})).setParentAndPath(Surgut);
-    dom92 = await (await models.Zemla.create({name: '9/2'})).setParentAndPath(Dzerzhinskogo);
-    podezd1 = await (await models.Zemla.create({name: 'подъезд 1'})).setParentAndPath(dom92);
+    Russia = await (await models.Zemla.create({name: 'Россия'})).setParent2(Zemla);
+    Surgut = await (await models.Zemla.create({name: 'Сургут'})).setParent2(Russia);
+    Dzerzhinskogo = await (await models.Zemla.create({name: 'ул. Дзержинского'})).setParent2(Surgut);
+    dom92 = await (await models.Zemla.create({name: '9/2'})).setParent2(Dzerzhinskogo);
+    podezd1 = await (await models.Zemla.create({name: 'подъезд 1'})).setParent2(dom92);
 }
 
 async function initKopnik() {
@@ -47,18 +51,18 @@ async function initKopnik() {
         name: 'Алексей',
         surname: 'Баранов',
         patronymic: 'Юрьевич',
+        dom_id: podezd1.id,
         email: 'alexey_baranov@inbox.ru',
         password: bcrypt.hashSync("qwerty", bcrypt.genSaltSync(/*14*/)),
         birth: 1983
     });
-    await alexey2baranov.setRodina(podezd1);
 
     //unit test
-    kopnik= kopnik2 = await models.Kopnik.create({
+    kopnik = kopnik2 = await models.Kopnik.create({
         name: 'Unit',
         surname: 'Test',
         patronymic: '1',
-        rodina_id: unitTestZemla2.id,
+        dom_id: unitTestZemla2.id,
         email: 'unittest2@domain.ru',
         password: bcrypt.hashSync("qwerty", bcrypt.genSaltSync(/*14*/)),
         birth: 1983
@@ -67,7 +71,7 @@ async function initKopnik() {
         name: 'Unit',
         surname: 'Test',
         patronymic: '3',
-        rodina_id: unitTestZemla2.id,
+        dom_id: unitTestZemla2.id,
         starshina_id: kopnik2.id,
         email: 'unittest3@domain.ru',
         password: bcrypt.hashSync("qwerty", bcrypt.genSaltSync(/*14*/)),
@@ -77,7 +81,7 @@ async function initKopnik() {
         name: 'Unit',
         surname: 'Test',
         patronymic: '4',
-        rodina_id: unitTestZemla2.id,
+        dom_id: unitTestZemla2.id,
         email: 'unittest4@domain.ru',
         password: bcrypt.hashSync("qwerty", bcrypt.genSaltSync(/*14*/)),
         birth: 1983
@@ -86,8 +90,24 @@ async function initKopnik() {
         name: 'Unit',
         surname: 'Test',
         patronymic: '5',
-        rodina_id: unitTestZemla2.id,
+        dom_id: unitTestZemla2.id,
         email: 'unittest5@domain.ru',
+        password: bcrypt.hashSync("qwerty", bcrypt.genSaltSync(/*14*/)),
+        birth: 1983
+    });
+
+    /*
+    Этот копник используется внутри тестов голосования Predlozhenie#fix()
+    но не должен зафикситься на голосовании по копе на второй замле потому что он в четвертой земле,
+     то есть он живет в четвертом доме, а копа во втором доме
+     */
+    kopnik6 = await models.Kopnik.create({
+        name: 'Unit',
+        surname: 'Test',
+        patronymic: '6',
+        dom_id: unitTestZemla4.id,
+        starshina_id: kopnik2.id,
+        email: 'unittest6@domain.ru',
         password: bcrypt.hashSync("qwerty", bcrypt.genSaltSync(/*14*/)),
         birth: 1983
     });
@@ -115,10 +135,10 @@ async function initKopa() {
         await kopa2.setPlace(unitTestZemla2);
         await kopa2.setInviter(kopnik3);
 
-        var kopa3 = kopa= await models.Kopa.create({
+        var kopa3 = kopa = await models.Kopa.create({
             question: 'CHE',
             planned: new Date(CHE),
-            started: new Date(CHE)
+            invited: new Date(CHE)
         });
         await kopa3.setPlace(unitTestZemla2);
         await kopa3.setInviter(kopnik2);
@@ -129,7 +149,7 @@ async function initKopa() {
         var kopa4 = await models.Kopa.create({
             question: 'близко позади чужая',
             planned: new Date(CHE - 1 * 3600 * 1000),
-            started: new Date(CHE - 1 * 3600 * 1000)
+            invited: new Date(CHE - 1 * 3600 * 1000)
         });
         await kopa4.setPlace(unitTestZemla2);
         await kopa4.setInviter(kopnik3);
@@ -137,7 +157,7 @@ async function initKopa() {
         var kopa5 = await models.Kopa.create({
             question: 'далеко позади',
             planned: new Date(CHE - 2 * 3600 * 1000),
-            started: new Date(CHE - 2 * 3600 * 1000)
+            invited: new Date(CHE - 2 * 3600 * 1000)
         });
         await kopa5.setPlace(unitTestZemla2);
         await kopa5.setInviter(kopnik2);
@@ -153,7 +173,7 @@ async function initKopa() {
         kopa5 = await models.Kopa.create({
             question: 'далеко позади',
             planned: new Date(CHE - 2 * 3600 * 1000),
-            started: new Date(CHE - 2 * 3600 * 1000)
+            invited: new Date(CHE - 2 * 3600 * 1000)
         });
         await kopa5.setPlace(Zemla);
         await kopa5.setInviter(kopnik2);
@@ -179,7 +199,7 @@ async function initKopa() {
     kopa5 = await models.Kopa.create({
         question: 'Отремонтировать детскую площадку',
         planned: new Date(CHE),
-        started: new Date(CHE)
+        invited: new Date(CHE)
     });
     await kopa5.setPlace(dom92);
     await kopa5.setInviter(alexey2baranov);
@@ -190,7 +210,7 @@ async function initKopa() {
     kopa5 = await models.Kopa.create({
         question: 'Навесить агитацию копы на подъездах дома',
         planned: new Date(CHE - 1 * 3600 * 1000),
-        started: new Date(CHE - 1 * 3600 * 1000)
+        invited: new Date(CHE - 1 * 3600 * 1000)
     });
     await kopa5.setPlace(dom92);
     await kopa5.setInviter(kopnik2);
@@ -198,34 +218,72 @@ async function initKopa() {
     kopa5 = await models.Kopa.create({
         question: 'Закрыть ебучий пивной ларек во дворе',
         planned: new Date(CHE - 2 * 3600 * 1000),
-        started: new Date(CHE - 2 * 3600 * 1000)
+        invited: new Date(CHE - 2 * 3600 * 1000)
     });
     await kopa5.setPlace(dom92);
     await kopa5.setInviter(alexey2baranov);
 }
 
 async function initSlovo() {
-        slovo = await models.Slovo.create({
-            place_id: kopa.id,
-            owner_id: kopnik.id,
-            value: 'я ЗА!',
-        });
+    let CHE = new Date(2016, 9 - 1, 1).getTime();
+
+    slovo = await models.Slovo.create({
+        place_id: kopa.id,
+        owner_id: kopnik.id,
+        value: 'я ЗА!',
+    });
+
+    await models.Slovo.create({
+        place_id: kopa.id,
+        owner_id: kopnik.id,
+        value: 'я ЗА!',
+    });
+
+    await models.Slovo.create({
+        place_id: kopa.id,
+        owner_id: kopnik.id,
+        value: 'я ЗА!',
+    });
+
+    /*    await models.sequelize.query(`
+     update "Slovo"
+     set created_at = case id WHEN 2 THEN to_timestamp(:CHE) WHEN 3 THEN to_timestamp(:CHE-3600) END
+     where
+     id in (2,3)`,
+     {
+     replacements: {
+     "CHE": CHE / 1000
+     },
+     type: models.Sequelize.QueryTypes.UPDATE
+     });*/
 }
 
 async function initPredlozhenie() {
-        predlozhenie = await models.Predlozhenie.create({
-            place_id: kopa.id,
-            initiator_id: kopnik.id,
-            value: 'Будет ...',
-        });
+    predlozhenie = await models.Predlozhenie.create({
+        place_id: kopa.id,
+        author_id: kopnik.id,
+        value: 'Хочу ...',
+    });
+
+    await models.Predlozhenie.create({
+        place_id: kopa.id,
+        author_id: kopnik.id,
+        value: 'Предлагаю ...',
+    });
+
+    await models.Predlozhenie.create({
+        place_id: kopa.id,
+        author_id: kopnik.id,
+        value: 'Считаю ...',
+    });
 }
 
 async function initGolos() {
-        golos = await models.Golos.create({
-            for_id: predlozhenie.id,
-            owner_id: kopnik.id,
-            value: 1,
-        });
+    golos = await models.Golos.create({
+        for_id: predlozhenie.id,
+        owner_id: kopnik.id,
+        value: 1,
+    });
 }
 
 async function init() {
@@ -246,5 +304,5 @@ module.exports.init = init;
 
 init()
     .catch(function (err) {
-        console.error(err);
+        console.error(err, err.stack);
     });

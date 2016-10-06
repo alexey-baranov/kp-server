@@ -16,9 +16,57 @@ class Cleaner{
                 delete from "Slovo"
                 where
                     place_id<5
-                    and value like '%temp'
+                    and (
+                        value like '%temp'
+                        or value like 'temp%'
+                    )
                  `,
                 {type: models.Sequelize.QueryTypes.DELETE});
+        }
+
+        if (what.length == 0 || what.indexOf("Predlozhenie") != -1) {
+            await models.sequelize.query(`
+                delete from "Predlozhenie"
+                where
+                    place_id<5
+                    and (
+                        value like '%temp'
+                        or value like 'temp%'
+                    )
+                 `,
+                {type: models.Sequelize.QueryTypes.DELETE});
+        }
+
+        if (what.length == 0 || what.indexOf("Golos") != -1) {
+            await models.sequelize.query(`
+                delete from "Slovo"
+                where
+                    (
+                        note like '%temp'
+                        or note like 'temp%'
+                    )
+                 `,
+                {type: models.Sequelize.QueryTypes.DELETE});
+        }
+
+        if (what.length == 0 || what.indexOf("Zemla") != -1) {
+            await models.sequelize.query(`
+                delete from "Zemla"
+                where
+                    name like '%temp'
+                    or name like 'temp%'
+                 `,
+                {type: models.Sequelize.QueryTypes.DELETE});
+
+            await models.sequelize.query(`
+                update "Zemla"
+                set 
+                    "obshinaSize"= case when id=2 then 4 ELSE 0 END
+                where
+                    id in (2,3,4)`,
+                {
+                    type: models.sequelize.Sequelize.QueryTypes.UPDATE
+                });
         }
 
         if (what.length == 0 || what.indexOf("Kopnik") != -1) {
@@ -26,6 +74,7 @@ class Cleaner{
                 delete from "Kopnik"
                 where
                     name like '%temp'
+                    or name like 'temp%'
                  `,
                 {type: models.Sequelize.QueryTypes.DELETE});
 
@@ -39,7 +88,6 @@ class Cleaner{
                 {
                     type: models.sequelize.Sequelize.QueryTypes.UPDATE
                 });
-            let x=1;
         }
 
     }

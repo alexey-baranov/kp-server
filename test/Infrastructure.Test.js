@@ -23,13 +23,8 @@ describe('Infrastructure', function () {
         });
     });
 
-    it('database', function (done) {
-        return model.sequelize.query("select 'КОПА'", { type: model.Sequelize.QueryTypes.SELECT})
-            .then(result=>{
-                done();
-            }, er=>{
-                done(er);
-            });
+    it('database', async ()=> {
+        await model.sequelize.query("select 'КОПА'", { type: model.Sequelize.QueryTypes.SELECT});
     });
 
     it('crossbar', function (done) {

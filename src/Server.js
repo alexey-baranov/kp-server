@@ -66,14 +66,27 @@ class Server {
                 await this.registerHelper('api:discloseCaller', this.discloseCaller, null, this);
                 await this.registerHelper('api:pingPongDatabase', this.pingPongDatabase, null, this);
                 await this.registerHelper('api:error', this.error, null, this);
-                await this.registerHelper('api:promiseKopas', this.promiseKopas, null, this);
                 await this.registerHelper('api:unitTest.cleanTempData', this.Cleaner_clean, null, this);
 
                 //Kopnik
                 await this.registerHelper('api:model.Kopnik.setStarshina', this.Kopnik_setStarshina, null, this);
 
                 //Kopa
-                await this.registerHelper('api:model.Kopa.setQuestion', this.Kopa_setQuestion, null, this);
+                // await this.registerHelper('api:model.Kopa.setQuestion', this.Kopa_setQuestion, null, this);
+                await this.registerHelper('api:model.Kopa.invite', this.Kopa_invite, null, this);
+                await this.registerHelper('api:model.Kopa.getDialog', this.Kopa_getDialog, null, this);
+                await this.registerHelper('api:model.Kopa.getResult', this.Kopa_getResult, null, this);
+
+                //Zemla
+                await this.registerHelper('api:model.Zemla.setParent', this.Zemla_setParent, null, this);
+                await this.registerHelper('api:model.Zemla.promiseKopi', this.Zemla_promiseKopi, null, this);
+
+
+                //unit test
+                // await this.registerHelper('api:unitTest.orderProc', this.unitTest_orderProc, null, this);
+                 await this.registerHelper('api:unitTest.orderProc', this.unitTest_orderProc, null, this);
+
+
 
                 let tick = 0;
                 this.tickInterval = setInterval(()=> {
@@ -106,6 +119,62 @@ class Server {
         };
     }
 
+    async unitTest_orderProc([x]) {
+        // await this.WAMP.session.publish(`api:unitTest.orderTopic`, [x], null, {acknowledge: true});
+
+        setImmediate(async()=> {
+        // process.nextTick(async()=> {
+            try {
+                await this.WAMP.session.publish(`api:unitTest.orderTopic`, [x], null, {acknowledge: true});
+            }
+            catch (err) {
+                this.log.error("unitTest_orderProc", err);
+            }
+        }, 1000);
+
+        return x*x;
+    }
+
+    async Zemla_setParent(args, {ZEMLA, PARENT}, details) {
+        let tran = await models.sequelize.transaction();
+
+        try {
+            var zemla = await models.Zemla.findById(ZEMLA);
+            let parent = PARENT?await models.Zemla.findById(PARENT):null;
+
+            //родители запоминаются на момент транзакции. в момент публикаций их общины будут уже меньше на общину земли
+            var prevParents= await zemla.getParents();
+            await zemla.setParent2(parent);
+            var parents= await zemla.getParents();
+
+            await tran.commit();
+        }
+        catch (err) {
+            tran.rollback();
+            throw err;
+        }
+
+        /**
+         * событие о изменения прилетает после того как клиент дождался ответа
+         * об изменения
+         */
+        setImmediate(async()=> {
+            try {
+                //сначала роняю войско
+                for (let eachParent of prevParents) {
+                    //родители запоминались на момент транзакции. в момент публикаций их общины уже меньше на общину земли
+                    await this.WAMP.session.publish(`api:model.Zemla.id${eachParent.id}.obshinaChange`, [], {obshinaSize: eachParent.obshinaSize-zemla.obshinaSize}, {acknowledge: true});
+                }
+                for (let eachParent of parents) {
+                    await this.WAMP.session.publish(`api:model.Zemla.id${eachParent.id}.obshinaChange`, [], {obshinaSize: eachParent.obshinaSize}, {acknowledge: true});
+                }
+            }
+            catch (err) {
+                this.log.error("Zemla_setParent error", ZEMLA, PARENT, err);
+            }
+        });
+    }
+
     async Kopnik_setStarshina(args, {KOPNIK, STARSHINA}, details) {
         let tran = await models.sequelize.transaction();
 
@@ -117,6 +186,22 @@ class Server {
             var prevStarshini= await kopnik.getStarshini();
             await kopnik.setStarshina2(starshina);
             var starshini= await kopnik.getStarshini();
+
+            //войско тоже запоминается на момент транзакции потому что в setImmediate возможно будет уже поздно
+            //часть войска убежит или еще что-то за это время
+            var voiskoAsPlain= await models.sequelize.query(`
+                                select id
+                                from
+                                    "Kopnik"
+                                where
+                                    path like :fullPath||'%'
+                                `,
+                {
+                    replacements: {
+                        "fullPath": kopnik.fullPath,
+                    },
+                    type: models.Sequelize.QueryTypes.SELECT
+                });
 
             await tran.commit();
         }
@@ -139,6 +224,10 @@ class Server {
                 for (let eachStarshina of starshini) {
                     await this.WAMP.session.publish(`api:model.Kopnik.id${eachStarshina.id}.voiskoChange`, [], {voiskoSize: eachStarshina.voiskoSize}, {acknowledge: true});
                 }
+
+                for (let eachKopnikAsPlain of voiskoAsPlain){
+                    await this.WAMP.session.publish(`api:model.Kopnik.id${eachKopnikAsPlain.id}.starshinaChange`, [], {}, {acknowledge: true});
+                }
             }
             catch (err) {
                 this.log.error("Kopnik_setStarshina error", KOPNIK, STARSHINA, err);
@@ -146,6 +235,31 @@ class Server {
         });
     }
 
+    /**
+     * @param args
+     * @param id
+     * @param details
+     * @constructor
+     */
+    async Kopa_invite(args, {id}, details) {
+        var tran = await models.sequelize.transaction();
+
+        try {
+            var kopa = await models.Kopa.findById(id);
+            kopa.invited = new Date();
+
+            await kopa.save();
+            await tran.commit();
+        }
+        catch (err) {
+            tran.rollback();
+            throw err;
+        }
+        setImmediate(async ()=>{
+            await this.WAMP.session.publish(`api:model.Kopa.id${id}.change`);
+            await this.WAMP.session.publish(`api:model.Zemla.id${kopa.place_id}.kopaAdd`, [id]);
+        });
+    }
     async Kopa_setQuestion(args, {id, value}, details) {
         var tran = await models.sequelize.transaction();
 
@@ -234,9 +348,18 @@ class Server {
                 try {
                     switch (type) {
                         case "Kopnik":
+/*                          копник создается без старшины и выбирает его в процессе общения
                             let starshini = await result.getStarshini();
                             for (let eachStarshina of starshini) {
                                 await this.WAMP.session.publish(`api:model.Kopnik.id${eachStarshina.id}.voiskoChange`, [], {voiskoSize: eachStarshina.voiskoSize}, {acknowledge: true});
+                            }*/
+                            /**
+                             * событие о изменения прилетает после того как клиент дождался ответа
+                             * об изменения
+                             */
+                            let doma= await result.getDoma();
+                            for (let everyDom of doma) {
+                                await this.WAMP.session.publish(`api:model.Zemla.id${everyDom.id}.obshinaChange`, [], {obshinaSize: everyDom.obshinaSize}, {acknowledge: true});
                             }
                             break;
                         case "Slovo":
@@ -248,8 +371,15 @@ class Server {
                         case "Golos":
                             await this.WAMP.session.publish(`api:model.Predlozhenie.id${plain.for_id}.golosAdd`, [result.id], null, {acknowledge: true});
                             break;
-                        case "Zemla":
                         case "Kopa":
+                            //kopaAdd теперь происходит в Kopa#invite();
+                            // await this.WAMP.session.publish(`api:model.Zemla.id${plain.place_id}.kopaAdd`, [result.id], null, {acknowledge: true});
+                            break;
+                        case "Zemla":
+                            let parents= await result.getParents();
+                            for (let eachParent of parents) {
+                                await this.WAMP.session.publish(`api:model.Zemla.id${eachParent.id}.obshinaChange`, [], {obshinaSize: eachParent.obshinaSize}, {acknowledge: true});
+                            }
                         case "Kopnik":
                         case "File":
                             break;
@@ -284,19 +414,19 @@ class Server {
      * @param caller_authid
      * @returns {*}
      */
-    async promiseKopas(args, {PLACE, BEFORE}, {caller_authid}) {
+    async Zemla_promiseKopi(args, {PLACE, BEFORE}, {caller_authid}) {
         var BEFORE_FILTER;
         if (!BEFORE) {
             BEFORE_FILTER = `(
-            kopa.started is not null 
+            kopa.invited is not null 
             or (
-                kopa.started is null 
+                kopa.invited is null 
                 and kopnik.email=:caller_authid
                 )
             )`;
         }
         else {
-            BEFORE_FILTER = `kopa.started <  to_timestamp(:BEFORE)`;
+            BEFORE_FILTER = `kopa.invited <  to_timestamp(:BEFORE)`;
         }
 
         let resultAsArray = await models.sequelize.query(`
@@ -307,8 +437,8 @@ class Server {
             kopa.place_id=:PLACE
             and ${BEFORE_FILTER}
         order by
-            kopa.started,
-            kopa.planned
+            kopa.invited desc
+            limit 25
             `,
             {
                 replacements: {
@@ -327,13 +457,118 @@ class Server {
                 },
             },
             order: [
-                ['started', 'asc'],
-                ['planned', 'asc']
+                ['invited', 'asc']
             ],
         });
         result = result.map(eachResult=>eachResult.get({plain: true}));
         return result;
     }
+
+
+    /**
+     * Копа
+     */
+    /**
+     * слова до BEFORE
+     * отсортированные по дате создания
+     * @param args
+     * @param PLACE
+     * @param BEFORE
+     * @param caller_authid
+     * @returns {Promise<array>}
+     */
+    async Kopa_getDialog(args, {PLACE, BEFORE}, {caller_authid}) {
+        var BEFORE_FILTER;
+        if (!BEFORE) {
+            BEFORE_FILTER = `true`;
+        }
+        else {
+            BEFORE_FILTER = `slovo.created_at <  to_timestamp(:BEFORE)`;
+        }
+
+        let resultAsArray = await models.sequelize.query(`
+        select slovo.* 
+            from "Slovo" as slovo
+        where
+            slovo.place_id=:PLACE
+            and ${BEFORE_FILTER}
+        order by
+            slovo.created_at desc
+            limit 25
+            `,
+            {
+                replacements: {
+                    "PLACE": PLACE,
+                    "BEFORE": BEFORE / 1000
+                },
+                type: models.Sequelize.QueryTypes.SELECT
+            });
+        let RESULT = resultAsArray.map(each=>each.id);
+        let result = await models.Slovo.findAll({
+            where: {
+                id: {
+                    $in: RESULT
+                },
+            },
+            order: [
+                ['created_at', 'asc'],
+            ],
+        });
+        result = result.map(eachResult=>eachResult.get({plain: true}));
+        return result;
+    }
+
+
+    /**
+     * Предложения созданные до BEFORE
+     * отсортированные по дате создания
+     * @param args
+     * @param PLACE
+     * @param BEFORE
+     * @param caller_authid
+     * @returns {Promise<array>}
+     */
+    async Kopa_getResult(args, {PLACE, BEFORE}, {caller_authid}) {
+        var BEFORE_FILTER;
+        if (!BEFORE) {
+            BEFORE_FILTER = `true`;
+        }
+        else {
+            BEFORE_FILTER = `predlozhenie.created_at <  to_timestamp(:BEFORE)`;
+        }
+
+        let resultAsArray = await models.sequelize.query(`
+        select predlozhenie.* 
+            from "Predlozhenie" as predlozhenie
+        where
+            predlozhenie.place_id=:PLACE
+            and ${BEFORE_FILTER}
+        order by
+            predlozhenie.created_at desc
+            limit 25
+            `,
+            {
+                replacements: {
+                    "PLACE": PLACE,
+                    "BEFORE": BEFORE / 1000
+                },
+                type: models.Sequelize.QueryTypes.SELECT
+            });
+        let RESULT = resultAsArray.map(each=>each.id);
+        let result = await models.Predlozhenie.findAll({
+            where: {
+                id: {
+                    $in: RESULT
+                },
+            },
+            order: [
+                ['created_at', 'asc'],
+            ],
+        });
+        result = result.map(eachResult=>eachResult.get({plain: true}));
+        return result;
+    }
+
 
     error(args, kwargs) {
         class MySuperError extends Error {
@@ -415,7 +650,6 @@ class Server {
                     return await endpoint.call(context, args, kwargs, details);
                 }
                 else {
-                    throw new Error("not tested");
                     return await endpoint(args, kwargs, details);
                 }
             }

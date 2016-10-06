@@ -17,30 +17,9 @@ module.exports = function(sequelize, DataTypes) {
         question: {
             type: DataTypes.TEXT
         },
-        /** заявителем была предложена ()
-         * скорее всего это поле не понадобится потому что есть created_at
-         */
-/*        birth: {
-            type: DataTypes.DATE,
-            allowNull: false
-        },*/
-        /** запланирована на */
-        planned: {
-            type: DataTypes.DATE,
-            allowNull: false
-        },
         /** реально началась */
-        started: {
+        invited: {
             type: DataTypes.DATE
-        },
-        /** закрыта */
-        closed: {
-            type: DataTypes.DATE
-        },
-        isOpen: {
-            type: DataTypes.BOOLEAN,
-            allowNull: false,
-            defaultValue: false
         },
         note:{
             type: DataTypes.TEXT

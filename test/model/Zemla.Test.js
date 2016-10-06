@@ -15,7 +15,7 @@ describe('Zemla', function () {
         try {
             var tran = await model.sequelize.transaction();
             let unitTestZemla3 = await model.Zemla.findById(3);
-            await unitTestZemla3.setParentAndPath(await model.Zemla.findById(1));
+            await unitTestZemla3.setParent2(await model.Zemla.findById(1));
 
             assert.equal("/1/", unitTestZemla3.path);
 
