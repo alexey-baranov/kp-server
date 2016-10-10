@@ -170,7 +170,7 @@ module.exports = db;
 
     db.Predlozhenie.hasMany(db.Golos, {
         as: "golosa",
-        foreignKey: "for_id"
+        foreignKey: "subject_id"
     });
 
     db.Predlozhenie.hasMany(db.File, {
@@ -194,8 +194,8 @@ module.exports = db;
         foreignKey: "parent_id"
     });
     db.Golos.belongsTo(db.Predlozhenie, {
-        as: "for",
-        foreignKey: "for_id"
+        as: "subject",
+        foreignKey: "subject_id"
     });
 
     db.Golos.hasMany(db.File, {

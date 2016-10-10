@@ -234,19 +234,24 @@ module.exports = function (sequelize, DataTypes) {
                  * иногда это переголосование и нужно поменять Golos#value= !value а не создавать новый
                  *
                  * 1-ый способ сохранять только голоса старшин
-                 * и в самый последний момент фиксировать их дружину так? как проголосовал старшина
+                 * и в определенный момент (когда голосование закончилось) фиксировать их дружину так, как проголосовал старшина
                  *
                  * 2-ой способ сразу фиксировать голоса всего войска
-                 * @return {*}
+                 * @throws {Error}  если был отказ от голоса, а голоса то не оказалось
+                 * @return {{golos, action:"add"|"update"|"remove" }} добавил или удалил или поменял голосили
                  */
                 vote: async function (predlozhenie, value) {
                     let models = require("./index");
+                    let result= {};
 
                     let kopa = await predlozhenie.getPlace();
                     let place = await kopa.getPlace();
                     let dom = await this.getDom();
                     let starshini = await this.getStarshini();
 
+                    if (predlozhenie.state){
+                        throw new Error("Predlozhenie is fixed. state="+ predlozhenie.state);
+                    }
                     /**
                      * проверочка имеет ли прово копник вообще голосовать на этой копе
                      * если залетный, то не имеет
@@ -270,13 +275,16 @@ module.exports = function (sequelize, DataTypes) {
 
                     let golos = await models.Golos.findOne({
                         where: {
-                            for_id: predlozhenie.id,
+                            subject_id: predlozhenie.id,
                             owner_id: this.id
                         }
                     });
 
-                    if (golos) {
-                        if (value) {
+                    //проголосовать
+                    if (value) {
+                        //переголосовка
+                        if (golos) {
+                            result= {golos:golos, action:"update"};
                             golos.value = value;
                             await sequelize.query(`
                             update "Golos" 
@@ -285,7 +293,7 @@ module.exports = function (sequelize, DataTypes) {
                                 updated_at= current_timestamp
                             
                             where
-                                for_id= ${predlozhenie.id}
+                                subject_id= ${predlozhenie.id}
                                 and (
                                     id= ${golos.id}
                                     or parent_id = ${golos.id}
@@ -297,38 +305,22 @@ module.exports = function (sequelize, DataTypes) {
                                     type: sequelize.Sequelize.QueryTypes.UPDATE
                                 });
                         }
-                        //unvote(0)
+                        //первый раз голосую
                         else {
+                            //свой голос
+                            golos = await models.Golos.create({
+                                subject_id: predlozhenie.id,
+                                value: value,
+                                owner_id: this.id
+                            });
+                            result= {golos:golos, action:"add"};
+                            /**
+                             * и теперь все голоса моего войска
+                             * последний like в запросе отвечате за то что в зачет идут голоса только тех
+                             * копников, которые проживают на территории копы
+                             */
                             await sequelize.query(`
-                            delete from "Golos" 
-                            where
-                                for_id= ${predlozhenie.id}
-                                and (
-                                    id= ${golos.id}
-                                    or parent_id = ${golos.id}
-                                )`,
-                                {
-                                    replacements: {
-                                        "value": value
-                                    },
-                                    type: sequelize.Sequelize.QueryTypes.DELETE
-                                });
-                        }
-                    }
-                    else {
-                        //свой голос
-                        golos = await models.Golos.create({
-                            for_id: predlozhenie.id,
-                            value: value,
-                            owner_id: this.id
-                        });
-                        /**
-                         * и теперь все голоса моего войска
-                         * последний like в запросе отвечате за то что в зачет идут голоса только тех
-                         * копников, которые проживают на территории копы
-                         */
-                        await sequelize.query(`
-                            insert into "Golos" (for_id, value, owner_id, parent_id, created_at, updated_at)
+                            insert into "Golos" (subject_id, value, owner_id, parent_id, created_at, updated_at)
                             (
                                 select ${predlozhenie.id}, :value, k.id, ${golos.id}, current_timestamp, current_timestamp
                                 from 
@@ -338,18 +330,46 @@ module.exports = function (sequelize, DataTypes) {
                                     k.path like '${this.fullPath}%'
                                     and d.path||d.id||'/' like '${place.fullPath}%' 
                             )`,
-                            {
-                                replacements: {
-                                    "value": value
-                                },
-                                type: sequelize.Sequelize.QueryTypes.INSERT
-                            });
+                                {
+                                    replacements: {
+                                        "value": value
+                                    },
+                                    type: sequelize.Sequelize.QueryTypes.INSERT
+                                });
+                        }
                     }
+                    //unvote(0)
+                    else {
+                        //отказ от предыдущего голоса => результат={remove:golos}
+                        if (golos) {
+                            result= {golos:golos, action:"remove"};
+                                await sequelize.query(`
+                            delete from "Golos" 
+                            where
+                                subject_id= ${predlozhenie.id}
+                                and (
+                                    id= ${golos.id}
+                                    or parent_id = ${golos.id}
+                                )`,
+                                    {
+                                        replacements: {
+                                            "value": value
+                                        },
+                                        type: sequelize.Sequelize.QueryTypes.DELETE
+                                    });
+                        }
+                        //странная ситуация, когда делается отказ, а голоса нет => результат={} ничего не удалилось и не создалось
+                        else{
+                            throw new Error(`${this}can't uvote. golos not found`);
+                        }
+                    }
+
+
                     //подсчет итогов голосования
                     let totals = await sequelize.query(`
-                        select 
-                            (select count(*) from "Golos" g where for_id= ${predlozhenie.id} and value=1) "za",
-                            (select count(*) from "Golos" g where for_id= ${predlozhenie.id} and value=-1) "protiv"
+                        select
+                            (select count(*) from "Golos" g where subject_id= ${predlozhenie.id} and value=1) "za",
+                            (select count(*) from "Golos" g where subject_id= ${predlozhenie.id} and value=-1) "protiv"
                             `,
                         {
                             replacements: {
@@ -360,7 +380,16 @@ module.exports = function (sequelize, DataTypes) {
                     predlozhenie.totalZa = parseInt(totals[0].za);
                     predlozhenie.totalProtiv = parseInt(totals[0].protiv);
 
-                    await predlozhenie.save(["totalZa", "totalProtiv"]);
+                    if (predlozhenie.totalZa/place.obshinaSize > 7/8){
+                        predlozhenie.state=1;
+                    }
+                    else if (predlozhenie.totalProtiv/place.obshinaSize >7/8){
+                        predlozhenie.state=-1;
+                    }
+
+                    await predlozhenie.save(["totalZa", "totalProtiv", "state"]);
+
+                    return result;
                 },
             },
             hooks: {

@@ -32,8 +32,6 @@ module.exports = function (sequelize, DataTypes) {
                 beforeUpdate: function (sender, options) {
                 },
                 afterCreate: async function (sender, options) {
-                    let forr = await sender.getFor();
-                    await forr.onGolosCreate();
                 }
             },
         });

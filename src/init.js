@@ -26,6 +26,7 @@ let zemla,
     kopa,
     slovo,
     predlozhenie,
+    predlozhenie2,
     golos;
 
 async function initSchema() {
@@ -265,7 +266,7 @@ async function initPredlozhenie() {
         value: 'Хочу ...',
     });
 
-    await models.Predlozhenie.create({
+    predlozhenie2 = await models.Predlozhenie.create({
         place_id: kopa.id,
         author_id: kopnik.id,
         value: 'Предлагаю ...',
@@ -279,11 +280,9 @@ async function initPredlozhenie() {
 }
 
 async function initGolos() {
-    golos = await models.Golos.create({
-        for_id: predlozhenie.id,
-        owner_id: kopnik.id,
-        value: 1,
-    });
+    // await kopnik2.vote(predlozhenie,1);
+    await kopnik4.vote(predlozhenie2,1);
+    await kopnik5.vote(predlozhenie2,1);
 }
 
 async function init() {

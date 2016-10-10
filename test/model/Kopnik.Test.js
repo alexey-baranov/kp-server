@@ -126,7 +126,7 @@ describe('Kopnik', function () {
                 author_id: KOPNIK,
             });
 
-            await kopnik2.vote(predlozhenie, 1);
+            let result= await kopnik2.vote(predlozhenie, 1);
 
             let golosa = await predlozhenie.getGolosa();
 
@@ -138,10 +138,13 @@ describe('Kopnik', function () {
             assert.equal(golosa[1].parent_id, golosa[0].id, "golosa[1].parent_id, golos.id");
             assert.equal(predlozhenie.totalZa, 2, "predlozhenie.totalZa==2");
             assert.equal(predlozhenie.totalProtiv, 0, "predlozhenie.totalProtiv==0");
+
+            // assert.equal(result.golos instanceof models.Golos, true, "result.golos instanceof models.Golos");
+            assert.equal(result.action, "add", "result.action, add");
         });
 
         it('should revote(-1)', async function () {
-            await kopnik2.vote(predlozhenie, -1);
+            let result= await kopnik2.vote(predlozhenie, -1);
 
             let golosa = await predlozhenie.getGolosa();
 
@@ -149,16 +152,23 @@ describe('Kopnik', function () {
 
             assert.equal(predlozhenie.totalZa, 0, "predlozhenie.totalZa==2");
             assert.equal(predlozhenie.totalProtiv, 2, "predlozhenie.totalProtiv==0");
+
+            // assert.equal(result.golos instanceof models.Golos, true, "result.golos instanceof models.Golos");
+            assert.equal(result.action, "update", "result.action, update");
         });
 
         it('should unvote(0)', async function () {
-            await kopnik2.vote(predlozhenie, 0);
+            let result= await kopnik2.vote(predlozhenie, 0);
 
             let golosa = await predlozhenie.getGolosa();
 
             assert.equal(golosa.length, 0, "golosa.length, 0");
             assert.equal(predlozhenie.totalZa, 0, "predlozhenie.totalZa==2");
             assert.equal(predlozhenie.totalProtiv, 0, "predlozhenie.totalProtiv==0");
+
+
+            // assert.equal(result.golos instanceof models.Golos, true, "result.golos instanceof models.Golos");
+            assert.equal(result.action, "remove", "result.action, remove");
         });
 
 
