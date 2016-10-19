@@ -128,14 +128,14 @@ module.exports = function (sequelize, DataTypes) {
                         {
                             replacements: {
                                 "prevStarshinaFullPath": this.path,
-                                "starshinaFullPath": value.fullPath,
+                                "starshinaFullPath": value?value.fullPath:'/',
                                 "THIS": this.id,
                                 "fullPath": this.fullPath,
                             },
                             type: sequelize.Sequelize.QueryTypes.UPDATE
                         });
 
-                    //установил локально путь
+                    //установил локально путь, в БД он уже установлен выше
                     this.setupPath(value);
                     //теперь поднял войско новых старшин
                     await this.voiskoUp();

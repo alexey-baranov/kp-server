@@ -70,6 +70,7 @@ class Server {
 
                 //Kopnik
                 await this.registerHelper('api:model.Kopnik.setStarshina', this.Kopnik_setStarshina, null, this);
+                await this.registerHelper('api:model.Kopnik.getDruzhina', this.Kopnik_getDruzhina, null, this);
                 await this.registerHelper('api:model.Kopnik.vote', this.Kopnik_vote, null, this);
 
                 //Kopa
@@ -184,11 +185,12 @@ class Server {
 
         try {
             var kopnik = await models.Kopnik.findById(KOPNIK);
-            let starshina = await models.Kopnik.findById(STARSHINA);
+            var starshina = STARSHINA?await models.Kopnik.findById(STARSHINA):null;
 
             //старшины запоминаются на момент транзакции. в момент публикаций их войско будет уже меньше на войско копника
             var prevStarshini = await kopnik.getStarshini();
             await kopnik.setStarshina2(starshina);
+
             var starshini = await kopnik.getStarshini();
 
             //войско тоже запоминается на момент транзакции потому что в setImmediate возможно будет уже поздно
@@ -220,15 +222,29 @@ class Server {
          */
         setImmediate(async()=> {
             try {
+                //пержний старшина узнает что у него ушел из дружины
+                if (prevStarshini.length) {
+                    await this.WAMP.session.publish(`api:model.Kopnik.id${prevStarshini[0].id}.druzhinaChange`, [], {action: "remove", KOPNIK: KOPNIK}, {acknowledge: true});
+                }
+                //новый старшина узнает что пришел в его дружину
+                if (starshina) {
+                    await this.WAMP.session.publish(`api:model.Kopnik.id${STARSHINA}.druzhinaChange`, [], {
+                        action: "add",
+                        kopnik: kopnik.get({plain: true})
+                    }, {acknowledge: true});
+                }
+
                 //сначала роняю войско
                 for (let eachStarshina of prevStarshini) {
                     //старшины запоминались на момент транзакции. в момент публикаций их войско будет уже меньше на войско копника
                     await this.WAMP.session.publish(`api:model.Kopnik.id${eachStarshina.id}.voiskoChange`, [], {voiskoSize: eachStarshina.voiskoSize - kopnik.voiskoSize - 1}, {acknowledge: true});
                 }
+                //теперь поднимаю войско новых старшин
                 for (let eachStarshina of starshini) {
                     await this.WAMP.session.publish(`api:model.Kopnik.id${eachStarshina.id}.voiskoChange`, [], {voiskoSize: eachStarshina.voiskoSize}, {acknowledge: true});
                 }
 
+                //всему войску объявляю что у них сменился старшина
                 for (let eachKopnikAsPlain of voiskoAsPlain) {
                     await this.WAMP.session.publish(`api:model.Kopnik.id${eachKopnikAsPlain.id}.starshinaChange`, [], {}, {acknowledge: true});
                 }
@@ -276,6 +292,25 @@ class Server {
                 this.log.error("Kopnik_vote error", SUBJECT, value, err);
             }
         });
+    }
+
+    async Kopnik_getDruzhina(args, {KOPNIK}, {caller_authid}) {
+        let result = await models.Kopnik.findAll({
+            where: {
+                starshina_id: KOPNIK,
+            },
+            order: [
+                ['surname', 'asc'],
+                ['name', 'asc'],
+                ['patronymic', 'asc'],
+            ],
+            include: [{
+                model: models.File,
+                as: 'attachments'
+            }]
+        });
+        result = result.map(eachResult=>eachResult.get({plain: true}));
+        return result;
     }
 
     /**
