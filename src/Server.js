@@ -201,6 +201,8 @@ class Server {
                                     "Kopnik"
                                 where
                                     path like :fullPath||'%'
+                                order by 
+                                    path
                                 `,
                 {
                     replacements: {
@@ -222,9 +224,20 @@ class Server {
          */
         setImmediate(async()=> {
             try {
+                //себе и всему войску объявляю что у них сменился старшина
+                for (let eachKopnikAsPlain of [kopnik].concat(voiskoAsPlain)) {
+                    await this.WAMP.session.publish(`api:model.Kopnik.id${eachKopnikAsPlain.id}.starshinaChange`, [], {
+                        KOPNIK,
+                        STARSHINA,
+                    }, {acknowledge: true});
+                }
+
                 //пержний старшина узнает что у него ушел из дружины
                 if (prevStarshini.length) {
-                    await this.WAMP.session.publish(`api:model.Kopnik.id${prevStarshini[0].id}.druzhinaChange`, [], {action: "remove", KOPNIK: KOPNIK}, {acknowledge: true});
+                    await this.WAMP.session.publish(`api:model.Kopnik.id${prevStarshini[0].id}.druzhinaChange`, [], {
+                        action: "remove",
+                        KOPNIK: KOPNIK
+                    },{acknowledge: true});
                 }
                 //новый старшина узнает что пришел в его дружину
                 if (starshina) {
@@ -242,11 +255,6 @@ class Server {
                 //теперь поднимаю войско новых старшин
                 for (let eachStarshina of starshini) {
                     await this.WAMP.session.publish(`api:model.Kopnik.id${eachStarshina.id}.voiskoChange`, [], {voiskoSize: eachStarshina.voiskoSize}, {acknowledge: true});
-                }
-
-                //всему войску объявляю что у них сменился старшина
-                for (let eachKopnikAsPlain of voiskoAsPlain) {
-                    await this.WAMP.session.publish(`api:model.Kopnik.id${eachKopnikAsPlain.id}.starshinaChange`, [], {}, {acknowledge: true});
                 }
             }
             catch (err) {

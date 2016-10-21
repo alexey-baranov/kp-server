@@ -6,6 +6,7 @@ let models = require('./model');
 let bcrypt = require("bcrypt");
 var Zemla,
     Russia,
+    HMAO,
     Surgut,
     Dzerzhinskogo,
     dom92,
@@ -19,11 +20,13 @@ var kopnik2;
 var kopnik3;
 var kopnik4;
 var kopnik5,
-    kopnik6;
+    kopnik6,
+    kopnik7;
 
 let zemla,
     kopnik,
     kopa,
+    kopa3,
     slovo,
     predlozhenie,
     predlozhenie2,
@@ -41,7 +44,8 @@ async function initZemla() {
         unitTestZemla4 = await (await models.Zemla.create({name: 'UnitTest4'})).setParent2(Zemla);    //unit test
     }
     Russia = await (await models.Zemla.create({name: 'Россия'})).setParent2(Zemla);
-    Surgut = await (await models.Zemla.create({name: 'Сургут'})).setParent2(Russia);
+    HMAO = await (await models.Zemla.create({name: 'ХМАО'})).setParent2(Russia);
+    Surgut = await (await models.Zemla.create({name: 'Сургут'})).setParent2(HMAO);
     Dzerzhinskogo = await (await models.Zemla.create({name: 'ул. Дзержинского'})).setParent2(Surgut);
     dom92 = await (await models.Zemla.create({name: '9/2'})).setParent2(Dzerzhinskogo);
     podezd1 = await (await models.Zemla.create({name: 'подъезд 1'})).setParent2(dom92);
@@ -62,7 +66,7 @@ async function initKopnik() {
     kopnik = kopnik2 = await models.Kopnik.create({
         name: 'Unit',
         surname: 'Test',
-        patronymic: '1',
+        patronymic: '2',
         dom_id: unitTestZemla2.id,
         email: 'unittest2@domain.ru',
         password: bcrypt.hashSync("qwerty", bcrypt.genSaltSync(/*14*/)),
@@ -112,6 +116,20 @@ async function initKopnik() {
         password: bcrypt.hashSync("qwerty", bcrypt.genSaltSync(/*14*/)),
         birth: 1983
     });
+
+    /**
+     * Этот копник проверяет рекурсивную вьюшку kopnik-as-druzhe  (kopnik2-kopnik3-kopnik7)
+     */
+    kopnik7= await models.Kopnik.create({
+        name: 'Unit',
+        surname: 'Test',
+        patronymic: '7',
+        dom_id: unitTestZemla2.id,
+        starshina_id: kopnik3.id,
+        email: 'unittest6@domain.ru',
+        password: bcrypt.hashSync("qwerty", bcrypt.genSaltSync(/*14*/)),
+        birth: 1983
+    });
 }
 
 async function initKopa() {
@@ -136,7 +154,7 @@ async function initKopa() {
         await kopa2.setPlace(unitTestZemla2);
         await kopa2.setInviter(kopnik3);
 
-        var kopa3 = kopa = await models.Kopa.create({
+        kopa3 = kopa = await models.Kopa.create({
             question: 'CHE',
             planned: new Date(CHE),
             invited: new Date(CHE)
@@ -164,85 +182,41 @@ async function initKopa() {
         await kopa5.setInviter(kopnik2);
 
 
-        var kopa5 = await models.Kopa.create({
+        var kopa6 = await models.Kopa.create({
             question: 'далеко впереди',
             planned: new Date(FUTURE + 1 * 3600 * 1000),
         });
-        await kopa5.setPlace(Zemla);
-        await kopa5.setInviter(kopnik2);
+        await kopa6.setPlace(Zemla);
+        await kopa6.setInviter(kopnik2);
 
-        kopa5 = await models.Kopa.create({
+        var kopa7 = await models.Kopa.create({
             question: 'далеко позади',
             planned: new Date(CHE - 2 * 3600 * 1000),
             invited: new Date(CHE - 2 * 3600 * 1000)
         });
-        await kopa5.setPlace(Zemla);
-        await kopa5.setInviter(kopnik2);
+        await kopa7.setPlace(Zemla);
+        await kopa7.setInviter(kopnik2);
     }
-
-    var kopa5 = await models.Kopa.create({
-        question: 'Снести шлакбаум у банка',
-        planned: new Date(FUTURE + 2 * 3600 * 1000)
-    });
-    await kopa5.setPlace(dom92);
-    await kopa5.setInviter(alexey2baranov);
-
-    /**
-     * чужая копа, которая еще не открылась
-     */
-    kopa5 = await models.Kopa.create({
-        question: 'Убрать раздолбаную белую волгу во дворе',
-        planned: new Date(FUTURE + 1 * 3600 * 1000)
-    });
-    await kopa5.setPlace(dom92);
-    await kopa5.setInviter(kopnik2);
-
-    kopa5 = await models.Kopa.create({
-        question: 'Отремонтировать детскую площадку',
-        planned: new Date(CHE),
-        invited: new Date(CHE)
-    });
-    await kopa5.setPlace(dom92);
-    await kopa5.setInviter(alexey2baranov);
-
-    /**
-     * чужая копа, которая уже открылась
-     */
-    kopa5 = await models.Kopa.create({
-        question: 'Навесить агитацию копы на подъездах дома',
-        planned: new Date(CHE - 1 * 3600 * 1000),
-        invited: new Date(CHE - 1 * 3600 * 1000)
-    });
-    await kopa5.setPlace(dom92);
-    await kopa5.setInviter(kopnik2);
-
-    kopa5 = await models.Kopa.create({
-        question: 'Закрыть ебучий пивной ларек во дворе',
-        planned: new Date(CHE - 2 * 3600 * 1000),
-        invited: new Date(CHE - 2 * 3600 * 1000)
-    });
-    await kopa5.setPlace(dom92);
-    await kopa5.setInviter(alexey2baranov);
 }
 
 async function initSlovo() {
     let CHE = new Date(2016, 9 - 1, 1).getTime();
 
     slovo = await models.Slovo.create({
-        place_id: kopa.id,
-        owner_id: kopnik.id,
+        place_id: kopa3.id,
+        owner_id: kopnik2.id,
         value: 'я ЗА!',
     });
 
     await models.Slovo.create({
-        place_id: kopa.id,
-        owner_id: kopnik.id,
+        place_id: kopa3.id,
+        owner_id: kopnik2.id,
         value: 'я ЗА!',
     });
 
     await models.Slovo.create({
-        place_id: kopa.id,
-        owner_id: kopnik.id,
+        place_id: kopa3.id,
+        owner_id: kopnik2.id,
         value: 'я ЗА!',
     });
 
@@ -261,20 +235,20 @@ async function initSlovo() {
 
 async function initPredlozhenie() {
     predlozhenie = await models.Predlozhenie.create({
-        place_id: kopa.id,
-        author_id: kopnik.id,
+        place_id: kopa3.id,
+        author_id: kopnik2.id,
         value: 'Хочу ...',
     });
 
     predlozhenie2 = await models.Predlozhenie.create({
-        place_id: kopa.id,
-        author_id: kopnik.id,
+        place_id: kopa3.id,
+        author_id: kopnik2.id,
         value: 'Предлагаю ...',
     });
 
     await models.Predlozhenie.create({
-        place_id: kopa.id,
-        author_id: kopnik.id,
+        place_id: kopa3.id,
+        author_id: kopnik2.id,
         value: 'Считаю ...',
     });
 }

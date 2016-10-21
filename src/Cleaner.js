@@ -61,7 +61,7 @@ class Cleaner{
             await models.sequelize.query(`
                 update "Zemla"
                 set 
-                    "obshinaSize"= case when id=2 then 4 ELSE 0 END
+                    "obshinaSize"= case id when 2 then 5 when 4 then 1 ELSE 0 END
                 where
                     id in (2,3,4)`,
                 {
@@ -81,7 +81,7 @@ class Cleaner{
             await models.sequelize.query(`
                 update "Kopnik"
                 set 
-                    "voiskoSize"= case when id=2 then 1 ELSE 0 END
+                    "voiskoSize"= case id when 2 then 3 when 3 then 1 ELSE 0 END
                 where
                     id>1 
                     and id<=5`,

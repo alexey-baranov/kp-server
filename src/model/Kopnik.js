@@ -98,6 +98,15 @@ module.exports = function (sequelize, DataTypes) {
                     }
                     this.path = starshina ? starshina.fullPath : "/";
                 },
+
+                /**
+                 * состоит ли копник в войске
+                 */
+                isKopnikInVoisko: function(kopnik){
+                    let result= kopnik.path.startsWith(this.fullPath);
+                    return result;
+                },
+
                 /**
                  * Устанавливает старшину в локальную переменную
                  * устанавливает путь себе и всей дружине
@@ -105,6 +114,14 @@ module.exports = function (sequelize, DataTypes) {
                  * @param {Kopnik} value
                  */
                 setStarshina2: async function (value) {
+                    //проверяю не является ли старшина моим дружинником
+                    if (value && this.isKopnikInVoisko(value)){
+                        throw new Error("Копник, которого назначают старшиной, в данный момент состоит в дружине. Чтобы выбрать его старшиной, сначала он должен выйти из дружины");
+                    }
+                    //проверяю не является ли копник сам себе старшиной
+                    if (value && this.id== value.id){
+                        throw new Error("нельзя назначить себя старшиной");
+                    }
                     //сначала уронил войско старшин
                     await this.voiskoDown();
 
@@ -117,17 +134,20 @@ module.exports = function (sequelize, DataTypes) {
                     await this.save(["starshina_id"]);
 
                     //сменил путь себе и войску
+                    `
+                    
+                    `;
                     await sequelize.query(`
                                 update "Kopnik"
                                 set
-                                    path= replace(path, :prevStarshinaFullPath, :starshinaFullPath)
+                                    path= overlay(path placing :starshinaFullPath from 1 for :prevStarshinaFullPathLength)
                                 where
                                     id = :THIS
                                     or path like :fullPath||'%'
                                 `,
                         {
                             replacements: {
-                                "prevStarshinaFullPath": this.path,
+                                "prevStarshinaFullPathLength": this.path.length,
                                 "starshinaFullPath": value?value.fullPath:'/',
                                 "THIS": this.id,
                                 "fullPath": this.fullPath,
