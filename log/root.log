@@ -48556,3 +48556,8 @@ Error: Копник, которого назначают старшиной, в 
   'ru.kopa.model.Kopnik.id2.voiskoChange',
   [],
   { voiskoSize: 3 } ]
+[2016-10-21 19:33:56.237] [INFO] Server - connection.onclose() lost { reason: null,
+  message: null,
+  retry_delay: 1.4440329142840205,
+  retry_count: 1,
+  will_retry: true }
