@@ -1,0 +1,19 @@
+{
+    "pid": 111318, 
+    "argv": [
+        "/usr/local/bin/crossbar", 
+        "start"
+    ], 
+    "options": {
+        "cdc": false, 
+        "cbdir": "/home/alexey2baranov/htdocs/kp-sequelizejs/.crossbar", 
+        "config": "config.json", 
+        "logdir": null, 
+        "logtofile": false, 
+        "loglevel": "info", 
+        "colour": "auto", 
+        "logformat": "standard", 
+        "command": "start", 
+        "reactor": null
+    }
+}

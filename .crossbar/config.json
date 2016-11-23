@@ -5,7 +5,8 @@
             "type": "router",
             "options": {
                 "pythonpath": [
-                    "."
+                    ".",
+                    "/usr/lib/python3/dist-packages"
                 ]
             },
             "realms": [

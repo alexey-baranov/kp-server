@@ -40,10 +40,12 @@ class Server {
             url: `${config.WAMP.schema}://${config.WAMP.host}:${config.WAMP.port}/${config.WAMP.path}`,
             realm: "kopa",
             authmethods: ['ticket'],
-            authid: "server",
+            authid: config.server.username,
+            // authid: "unittest2@domain.ru",
             onchallenge: function (session, method, extra) {
                 if (method == 'ticket') {
-                    return "server";
+                    return config.server.password;
+                    // return "qwerty";
                 }
                 else {
                     throw new Error('Invalid method type');

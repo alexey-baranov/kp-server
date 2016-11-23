@@ -8,7 +8,7 @@ log4js.configure(__dirname+'/../cfg/log.json', {
     cwd: __dirname+"/.."
 });
 
-global.AUTOBAHN_DEBUG = true;
+// global.AUTOBAHN_DEBUG = true;
 
 process.on('unhandledRejection', (reason, promise) => {
     console.error('unhandledRejection handler. Reason:', reason, promise);
