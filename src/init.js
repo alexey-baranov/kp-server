@@ -36,19 +36,19 @@ async function initSchema() {
     await models.sequelize.sync({force: true, logging: console.log});
 }
 async function initZemla() {
-    Zemla = await models.Zemla.create({name: 'Земля', path: "/"});
+    Zemla = await models.Zemla.create({name: 'Земля', path: "/", level:-1});
     //unit test
     {
-        zemla = unitTestZemla2 = await (await models.Zemla.create({name: 'UnitTest2'})).setParent2(Zemla);    //unit test
-        unitTestZemla3 = await (await models.Zemla.create({name: 'UnitTest3'})).setParent2(unitTestZemla2);
-        unitTestZemla4 = await (await models.Zemla.create({name: 'UnitTest4'})).setParent2(Zemla);    //unit test
+        zemla = unitTestZemla2 = await (await models.Zemla.create({name: 'UnitTest2', level:1})).setParent2(Zemla);    //unit test
+        unitTestZemla3 = await (await models.Zemla.create({name: 'UnitTest3', level:1})).setParent2(unitTestZemla2);
+        unitTestZemla4 = await (await models.Zemla.create({name: 'UnitTest4', level:1})).setParent2(Zemla);    //unit test
     }
-    Russia = await (await models.Zemla.create({name: 'Россия'})).setParent2(Zemla);
-    HMAO = await (await models.Zemla.create({name: 'ХМАО'})).setParent2(Russia);
-    Surgut = await (await models.Zemla.create({name: 'Сургут'})).setParent2(HMAO);
-    Dzerzhinskogo = await (await models.Zemla.create({name: 'ул. Дзержинского'})).setParent2(Surgut);
-    dom92 = await (await models.Zemla.create({name: '9/2'})).setParent2(Dzerzhinskogo);
-    podezd1 = await (await models.Zemla.create({name: 'подъезд 1'})).setParent2(dom92);
+/*    Russia = await (await models.Zemla.create({name: 'Россия', level:1})).setParent2(Zemla);
+    HMAO = await (await models.Zemla.create({name: 'ХМАО', level:1})).setParent2(Russia);
+    Surgut = await (await models.Zemla.create({name: 'Сургут', level:1})).setParent2(HMAO);
+    Dzerzhinskogo = await (await models.Zemla.create({name: 'ул. Дзержинского', level:1})).setParent2(Surgut);
+    dom92 = await (await models.Zemla.create({name: '9/2', level:1})).setParent2(Dzerzhinskogo);
+    podezd1 = await (await models.Zemla.create({name: 'подъезд 1', level:1})).setParent2(dom92);*/
 }
 
 async function initKopnik() {
@@ -56,7 +56,7 @@ async function initKopnik() {
         name: 'Алексей',
         surname: 'Баранов',
         patronymic: 'Юрьевич',
-        dom_id: podezd1.id,
+        dom_id: unitTestZemla4.id,
         email: 'alexey_baranov@inbox.ru',
         password: bcrypt.hashSync("qwerty", bcrypt.genSaltSync(/*14*/)),
         birth: 1983

@@ -30,6 +30,11 @@
     "sequelize": "^3.23.6"
   },
   "devDependencies": {
-    "babel-plugin-transform-es2015-destructuring": "^6.9.0"
+    "babel-plugin-transform-es2015-destructuring": "^6.9.0",
+    "pg": "^6.1.0",
+    "pg-native": "^1.10.0",
+    "pg-promise": "^5.4.7",
+    "pg-sync": "^0.2.0",
+    "sax": "git+https://github.com/isaacs/sax-js.git#v1.2.1"
   }
 }

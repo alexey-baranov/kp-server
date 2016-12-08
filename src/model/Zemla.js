@@ -14,17 +14,22 @@ module.exports = function (sequelize, DataTypes) {
                 primaryKey: true,
                 autoIncrement: true
             },
+            AOGUID:{
+                type: DataTypes.STRING,
+            },
+            PARENTGUID:{
+                type: DataTypes.STRING,
+            },
             name: {
                 type: DataTypes.STRING,
                 allowNull: false
             },
             /**
-             * Максимальное количество коп за 1 год
+             * Уровень адресного объекта (страна, город, улица, дом и т.д.)
              */
-            intensity: {
+            level: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
-                defaultValue: 1000
             },
             obshinaSize: {
                 type: DataTypes.INTEGER,
