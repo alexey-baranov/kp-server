@@ -16,6 +16,7 @@ module.exports = function (sequelize, DataTypes) {
             },
             AOGUID:{
                 type: DataTypes.STRING,
+                unique: true,
             },
             PARENTGUID:{
                 type: DataTypes.STRING,

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<AddressObjects>
+    <!--город и улица в неправильном порядке следования как в реальном файле-->
+    <Object AOGUID="address1" OFFNAME="Адрес 1 temp" SHORTNAME="респ" AOLEVEL="1" LIVESTATUS="1"></Object>
+    <Object AOGUID="address3" PARENTGUID="address2" OFFNAME="Адрес 3 temp" SHORTNAME="ул" AOLEVEL="7" LIVESTATUS="1"></Object>
+    <Object AOGUID="address2" PARENTGUID="address1" OFFNAME="Адрес 2 temp" SHORTNAME="г" AOLEVEL="4" LIVESTATUS="1"></Object>
+    <Object AOGUID="address4" OFFNAME="Адрес 4 temp" SHORTNAME="респ" AOLEVEL="1" LIVESTATUS="0"></Object>
+</AddressObjects>

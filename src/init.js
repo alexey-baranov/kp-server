@@ -39,12 +39,13 @@ async function initZemla() {
     Zemla = await models.Zemla.create({name: 'Земля', path: "/", level:-1});
     //unit test
     {
-        zemla = unitTestZemla2 = await (await models.Zemla.create({name: 'UnitTest2', level:1})).setParent2(Zemla);    //unit test
-        unitTestZemla3 = await (await models.Zemla.create({name: 'UnitTest3', level:1})).setParent2(unitTestZemla2);
-        unitTestZemla4 = await (await models.Zemla.create({name: 'UnitTest4', level:1})).setParent2(Zemla);    //unit test
+        zemla = unitTestZemla2 = await (await models.Zemla.create({name: 'UnitTest2', level:0})).setParent2(Zemla);    //unit test
+        unitTestZemla3 = await (await models.Zemla.create({name: 'UnitTest3', level:0})).setParent2(unitTestZemla2);
+        unitTestZemla4 = await (await models.Zemla.create({name: 'UnitTest4', level:0})).setParent2(Zemla);    //unit test
     }
-/*    Russia = await (await models.Zemla.create({name: 'Россия', level:1})).setParent2(Zemla);
-    HMAO = await (await models.Zemla.create({name: 'ХМАО', level:1})).setParent2(Russia);
+    Russia = await (await models.Zemla.create({name: 'Россия', level:0})).setParent2(Zemla);
+    // await Russia.setCountry(Russia); потому что Россия не находится в России
+    /*    HMAO = await (await models.Zemla.create({name: 'ХМАО', level:1})).setParent2(Russia);
     Surgut = await (await models.Zemla.create({name: 'Сургут', level:1})).setParent2(HMAO);
     Dzerzhinskogo = await (await models.Zemla.create({name: 'ул. Дзержинского', level:1})).setParent2(Surgut);
     dom92 = await (await models.Zemla.create({name: '9/2', level:1})).setParent2(Dzerzhinskogo);

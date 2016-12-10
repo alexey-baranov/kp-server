@@ -51,6 +51,10 @@ module.exports = db;
         foreignKey: "parent_id"
     });
 
+    db.Zemla.belongsTo(db.Zemla, {
+        as: "Country"
+    });
+
     db.Zemla.hasMany(db.Kopnik, {
         as: "obshina",
         foreignKey: "dom_id"
