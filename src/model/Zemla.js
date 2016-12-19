@@ -21,6 +21,10 @@ module.exports = function (sequelize, DataTypes) {
             PARENTGUID:{
                 type: DataTypes.STRING,
             },
+            SHORTNAME:{
+                type: DataTypes.STRING,
+            },
+            //имя без "г", "ул" и пр.
             name: {
                 type: DataTypes.STRING,
                 allowNull: false
@@ -31,6 +35,7 @@ module.exports = function (sequelize, DataTypes) {
             level: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
+                defaultValue: 0,
             },
             obshinaSize: {
                 type: DataTypes.INTEGER,
@@ -46,10 +51,37 @@ module.exports = function (sequelize, DataTypes) {
             }
         },
         {
+            indexes: [
+                //HMAO 1192053
+                //быстрый поиск подземель
+                {
+                    unique: false,
+                    fields: ['path'],
+                    operator: 'text_pattern_ops'
+                },
+                {
+                    unique: false,
+                    fields: ["level"],
+                },
+                {
+                    unique: false,
+                    fields: ['name'],
+                    operator: 'varchar_pattern_ops'
+                },
+                //индексы для быстрого удаления строк необходимы индексы на внешние ключи
+                {
+                    unique: false,
+                    fields: ['parent_id'],
+                },
+                {
+                    unique: false,
+                    fields: ['country_id'],
+                },
+            ],
             instanceMethods: {
                 /**
-                 * поднимает общину своих родительских земель на величину своей общины
-                 * (после входа в состав земли)
+                 * поднимает общину своих родительских земель (и свою взависимотси от параметра includeMe)
+                 * на величину своей общины (после входа в состав земли)
                  * @return {Promise}
                  */
                 obshinaUp: function (on, includeMe) {
@@ -57,15 +89,12 @@ module.exports = function (sequelize, DataTypes) {
                                 update "Zemla"
                                     set "obshinaSize"= "obshinaSize"+ :delta
                                 where
-                                    :path like path||id||'/%'
-                                    or (
-                                        :includeMe 
-                                        and id= ${this.id}
-                                    )
-`,
+                                    id in (
+                                        select id from get_zemli(${this.id}) 
+                                        where ${includeMe?'true':'false'} or id<>${this.id}
+                                    )`,
                         {
                             replacements: {
-                                "path": this.path,
                                 "delta": on === undefined ? this.obshinaSize : on,
                                 "includeMe": includeMe ? true : false,
                             },
@@ -74,8 +103,8 @@ module.exports = function (sequelize, DataTypes) {
                 },
 
                 /**
-                 * опускает общину своих родительских земель на величину своей общины
-                 * (после выхода из состава родительской земли)
+                 * опускает общину своих родительских земель (и свою взависимотси от параметра includeMe)
+                 * на величину своей общины (после выхода из состава родительской земли)
                  * @return {Promise}
                  */
                 obshinaDown: function (on, includeMe) {
@@ -83,10 +112,9 @@ module.exports = function (sequelize, DataTypes) {
                                 update "Zemla"
                                     set "obshinaSize"= "obshinaSize"- :delta
                                 where
-                                    :path like path||id||'/%'
-                                    or (
-                                        :includeMe 
-                                        and id= ${this.id}
+                                    id in (
+                                        select id from get_zemli(${this.id}) 
+                                        where ${includeMe?'true':'false'} or id<>${this.id}
                                     )`,
                         {
                             replacements: {
@@ -153,10 +181,9 @@ module.exports = function (sequelize, DataTypes) {
                  */
                 getParents: async function () {
                     let parentsAsPlain = await sequelize.query(`
-                                select z.*
-                                    from "Zemla" as z
-                                where
-                                    :path like z.path||z.id||'/%'
+                                select *
+                                from get_zemli(${this.id})
+                                where id <> ${this.id}
                                 `,
                         {
                             replacements: {
@@ -180,7 +207,7 @@ module.exports = function (sequelize, DataTypes) {
             hooks: {
                 beforeCreate: async function (sender, options) {
                     await sender.setupPath();
-                    await sender.obshinaUp();
+                    await sender.obshinaUp(); //что апать то? у новой земли еще нет общины
                 },
                 beforeUpdate: function (sender, options) {
                     // return sender.setupPath();

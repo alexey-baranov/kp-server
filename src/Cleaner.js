@@ -17,8 +17,7 @@ class Cleaner{
                 where
                     place_id<5
                     and (
-                        value like '%temp'
-                        or value like 'temp%'
+                        value like 'temp%'
                     )
                  `,
                 {type: models.Sequelize.QueryTypes.DELETE});
@@ -30,8 +29,7 @@ class Cleaner{
                 where
                     place_id<5
                     and (
-                        value like '%temp'
-                        or value like 'temp%'
+                        value like 'temp%'
                     )
                  `,
                 {type: models.Sequelize.QueryTypes.DELETE});
@@ -42,8 +40,7 @@ class Cleaner{
                 delete from "Slovo"
                 where
                     (
-                        note like '%temp'
-                        or note like 'temp%'
+                        note like 'temp%'
                     )
                  `,
                 {type: models.Sequelize.QueryTypes.DELETE});
@@ -53,8 +50,7 @@ class Cleaner{
             await models.sequelize.query(`
                 delete from "Zemla"
                 where
-                    name like '%temp'
-                    or name like 'temp%'
+                    name like 'temp%'
                  `,
                 {type: models.Sequelize.QueryTypes.DELETE});
 
@@ -73,8 +69,7 @@ class Cleaner{
             await models.sequelize.query(`
                 delete from "Kopnik"
                 where
-                    name like '%temp'
-                    or name like 'temp%'
+                    name like 'temp%'
                  `,
                 {type: models.Sequelize.QueryTypes.DELETE});
 

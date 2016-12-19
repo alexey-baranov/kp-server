@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha",
-    "crossbar": "crossbar start"
+    "crossbar": "export NODE_ENV=dev && crossbar start"
   },
   "repository": {
     "type": "git",

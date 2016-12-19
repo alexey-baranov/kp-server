@@ -54,6 +54,12 @@ module.exports = function (sequelize, DataTypes) {
             }
         },
         {
+            indexes: [
+                {
+                    fields: ['path'],
+                    operator: 'text_pattern_ops'
+                },
+            ],
             instanceMethods: {
                 /**
                  * поднимает войско старшины и его старшин на величину своего войска
@@ -65,7 +71,7 @@ module.exports = function (sequelize, DataTypes) {
                                 update "Kopnik"
                                     set "voiskoSize"= "voiskoSize"+${this.voiskoSize + 1}
                                 where
-                                    :path like path||id||'/%'`,
+                                    id in (select id from get_starshini(${this.id}))`,
                         {
                             replacements: {
                                 "path": this.path
@@ -84,7 +90,7 @@ module.exports = function (sequelize, DataTypes) {
                                 update "Kopnik"
                                     set "voiskoSize"= "voiskoSize"-${this.voiskoSize + 1}
                                 where
-                                    :path like path||id||'/%'`,
+                                    id in (select id from get_starshini(${this.id}))`,
                         {
                             replacements: {
                                 "path": this.path
@@ -144,7 +150,7 @@ module.exports = function (sequelize, DataTypes) {
                                 where
                                     id = :THIS
                                     or path like :fullPath||'%'
-                                `,
+`,
                         {
                             replacements: {
                                 "prevStarshinaFullPathLength": this.path.length,
@@ -168,11 +174,8 @@ module.exports = function (sequelize, DataTypes) {
                  */
                 getStarshini: async function () {
                     let starshiniAsPlain = await sequelize.query(`
-                                select k.*
-                                    from "Kopnik" as k
-                                where
-                                    :path like k.path||k.id||'/%'
-                                `,
+                                select *
+                                    from get_starshini(${this.id})`,
                         {
                             replacements: {
                                 "path": this.path,

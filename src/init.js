@@ -33,7 +33,32 @@ let zemla,
     golos;
 
 async function initSchema() {
-    await models.sequelize.sync({force: true, logging: console.log});
+    await models.sequelize.query(`DROP FUNCTION if exists get_zemli(bigint); DROP FUNCTION if exists get_full_zemla(bigint, integer); DROP FUNCTION if exists get_starshini(bigint);`,
+        {
+            type: models.Sequelize.QueryTypes.SELECT
+        });
+
+
+    await models.File.drop();
+    await models.Golos.drop();
+    await models.Predlozhenie.drop();
+    await models.Slovo.drop();
+    await models.Kopa.drop();
+    await models.Kopnik.drop();
+    await models.Zemla.drop();
+
+
+
+    // await models.sequelize.sync({force: true, logging: console.log});
+
+    await models.Zemla.sync({force: true, logging: console.log});
+    await models.Kopnik.sync({force: true, logging: console.log});
+    await models.Kopa.sync({force: true, logging: console.log});
+    await models.Slovo.sync({force: true, logging: console.log});
+    await models.Predlozhenie.sync({force: true, logging: console.log});
+    await models.Golos.sync({force: true, logging: console.log});
+    await models.File.sync({force: true, logging: console.log});
+
 }
 async function initZemla() {
     Zemla = await models.Zemla.create({name: 'Земля', path: "/", level:-1});
@@ -45,11 +70,6 @@ async function initZemla() {
     }
     Russia = await (await models.Zemla.create({name: 'Россия', level:0})).setParent2(Zemla);
     // await Russia.setCountry(Russia); потому что Россия не находится в России
-    /*    HMAO = await (await models.Zemla.create({name: 'ХМАО', level:1})).setParent2(Russia);
-    Surgut = await (await models.Zemla.create({name: 'Сургут', level:1})).setParent2(HMAO);
-    Dzerzhinskogo = await (await models.Zemla.create({name: 'ул. Дзержинского', level:1})).setParent2(Surgut);
-    dom92 = await (await models.Zemla.create({name: '9/2', level:1})).setParent2(Dzerzhinskogo);
-    podezd1 = await (await models.Zemla.create({name: 'подъезд 1', level:1})).setParent2(dom92);*/
 }
 
 async function initKopnik() {
@@ -260,8 +280,93 @@ async function initGolos() {
     await kopnik5.vote(predlozhenie2,1);
 }
 
+/**
+ * Хранимые процедуры и функции
+ */
+async function initStored(){
+    await models.sequelize.query(`
+        CREATE OR REPLACE FUNCTION get_zemli(IN zemla_id bigint) RETURNS SETOF "Zemla" AS
+        $BODY$
+        DECLARE
+            current_zemla_id bigint;
+            current_zemla "Zemla";
+        BEGIN
+            current_zemla_id:= zemla_id;
+        
+            while (current_zemla_id is not null) loop
+                select * from "Zemla" where id= current_zemla_id into current_zemla;
+                return next current_zemla;
+                current_zemla_id:= current_zemla.parent_id;
+            end loop;
+            
+            return;
+        END;
+        $BODY$
+        LANGUAGE plpgsql VOLATILE NOT LEAKPROOF;
+`,
+        {
+            replacements: {
+
+            },
+            type: models.Sequelize.QueryTypes.SELECT
+        });
+
+    await models.sequelize.query(`
+        CREATE OR REPLACE FUNCTION get_full_zemla(IN zemla_id bigint, IN start_level int) RETURNS text AS
+        $BODY$
+            select 
+            string_agg(name, ', ') as result
+            from (
+                select * 
+                from
+                get_zemli(zemla_id) 
+                where 
+                level>=start_level
+                order by 
+                level
+            ) zemli
+        $BODY$
+        LANGUAGE sql VOLATILE NOT LEAKPROOF;
+`,
+        {
+            replacements: {
+
+            },
+            type: models.Sequelize.QueryTypes.SELECT
+        });
+
+    await models.sequelize.query(`
+        CREATE OR REPLACE FUNCTION get_starshini(kopnik_id bigint)
+          RETURNS SETOF "Kopnik" AS
+        $BODY$
+        DECLARE
+            current_starshina_id bigint;
+            current_starshina "Kopnik";
+        BEGIN
+            select starshina_id from "Kopnik" where id= kopnik_id into current_starshina_id;
+        
+            while (current_starshina_id is not null) loop
+                select * from "Kopnik" where id= current_starshina_id into current_starshina;
+                return next current_starshina;
+                current_starshina_id:= current_starshina.starshina_id;
+            end loop;
+            
+            return;
+        END;
+        $BODY$
+        LANGUAGE plpgsql VOLATILE NOT LEAKPROOF;
+`,
+        {
+            replacements: {
+
+            },
+            type: models.Sequelize.QueryTypes.SELECT
+        });
+}
+
 async function init() {
     await initSchema();
+    await initStored();
     await initZemla();
     await initKopnik();
     await initKopa();

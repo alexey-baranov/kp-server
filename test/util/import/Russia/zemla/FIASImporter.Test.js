@@ -28,18 +28,18 @@ describe('FIASImporter', function () {
     describe('#importAddresses()', function () {
         it("should import ADDR.XML", async function () {
             await fiasImporter.importAddresses(__dirname + "/ADDROBJ.XML");
-            let result = client.querySync(`select * from "Zemla" where name like '%temp' order by level`);
+            let result = client.querySync(`select * from "Zemla" where name like 'temp%' order by level`);
             assert.equal(result.length, 3);
 
             //республика без PARENTGUID
             assert.equal(result[0].AOGUID, 'address1');
-            assert.equal(result[0].name, 'респ. Адрес 1 temp');
+            assert.equal(result[0].name, 'temp Адрес 1');
             assert.equal(result[0].PARENTGUID, null);
             assert.equal(result[0].level, 1);
 
             //город с PARENTGUID
             assert.equal(result[1].AOGUID, 'address2');
-            assert.equal(result[1].name, 'г. Адрес 2 temp');
+            assert.equal(result[1].name, 'temp Адрес 2');
             assert.equal(result[1].PARENTGUID, "address1");
             assert.equal(result[1].level, 4);
         });
@@ -48,11 +48,11 @@ describe('FIASImporter', function () {
     describe('#importHouses()', function () {
         it("should import HOUSE.XML", async function () {
             await fiasImporter.importHouses(__dirname + "/HOUSE.XML");
-            let result = client.querySync(`select * from "Zemla" where name like '%temp' and level=` + FIASImporter.HOUSE_LEVEL);
+            let result = client.querySync(`select * from "Zemla" where name like 'temp%' and level=` + FIASImporter.HOUSE_LEVEL);
             assert.equal(result.length, 1);
 
             assert.equal(result[0].AOGUID, 'house1');
-            assert.equal(result[0].name, 'номер1 temp');
+            assert.equal(result[0].name, 'temp номер1');
             assert.equal(result[0].PARENTGUID, "address3");
             assert.equal(result[0].level, FIASImporter.HOUSE_LEVEL);
         });
@@ -63,7 +63,7 @@ describe('FIASImporter', function () {
             let RUSSIA= fiasImporter.getRUSSIA();
 
             await fiasImporter.setupParentsAndPaths();
-            let result = client.querySync(`select * from "Zemla" where name like '%temp' order by level `);
+            let result = client.querySync(`select * from "Zemla" where name like 'temp%' order by level `);
 
             assert.equal(result[1].parent_id, result[0].id);
             assert.equal(result[2].parent_id, result[1].id);

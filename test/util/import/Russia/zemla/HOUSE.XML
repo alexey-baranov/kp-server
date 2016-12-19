@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Houses>
-    <House HOUSEGUID="house1" AOGUID="address3" HOUSENUM="номер1 temp" ENDDATE="2079-06-06"/>
-    <House HOUSEGUID="house2" AOGUID="address3" HOUSENUM="номер2 temp" ENDDATE="1900-01-01"/>
+    <House HOUSEGUID="house1" AOGUID="address3" HOUSENUM="temp номер1" STARTDATE="2000-01-01" ENDDATE="2079-06-06"/>
+    <House HOUSEGUID="house1" AOGUID="address3" HOUSENUM="temp номер1" STARTDATE="2079-01-01" ENDDATE="2079-06-06"/>
+    <House HOUSEGUID="house2" AOGUID="address3" HOUSENUM="temp номер2" STARTDATE="2000-01-01" ENDDATE="1900-01-01"/>
 </Houses>

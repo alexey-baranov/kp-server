@@ -9,7 +9,7 @@ var config = require(__dirname+'/../../../../../cfg/config.json')[process.env.NO
 
 /**
 * https://fias.nalog.ru/Updates.aspx
- *
+ * импортируется 25 млн строк
  *
 
 * Часть адресов (AOGUID: 'a68a172f-cefc-496b-b070-38887a6e6a82',) на момент парсинья еще не имеют пропарсеных родителей из-за неправильного порядка записей в XML
@@ -26,7 +26,7 @@ var config = require(__dirname+'/../../../../../cfg/config.json')[process.env.NO
  * 5d7f234f-fcd0-452e-a345-ec2e1d4aebfc
  *
 * уровни адресых объектов IFNS
--1- Русь
+-1 - Русь
 0- Россия
 1 – уровень региона
 2 – уровень автономного округа (устаревшее)
@@ -53,9 +53,9 @@ class FIASImporter {
         this.client.connectSync(`postgresql://${config.username}:${config.password}@${config.host}:5432/${config.database}`);
 
         this.client.prepareSync('insert-zemla',
-            `insert into "Zemla" ("AOGUID", "PARENTGUID", name, level, path, created_at, updated_at, parent_id, country_id) 
-                values ($1::character varying(255), $2::character varying(255), $3::character varying(255), $4::integer, $5::text, $6::timestamp with time zone, $7::timestamp with time zone, $8::bigint, $9::bigint)
-                returning id`, 9);
+            `insert into "Zemla" ("AOGUID", "PARENTGUID", "SHORTNAME", name, level, path, created_at, updated_at, parent_id, country_id) 
+                values ($1::character varying(255), $2::character varying(255), $3::character varying(255), $4::character varying(255), $5::integer, $6::text, $7::timestamp with time zone, $8::timestamp with time zone, $9::bigint, $10::bigint)
+                returning id`, 10);
     }
 
     /**
@@ -104,12 +104,13 @@ class FIASImporter {
             saxStream.on("opentag",  node =>{
                 try {
                     if (node.name == 'Object' && node.attributes.LIVESTATUS == 1) {
-                        this.client.executeSync("insert-zemla", [node.attributes.AOGUID, node.attributes.PARENTGUID?node.attributes.PARENTGUID:null, node.attributes.SHORTNAME + ". " + node.attributes.OFFNAME, node.attributes.AOLEVEL, '-', NOW, NOW, 1, RUSSIA]);
+                        this.client.executeSync("insert-zemla", [node.attributes.AOGUID, node.attributes.PARENTGUID?node.attributes.PARENTGUID:null, node.attributes.SHORTNAME, node.attributes.OFFNAME, node.attributes.AOLEVEL, '-', NOW, NOW, RUSSIA, RUSSIA]);
+                        rowsCount++;
+                        if (rowsCount % 100000 == 0) {
+                            logger.debug("total rows: ", rowsCount);
+                        }
                     }
-                    rowsCount++;
-                    if (rowsCount % 100000 == 0) {
-                        logger.debug("total rows: ", rowsCount);
-                    }
+
                 }
                 catch (er) {
                     logger.error(node, er);
@@ -145,7 +146,7 @@ class FIASImporter {
             saxStream.on("opentag",  node =>{
                 try {
                     if (node.name == 'House' && node.attributes.STARTDATE < NOW && NOW < node.attributes.ENDDATE) {
-                        this.client.executeSync("insert-zemla", [node.attributes.HOUSEGUID, node.attributes.AOGUID, node.attributes.HOUSENUM, FIASImporter.HOUSE_LEVEL, '-', NOW, NOW, 1, RUSSIA]);
+                        this.client.executeSync("insert-zemla", [node.attributes.HOUSEGUID, node.attributes.AOGUID, null, node.attributes.HOUSENUM, FIASImporter.HOUSE_LEVEL, '-', NOW, NOW, RUSSIA, RUSSIA]);
                         rowsCount++;
                         if (rowsCount % 100000 == 0) {
                             logger.debug("total rows: ", rowsCount);
@@ -252,6 +253,7 @@ class FIASImporter {
 
         //все остальные адреса настраиваются по PARENTGUID
         for (let eachLevel of [3, 4, 5, 6, 7, 65, 90, 91, FIASImporter.HOUSE_LEVEL]) {
+            this.logger.debug(`updating parent_id, path (level ${eachLevel})...`);
             this.client.querySync(`
             update 
             "Zemla" z

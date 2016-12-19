@@ -12,7 +12,7 @@ describe('authenticator', function () {
     });
 
     describe('auth', function () {
-        it("should authenticate", function (done) {
+        it("should authenticate server", function (done) {
             let WAMP = new autobahn.Connection({
                 url: `${config.WAMP.schema}://${config.WAMP.host}:${config.WAMP.port}/${config.WAMP.path}`,
                 realm: "kopa",

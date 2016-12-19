@@ -1,7 +1,7 @@
 /**
  * Created by alexey2baranov on 8/20/16.
  */
-let config = require("../cfg/config.json")[process.env.NODE_ENV || 'development'];
+let config = require("../cfg/config.json")[process.env.NODE_ENV];
 let autobahn = require("autobahn");
 
 class WAMPFactory {
@@ -14,9 +14,9 @@ class WAMPFactory {
                 url: `${config.WAMP.schema}://${config.WAMP.host}:${config.WAMP.port}/${config.WAMP.path}`,
                 realm: "kopa",
                 authmethods: ['ticket'],
-                authid: "alexey_baranov@inbox.ru",
+                authid: config.server.username,
                 onchallenge: function (session, method, extra) {
-                    return "alexey_baranov@inbox.ru";
+                    return config.server.password;
                 },
                 use_es6_promises: true,
                 max_retries: -1,
