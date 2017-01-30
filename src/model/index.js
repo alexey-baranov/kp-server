@@ -90,6 +90,20 @@ module.exports = db;
         foreignKey: "starshina_id"
     });
 
+    db.Kopnik.belongsTo(db.Kopnik, {
+        as: "verifiedBy"
+    });
+
+    db.Kopnik.hasMany(db.Kopnik, {
+        as: "verify",
+        foreignKey: "verified_by_id"
+    });
+
+    db.Kopnik.hasMany(db.Kopnik, {
+        as: "druzhina",
+        foreignKey: "starshina_id"
+    });
+
     db.Kopnik.hasMany(db.Kopa, {
         as: "invited",
         foreignKey: "inviter_id"

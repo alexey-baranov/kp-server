@@ -54,6 +54,20 @@
                             ]
                         },
                         {
+                            "name": "anonymous",
+                            "permissions": [
+                                {
+                                    "uri": "ru.kopa.registration",
+                                    "allow": {
+                                        "call": true,
+                                        "register": false,
+                                        "publish": false,
+                                        "subscribe": false
+                                    }
+                                }
+                            ]
+                        },
+                        {
                             "name": "authenticator",
                             "permissions": [
                                 {

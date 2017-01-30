@@ -207,7 +207,7 @@ module.exports = function (sequelize, DataTypes) {
             hooks: {
                 beforeCreate: async function (sender, options) {
                     await sender.setupPath();
-                    await sender.obshinaUp(); //что апать то? у новой земли еще нет общины
+                    // await sender.obshinaUp(); //что апать то? у новой земли еще нет общины
                 },
                 beforeUpdate: function (sender, options) {
                     // return sender.setupPath();

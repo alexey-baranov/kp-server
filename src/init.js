@@ -12,6 +12,7 @@ var Zemla,
     dom92,
     podezd1;
 var alexey2baranov = null;
+var unitTestZemla1 = null;
 var unitTestZemla2 = null;
 var unitTestZemla3 = null,
     unitTestZemla4;
@@ -58,16 +59,17 @@ async function initSchema() {
     await models.Predlozhenie.sync({force: true, logging: console.log});
     await models.Golos.sync({force: true, logging: console.log});
     await models.File.sync({force: true, logging: console.log});
-
 }
+
 async function initZemla() {
-    Zemla = await models.Zemla.create({name: 'Земля', path: "/", level:-1});
     //unit test
     {
-        zemla = unitTestZemla2 = await (await models.Zemla.create({name: 'UnitTest2', level:0})).setParent2(Zemla);    //unit test
+        unitTestZemla1= await models.Zemla.create({name: 'UnitTest1', path: "/", level:0});
+        zemla = unitTestZemla2 = await (await models.Zemla.create({name: 'UnitTest2', level:0})).setParent2(unitTestZemla1);    //unit test
         unitTestZemla3 = await (await models.Zemla.create({name: 'UnitTest3', level:0})).setParent2(unitTestZemla2);
-        unitTestZemla4 = await (await models.Zemla.create({name: 'UnitTest4', level:0})).setParent2(Zemla);    //unit test
+        unitTestZemla4 = await (await models.Zemla.create({name: 'UnitTest4', level:0})).setParent2(unitTestZemla1);    //unit test
     }
+    Zemla = await models.Zemla.create({name: 'Земля', path: "/", level:-1});
     Russia = await (await models.Zemla.create({name: 'Россия', level:0})).setParent2(Zemla);
     // await Russia.setCountry(Russia); потому что Россия не находится в России
 }

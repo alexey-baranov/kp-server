@@ -56,13 +56,21 @@ class Server {
             max_retry_delay: 5
         });
 
-        this.WAMP.onopen = async(session, details)=> {
+        this.WAMP.onopen = async(session, details) => {
             try {
                 session.prefix('api', 'ru.kopa');
                 this.log.info("connection.onopen()"/*, session._id, details*/);
 
+                //регистрация копника
+                await this.registerHelper('api:Registration.getCountries', this.Registration_getCountries, null, this);
+                await this.registerHelper('api:Registration.getTowns', this.Registration_getTowns, null, this);
+                await this.registerHelper('api:Registration.getStreets', this.Registration_getStreets, null, this);
+                await this.registerHelper('api:Registration.getHouses', this.Registration_getHouses, null, this);
+                await this.registerHelper('api:Registration.apply', this.Registration_apply, null, this);
+
                 await this.registerHelper('api:model.create', this.model_create, null, this);
                 await this.registerHelper('api:model.get', this.promiseModel, null, this);
+                await this.registerHelper('api:model.getKOPNIKByEmail', this.getKOPNIKByEmail, null, this);
                 await this.registerHelper('api:model.save', this.model_save, null, this);
                 await this.registerHelper('api:pingPong', this.pingPong, null, this);
                 await this.registerHelper('api:discloseCaller', this.discloseCaller, null, this);
@@ -96,7 +104,7 @@ class Server {
 
 
                 let tick = 0;
-                this.tickInterval = setInterval(()=> {
+                this.tickInterval = setInterval(() => {
                     /*
                      session.publish("ru.kopa.tick", [tick++], {}, {
                      acknowledge: true, //получить обещание - подтверждение
@@ -115,7 +123,7 @@ class Server {
             }
         };
 
-        this.WAMP.onclose = (reason, details)=> {
+        this.WAMP.onclose = (reason, details) => {
             try {
                 this.log.info("connection.onclose()", reason, details);
                 clearInterval(this.tickInterval);
@@ -129,7 +137,7 @@ class Server {
     async unitTest_orderProc([x]) {
         // await this.WAMP.session.publish(`api:unitTest.orderTopic`, [x], null, {acknowledge: true});
 
-        setImmediate(async()=> {
+        setImmediate(async() => {
             // process.nextTick(async()=> {
             try {
                 await this.WAMP.session.publish(`api:unitTest.orderTopic`, [x], null, {acknowledge: true});
@@ -141,6 +149,202 @@ class Server {
 
         return x * x;
     }
+
+    async Registration_getCountries(args, {term}, details) {
+        try {
+            let result = await models.sequelize.query(`
+                                select id, name, "obshinaSize"
+                                from
+                                    "Zemla"
+                                where
+                                    level=0
+                                    and lower(name) like lower(:term)||'%'
+                                order by 
+                                    name
+                                limit 8
+                                `,
+                {
+                    replacements: {
+                        "term": term,
+                    },
+                    type: models.Sequelize.QueryTypes.SELECT
+                });
+            return result
+        }
+        catch (err) {
+            throw err
+        }
+    }
+
+    async Registration_getTowns(args, {term, COUNTRY}, details) {
+        try {
+            let result = await models.sequelize.query(`
+                                select id, get_full_zemla(id,0), "obshinaSize"
+                                from(
+                                    select id, "obshinaSize"
+                                    from
+                                        "Zemla"
+                                    where
+                                        (level =35 or level=4 or level=6)
+                                        and country_id = :COUNTRY
+                                        and lower(name) like lower(:term)||'%'
+                                    order by 
+                                        name
+                                    limit 8
+                                ) as temp`,
+                {
+                    replacements: {
+                        term,
+                        COUNTRY,
+                    },
+                    type: models.Sequelize.QueryTypes.SELECT
+                })
+            return result
+        }
+        catch (err) {
+            throw err
+        }
+    }
+
+    async Registration_getStreets(args, {term, TOWN}, details) {
+        try {
+            let result = await models.sequelize.query(`
+                                select id, name, "obshinaSize"
+                                from
+                                    "Zemla"
+                                where
+                                    level=7
+                                    and parent_id= :TOWN
+                                    and lower(name) like lower(:term)||'%'
+                                order by 
+                                    name
+                                limit 8
+                                `,
+                {
+                    replacements: {
+                        term,
+                        TOWN
+                    },
+                    type: models.Sequelize.QueryTypes.SELECT
+                })
+            return result
+        }
+        catch (err) {
+            throw err
+        }
+    }
+
+    async Registration_getHouses(args, {term, STREET}, details) {
+        try {
+            let result = await models.sequelize.query(`
+                                select id, name, "obshinaSize"
+                                from
+                                    "Zemla"
+                                where
+                                    level=99
+                                    and parent_id= :STREET
+                                    and lower(name) like lower(:term)||'%'
+                                order by 
+                                    name
+                                limit 8
+                                `,
+                {
+                    replacements: {
+                        term,
+                        STREET
+                    },
+                    type: models.Sequelize.QueryTypes.SELECT
+                });
+            return result
+        }
+        catch (err) {
+            throw err
+        }
+    }
+
+    async Registration_apply(args, {kopnik}, details) {
+        var tran = await models.sequelize.transaction();
+
+        try {
+            let kopnik= new models.Kopnik.create(kopnik)
+            let result = await models[type].create(plain);
+            await tran.commit();
+
+            /**
+             * событие о том что создался новый объект ".*Add" должно уходить после того
+             * как ".model.create" завершится и вернет ответ клиенту
+             * только в этом случае клиент, отправивший запрос получит событие ".*Add"
+             * когда новая модель уже будет доступна из кэша RemoteModel
+             */
+
+            // задерживать на секунду не получается
+            // потому что два события над одним объектом прилетают в обратном порядке!
+            // setTimeout(async ()=> {
+
+            setImmediate(async() => {
+                try {
+                    switch (type) {
+                        case "Kopnik":
+                            /*                          копник создается без старшины и выбирает его в процессе общения
+                             let starshini = await result.getStarshini();
+                             for (let eachStarshina of starshini) {
+                             await this.WAMP.session.publish(`api:model.Kopnik.id${eachStarshina.id}.voiskoChange`, [], {voiskoSize: eachStarshina.voiskoSize}, {acknowledge: true});
+                             }*/
+                            /**
+                             * событие о изменения прилетает после того как клиент дождался ответа
+                             * об изменения
+                             */
+                            let doma = await result.getDoma();
+                            for (let everyDom of doma) {
+                                await this.WAMP.session.publish(`api:model.Zemla.id${everyDom.id}.obshinaChange`, [], {obshinaSize: everyDom.obshinaSize}, {acknowledge: true});
+                            }
+                            break;
+                        case "Slovo":
+                            await this.WAMP.session.publish(`api:model.Kopa.id${plain.place_id}.slovoAdd`, [result.id], null, {acknowledge: true});
+                            break;
+                        case "Predlozhenie":
+                            await this.WAMP.session.publish(`api:model.Kopa.id${plain.place_id}.predlozhenieAdd`, [result.id], null, {acknowledge: true});
+                            break;
+                        case "Golos":
+                            await this.WAMP.session.publish(`api:model.Predlozhenie.id${plain.for_id}.golosAdd`, [result.id], null, {acknowledge: true});
+                            break;
+                        case "Kopa":
+                            //kopaAdd теперь происходит в Kopa#invite();
+                            // await this.WAMP.session.publish(`api:model.Zemla.id${plain.place_id}.kopaAdd`, [result.id], null, {acknowledge: true});
+                            break;
+                        case "Zemla":
+                            /*когда земля только создалась у нее еще нулевая община и поэтому она не меняет общины родителей
+                             let parents = await result.getParents();
+                             for (let eachParent of parents) {
+                             await this.WAMP.session.publish(`api:model.Zemla.id${eachParent.id}.obshinaChange`, [], {obshinaSize: eachParent.obshinaSize}, {acknowledge: true});
+                             }
+                             */
+                            break;
+                        case "Kopnik":
+                        case "File":
+                            break;
+                    }
+                }
+                catch (err) {
+                    this.log.error("model_create error", args, {typs: type, plain: plain}, err);
+                }
+            }, 1000);
+
+            return result.id;
+        }
+        catch (err) {
+            if (!tran.finished) {
+                try {
+                    await tran.rollback();
+                }
+                catch (err2) {
+                    this.error("create model error", err, err2);
+                }
+            }
+            throw err;
+        }
+    }
+
 
     async Zemla_setParent(args, {ZEMLA, PARENT}, details) {
         let tran = await models.sequelize.transaction();
@@ -165,7 +369,7 @@ class Server {
          * событие о изменения прилетает после того как клиент дождался ответа
          * об изменения
          */
-        setImmediate(async()=> {
+        setImmediate(async() => {
             try {
                 //сначала роняю войско
                 for (let eachParent of prevParents) {
@@ -187,7 +391,7 @@ class Server {
 
         try {
             var kopnik = await models.Kopnik.findById(KOPNIK);
-            var starshina = STARSHINA?await models.Kopnik.findById(STARSHINA):null;
+            var starshina = STARSHINA ? await models.Kopnik.findById(STARSHINA) : null;
 
             //старшины запоминаются на момент транзакции. в момент публикаций их войско будет уже меньше на войско копника
             var prevStarshini = await kopnik.getStarshini();
@@ -224,7 +428,7 @@ class Server {
          * событие о изменения прилетает после того как клиент дождался ответа
          * об изменения
          */
-        setImmediate(async()=> {
+        setImmediate(async() => {
             try {
                 //себе и всему войску объявляю что у них сменился старшина
                 for (let eachKopnikAsPlain of [kopnik].concat(voiskoAsPlain)) {
@@ -239,7 +443,7 @@ class Server {
                     await this.WAMP.session.publish(`api:model.Kopnik.id${prevStarshini[0].id}.druzhinaChange`, [], {
                         action: "remove",
                         KOPNIK: KOPNIK
-                    },{acknowledge: true});
+                    }, {acknowledge: true});
                 }
                 //новый старшина узнает что пришел в его дружину
                 if (starshina) {
@@ -288,7 +492,7 @@ class Server {
         /**
          * извещаем всех о ребалансе голосов
          */
-        setImmediate(async()=> {
+        setImmediate(async() => {
             try {
                 await this.WAMP.session.publish(`api:model.Predlozhenie.id${subject.id}.rebalance`, [], {
                     totalZa: subject.totalZa,
@@ -319,7 +523,7 @@ class Server {
                 as: 'attachments'
             }]
         });
-        result = result.map(eachResult=>eachResult.get({plain: true}));
+        result = result.map(eachResult => eachResult.get({plain: true}));
         return result;
     }
 
@@ -343,7 +547,7 @@ class Server {
             tran.rollback();
             throw err;
         }
-        setImmediate(async()=> {
+        setImmediate(async() => {
             await this.WAMP.session.publish(`api:model.Kopa.id${id}.change`);
             await this.WAMP.session.publish(`api:model.Zemla.id${kopa.place_id}.kopaAdd`, [id]);
         });
@@ -416,20 +620,20 @@ class Server {
      * @return {*}
      */
     async model_create(args, {type, plain}, {caller_authid}) {
-        let caller= await models.Kopnik.findOne({
-            where:{
+        let caller = await models.Kopnik.findOne({
+            where: {
                 email: caller_authid
             }
         });
 
-        switch(type){
+        switch (type) {
             case "Kopa":
-                if (plain.inviter_id!= caller.id){
+                if (plain.inviter_id != caller.id) {
                     throw new Error("plain.inviter_id!= caller.id");
                 }
                 break;
             case "Predlozhenie":
-                if (plain.author_id!= caller.id){
+                if (plain.author_id != caller.id) {
                     throw new Error("plain.author_id!= caller.id");
                 }
                 break;
@@ -437,7 +641,7 @@ class Server {
                 throw new Error("Golos can't be created by direct");
                 break;
             case "Slovo":
-                if (plain.owner_id!= caller.id){
+                if (plain.owner_id != caller.id) {
                     throw new Error("plain.owner_id!= caller.id");
                 }
                 break;
@@ -460,7 +664,7 @@ class Server {
             // потому что два события над одним объектом прилетают в обратном порядке!
             // setTimeout(async ()=> {
 
-            setImmediate(async()=> {
+            setImmediate(async() => {
                 try {
                     switch (type) {
                         case "Kopnik":
@@ -492,10 +696,13 @@ class Server {
                             // await this.WAMP.session.publish(`api:model.Zemla.id${plain.place_id}.kopaAdd`, [result.id], null, {acknowledge: true});
                             break;
                         case "Zemla":
-                            let parents = await result.getParents();
-                            for (let eachParent of parents) {
-                                await this.WAMP.session.publish(`api:model.Zemla.id${eachParent.id}.obshinaChange`, [], {obshinaSize: eachParent.obshinaSize}, {acknowledge: true});
-                            }
+                            /*когда земля только создалась у нее еще нулевая община и поэтому она не меняет общины родителей
+                             let parents = await result.getParents();
+                             for (let eachParent of parents) {
+                             await this.WAMP.session.publish(`api:model.Zemla.id${eachParent.id}.obshinaChange`, [], {obshinaSize: eachParent.obshinaSize}, {acknowledge: true});
+                             }
+                             */
+                            break;
                         case "Kopnik":
                         case "File":
                             break;
@@ -565,7 +772,7 @@ class Server {
                 type: models.Sequelize.QueryTypes.SELECT
             });
         // return resultAsArray;
-        let RESULT = resultAsArray.map(each=>each.id);
+        let RESULT = resultAsArray.map(each => each.id);
         let result = await models.Kopa.findAll({
             where: {
                 id: {
@@ -576,7 +783,7 @@ class Server {
                 ['invited', 'asc']
             ],
         });
-        result = result.map(eachResult=>eachResult.get({plain: true}));
+        result = result.map(eachResult => eachResult.get({plain: true}));
         return result;
     }
 
@@ -619,7 +826,7 @@ class Server {
                 },
                 type: models.Sequelize.QueryTypes.SELECT
             });
-        let RESULT = resultAsArray.map(each=>each.id);
+        let RESULT = resultAsArray.map(each => each.id);
         let result = await models.Slovo.findAll({
             where: {
                 id: {
@@ -630,7 +837,7 @@ class Server {
                 ['created_at', 'asc'],
             ],
         });
-        result = result.map(eachResult=>eachResult.get({plain: true}));
+        result = result.map(eachResult => eachResult.get({plain: true}));
         return result;
     }
 
@@ -670,7 +877,7 @@ class Server {
                 },
                 type: models.Sequelize.QueryTypes.SELECT
             });
-        let RESULT = resultAsArray.map(each=>each.id);
+        let RESULT = resultAsArray.map(each => each.id);
         let result = await models.Predlozhenie.findAll({
             where: {
                 id: {
@@ -681,7 +888,7 @@ class Server {
                 ['created_at', 'asc'],
             ],
         });
-        result = result.map(eachResult=>eachResult.get({plain: true}));
+        result = result.map(eachResult => eachResult.get({plain: true}));
         return result;
     }
 
@@ -703,7 +910,7 @@ class Server {
                 ['created_at', 'asc'],
             ],
         });
-        result = result.map(eachResult=>eachResult.get({plain: true}));
+        result = result.map(eachResult => eachResult.get({plain: true}));
         return result;
     }
 
@@ -774,6 +981,21 @@ class Server {
     }
 
     /**
+     * Возвращает идентификатор копника по почте
+     *
+     * @param args
+     * @param kwargs
+     * @returns {number}
+     */
+    async getKOPNIKByEmail(args, kwargs) {
+        this.log.debug("#getKopnikByEmail()", args, kwargs);
+
+        let result = await models.Kopnik.findOne({where: {email: kwargs.email}})
+
+        return result.id;
+    }
+
+    /**
      * обертака над стандартной autobahn.Session#register()
      * допом принимает контекст обработчика
      * и конввертирует обычне Error в autobahn.Error, которые только одни передаются по WAMP
@@ -781,7 +1003,7 @@ class Server {
      * @type {any}
      */
     async registerHelper(procedure, endpoint, options, context) {
-        let result = await this.WAMP.session.register(procedure, async(args, kwargs, details)=> {
+        let result = await this.WAMP.session.register(procedure, async(args, kwargs, details) => {
             try {
                 if (context) {
                     return await endpoint.call(context, args, kwargs, details);

@@ -14,6 +14,10 @@ module.exports = function (sequelize, DataTypes) {
                 primaryKey: true,
                 autoIncrement: true
             },
+            role: {
+                type: DataTypes.STRING,
+                defaultValue: "kopnik",
+            },
             email: {
                 type: DataTypes.STRING
             },
@@ -45,9 +49,8 @@ module.exports = function (sequelize, DataTypes) {
                     }
                 }
             },
-
             path: {
-                type: DataTypes.TEXT,
+                type: DataTypes.TEXT
             },
             note: {
                 type: DataTypes.TEXT
@@ -108,8 +111,8 @@ module.exports = function (sequelize, DataTypes) {
                 /**
                  * состоит ли копник в войске
                  */
-                isKopnikInVoisko: function(kopnik){
-                    let result= kopnik.path.startsWith(this.fullPath);
+                isKopnikInVoisko: function (kopnik) {
+                    let result = kopnik.path.startsWith(this.fullPath);
                     return result;
                 },
 
@@ -121,11 +124,11 @@ module.exports = function (sequelize, DataTypes) {
                  */
                 setStarshina2: async function (value) {
                     //проверяю не является ли старшина моим дружинником
-                    if (value && this.isKopnikInVoisko(value)){
+                    if (value && this.isKopnikInVoisko(value)) {
                         throw new Error("Копник, которого назначают старшиной, в данный момент состоит в дружине. Чтобы выбрать его старшиной, сначала он должен выйти из дружины");
                     }
                     //проверяю не является ли копник сам себе старшиной
-                    if (value && this.id== value.id){
+                    if (value && this.id == value.id) {
                         throw new Error("нельзя назначить себя старшиной");
                     }
                     //сначала уронил войско старшин
@@ -154,7 +157,7 @@ module.exports = function (sequelize, DataTypes) {
                         {
                             replacements: {
                                 "prevStarshinaFullPathLength": this.path.length,
-                                "starshinaFullPath": value?value.fullPath:'/',
+                                "starshinaFullPath": value ? value.fullPath : '/',
                                 "THIS": this.id,
                                 "fullPath": this.fullPath,
                             },
@@ -182,7 +185,7 @@ module.exports = function (sequelize, DataTypes) {
                             },
                             type: sequelize.Sequelize.QueryTypes.SELECT
                         });
-                    let STARSHINI = starshiniAsPlain.map(eachStarshinaAsPlain=>eachStarshinaAsPlain.id);
+                    let STARSHINI = starshiniAsPlain.map(eachStarshinaAsPlain => eachStarshinaAsPlain.id);
                     let result = Kopnik.findAll({
                         where: {
                             id: {
@@ -215,8 +218,6 @@ module.exports = function (sequelize, DataTypes) {
                 },
 
                 /**
-                 * Устанавливает старшину в локальную переменную
-                 * устанавливает путь себе и всей дружине
                  *
                  * @param {Kopnik} value
                  */
@@ -265,15 +266,15 @@ module.exports = function (sequelize, DataTypes) {
                  */
                 vote: async function (predlozhenie, value) {
                     let models = require("./index");
-                    let result= {};
+                    let result = {};
 
                     let kopa = await predlozhenie.getPlace();
                     let place = await kopa.getPlace();
                     let dom = await this.getDom();
                     let starshini = await this.getStarshini();
 
-                    if (predlozhenie.state){
-                        throw new Error("Predlozhenie is fixed. state="+ predlozhenie.state);
+                    if (predlozhenie.state) {
+                        throw new Error("Predlozhenie is fixed. state=" + predlozhenie.state);
                     }
                     /**
                      * проверочка имеет ли прово копник вообще голосовать на этой копе
@@ -307,7 +308,7 @@ module.exports = function (sequelize, DataTypes) {
                     if (value) {
                         //переголосовка
                         if (golos) {
-                            result= {golos:golos, action:"update"};
+                            result = {golos: golos, action: "update"};
                             golos.value = value;
                             await sequelize.query(`
                             update "Golos" 
@@ -336,7 +337,7 @@ module.exports = function (sequelize, DataTypes) {
                                 value: value,
                                 owner_id: this.id
                             });
-                            result= {golos:golos, action:"add"};
+                            result = {golos: golos, action: "add"};
                             /**
                              * и теперь все голоса моего войска
                              * последний like в запросе отвечате за то что в зачет идут голоса только тех
@@ -365,8 +366,8 @@ module.exports = function (sequelize, DataTypes) {
                     else {
                         //отказ от предыдущего голоса => результат={remove:golos}
                         if (golos) {
-                            result= {golos:golos, action:"remove"};
-                                await sequelize.query(`
+                            result = {golos: golos, action: "remove"};
+                            await sequelize.query(`
                             delete from "Golos" 
                             where
                                 subject_id= ${predlozhenie.id}
@@ -374,15 +375,15 @@ module.exports = function (sequelize, DataTypes) {
                                     id= ${golos.id}
                                     or parent_id = ${golos.id}
                                 )`,
-                                    {
-                                        replacements: {
-                                            "value": value
-                                        },
-                                        type: sequelize.Sequelize.QueryTypes.DELETE
-                                    });
+                                {
+                                    replacements: {
+                                        "value": value
+                                    },
+                                    type: sequelize.Sequelize.QueryTypes.DELETE
+                                });
                         }
                         //странная ситуация, когда делается отказ, а голоса нет => результат={} ничего не удалилось и не создалось
-                        else{
+                        else {
                             throw new Error(`${this}can't uvote. golos not found`);
                         }
                     }
@@ -403,11 +404,11 @@ module.exports = function (sequelize, DataTypes) {
                     predlozhenie.totalZa = parseInt(totals[0].za);
                     predlozhenie.totalProtiv = parseInt(totals[0].protiv);
 
-                    if (predlozhenie.totalZa/place.obshinaSize > 7/8){
-                        predlozhenie.state=1;
+                    if (predlozhenie.totalZa / place.obshinaSize > 7 / 8) {
+                        predlozhenie.state = 1;
                     }
-                    else if (predlozhenie.totalProtiv/place.obshinaSize >7/8){
-                        predlozhenie.state=-1;
+                    else if (predlozhenie.totalProtiv / place.obshinaSize > 7 / 8) {
+                        predlozhenie.state = -1;
                     }
 
                     await predlozhenie.save(["totalZa", "totalProtiv", "state"]);

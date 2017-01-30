@@ -57,9 +57,9 @@ class Cleaner{
             await models.sequelize.query(`
                 update "Zemla"
                 set 
-                    "obshinaSize"= case id when 2 then 5 when 4 then 1 ELSE 0 END
+                    "obshinaSize"= case id when 1 then 6 when 2 then 5 when 4 then 1 ELSE 0 END
                 where
-                    id in (2,3,4)`,
+                    id in (1,2,3,4)`,
                 {
                     type: models.sequelize.Sequelize.QueryTypes.UPDATE
                 });
