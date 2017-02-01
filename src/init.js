@@ -2,8 +2,8 @@
  * Created by alexey2baranov on 8/7/16.
  */
 
-let models = require('./model');
-let bcrypt = require("bcrypt");
+let models = require('./model')
+let bcrypt = require("bcrypt")
 var Zemla,
     Russia,
     HMAO,
@@ -40,18 +40,17 @@ async function initSchema() {
         });
 
 
-    await models.File.drop();
-    await models.Golos.drop();
-    await models.Predlozhenie.drop();
-    await models.Slovo.drop();
-    await models.Kopa.drop();
-    await models.Kopnik.drop();
-    await models.Zemla.drop();
+    await models.File.drop({cascade:true})
+    await models.Golos.drop({cascade:true})
+    await models.Predlozhenie.drop({cascade:true})
+    await models.Slovo.drop({cascade:true})
+    await models.Kopa.drop({cascade:true})
+    await models.Registration.drop({cascade:true})
+    await models.Kopnik.drop({cascade:true})
+    await models.Zemla.drop({cascade:true})
 
-
-
-    // await models.sequelize.sync({force: true, logging: console.log});
-
+    await models.sequelize.sync({force: true, logging: console.log});
+/*
     await models.Zemla.sync({force: true, logging: console.log});
     await models.Kopnik.sync({force: true, logging: console.log});
     await models.Kopa.sync({force: true, logging: console.log});
@@ -59,12 +58,20 @@ async function initSchema() {
     await models.Predlozhenie.sync({force: true, logging: console.log});
     await models.Golos.sync({force: true, logging: console.log});
     await models.File.sync({force: true, logging: console.log});
+    */
+
+    /**
+     * Убрать после cycling dependency
+     * https://github.com/sequelize/sequelize/issues/7169
+     */
+    await models.sequelize.query(`ALTER TABLE "Zemla" ADD COLUMN verifier_id bigint;`)
 }
 
 async function initZemla() {
     //unit test
     {
         unitTestZemla1= await models.Zemla.create({name: 'UnitTest1', path: "/", level:0});
+        await models.sequelize.query(`update "Zemla" set verifier_id=2 where id =1`)
         zemla = unitTestZemla2 = await (await models.Zemla.create({name: 'UnitTest2', level:0})).setParent2(unitTestZemla1);    //unit test
         unitTestZemla3 = await (await models.Zemla.create({name: 'UnitTest3', level:0})).setParent2(unitTestZemla2);
         unitTestZemla4 = await (await models.Zemla.create({name: 'UnitTest4', level:0})).setParent2(unitTestZemla1);    //unit test
@@ -79,6 +86,7 @@ async function initKopnik() {
         name: 'Алексей',
         surname: 'Баранов',
         patronymic: 'Юрьевич',
+        passport: "1234",
         dom_id: unitTestZemla4.id,
         email: 'alexey_baranov@inbox.ru',
         password: bcrypt.hashSync("qwerty", bcrypt.genSaltSync(/*14*/)),
@@ -90,6 +98,7 @@ async function initKopnik() {
         name: 'Unit',
         surname: 'Test',
         patronymic: '2',
+        passport: "1234",
         dom_id: unitTestZemla2.id,
         email: 'unittest2@domain.ru',
         password: bcrypt.hashSync("qwerty", bcrypt.genSaltSync(/*14*/)),
@@ -99,6 +108,7 @@ async function initKopnik() {
         name: 'Unit',
         surname: 'Test',
         patronymic: '3',
+        passport: "1234",
         dom_id: unitTestZemla2.id,
         starshina_id: kopnik2.id,
         email: 'unittest3@domain.ru',
@@ -109,6 +119,7 @@ async function initKopnik() {
         name: 'Unit',
         surname: 'Test',
         patronymic: '4',
+        passport: "1234",
         dom_id: unitTestZemla2.id,
         email: 'unittest4@domain.ru',
         password: bcrypt.hashSync("qwerty", bcrypt.genSaltSync(/*14*/)),
@@ -118,6 +129,7 @@ async function initKopnik() {
         name: 'Unit',
         surname: 'Test',
         patronymic: '5',
+        passport: "1234",
         dom_id: unitTestZemla2.id,
         email: 'unittest5@domain.ru',
         password: bcrypt.hashSync("qwerty", bcrypt.genSaltSync(/*14*/)),
@@ -133,6 +145,7 @@ async function initKopnik() {
         name: 'Unit',
         surname: 'Test',
         patronymic: '6',
+        passport: "1234",
         dom_id: unitTestZemla4.id,
         starshina_id: kopnik2.id,
         email: 'unittest6@domain.ru',
@@ -147,6 +160,7 @@ async function initKopnik() {
         name: 'Unit',
         surname: 'Test',
         patronymic: '7',
+        passport: "1234",
         dom_id: unitTestZemla2.id,
         starshina_id: kopnik3.id,
         email: 'unittest6@domain.ru',
@@ -366,15 +380,22 @@ async function initStored(){
         });
 }
 
+async function setSequenceVals(){
+    //запас под будущие тесты
+    await models.sequelize.query(`select setval('"Zemla_id_seq"',100); select setval('"Kopnik_id_seq"',100); select setval('"Kopa_id_seq"',100); select setval('"Slovo_id_seq"',100); select setval('"Predlozhenie_id_seq"',100); select setval('"Golos_id_seq"',100); select setval('"File_id_seq"',100); select setval('"Registration_id_seq"',100);`)
+}
+
 async function init() {
-    await initSchema();
-    await initStored();
-    await initZemla();
-    await initKopnik();
-    await initKopa();
-    await  initSlovo();
-    await  initPredlozhenie();
-    await  initGolos();
+    await initSchema()
+    await initStored()
+    await initZemla()
+    await initKopnik()
+    await initKopa()
+    await  initSlovo()
+    await  initPredlozhenie()
+    await  initGolos()
+
+    await setSequenceVals()
 }
 
 

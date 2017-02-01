@@ -14,12 +14,18 @@ module.exports = function (sequelize, DataTypes) {
                 primaryKey: true,
                 autoIncrement: true
             },
+            state: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+                defaultValue: 0,
+            },
             email: {
                 type: DataTypes.STRING
             },
             password: {
                 type: DataTypes.STRING
             },
+
             name: {
                 type: DataTypes.STRING
             },
@@ -37,8 +43,12 @@ module.exports = function (sequelize, DataTypes) {
                         if (new Date().getFullYear() - value < 30) {
                             throw new Error("Возраст копного мужа должен быть от 30 лет и больше");
                         }
-                    }
+                    },
                 }
+            },
+            passport: {
+                type: DataTypes.STRING,
+                allowNull: false
             },
             note: {
                 type: DataTypes.TEXT
@@ -69,8 +79,27 @@ module.exports = function (sequelize, DataTypes) {
                         throw new Error('Не указано имя')
                     }
                 }
-            }
+            },
         })
 
+    Registration.associate= function(db){
+        db.Registration.belongsTo(db.Zemla, {
+            as: "dom",
+            foreignKey: "dom_id"
+        })
+
+        db.Registration.belongsTo(db.Kopnik, {
+            as: "verifier",
+        })
+
+        db.Registration.belongsTo(db.Kopnik, {
+            as: "result",
+        })
+
+        db.Registration.hasMany(db.File, {
+            as: "attachments",
+            foreignKey: "registration_id"
+        })
+    }
     return Registration;
 }

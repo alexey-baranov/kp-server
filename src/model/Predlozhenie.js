@@ -8,7 +8,7 @@
  * @returns {Model}
  */
 module.exports = function (sequelize, DataTypes) {
-    return sequelize.define('Predlozhenie', {
+    let result= sequelize.define('Predlozhenie', {
             id: {
                 type: DataTypes.BIGINT,
                 primaryKey: true,
@@ -39,5 +39,28 @@ module.exports = function (sequelize, DataTypes) {
             instanceMethods: {
 
             }
+        })
+
+    result.associate= function(db){
+        db.Predlozhenie.belongsTo(db.Kopa, {
+            as: "place",
+            foreignKey: "place_id"
         });
+        db.Predlozhenie.belongsTo(db.Kopnik, {
+            as: "author",
+            foreignKey: "author_id"
+        });
+
+        db.Predlozhenie.hasMany(db.Golos, {
+            as: "golosa",
+            foreignKey: "subject_id"
+        });
+
+        db.Predlozhenie.hasMany(db.File, {
+            as: "attachments",
+            foreignKey: "predlozhenie_id"
+        });
+    }
+
+    return result
 };

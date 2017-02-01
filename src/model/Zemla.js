@@ -176,7 +176,7 @@ module.exports = function (sequelize, DataTypes) {
                 },
 
                 /**
-                 * возвращает массив старшин от непосредственного до самого верхнего
+                 * возвращает массив родительских земель от непосредственного до самого верхнего
                  * @return {*}
                  */
                 getParents: async function () {
@@ -221,7 +221,42 @@ module.exports = function (sequelize, DataTypes) {
                     return this.path + this.id + "/";
                 }
             },
-        });
+        })
+
+    Zemla.associate=function(db){
+        db.Zemla.belongsTo(db.Zemla, {
+            as: "Parent"
+        })
+
+        db.Zemla.hasMany(db.Zemla, {
+            as: "Children",
+            foreignKey: "parent_id"
+        })
+
+        db.Zemla.belongsTo(db.Zemla, {
+            as: "Country"
+        })
+
+        // уполномоченый заверять регистрации
+        // db.Zemla.belongsTo(db.Kopnik, {
+        //     as: "Verifier"
+        // })
+
+        db.Zemla.hasMany(db.Kopnik, {
+            as: "obshina",
+            foreignKey: "dom_id"
+        })
+
+        db.Zemla.hasMany(db.Kopa, {
+            as: "kopi",
+            foreignKey: "place_id"
+        })
+
+        db.Zemla.hasMany(db.File, {
+            as: "attachments",
+            foreignKey: "zemla_id"
+        })
+    }
 
     return Zemla;
 };

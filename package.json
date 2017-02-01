@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha",
-    "crossbar": "export NODE_ENV=dev && crossbar start"
+    "crossbar": "export NODE_ENV=development && crossbar start"
   },
   "repository": {
     "type": "git",
@@ -27,6 +27,7 @@
     "pg-hstore": "^2.3.2",
     "request": "^2.74.0",
     "request-promise": "^4.1.1",
+    "request-promise-native": "^1.0.3",
     "sequelize": "^3.23.6"
   },
   "devDependencies": {
