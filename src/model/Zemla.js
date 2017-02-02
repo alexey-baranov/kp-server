@@ -129,7 +129,15 @@ module.exports = function (sequelize, DataTypes) {
                     if (parent === undefined) {
                         parent = await this.getParent();
                     }
-                    this.path = parent ? parent.fullPath : "/";
+                    if (parent){
+                      this.path = parent.fullPath;
+                    }
+                    // else if (this.name =="UnitTest1" || this.name=="Zemla1"){
+                    //   this.path= "test://"
+                    // }
+                    else{
+                      this.path = "/";
+                    }
                 },
                 /**
                  * Устанавливает родителя в локальную переменную

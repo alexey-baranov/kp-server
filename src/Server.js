@@ -6,8 +6,8 @@ let log4js = require("log4js")
 let request = require("request-promise-native")
 
 let config = require("../cfg/config.json")[process.env.NODE_ENV || 'development'];
-let models = require("./model");
-let Cleaner = require("./Cleaner");
+let models = require("./model")
+let Cleaner = require("./Cleaner")
 
 
 /**
@@ -85,6 +85,7 @@ class Server {
         await this.registerHelper('api:model.Kopnik.getDruzhina', this.Kopnik_getDruzhina, null, this);
         await this.registerHelper('api:model.Kopnik.vote', this.Kopnik_vote, null, this);
         await this.registerHelper('api:model.Kopnik.verifyRegistration', this.Kopnik_verifyRegistration, null, this);
+        await this.registerHelper('api:model.Kopnik.getRegistrations', this.Kopnik_getRegistrations, null, this);
 
         //Kopa
         // await this.registerHelper('api:model.Kopa.setQuestion', this.Kopa_setQuestion, null, this);
@@ -557,9 +558,11 @@ class Server {
         /**
          * события о том что появился новый копник всем заинтересованным общинам
          */
-        let doma = await result.getDoma()
-        for (let everyDom of doma) {
-          await this.WAMP.session.publish(`api:model.Zemla.id${everyDom.id}.obshinaChange`, [], {obshinaSize: everyDom.obshinaSize}, {acknowledge: true})
+        if (result) {
+          let doma = await result.getDoma()
+          for (let everyDom of doma) {
+            await this.WAMP.session.publish(`api:model.Zemla.id${everyDom.id}.obshinaChange`, [], {obshinaSize: everyDom.obshinaSize}, {acknowledge: true})
+          }
         }
 
         /**
@@ -572,6 +575,22 @@ class Server {
       }
     })
   }
+
+  async Kopnik_getRegistrations(args, {}, {caller_authid}) {
+    let caller = await models.Kopnik.findOne({
+      where: {
+        email: caller_authid
+      }
+    })
+    let result= await caller.getRegistrations()
+    result = result.map(eachResult => {
+      let eachPlainResult= eachResult.get({plain: true})
+      delete eachPlainResult.password
+      return eachPlainResult
+    })
+    return result
+  }
+
 
   /**
    * @param args

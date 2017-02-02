@@ -5,302 +5,431 @@
 let models = require('./model')
 let bcrypt = require("bcrypt")
 var Zemla,
-    Russia,
-    HMAO,
-    Surgut,
-    Dzerzhinskogo,
-    dom92,
-    podezd1;
+  Russia,
+  HMAO,
+  Surgut,
+  Dzerzhinskogo,
+  dom92,
+  podezd1;
 var alexey2baranov = null;
 var unitTestZemla1 = null;
 var unitTestZemla2 = null;
 var unitTestZemla3 = null,
-    unitTestZemla4;
+  unitTestZemla4;
 
 var kopnik2;
 var kopnik3;
 var kopnik4;
 var kopnik5,
-    kopnik6,
-    kopnik7;
+  kopnik6,
+  kopnik7;
 
 let zemla,
-    kopnik,
-    kopa,
-    kopa3,
-    slovo,
-    predlozhenie,
-    predlozhenie2,
-    golos;
+  kopnik,
+  kopa,
+  kopa3,
+  slovo,
+  predlozhenie,
+  predlozhenie2,
+  golos;
 
 async function initSchema() {
-    await models.sequelize.query(`DROP FUNCTION if exists get_zemli(bigint); DROP FUNCTION if exists get_full_zemla(bigint, integer); DROP FUNCTION if exists get_starshini(bigint);`,
-        {
-            type: models.Sequelize.QueryTypes.SELECT
-        });
+  await models.sequelize.query(`DROP FUNCTION if exists get_zemli(bigint); DROP FUNCTION if exists get_full_zemla(bigint, integer); DROP FUNCTION if exists get_starshini(bigint);`,
+    {
+      type: models.Sequelize.QueryTypes.SELECT
+    });
 
 
-    await models.File.drop({cascade:true})
-    await models.Golos.drop({cascade:true})
-    await models.Predlozhenie.drop({cascade:true})
-    await models.Slovo.drop({cascade:true})
-    await models.Kopa.drop({cascade:true})
-    await models.Registration.drop({cascade:true})
-    await models.Kopnik.drop({cascade:true})
-    await models.Zemla.drop({cascade:true})
+  await models.File.drop({cascade: true})
+  await models.Golos.drop({cascade: true})
+  await models.Predlozhenie.drop({cascade: true})
+  await models.Slovo.drop({cascade: true})
+  await models.Kopa.drop({cascade: true})
+  await models.Registration.drop({cascade: true})
+  await models.Kopnik.drop({cascade: true})
+  await models.Zemla.drop({cascade: true})
 
-    await models.sequelize.sync({force: true, logging: console.log});
-/*
-    await models.Zemla.sync({force: true, logging: console.log});
-    await models.Kopnik.sync({force: true, logging: console.log});
-    await models.Kopa.sync({force: true, logging: console.log});
-    await models.Slovo.sync({force: true, logging: console.log});
-    await models.Predlozhenie.sync({force: true, logging: console.log});
-    await models.Golos.sync({force: true, logging: console.log});
-    await models.File.sync({force: true, logging: console.log});
-    */
+  await models.sequelize.sync({force: true, logging: console.log});
+  /*
+   await models.Zemla.sync({force: true, logging: console.log});
+   await models.Kopnik.sync({force: true, logging: console.log});
+   await models.Kopa.sync({force: true, logging: console.log});
+   await models.Slovo.sync({force: true, logging: console.log});
+   await models.Predlozhenie.sync({force: true, logging: console.log});
+   await models.Golos.sync({force: true, logging: console.log});
+   await models.File.sync({force: true, logging: console.log});
+   */
 
-    /**
-     * Убрать после cycling dependency
-     * https://github.com/sequelize/sequelize/issues/7169
-     */
-    await models.sequelize.query(`ALTER TABLE "Zemla" ADD COLUMN verifier_id bigint;`)
+  /**
+   * Убрать после cycling dependency
+   * https://github.com/sequelize/sequelize/issues/7169
+   */
+  await models.sequelize.query(`
+    ALTER TABLE "Zemla" ADD COLUMN verifier_id bigint;
+    CREATE INDEX zemla_verifier_id ON "Zemla" (verifier_id ASC NULLS LAST);
+  `)
 }
 
 async function initZemla() {
-    //unit test
-    {
-        unitTestZemla1= await models.Zemla.create({name: 'UnitTest1', path: "/", level:0});
-        await models.sequelize.query(`update "Zemla" set verifier_id=2 where id =1`)
-        zemla = unitTestZemla2 = await (await models.Zemla.create({name: 'UnitTest2', level:0})).setParent2(unitTestZemla1);    //unit test
-        unitTestZemla3 = await (await models.Zemla.create({name: 'UnitTest3', level:0})).setParent2(unitTestZemla2);
-        unitTestZemla4 = await (await models.Zemla.create({name: 'UnitTest4', level:0})).setParent2(unitTestZemla1);    //unit test
-    }
-    Zemla = await models.Zemla.create({name: 'Земля', path: "/", level:-1});
-    Russia = await (await models.Zemla.create({name: 'Россия', level:0})).setParent2(Zemla);
-    // await Russia.setCountry(Russia); потому что Россия не находится в России
+  //unit test
+  {
+    unitTestZemla1 = await models.Zemla.create({name: 'UnitTest1', path: "/", level: 0});
+    await models.sequelize.query(`update "Zemla" set verifier_id=2 where id =1`)
+    zemla = unitTestZemla2 = await (await models.Zemla.create({
+      name: 'UnitTest2',
+      level: 0
+    })).setParent2(unitTestZemla1);    //unit test
+    unitTestZemla3 = await (await models.Zemla.create({name: 'UnitTest3', level: 0})).setParent2(unitTestZemla2);
+    unitTestZemla4 = await (await models.Zemla.create({name: 'UnitTest4', level: 0})).setParent2(unitTestZemla1);    //unit test
+  }
+
+  await models.sequelize.query(`select setval('"Zemla_id_seq"',100)`)
+  Zemla = await models.Zemla.create({name: 'Земля', path: "/", level: -1});
+  Russia = await (await models.Zemla.create({name: 'Россия', level: 0})).setParent2(Zemla);
+  // await Russia.setCountry(Russia); потому что Россия не находится в России
+}
+async function initKopnikFromRegistration() {
+  alexey2baranov = await models.Kopnik.create({
+    name: 'Алексей',
+    surname: 'Баранов',
+    patronymic: 'Юрьевич',
+    passport: "1234",
+    dom_id: unitTestZemla4.id,
+    email: 'alexey_baranov@inbox.ru',
+    password: bcrypt.hashSync("qwerty", bcrypt.genSaltSync(/*14*/)),
+    birth: 1983
+  })
+
+  //unit test
+  kopnik = kopnik2 = await models.Kopnik.create({
+    name: 'Unit',
+    surname: 'Test',
+    patronymic: '2',
+    passport: "1234",
+    dom_id: unitTestZemla2.id,
+    email: 'unittest2@domain.ru',
+    password: bcrypt.hashSync("qwerty", bcrypt.genSaltSync(/*14*/)),
+    birth: 1983
+  })
+
+  let registration1 = await models.Registration.create({
+    name: 'registration1',
+    surname: 'surname',
+    patronymic: 'patronymic',
+    passport: "1234",
+    dom_id: unitTestZemla2.id,
+    email: 'unittest@domain.ru',
+    password: bcrypt.hashSync("qwerty", bcrypt.genSaltSync(/*14*/)),
+    birth: 1983
+  })
+
+  let registration2 = await models.Registration.create({
+    name: 'registration2',
+    surname: 'surname',
+    patronymic: 'patronymic',
+    passport: "1234",
+    dom_id: unitTestZemla2.id,
+    email: 'unittest@domain.ru',
+    password: bcrypt.hashSync("qwerty", bcrypt.genSaltSync(/*14*/)),
+    birth: 1983
+  })
+  await kopnik2.verifyRegistration(registration2, -1)
+
+  let registration3 = await models.Registration.create({
+    name: 'Unit',
+    surname: 'Test',
+    patronymic: '3',
+    passport: "1234",
+    dom_id: unitTestZemla2.id,
+    email: 'unittest3@domain.ru',
+    password: bcrypt.hashSync("qwerty", bcrypt.genSaltSync(/*14*/)),
+    birth: 1983
+  })
+  kopnik3 = await kopnik2.verifyRegistration(registration3, 1)
+  await kopnik3.setStarshina2(kopnik2)
+
+
+  let registration4 = await models.Registration.create({
+    name: 'Unit',
+    surname: 'Test',
+    patronymic: '4',
+    passport: "1234",
+    dom_id: unitTestZemla2.id,
+    email: 'unittest4@domain.ru',
+    password: bcrypt.hashSync("qwerty", bcrypt.genSaltSync(/*14*/)),
+    birth: 1983
+  })
+  kopnik4 = await kopnik2.verifyRegistration(registration4, 1)
+
+  let registration5 = await models.Registration.create({
+    name: 'Unit',
+    surname: 'Test',
+    patronymic: '5',
+    passport: "1234",
+    dom_id: unitTestZemla2.id,
+    email: 'unittest5@domain.ru',
+    password: bcrypt.hashSync("qwerty", bcrypt.genSaltSync(/*14*/)),
+    birth: 1983
+  })
+  kopnik5 = await kopnik2.verifyRegistration(registration5, 1)
+
+  /*
+   Этот копник используется внутри тестов голосования Predlozhenie#fix()
+   но не должен зафикситься на голосовании по копе на второй замле потому что он в четвертой земле,
+   то есть он живет в четвертом доме, а копа во втором доме
+   */
+  let registration6 = await models.Registration.create({
+    name: 'Unit',
+    surname: 'Test',
+    patronymic: '6',
+    passport: "1234",
+    dom_id: unitTestZemla4.id,
+    email: 'unittest6@domain.ru',
+    password: bcrypt.hashSync("qwerty", bcrypt.genSaltSync(/*14*/)),
+    birth: 1983
+  })
+  kopnik6 = await kopnik2.verifyRegistration(registration6, 1)
+  await kopnik6.setStarshina2(kopnik2)
+
+
+  /**
+   * Этот копник проверяет рекурсивную вьюшку kopnik-as-druzhe  (kopnik2-kopnik3-kopnik7)
+   */
+  let registration7 = await models.Registration.create({
+    name: 'Unit',
+    surname: 'Test',
+    patronymic: '7',
+    passport: "1234",
+    dom_id: unitTestZemla2.id,
+    starshina_id: kopnik3.id,
+    email: 'unittest6@domain.ru',
+    password: bcrypt.hashSync("qwerty", bcrypt.genSaltSync(/*14*/)),
+    birth: 1983
+  })
+  kopnik7 = await kopnik2.verifyRegistration(registration7, 1)
+  await kopnik7.setStarshina2(kopnik3)
 }
 
 async function initKopnik() {
-    alexey2baranov = await models.Kopnik.create({
-        name: 'Алексей',
-        surname: 'Баранов',
-        patronymic: 'Юрьевич',
-        passport: "1234",
-        dom_id: unitTestZemla4.id,
-        email: 'alexey_baranov@inbox.ru',
-        password: bcrypt.hashSync("qwerty", bcrypt.genSaltSync(/*14*/)),
-        birth: 1983
-    });
+  alexey2baranov = await models.Kopnik.create({
+    name: 'Алексей',
+    surname: 'Баранов',
+    patronymic: 'Юрьевич',
+    passport: "1234",
+    dom_id: unitTestZemla4.id,
+    email: 'alexey_baranov@inbox.ru',
+    password: bcrypt.hashSync("qwerty", bcrypt.genSaltSync(/*14*/)),
+    birth: 1983
+  });
 
-    //unit test
-    kopnik = kopnik2 = await models.Kopnik.create({
-        name: 'Unit',
-        surname: 'Test',
-        patronymic: '2',
-        passport: "1234",
-        dom_id: unitTestZemla2.id,
-        email: 'unittest2@domain.ru',
-        password: bcrypt.hashSync("qwerty", bcrypt.genSaltSync(/*14*/)),
-        birth: 1983
-    });
-    kopnik3 = await models.Kopnik.create({
-        name: 'Unit',
-        surname: 'Test',
-        patronymic: '3',
-        passport: "1234",
-        dom_id: unitTestZemla2.id,
-        starshina_id: kopnik2.id,
-        email: 'unittest3@domain.ru',
-        password: bcrypt.hashSync("qwerty", bcrypt.genSaltSync(/*14*/)),
-        birth: 1983
-    });
-    kopnik4 = await models.Kopnik.create({
-        name: 'Unit',
-        surname: 'Test',
-        patronymic: '4',
-        passport: "1234",
-        dom_id: unitTestZemla2.id,
-        email: 'unittest4@domain.ru',
-        password: bcrypt.hashSync("qwerty", bcrypt.genSaltSync(/*14*/)),
-        birth: 1983
-    });
-    kopnik5 = await models.Kopnik.create({
-        name: 'Unit',
-        surname: 'Test',
-        patronymic: '5',
-        passport: "1234",
-        dom_id: unitTestZemla2.id,
-        email: 'unittest5@domain.ru',
-        password: bcrypt.hashSync("qwerty", bcrypt.genSaltSync(/*14*/)),
-        birth: 1983
-    });
+  //unit test
+  kopnik = kopnik2 = await models.Kopnik.create({
+    name: 'Unit',
+    surname: 'Test',
+    patronymic: '2',
+    passport: "1234",
+    dom_id: unitTestZemla2.id,
+    email: 'unittest2@domain.ru',
+    password: bcrypt.hashSync("qwerty", bcrypt.genSaltSync(/*14*/)),
+    birth: 1983
+  });
+  kopnik3 = await models.Kopnik.create({
+    name: 'Unit',
+    surname: 'Test',
+    patronymic: '3',
+    passport: "1234",
+    dom_id: unitTestZemla2.id,
+    starshina_id: kopnik2.id,
+    email: 'unittest3@domain.ru',
+    password: bcrypt.hashSync("qwerty", bcrypt.genSaltSync(/*14*/)),
+    birth: 1983
+  });
+  kopnik4 = await models.Kopnik.create({
+    name: 'Unit',
+    surname: 'Test',
+    patronymic: '4',
+    passport: "1234",
+    dom_id: unitTestZemla2.id,
+    email: 'unittest4@domain.ru',
+    password: bcrypt.hashSync("qwerty", bcrypt.genSaltSync(/*14*/)),
+    birth: 1983
+  });
+  kopnik5 = await models.Kopnik.create({
+    name: 'Unit',
+    surname: 'Test',
+    patronymic: '5',
+    passport: "1234",
+    dom_id: unitTestZemla2.id,
+    email: 'unittest5@domain.ru',
+    password: bcrypt.hashSync("qwerty", bcrypt.genSaltSync(/*14*/)),
+    birth: 1983
+  });
 
-    /*
-    Этот копник используется внутри тестов голосования Predlozhenie#fix()
-    но не должен зафикситься на голосовании по копе на второй замле потому что он в четвертой земле,
-     то есть он живет в четвертом доме, а копа во втором доме
-     */
-    kopnik6 = await models.Kopnik.create({
-        name: 'Unit',
-        surname: 'Test',
-        patronymic: '6',
-        passport: "1234",
-        dom_id: unitTestZemla4.id,
-        starshina_id: kopnik2.id,
-        email: 'unittest6@domain.ru',
-        password: bcrypt.hashSync("qwerty", bcrypt.genSaltSync(/*14*/)),
-        birth: 1983
-    });
+  /*
+   Этот копник используется внутри тестов голосования Predlozhenie#fix()
+   но не должен зафикситься на голосовании по копе на второй замле потому что он в четвертой земле,
+   то есть он живет в четвертом доме, а копа во втором доме
+   */
+  kopnik6 = await models.Kopnik.create({
+    name: 'Unit',
+    surname: 'Test',
+    patronymic: '6',
+    passport: "1234",
+    dom_id: unitTestZemla4.id,
+    starshina_id: kopnik2.id,
+    email: 'unittest6@domain.ru',
+    password: bcrypt.hashSync("qwerty", bcrypt.genSaltSync(/*14*/)),
+    birth: 1983
+  });
 
-    /**
-     * Этот копник проверяет рекурсивную вьюшку kopnik-as-druzhe  (kopnik2-kopnik3-kopnik7)
-     */
-    kopnik7= await models.Kopnik.create({
-        name: 'Unit',
-        surname: 'Test',
-        patronymic: '7',
-        passport: "1234",
-        dom_id: unitTestZemla2.id,
-        starshina_id: kopnik3.id,
-        email: 'unittest6@domain.ru',
-        password: bcrypt.hashSync("qwerty", bcrypt.genSaltSync(/*14*/)),
-        birth: 1983
-    });
+  /**
+   * Этот копник проверяет рекурсивную вьюшку kopnik-as-druzhe  (kopnik2-kopnik3-kopnik7)
+   */
+  kopnik7 = await models.Kopnik.create({
+    name: 'Unit',
+    surname: 'Test',
+    patronymic: '7',
+    passport: "1234",
+    dom_id: unitTestZemla2.id,
+    starshina_id: kopnik3.id,
+    email: 'unittest6@domain.ru',
+    password: bcrypt.hashSync("qwerty", bcrypt.genSaltSync(/*14*/)),
+    birth: 1983
+  });
 }
 
 async function initKopa() {
-    let FUTURE = new Date(2026, 9 - 1, 1).getTime(),
-        CHE = new Date(2016, 9 - 1, 1).getTime();
+  let FUTURE = new Date(2026, 9 - 1, 1).getTime(),
+    CHE = new Date(2016, 9 - 1, 1).getTime();
 
-    {
-        var kopa1 = await models.Kopa.create({
-            question: 'далеко в будущем',
-            planned: new Date(FUTURE + 2 * 3600 * 1000)
-        });
-        await kopa1.setPlace(unitTestZemla2);
-        await kopa1.setInviter(kopnik2);
+  {
+    var kopa1 = await models.Kopa.create({
+      question: 'далеко в будущем',
+      planned: new Date(FUTURE + 2 * 3600 * 1000)
+    });
+    await kopa1.setPlace(unitTestZemla2);
+    await kopa1.setInviter(kopnik2);
 
-        /**
-         * чужая копа, которая еще не открылась
-         */
-        var kopa2 = await models.Kopa.create({
-            question: 'близко в будущем чужая',
-            planned: new Date(FUTURE + 1 * 3600 * 1000)
-        });
-        await kopa2.setPlace(unitTestZemla2);
-        await kopa2.setInviter(kopnik3);
+    /**
+     * чужая копа, которая еще не открылась
+     */
+    var kopa2 = await models.Kopa.create({
+      question: 'близко в будущем чужая',
+      planned: new Date(FUTURE + 1 * 3600 * 1000)
+    });
+    await kopa2.setPlace(unitTestZemla2);
+    await kopa2.setInviter(kopnik3);
 
-        kopa3 = kopa = await models.Kopa.create({
-            question: 'CHE',
-            planned: new Date(CHE),
-            invited: new Date(CHE)
-        });
-        await kopa3.setPlace(unitTestZemla2);
-        await kopa3.setInviter(kopnik2);
+    kopa3 = kopa = await models.Kopa.create({
+      question: 'CHE',
+      planned: new Date(CHE),
+      invited: new Date(CHE)
+    });
+    await kopa3.setPlace(unitTestZemla2);
+    await kopa3.setInviter(kopnik2);
 
-        /**
-         * чужая копа, которая уже открылась
-         */
-        var kopa4 = await models.Kopa.create({
-            question: 'близко позади чужая',
-            planned: new Date(CHE - 1 * 3600 * 1000),
-            invited: new Date(CHE - 1 * 3600 * 1000)
-        });
-        await kopa4.setPlace(unitTestZemla2);
-        await kopa4.setInviter(kopnik3);
+    /**
+     * чужая копа, которая уже открылась
+     */
+    var kopa4 = await models.Kopa.create({
+      question: 'близко позади чужая',
+      planned: new Date(CHE - 1 * 3600 * 1000),
+      invited: new Date(CHE - 1 * 3600 * 1000)
+    });
+    await kopa4.setPlace(unitTestZemla2);
+    await kopa4.setInviter(kopnik3);
 
-        var kopa5 = await models.Kopa.create({
-            question: 'далеко позади',
-            planned: new Date(CHE - 2 * 3600 * 1000),
-            invited: new Date(CHE - 2 * 3600 * 1000)
-        });
-        await kopa5.setPlace(unitTestZemla2);
-        await kopa5.setInviter(kopnik2);
+    var kopa5 = await models.Kopa.create({
+      question: 'далеко позади',
+      planned: new Date(CHE - 2 * 3600 * 1000),
+      invited: new Date(CHE - 2 * 3600 * 1000)
+    });
+    await kopa5.setPlace(unitTestZemla2);
+    await kopa5.setInviter(kopnik2);
 
 
-        var kopa6 = await models.Kopa.create({
-            question: 'далеко впереди',
-            planned: new Date(FUTURE + 1 * 3600 * 1000),
-        });
-        await kopa6.setPlace(Zemla);
-        await kopa6.setInviter(kopnik2);
+    var kopa6 = await models.Kopa.create({
+      question: 'далеко впереди',
+      planned: new Date(FUTURE + 1 * 3600 * 1000),
+    });
+    await kopa6.setPlace(Zemla);
+    await kopa6.setInviter(kopnik2);
 
-        var kopa7 = await models.Kopa.create({
-            question: 'далеко позади',
-            planned: new Date(CHE - 2 * 3600 * 1000),
-            invited: new Date(CHE - 2 * 3600 * 1000)
-        });
-        await kopa7.setPlace(Zemla);
-        await kopa7.setInviter(kopnik2);
-    }
+    var kopa7 = await models.Kopa.create({
+      question: 'далеко позади',
+      planned: new Date(CHE - 2 * 3600 * 1000),
+      invited: new Date(CHE - 2 * 3600 * 1000)
+    });
+    await kopa7.setPlace(Zemla);
+    await kopa7.setInviter(kopnik2);
+  }
 }
 
 async function initSlovo() {
-    let CHE = new Date(2016, 9 - 1, 1).getTime();
+  let CHE = new Date(2016, 9 - 1, 1).getTime();
 
-    slovo = await models.Slovo.create({
-        place_id: kopa3.id,
-        owner_id: kopnik2.id,
-        value: 'я ЗА!',
-    });
+  slovo = await models.Slovo.create({
+    place_id: kopa3.id,
+    owner_id: kopnik2.id,
+    value: 'я ЗА!',
+  });
 
-    await models.Slovo.create({
-        place_id: kopa3.id,
-        owner_id: kopnik2.id,
-        value: 'я ЗА!',
-    });
+  await models.Slovo.create({
+    place_id: kopa3.id,
+    owner_id: kopnik2.id,
+    value: 'я ЗА!',
+  });
 
-    await models.Slovo.create({
-        place_id: kopa3.id,
-        owner_id: kopnik2.id,
-        value: 'я ЗА!',
-    });
+  await models.Slovo.create({
+    place_id: kopa3.id,
+    owner_id: kopnik2.id,
+    value: 'я ЗА!',
+  });
 
-    /*    await models.sequelize.query(`
-     update "Slovo"
-     set created_at = case id WHEN 2 THEN to_timestamp(:CHE) WHEN 3 THEN to_timestamp(:CHE-3600) END
-     where
-     id in (2,3)`,
-     {
-     replacements: {
-     "CHE": CHE / 1000
-     },
-     type: models.Sequelize.QueryTypes.UPDATE
-     });*/
+  /*    await models.sequelize.query(`
+   update "Slovo"
+   set created_at = case id WHEN 2 THEN to_timestamp(:CHE) WHEN 3 THEN to_timestamp(:CHE-3600) END
+   where
+   id in (2,3)`,
+   {
+   replacements: {
+   "CHE": CHE / 1000
+   },
+   type: models.Sequelize.QueryTypes.UPDATE
+   });*/
 }
 
 async function initPredlozhenie() {
-    predlozhenie = await models.Predlozhenie.create({
-        place_id: kopa3.id,
-        author_id: kopnik2.id,
-        value: 'Хочу ...',
-    });
+  predlozhenie = await models.Predlozhenie.create({
+    place_id: kopa3.id,
+    author_id: kopnik2.id,
+    value: 'Хочу ...',
+  });
 
-    predlozhenie2 = await models.Predlozhenie.create({
-        place_id: kopa3.id,
-        author_id: kopnik2.id,
-        value: 'Предлагаю ...',
-    });
+  predlozhenie2 = await models.Predlozhenie.create({
+    place_id: kopa3.id,
+    author_id: kopnik2.id,
+    value: 'Предлагаю ...',
+  });
 
-    await models.Predlozhenie.create({
-        place_id: kopa3.id,
-        author_id: kopnik2.id,
-        value: 'Считаю ...',
-    });
+  await models.Predlozhenie.create({
+    place_id: kopa3.id,
+    author_id: kopnik2.id,
+    value: 'Считаю ...',
+  });
 }
 
 async function initGolos() {
-    // await kopnik2.vote(predlozhenie,1);
-    await kopnik4.vote(predlozhenie2,1);
-    await kopnik5.vote(predlozhenie2,1);
+  // await kopnik2.vote(predlozhenie,1);
+  await kopnik4.vote(predlozhenie2, 1);
+  await kopnik5.vote(predlozhenie2, 1);
 }
 
 /**
  * Хранимые процедуры и функции
  */
-async function initStored(){
-    await models.sequelize.query(`
+async function initStored() {
+  await models.sequelize.query(`
         CREATE OR REPLACE FUNCTION get_zemli(IN zemla_id bigint) RETURNS SETOF "Zemla" AS
         $BODY$
         DECLARE
@@ -320,14 +449,12 @@ async function initStored(){
         $BODY$
         LANGUAGE plpgsql VOLATILE NOT LEAKPROOF;
 `,
-        {
-            replacements: {
+    {
+      replacements: {},
+      type: models.Sequelize.QueryTypes.SELECT
+    });
 
-            },
-            type: models.Sequelize.QueryTypes.SELECT
-        });
-
-    await models.sequelize.query(`
+  await models.sequelize.query(`
         CREATE OR REPLACE FUNCTION get_full_zemla(IN zemla_id bigint, IN start_level int) RETURNS text AS
         $BODY$
             select 
@@ -344,14 +471,12 @@ async function initStored(){
         $BODY$
         LANGUAGE sql VOLATILE NOT LEAKPROOF;
 `,
-        {
-            replacements: {
+    {
+      replacements: {},
+      type: models.Sequelize.QueryTypes.SELECT
+    });
 
-            },
-            type: models.Sequelize.QueryTypes.SELECT
-        });
-
-    await models.sequelize.query(`
+  await models.sequelize.query(`
         CREATE OR REPLACE FUNCTION get_starshini(kopnik_id bigint)
           RETURNS SETOF "Kopnik" AS
         $BODY$
@@ -372,30 +497,35 @@ async function initStored(){
         $BODY$
         LANGUAGE plpgsql VOLATILE NOT LEAKPROOF;
 `,
-        {
-            replacements: {
-
-            },
-            type: models.Sequelize.QueryTypes.SELECT
-        });
+    {
+      replacements: {},
+      type: models.Sequelize.QueryTypes.SELECT
+    });
 }
 
-async function setSequenceVals(){
-    //запас под будущие тесты
-    await models.sequelize.query(`select setval('"Zemla_id_seq"',100); select setval('"Kopnik_id_seq"',100); select setval('"Kopa_id_seq"',100); select setval('"Slovo_id_seq"',100); select setval('"Predlozhenie_id_seq"',100); select setval('"Golos_id_seq"',100); select setval('"File_id_seq"',100); select setval('"Registration_id_seq"',100);`)
+/**
+ *
+ * @return {Promise.<void>}
+ */
+async function setSequenceVals() {
+  /**
+   * запас под будущие тесты
+   * Zemla_id_seq уже установлена в initZemla()
+   */
+  await models.sequelize.query(`select setval('"Kopnik_id_seq"',100); select setval('"Kopa_id_seq"',100); select setval('"Slovo_id_seq"',100); select setval('"Predlozhenie_id_seq"',100); select setval('"Golos_id_seq"',100); select setval('"File_id_seq"',100); select setval('"Registration_id_seq"',100);`)
 }
 
 async function init() {
-    await initSchema()
-    await initStored()
-    await initZemla()
-    await initKopnik()
-    await initKopa()
-    await  initSlovo()
-    await  initPredlozhenie()
-    await  initGolos()
+  await initSchema()
+  await initStored()
+  await initZemla()
+  await initKopnikFromRegistration()
+  await initKopa()
+  await  initSlovo()
+  await  initPredlozhenie()
+  await  initGolos()
 
-    await setSequenceVals()
+  await setSequenceVals()
 }
 
 
@@ -405,6 +535,6 @@ module.exports.initKopnik = initKopnik;
 module.exports.init = init;
 
 init()
-    .catch(function (err) {
-        console.error(err, err.stack);
-    });
+  .catch(function (err) {
+    console.error(err, err.stack);
+  });

@@ -93,6 +93,16 @@ class Cleaner{
                 })
         }
 
+      if (what.length == 0 || what.indexOf("Registration") != -1) {
+        await models.sequelize.query(`
+                delete from "Registration"
+                where
+                    dom_id<100
+                    and id > 100
+                 `,
+          {type: models.Sequelize.QueryTypes.DELETE});
+      }
+
     }
 }
 

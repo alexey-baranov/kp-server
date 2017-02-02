@@ -62,7 +62,7 @@ class FIASImporter {
      * возвращает идентификатор России
      */
     getRUSSIA() {
-        let result= this.client.querySync(`select * from "Zemla" where name='Россия' and parent_id=1`);
+        let result= this.client.querySync(`select * from "Zemla" where name='Россия' and parent_id=101`);
         if (!result.length){
             throw new Error("Не найдена Россия");
         }

@@ -421,6 +421,7 @@ module.exports = function (sequelize, DataTypes) {
 
           return result;
         },
+
         /**
          * Заверить регистрацию создать по ней копника
          * @param {Registration} subject
@@ -448,7 +449,7 @@ module.exports = function (sequelize, DataTypes) {
             await subject.save(["state"])
             await subject.setVerifier(this)
 
-            if (state) {
+            if (state>0) {
               let result = await Kopnik.create({
                 email: subject.email,
                 password: subject.password,
@@ -470,6 +471,41 @@ module.exports = function (sequelize, DataTypes) {
             }
           }
           throw new Error(`У вас нет прав заверять эту регистрацию`)
+        },
+
+        /**
+         */
+        async getRegistrations(){
+          let models = require("./index");
+
+          let resultAsArray = await sequelize.query(`
+            select reg.*
+            from
+              "Zemla" z
+              join "Zemla" as dom on dom.id= z.id or dom.path like z.path||z.id||'/%'
+              join "Registration" reg on reg.dom_id = dom.id
+            where
+              z.verifier_id= :THIS
+              and reg.state=0`,
+            {
+              replacements: {
+                "THIS": this.id
+              },
+              type: sequelize.Sequelize.QueryTypes.SELECT
+            })
+
+          let RESULT = resultAsArray.map(each => each.id)
+          let result = await models.Registration.findAll({
+            where: {
+              id: {
+                $in: RESULT
+              },
+            },
+            order: [
+              ['id', 'asc']
+            ],
+          });
+          return result
         }
       },
       hooks: {
