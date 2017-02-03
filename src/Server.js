@@ -183,9 +183,9 @@ class Server {
   async Registration_getTowns(args, {term, COUNTRY}, details) {
     try {
       let result = await models.sequelize.query(`
-                                select id, get_full_zemla(id,1) as name, "obshinaSize"
+                                select id, name||', '||get_full_zemla(id,1,3) as name, "obshinaSize"
                                 from(
-                                    select id, "obshinaSize"
+                                    select id, name, "obshinaSize"
                                     from
                                         "Zemla"
                                     where
@@ -693,7 +693,7 @@ class Server {
 
     switch (type) {
       case "Registration":
-        if (1 || caller.id != 2) {
+        if (caller.id != 2) {
           let result = await request.post({
             uri: 'https://www.google.com/recaptcha/api/siteverify',
             qs: {
@@ -703,7 +703,7 @@ class Server {
             json: true // Automatically parses the JSON string in the response
           })
           if (!result.success) {
-            throw new Error(result["error-codes"].join(", "))
+            throw new Error("Ошибка каптчи: "+result["error-codes"].join(", "))
           }
         }
         break

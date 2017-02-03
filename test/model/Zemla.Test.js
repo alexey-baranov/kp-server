@@ -11,21 +11,26 @@ let model = require("../../src/model");
 // let WAMP = require("../../src/WAMPFactory").getWAMP();
 
 describe('Zemla', function () {
-    it('should set path', async function (done) {
-        try {
-            var tran = await model.sequelize.transaction();
-            let unitTestZemla3 = await model.Zemla.findById(3);
-            await unitTestZemla3.setParent2(await model.Zemla.findById(1));
+  before(function () {
+    let result = Cleaner.clean();
+    return result;
+  })
 
-            assert.equal("/1/", unitTestZemla3.path);
+  it('should set path', async function (done) {
+    try {
+      var tran = await model.sequelize.transaction();
+      let unitTestZemla3 = await model.Zemla.findById(3);
+      await unitTestZemla3.setParent2(await model.Zemla.findById(1));
 
-            done();
-        }
-        catch (err) {
-            done(err);
-        }
-        finally {
-            tran.rollback();
-        }
-    });
-});
+      assert.equal("/1/", unitTestZemla3.path);
+
+      done();
+    }
+    catch (err) {
+      done(err);
+    }
+    finally {
+      tran.rollback();
+    }
+  })
+})

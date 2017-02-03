@@ -22,7 +22,7 @@ let kopnik2,
 
 describe('Predlozhenie', function () {
     before(function () {
-        let result = Cleaner.clean(["Predlozhenie", "Golos"]);
+        let result = Cleaner.clean();
         return result;
     });
 

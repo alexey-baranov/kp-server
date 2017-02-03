@@ -71,17 +71,15 @@ async function initSchema() {
 }
 
 async function initZemla() {
-  //unit test
-  {
-    unitTestZemla1 = await models.Zemla.create({name: 'UnitTest1', path: "/", level: 0});
-    await models.sequelize.query(`update "Zemla" set verifier_id=2 where id =1`)
-    zemla = unitTestZemla2 = await (await models.Zemla.create({
-      name: 'UnitTest2',
-      level: 0
-    })).setParent2(unitTestZemla1);    //unit test
-    unitTestZemla3 = await (await models.Zemla.create({name: 'UnitTest3', level: 0})).setParent2(unitTestZemla2);
-    unitTestZemla4 = await (await models.Zemla.create({name: 'UnitTest4', level: 0})).setParent2(unitTestZemla1);    //unit test
-  }
+  unitTestZemla1 = await models.Zemla.create({name: 'Rus', path: "/", level: -1})
+  await models.sequelize.query(`update "Zemla" set verifier_id=2 where id =1`)
+  zemla = unitTestZemla2 = await (await models.Zemla.create({name: 'Country1', level: 0})).setParent2(unitTestZemla1)
+  unitTestZemla3 = await (await models.Zemla.create({name: 'Region1', level: 1, country_id: 2})).setParent2(unitTestZemla2)
+  unitTestZemla4 = await (await models.Zemla.create({name: 'Country2', level: 0})).setParent2(unitTestZemla1)
+
+  let town1= await (await models.Zemla.create({name: 'Town1', level: 4, country_id: 2})).setParent2(unitTestZemla3)
+  let street1= await (await models.Zemla.create({name: 'Street1', level: 7, country_id: 2})).setParent2(town1)
+  let house1= await (await models.Zemla.create({name: 'House1', level: 99, country_id: 2})).setParent2(street1)
 
   await models.sequelize.query(`select setval('"Zemla_id_seq"',100)`)
   Zemla = await models.Zemla.create({name: 'Земля', path: "/", level: -1});
@@ -455,7 +453,7 @@ async function initStored() {
     });
 
   await models.sequelize.query(`
-        CREATE OR REPLACE FUNCTION get_full_zemla(IN zemla_id bigint, IN start_level int) RETURNS text AS
+        CREATE OR REPLACE FUNCTION get_full_zemla(IN zemla_id bigint, IN start_level int, IN end_level int) RETURNS text AS
         $BODY$
             select 
             string_agg(name, ', ') as result
@@ -464,7 +462,7 @@ async function initStored() {
                 from
                 get_zemli(zemla_id) 
                 where 
-                level>=start_level
+                level between start_level and end_level
                 order by 
                 level
             ) zemli
