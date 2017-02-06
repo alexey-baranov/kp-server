@@ -306,7 +306,7 @@ async function initKopa() {
       planned: new Date(FUTURE + 2 * 3600 * 1000)
     });
     await kopa1.setPlace(unitTestZemla2);
-    await kopa1.setInviter(kopnik2);
+    await kopa1.setOwner(kopnik2);
 
     /**
      * чужая копа, которая еще не открылась
@@ -314,17 +314,17 @@ async function initKopa() {
     var kopa2 = await models.Kopa.create({
       question: 'близко в будущем чужая',
       planned: new Date(FUTURE + 1 * 3600 * 1000)
-    });
-    await kopa2.setPlace(unitTestZemla2);
-    await kopa2.setInviter(kopnik3);
+    })
+    await kopa2.setPlace(unitTestZemla2)
+    await kopa2.setOwner(kopnik3)
 
     kopa3 = kopa = await models.Kopa.create({
       question: 'CHE',
       planned: new Date(CHE),
       invited: new Date(CHE)
-    });
+    })
     await kopa3.setPlace(unitTestZemla2);
-    await kopa3.setInviter(kopnik2);
+    await kopa3.setOwner(kopnik2);
 
     /**
      * чужая копа, которая уже открылась
@@ -335,7 +335,7 @@ async function initKopa() {
       invited: new Date(CHE - 1 * 3600 * 1000)
     });
     await kopa4.setPlace(unitTestZemla2);
-    await kopa4.setInviter(kopnik3);
+    await kopa4.setOwner(kopnik3);
 
     var kopa5 = await models.Kopa.create({
       question: 'далеко позади',
@@ -343,7 +343,7 @@ async function initKopa() {
       invited: new Date(CHE - 2 * 3600 * 1000)
     });
     await kopa5.setPlace(unitTestZemla2);
-    await kopa5.setInviter(kopnik2);
+    await kopa5.setOwner(kopnik2);
 
 
     var kopa6 = await models.Kopa.create({
@@ -351,7 +351,7 @@ async function initKopa() {
       planned: new Date(FUTURE + 1 * 3600 * 1000),
     });
     await kopa6.setPlace(Zemla);
-    await kopa6.setInviter(kopnik2);
+    await kopa6.setOwner(kopnik2);
 
     var kopa7 = await models.Kopa.create({
       question: 'далеко позади',
@@ -359,7 +359,7 @@ async function initKopa() {
       invited: new Date(CHE - 2 * 3600 * 1000)
     });
     await kopa7.setPlace(Zemla);
-    await kopa7.setInviter(kopnik2);
+    await kopa7.setOwner(kopnik2);
   }
 }
 
@@ -400,19 +400,19 @@ async function initSlovo() {
 async function initPredlozhenie() {
   predlozhenie = await models.Predlozhenie.create({
     place_id: kopa3.id,
-    author_id: kopnik2.id,
+    owner_id: kopnik2.id,
     value: 'Хочу ...',
   });
 
   predlozhenie2 = await models.Predlozhenie.create({
     place_id: kopa3.id,
-    author_id: kopnik2.id,
+    owner_id: kopnik2.id,
     value: 'Предлагаю ...',
   });
 
   await models.Predlozhenie.create({
     place_id: kopa3.id,
-    author_id: kopnik2.id,
+    owner_id: kopnik2.id,
     value: 'Считаю ...',
   });
 }

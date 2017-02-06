@@ -33,8 +33,8 @@ module.exports = function(sequelize, DataTypes) {
         });
 
         db.Kopa.belongsTo(db.Kopnik, {
-            as: "inviter",
-            foreignKey: "inviter_id"
+            as: "owner",
+            foreignKey: "owner_id"
         })
 
         db.Kopa.hasMany(db.Predlozhenie, {

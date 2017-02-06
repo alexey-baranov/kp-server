@@ -37,7 +37,7 @@ describe('Predlozhenie', function () {
             predlozhenie = await models.Predlozhenie.create({
                 place_id: KOPA,
                 value: "temp " + new Date(),
-                author_id: KOPNIK,
+                owner_id: KOPNIK,
             });
 
             golos = await models.Golos.create({

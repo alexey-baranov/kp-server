@@ -144,7 +144,7 @@ describe('Kopnik', function () {
             somePredlozhenie = await models.Predlozhenie.create({
                 place_id: KOPA,
                 value: "temp " + new Date(),
-                author_id: KOPNIK,
+                owner_id: KOPNIK,
             });
 
             let result= await kopnik2.vote(somePredlozhenie, 1);

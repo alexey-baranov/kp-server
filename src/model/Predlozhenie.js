@@ -47,8 +47,8 @@ module.exports = function (sequelize, DataTypes) {
             foreignKey: "place_id"
         });
         db.Predlozhenie.belongsTo(db.Kopnik, {
-            as: "author",
-            foreignKey: "author_id"
+            as: "owner",
+            foreignKey: "owner_id"
         });
 
         db.Predlozhenie.hasMany(db.Golos, {

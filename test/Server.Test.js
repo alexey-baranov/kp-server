@@ -34,7 +34,7 @@ describe('Server', function () {
                 assert.equal(_.isArray(result), true);
                 for (var eachResult of result) {
                     assert.equal(_.isObject(result[0]), true);
-                    assert.equal(eachResult.inviter_id == UNIT_TEST_KOPNIK_2 || eachResult.invited != null, true);
+                    assert.equal(eachResult.owner_id == UNIT_TEST_KOPNIK_2 || eachResult.invited != null, true);
                 }
                 done();
             }

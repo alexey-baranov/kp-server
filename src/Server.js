@@ -708,13 +708,13 @@ class Server {
         }
         break
       case "Kopa":
-        if (plain.inviter_id != caller.id) {
-          throw new Error("plain.inviter_id!= caller.id");
+        if (plain.owner_id != caller.id) {
+          throw new Error("plain.owner_id!= caller.id");
         }
         break;
       case "Predlozhenie":
-        if (plain.author_id != caller.id) {
-          throw new Error("plain.author_id!= caller.id");
+        if (plain.owner_id != caller.id) {
+          throw new Error("plain.owner_id!= caller.id");
         }
         break;
       case "Golos":
@@ -854,7 +854,7 @@ class Server {
     let resultAsArray = await models.sequelize.query(`
         select kopa.* 
             from "Kopa" as kopa
-            join "Kopnik" as kopnik on kopnik.id= kopa.inviter_id 
+            join "Kopnik" as kopnik on kopnik.id= kopa.owner_id 
         where
             kopa.place_id=:PLACE
             and ${BEFORE_FILTER}
@@ -1050,36 +1050,46 @@ class Server {
   async promiseModel(args, kwargs) {
     this.log.debug("#promiseModel()", args, kwargs);
 
+    if (!kwargs.id) {
+      throw new Error("Не задан идентификатор модели")
+    }
+
     var tran = await models.sequelize.transaction();
     var result = null;
 
-    switch (kwargs.model) {
-      case "Zemla":
-      case "Kopa":
-      case "Golos":
-      case "Slovo":
-      case "Registration":
-      case "Kopnik":
-      case "Predlozhenie":
-        result = await models[kwargs.model].findById(kwargs.id, {
-          include: [{
-            model: models.File,
-            as: 'attachments'
-          }]
-        });
-        result = result.get({plain: true});
-        delete result.password;
-        break;
-      case "File":
-        result = await models[kwargs.model].findById(kwargs.id);
-        result = result.get({plain: true});
-        break;
-      default:
-        throw new Error("Неизвестный тип")
-    }
+    try {
+      switch (kwargs.model) {
+        case "Zemla":
+        case "Kopa":
+        case "Golos":
+        case "Slovo":
+        case "Registration":
+        case "Kopnik":
+        case "Predlozhenie":
+          result = await models[kwargs.model].findById(kwargs.id, {
+            include: [{
+              model: models.File,
+              as: 'attachments'
+            }]
+          });
+          result = result.get({plain: true});
+          delete result.password;
+          break;
+        case "File":
+          result = await models[kwargs.model].findById(kwargs.id);
+          result = result.get({plain: true});
+          break;
+        default:
+          throw new Error("Неизвестный тип")
+      }
 
-    await tran.commit();
-    return result;
+      await tran.commit();
+      return result
+    }
+    catch(err){
+      await tran.rollback()
+      throw err
+    }
   }
 
   /**
