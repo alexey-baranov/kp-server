@@ -828,49 +828,79 @@ class Server {
   }
 
   /**
-   * Копы открытые до BEFORE или ен открытые но мои
-   * отсортированные по дате (стартонутости или запланированности) в обратном порядке
+   * Первый запрос возвращает все мои неоткрытые и добивает их до 25шт разными открытыми
+   * Последующие запросы возвращают копы до указанного времени
+   * отсортированные по дате созванности (или создания для несозванных) в обратном порядке
+   *
    * @param args
    * @param PLACE
-   * @param BEFORE
+   * @param BEFORE timestamp msec
    * @param caller_authid
    * @returns {*}
    */
-  async Zemla_promiseKopi(args, {PLACE, BEFORE}, {caller_authid}) {
-    var BEFORE_FILTER;
-    if (!BEFORE) {
+  async Zemla_promiseKopi(args, {PLACE, BEFORE, count}, {caller_authid}) {
+    let BEFORE_FILTER
+
+    count= count?Math.min(count, 25):25
+
+    if (!BEFORE)
+    /**
+     * свои копы должны в любом случае уйти при первом запрсое
+     * потому что у них даты созвания и это геморно обрабатывать
+     */{
+      let callerKopiCount = await models.sequelize.query(`
+        select count(*) as count
+            from "Kopa" as kopa
+            join "Kopnik" kopnik on kopnik.id= kopa.owner_id
+        where
+            kopa.place_id=:PLACE
+            and kopa.invited is null 
+            and kopnik.email=:caller_authid
+            `,
+        {
+          replacements: {
+            "PLACE": PLACE,
+            "caller_authid": caller_authid,
+          },
+          type: models.Sequelize.QueryTypes.SELECT
+        });
+      callerKopiCount= callerKopiCount[0].count
+      count= Math.max(count, callerKopiCount)
+
       BEFORE_FILTER = `(
             kopa.invited is not null 
             or (
                 kopa.invited is null 
                 and kopnik.email=:caller_authid
                 )
-            )`;
+            )`
     }
     else {
       BEFORE_FILTER = `kopa.invited <  to_timestamp(:BEFORE)`;
     }
 
     let resultAsArray = await models.sequelize.query(`
-        select kopa.* 
+        select kopa.*
             from "Kopa" as kopa
-            join "Kopnik" as kopnik on kopnik.id= kopa.owner_id 
+            join "Kopnik" as kopnik on kopnik.id= kopa.owner_id
         where
             kopa.place_id=:PLACE
             and ${BEFORE_FILTER}
         order by
-            kopa.invited desc
-            limit 25
+            kopa.invited desc nulls first,
+            kopa.created_at desc
+            limit :count
             `,
       {
         replacements: {
           "PLACE": PLACE,
-          "BEFORE": BEFORE / 1000,
-          "caller_authid": caller_authid
+          "BEFORE": Math.floor(BEFORE / 1000),
+          "caller_authid": caller_authid,
+          "count": count
         },
         type: models.Sequelize.QueryTypes.SELECT
       });
-    // return resultAsArray;
+
     let RESULT = resultAsArray.map(each => each.id);
     let result = await models.Kopa.findAll({
       where: {
@@ -879,11 +909,12 @@ class Server {
         },
       },
       order: [
-        ['invited', 'asc']
+        ['invited', 'asc nulls last'],
+        ['created_at', 'asc']
       ],
     });
     result = result.map(eachResult => eachResult.get({plain: true}));
-    return result;
+    return result
   }
 
 

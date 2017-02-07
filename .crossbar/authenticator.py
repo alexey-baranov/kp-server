@@ -58,19 +58,19 @@ class AuthenticatorSession(ApplicationSession):
                     if authid == params.get("server").get("username") and ticket == params.get("server").get("password"):
                         print('Authentication successfull')
                         return u'server'
-                    raise ApplicationError("com.example.incorrect_username_or_password", "Incorrect username or password {}".format(authid))
+                    raise ApplicationError("org.kopnik.incorrect_username_or_password", "Incorrect username or password {}".format(authid))
                 for item in cursor.fetchall():
                     if bcrypt.hashpw(bytes(ticket), item[0]) == item[0]:
                         print('Authentication successfull')
                         return u'kopnik'
-                raise ApplicationError("com.example.incorrect_username_or_password", "Incorrect username or password {}".format(authid))
+                raise ApplicationError("org.kopnik.incorrect_username_or_password", "Incorrect username or password {}".format(authid))
 
             except Exception as e:
                 print(e)
                 raise e
 
         try:
-            yield self.register(authenticate, 'com.example.authenticate')
+            yield self.register(authenticate, 'org.kopnik.authenticate')
             print("WAMP-Ticket dynamic authenticator registered!")
         except Exception as e:
             print("Failed to register dynamic authenticator: {0}".format(e))

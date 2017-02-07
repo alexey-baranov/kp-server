@@ -71,7 +71,7 @@
                             "name": "authenticator",
                             "permissions": [
                                 {
-                                    "uri": "com.example.authenticate",
+                                    "uri": "org.kopnik.authenticate",
                                     "match": "prefix",
                                     "allow": {
                                         "call": false,
@@ -110,7 +110,7 @@
                             "auth": {
                                 "ticket": {
                                     "type": "dynamic",
-                                    "authenticator": "com.example.authenticate"
+                                    "authenticator": "org.kopnik.authenticate"
                                 },
                                 "anonymous": {
                                     "type": "static",
