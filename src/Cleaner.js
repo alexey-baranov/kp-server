@@ -6,7 +6,7 @@ let _ = require("lodash")
 
 
 class Cleaner {
-  static async clean(what) {
+  static async clean(what=[]) {
     if (_.isString(what)) {
       what = [what];
     }

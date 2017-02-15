@@ -1,134 +1,157 @@
 {
-    "version": 2,
-    "workers": [
+  "version": 2,
+  "workers": [
+    {
+      "type": "router",
+      "options": {
+        "pythonpath": [
+          ".",
+          "/usr/lib/python3/dist-packages"
+        ]
+      },
+      "realms": [
         {
-            "type": "router",
-            "options": {
-                "pythonpath": [
-                    ".",
-                    "/usr/lib/python3/dist-packages"
-                ]
+          "name": "kopa",
+          "roles": [
+            {
+              "name": "server",
+              "permissions": [
+                {
+                  "uri": "ru",
+                  "match": "prefix",
+                  "allow": {
+                    "call": true,
+                    "register": true,
+                    "publish": true,
+                    "subscribe": true
+                  },
+                  "disclose": {
+                    "caller": true,
+                    "publisher": true
+                  },
+                  "cache": true
+                },
+                {
+                  "uri": "wamp",
+                  "match": "prefix",
+                  "allow": {
+                    "call": true,
+                    "register": false,
+                    "publish": false,
+                    "subscribe": true
+                  },
+                  "disclose": {
+                    "caller": true,
+                    "publisher": true
+                  },
+                  "cache": true
+                }
+              ]
             },
-            "realms": [
+            {
+              "name": "kopnik",
+              "permissions": [
                 {
-                    "name": "kopa",
-                    "roles": [
-                        {
-                            "name": "server",
-                            "permissions": [
-                                {
-                                    "uri": "ru",
-                                    "match": "prefix",
-                                    "allow": {
-                                        "call": true,
-                                        "register": true,
-                                        "publish": true,
-                                        "subscribe": true
-                                    },
-                                    "disclose": {
-                                        "caller": true,
-                                        "publisher": true
-                                    },
-                                    "cache": true
-                                }
-                            ]
-                        },
-                        {
-                            "name": "kopnik",
-                            "permissions": [
-                                {
-                                    "uri": "ru",
-                                    "match": "prefix",
-                                    "allow": {
-                                        "call": true,
-                                        "register": true,
-                                        "publish": true,
-                                        "subscribe": true
-                                    },
-                                    "disclose": {
-                                        "caller": true,
-                                        "publisher": true
-                                    },
-                                    "cache": false
-                                }
-                            ]
-                        },
-                        {
-                            "name": "anonymous",
-                            "permissions": [
-                                {
-                                    "uri": "ru.kopa.registration",
-                                    "allow": {
-                                        "call": true,
-                                        "register": false,
-                                        "publish": false,
-                                        "subscribe": false
-                                    }
-                                }
-                            ]
-                        },
-                        {
-                            "name": "authenticator",
-                            "permissions": [
-                                {
-                                    "uri": "org.kopnik.authenticate",
-                                    "match": "prefix",
-                                    "allow": {
-                                        "call": false,
-                                        "register": true,
-                                        "publish": false,
-                                        "subscribe": false
-                                    },
-                                    "disclose": {
-                                        "caller": false,
-                                        "publisher": false
-                                    },
-                                    "cache": false
-                                }
-                            ]
-                        }
-                    ]
+                  "uri": "ru",
+                  "match": "prefix",
+                  "allow": {
+                    "call": true,
+                    "register": true,
+                    "publish": true,
+                    "subscribe": true
+                  },
+                  "disclose": {
+                    "caller": true,
+                    "publisher": true
+                  },
+                  "cache": false
                 }
-            ],
-            "transports": [
+              ]
+            },
+            {
+              "name": "anonymous",
+              "permissions": [
                 {
-                    "type": "web",
-                    "endpoint": {
-                        "type": "tcp",
-                        "port": 8080
-                    },
-                    "paths": {
-                        "/": {
-                            "type": "static",
-                            "directory": "../../kp-client"
-                        },
-                        "ws": {
-                            "type": "websocket",
-                            "serializers": [
-                                "json"
-                            ],
-                            "auth": {
-                                "ticket": {
-                                    "type": "dynamic",
-                                    "authenticator": "org.kopnik.authenticate"
-                                },
-                                "anonymous": {
-                                    "type": "static",
-                                    "role": "frontend"
-                                }
-                            }
-                        }
-                    }
+                  "uri": "ru.kopa.registration",
+                  "allow": {
+                    "call": true,
+                    "register": false,
+                    "publish": false,
+                    "subscribe": false
+                  }
                 }
-            ],
-            "components": [
+              ]
+            },
+            {
+              "name": "authenticator",
+              "permissions": [
                 {
-                    "type": "class",
-                    "classname": "authenticator.AuthenticatorSession",
-                    "realm": "kopa",
-                    "role": "authenticator"
+                  "uri": "org.kopnik.authenticate",
+                  "match": "prefix",
+                  "allow": {
+                    "call": false,
+                    "register": true,
+                    "publish": false,
+                    "subscribe": false
+                  },
+                  "disclose": {
+                    "caller": false,
+                    "publisher": false
+                  },
+                  "cache": false
                 }
-            ]
+              ]
+            }
+          ]
         }
-    ]
+      ],
+      "transports": [
+        {
+          "type": "web",
+          "endpoint": {
+            "type": "tcp",
+            "port": 8080
+          },
+          "paths": {
+            "/": {
+              "type": "static",
+              "directory": "../../kp-client"
+            },
+            "ws": {
+              "type": "websocket",
+              "serializers": [
+                "json"
+              ],
+              "cookie": {
+                "store": {
+                  "type": "file",
+                  "filename": "cookies.dat"
+                }
+              },
+              "auth": {
+                "ticket": {
+                  "type": "dynamic",
+                  "authenticator": "org.kopnik.authenticate"
+                },
+                "anonymous": {
+                  "type": "static",
+                  "role": "anonymous"
+                },
+                "cookie": {
+                }
+              }
+            }
+          }
+        }
+      ],
+      "components": [
+        {
+          "type": "class",
+          "classname": "authenticator.AuthenticatorSession",
+          "realm": "kopa",
+          "role": "authenticator"
+        }
+      ]
+    }
+  ]
 }

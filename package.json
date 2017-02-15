@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha",
-    "crossbar": "export NODE_ENV=development && crossbar start"
+    "crossbar": "export NODE_ENV=testing && crossbar start",
+    "init": "babel-node --use-strict ./src/init.js",
+    "import-fias": "babel-node --use-strict ./src/import-fias.js"
   },
   "repository": {
     "type": "git",
@@ -19,19 +21,24 @@
   "homepage": "https://github.com/alexey2baranov/kp-sequelizejs#readme",
   "dependencies": {
     "autobahn": "^0.10.1",
-    "babel-plugin-transform-es2015-parameters": "^6.11.4",
     "bcrypt": "^0.8.7",
     "lodash": "^4.15.0",
     "log4js": "^0.6.38",
     "pg": "^6.0.3",
     "pg-hstore": "^2.3.2",
+    "pg-native": "^1.10.0",
     "request": "^2.74.0",
     "request-promise": "^4.1.1",
     "request-promise-native": "^1.0.3",
+    "sax": "git+https://github.com/isaacs/sax-js.git#v1.2.1",
     "sequelize": "^3.23.6"
   },
   "devDependencies": {
-    "babel-plugin-transform-es2015-destructuring": "^6.9.0",
+    "babel-cli": "^6.22.2",
+    "babel-plugin-transform-async-to-generator": "^6.22.0",
+    "babel-plugin-transform-es2015-parameters": "^6.11.4",
+    "babel-plugin-transform-es2015-destructuring": "^6.22.0",
+    "continuation-local-storage": "^3.2.0",
     "pg": "^6.1.0",
     "pg-native": "^1.10.0",
     "pg-promise": "^5.4.7",

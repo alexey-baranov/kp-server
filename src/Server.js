@@ -1,4 +1,8 @@
 /**
+ * Created by alexey2baranov on 13.02.17.
+ */
+
+/**
  * Created by alexey2baranov on 8/7/16.
  */
 var autobahn = require('autobahn')
@@ -68,7 +72,7 @@ class Server {
         await this.registerHelper('api:Registration.getTowns', this.Registration_getTowns, null, this);
         await this.registerHelper('api:Registration.getStreets', this.Registration_getStreets, null, this);
         await this.registerHelper('api:Registration.getHouses', this.Registration_getHouses, null, this);
-        await this.registerHelper('api:Registration.apply', this.Registration_apply, null, this);
+        // await this.registerHelper('api:Registration.apply', this.Registration_apply, null, this);
 
         await this.registerHelper('api:model.create', this.model_create, null, this);
         await this.registerHelper('api:model.get', this.promiseModel, null, this);
@@ -266,90 +270,6 @@ class Server {
     }
   }
 
-  async Registration_apply(args, {kopnik}, details) {
-    var tran = await models.sequelize.transaction();
-
-    try {
-      let kopnik = new models.Kopnik.create(kopnik)
-      let result = await models[type].create(plain);
-      await tran.commit();
-
-      /**
-       * событие о том что создался новый объект ".*Add" должно уходить после того
-       * как ".model.create" завершится и вернет ответ клиенту
-       * только в этом случае клиент, отправивший запрос получит событие ".*Add"
-       * когда новая модель уже будет доступна из кэша RemoteModel
-       */
-
-      // задерживать на секунду не получается
-      // потому что два события над одним объектом прилетают в обратном порядке!
-      // setTimeout(async ()=> {
-
-      setImmediate(async() => {
-        try {
-          switch (type) {
-            case "Kopnik":
-              /*                          копник создается без старшины и выбирает его в процессе общения
-               let starshini = await result.getStarshini();
-               for (let eachStarshina of starshini) {
-               await this.WAMP.session.publish(`api:model.Kopnik.id${eachStarshina.id}.voiskoChange`, [], {voiskoSize: eachStarshina.voiskoSize}, {acknowledge: true});
-               }*/
-              /**
-               * событие о изменения прилетает после того как клиент дождался ответа
-               * об изменения
-               */
-              let doma = await result.getDoma();
-              for (let everyDom of doma) {
-                await this.WAMP.session.publish(`api:model.Zemla.id${everyDom.id}.obshinaChange`, [], {obshinaSize: everyDom.obshinaSize}, {acknowledge: true});
-              }
-              break;
-            case "Slovo":
-              await this.WAMP.session.publish(`api:model.Kopa.id${plain.place_id}.slovoAdd`, [result.id], null, {acknowledge: true});
-              break;
-            case "Predlozhenie":
-              await this.WAMP.session.publish(`api:model.Kopa.id${plain.place_id}.predlozhenieAdd`, [result.id], null, {acknowledge: true});
-              break;
-            case "Golos":
-              await this.WAMP.session.publish(`api:model.Predlozhenie.id${plain.for_id}.golosAdd`, [result.id], null, {acknowledge: true});
-              break;
-            case "Kopa":
-              //kopaAdd теперь происходит в Kopa#invite();
-              // await this.WAMP.session.publish(`api:model.Zemla.id${plain.place_id}.kopaAdd`, [result.id], null, {acknowledge: true});
-              break;
-            case "Zemla":
-              /*когда земля только создалась у нее еще нулевая община и поэтому она не меняет общины родителей
-               let parents = await result.getParents();
-               for (let eachParent of parents) {
-               await this.WAMP.session.publish(`api:model.Zemla.id${eachParent.id}.obshinaChange`, [], {obshinaSize: eachParent.obshinaSize}, {acknowledge: true});
-               }
-               */
-              break;
-            case "Kopnik":
-            case "File":
-              break;
-          }
-        }
-        catch (err) {
-          this.log.error("model_create error", args, {typs: type, plain: plain}, err);
-        }
-      }, 1000);
-
-      return result.id;
-    }
-    catch (err) {
-      if (!tran.finished) {
-        try {
-          await tran.rollback();
-        }
-        catch (err2) {
-          this.error("create model error", err, err2);
-        }
-      }
-      throw err;
-    }
-  }
-
-
   async Zemla_setParent(args, {ZEMLA, PARENT}, details) {
     let tran = await models.sequelize.transaction();
 
@@ -365,7 +285,7 @@ class Server {
       await tran.commit();
     }
     catch (err) {
-      tran.rollback();
+      await tran.rollback();
       throw err;
     }
 
@@ -424,7 +344,7 @@ class Server {
       await tran.commit();
     }
     catch (err) {
-      tran.rollback();
+      await tran.rollback();
       throw err;
     }
 
@@ -489,7 +409,7 @@ class Server {
       await tran.commit();
     }
     catch (err) {
-      tran.rollback();
+      await tran.rollback();
       throw err;
     }
 
@@ -501,6 +421,7 @@ class Server {
         await this.WAMP.session.publish(`api:model.Predlozhenie.id${subject.id}.rebalance`, [], {
           totalZa: subject.totalZa,
           totalProtiv: subject.totalProtiv,
+          state: subject.state,
           GOLOS: voteResult.golos.id,
           action: voteResult.action,
           value: voteResult.golos.value
@@ -549,7 +470,7 @@ class Server {
       await tran.commit()
     }
     catch (err) {
-      tran.rollback()
+      await tran.rollback()
       throw err
     }
 
@@ -609,12 +530,12 @@ class Server {
       await tran.commit();
     }
     catch (err) {
-      tran.rollback();
+      await tran.rollback();
       throw err;
     }
     setImmediate(async() => {
-      await this.WAMP.session.publish(`api:model.Kopa.id${id}.change`);
-      await this.WAMP.session.publish(`api:model.Zemla.id${kopa.place_id}.kopaAdd`, [id]);
+      await this.WAMP.session.publish(`api:model.Kopa.id${id}.change`)
+      await this.WAMP.session.publish(`api:model.Zemla.id${kopa.place_id}.kopaAdd`, [id])
     });
   }
 
@@ -629,7 +550,7 @@ class Server {
       await tran.commit();
     }
     catch (err) {
-      tran.rollback();
+      await tran.rollback();
       throw err;
     }
     await this.WAMP.session.publish(`api:model.Kopa.id${id}.change`, null, {question: kopa.question});
@@ -648,33 +569,27 @@ class Server {
       let model = await models[type].findById(plain.id);
       await model.update(plain);
       await tran.commit();
-
-      await this.WAMP.session.publish(`api:model.${type}.id${plain.id}.change`, null, null, {acknowledge: true});
-
-      switch (type) {
-        case "Zemla":
-        case "Kopa":
-        case "Golos":
-          break;
-        case "Slovo":
-          break;
-        case "Kopnik":
-          break;
-        case "File":
-          break;
-      }
     }
     catch (err) {
-      if (!tran.finished) {
-        try {
-          await tran.rollback();
-        }
-        catch (err2) {
-          this.error("save model error", err, err2);
-        }
-      }
+      await tran.rollback();
       throw err;
     }
+
+    await this.WAMP.session.publish(`api:model.${type}.id${plain.id}.change`, null, null, {acknowledge: true});
+
+    switch (type) {
+      case "Zemla":
+      case "Kopa":
+      case "Golos":
+        break;
+      case "Slovo":
+        break;
+      case "Kopnik":
+        break;
+      case "File":
+        break;
+    }
+
   }
 
   /**
@@ -733,22 +648,29 @@ class Server {
       let result = await models[type].create(plain)
       await tran.commit()
 
-      /**
-       * событие о том что создался новый объект ".*Add" должно уходить после того
-       * как ".model.create" завершится и вернет ответ клиенту
-       * только в этом случае клиент, отправивший запрос получит событие ".*Add"
-       * когда новая модель уже будет доступна из кэша RemoteModel
-       */
+      return result.id;
+    }
+    catch (err) {
+      await tran.rollback();
+      throw err;
+    }
 
-      // задерживать на секунду не получается
-      // потому что два события над одним объектом прилетают в обратном порядке!
-      // setTimeout(async ()=> {
+    /**
+     * событие о том что создался новый объект ".*Add" должно уходить после того
+     * как ".model.create" завершится и вернет ответ клиенту
+     * только в этом случае клиент, отправивший запрос получит событие ".*Add"
+     * когда новая модель уже будет доступна из кэша RemoteModel
+     */
 
-      setImmediate(async() => {
-        try {
-          switch (type) {
-            case "Registration":
-              let zemliAsRow = await models.sequelize.query(`
+    // задерживать на секунду не получается
+    // потому что два события над одним объектом прилетают в обратном порядке!
+    // setTimeout(async ()=> {
+
+    setImmediate(async() => {
+      try {
+        switch (type) {
+          case "Registration":
+            let zemliAsRow = await models.sequelize.query(`
                             select p.verifier_id, p.id, p.name
                             from
                             (select * from get_zemli(:DOM) ) p
@@ -757,74 +679,72 @@ class Server {
                             order by
                             p.path desc
                             limit 1`,
-                {
-                  replacements: {DOM: result.dom_id},
-                  type: models.Sequelize.QueryTypes.SELECT
-                })
+              {
+                replacements: {DOM: result.dom_id},
+                type: models.Sequelize.QueryTypes.SELECT
+              })
 
-              for (let eachZemlaAsRow of zemliAsRow) {
-                await this.WAMP.session.publish(`api:model.Kopnik.id${eachZemlaAsRow.verifier_id}.registrationAdd`, [result.id], {}, {acknowledge: true})
-              }
-              break
-            case "Kopnik":
-              /*                          копник создается без старшины и выбирает его в процессе общения
-               let starshini = await result.getStarshini();
-               for (let eachStarshina of starshini) {
-               await this.WAMP.session.publish(`api:model.Kopnik.id${eachStarshina.id}.voiskoChange`, [], {voiskoSize: eachStarshina.voiskoSize}, {acknowledge: true});
-               }*/
-              /**
-               * событие о изменения прилетает после того как клиент дождался ответа
-               * об изменения
-               */
-              let doma = await result.getDoma();
-              for (let everyDom of doma) {
-                await this.WAMP.session.publish(`api:model.Zemla.id${everyDom.id}.obshinaChange`, [], {obshinaSize: everyDom.obshinaSize}, {acknowledge: true});
-              }
-              break;
-            case "Slovo":
-              await this.WAMP.session.publish(`api:model.Kopa.id${plain.place_id}.slovoAdd`, [result.id], null, {acknowledge: true});
-              break;
-            case "Predlozhenie":
-              await this.WAMP.session.publish(`api:model.Kopa.id${plain.place_id}.predlozhenieAdd`, [result.id], null, {acknowledge: true});
-              break;
-            case "Golos":
-              await this.WAMP.session.publish(`api:model.Predlozhenie.id${plain.for_id}.golosAdd`, [result.id], null, {acknowledge: true});
-              break;
-            case "Kopa":
-              //kopaAdd теперь происходит в Kopa#invite();
-              // await this.WAMP.session.publish(`api:model.Zemla.id${plain.place_id}.kopaAdd`, [result.id], null, {acknowledge: true});
-              break;
-            case "Zemla":
-              /*когда земля только создалась у нее еще нулевая община и поэтому она не меняет общины родителей
-               let parents = await result.getParents();
-               for (let eachParent of parents) {
-               await this.WAMP.session.publish(`api:model.Zemla.id${eachParent.id}.obshinaChange`, [], {obshinaSize: eachParent.obshinaSize}, {acknowledge: true});
-               }
-               */
-              break;
-            case "Kopnik":
-            case "File":
-              break;
-          }
-        }
-        catch (err) {
-          this.log.error("model_create error", args, {typs: type, plain: plain}, err);
-        }
-      }, 1000);
+            for (let eachZemlaAsRow of zemliAsRow) {
+              await this.WAMP.session.publish(`api:model.Kopnik.id${eachZemlaAsRow.verifier_id}.registrationAdd`, [result.id], {}, {acknowledge: true})
+            }
+            break
+          case "Kopnik":
+            /*                          копник создается без старшины и выбирает его в процессе общения
+             let starshini = await result.getStarshini();
+             for (let eachStarshina of starshini) {
+             await this.WAMP.session.publish(`api:model.Kopnik.id${eachStarshina.id}.voiskoChange`, [], {voiskoSize: eachStarshina.voiskoSize}, {acknowledge: true});
+             }*/
+            /**
+             * событие о изменения прилетает после того как клиент дождался ответа
+             * об изменения
+             */
+            let doma = await result.getDoma();
+            for (let everyDom of doma) {
+              await this.WAMP.session.publish(`api:model.Zemla.id${everyDom.id}.obshinaChange`, [], {obshinaSize: everyDom.obshinaSize}, {acknowledge: true});
+            }
+            break;
+          case "Slovo":
+            await this.WAMP.session.publish(`api:model.Kopa.id${plain.place_id}.slovoAdd`, [result.id], null, {acknowledge: true});
+            break;
+          case "Predlozhenie":
+            await this.WAMP.session.publish(`api:model.Kopa.id${plain.place_id}.predlozhenieAdd`, [result.id], null, {acknowledge: true});
+            break;
+          case "Golos":
+            await this.WAMP.session.publish(`api:model.Predlozhenie.id${plain.for_id}.golosAdd`, [result.id], null, {acknowledge: true});
+            break;
+          case "Kopa":
+            //kopaAdd первый раз прилетает только на компьютеры автора
+            // а потом уже внутри Kopa#invite();
 
-      return result.id;
-    }
-    catch (err) {
-      if (!tran.finished) {
-        try {
-          await tran.rollback();
-        }
-        catch (err2) {
-          this.error("create model error", err, err2);
+            /**
+             * очень неоптимальный алгоритм. Надо переработат получения списка сессий автора
+             */
+            let CALLER_SESSIONS=[]
+            let SESSIONS= await this.WAMP.session.call("wamp.session.list")
+            for (let EACH_SESSION of SESSIONS){
+              let eachSession= await this.WAMP.session.call("wamp.session.get", [EACH_SESSION])
+              if (eachSession.authid== caller_authid){
+                CALLER_SESSIONS.push(EACH_SESSION)
+              }
+            }
+            await this.WAMP.session.publish(`api:model.Zemla.id${plain.place_id}.kopaAdd`, [result.id], null, {acknowledge: true, eligible: CALLER_SESSIONS})
+            break;
+          case "Zemla":
+            /*когда земля только создалась у нее еще нулевая община и поэтому она не меняет общины родителей
+             let parents = await result.getParents();
+             for (let eachParent of parents) {
+             await this.WAMP.session.publish(`api:model.Zemla.id${eachParent.id}.obshinaChange`, [], {obshinaSize: eachParent.obshinaSize}, {acknowledge: true});
+             }
+             */
+            break;
+          case "File":
+            break;
         }
       }
-      throw err;
-    }
+      catch (err) {
+        this.log.error("model_create error", args, {typs: type, plain: plain}, err);
+      }
+    });
   }
 
   /**

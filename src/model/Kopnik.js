@@ -16,7 +16,7 @@ module.exports = function (sequelize, DataTypes) {
         primaryKey: true,
         autoIncrement: true
       },
-      role: {
+      rolee: {
         type: DataTypes.STRING,
         defaultValue: "kopnik",
       },
@@ -70,6 +70,59 @@ module.exports = function (sequelize, DataTypes) {
         },
       ],
       instanceMethods: {
+        /**
+         * На копе собираются несколько земель, поэтому сила уменьшается пропорционально общему количеству
+         * @param kopa
+         * @return {Promise.<void>}
+         */
+        async getSilaNaKope(kopa){
+          return await this.getSilaNaZemle(await kopa.getPlace())
+        },
+        /**
+         * является ли для копника земля домом
+         * @param zemla
+         */
+        async isDom(zemla){
+          let dom= await this.getDom()
+          return dom.fullPath.startsWith(zemla.fullPath)
+        },
+        /**
+         * относительная сила на земле зависит от общего числа копников в дружине и общего числа копников вообще на земле
+         * (часть войска которая проживает на земле копы) / sum(kopa.place.obshina_size)
+         *
+         * @param {Zemla} zemla
+         */
+        async getSilaNaZemle(zemla){
+          let dom= await this.getDom()
+
+          //еопник не проживает на земле
+          if (! await this.isDom(zemla)){
+            return 0
+          }
+
+          let voiskoNaZemle= await sequelize.query(`
+            select count(*) as count
+            from 
+              "Kopnik" dr
+               join "Zemla" drDom on drDom.id= dr.dom_id
+            where
+              dr.path like :fullPath || '%'
+              and drDom.path||drDom.id||'/' like :zemlaFullPath ||'%' 
+            `,
+            {
+              replacements: {
+                fullPath: this.fullPath,
+                zemlaFullPath: zemla.fullPath,
+              },
+              type: sequelize.Sequelize.QueryTypes.INSERT
+            })
+
+          voiskoNaZemle= +voiskoNaZemle[0].count
+
+          let result= (voiskoNaZemle+1)/zemla.obshinaSize
+          return result
+        },
+
         /**
          * поднимает войско старшины и его старшин на величину своего войска
          * (после входа в дружину)

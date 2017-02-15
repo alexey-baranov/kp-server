@@ -1,6 +1,9 @@
 /**
  * Created by alexey2baranov on 8/7/16.
  */
+let config = require("../cfg/config.json")[process.env.NODE_ENV];
+
+console.log("config", config)
 
 let models = require('./model')
 let bcrypt = require("bcrypt")
@@ -86,6 +89,7 @@ async function initZemla() {
   Russia = await (await models.Zemla.create({name: 'Россия', level: 0})).setParent2(Zemla);
   // await Russia.setCountry(Russia); потому что Россия не находится в России
 }
+
 async function initKopnikFromRegistration() {
   alexey2baranov = await models.Kopnik.create({
     name: 'Алексей',
@@ -206,6 +210,7 @@ async function initKopnikFromRegistration() {
   })
   kopnik7 = await kopnik2.verifyRegistration(registration7, 1)
   await kopnik7.setStarshina2(kopnik3)
+
 }
 
 async function initKopnik() {
@@ -510,7 +515,7 @@ async function setSequenceVals() {
    * запас под будущие тесты
    * Zemla_id_seq уже установлена в initZemla()
    */
-  await models.sequelize.query(`select setval('"Kopnik_id_seq"',100); select setval('"Kopa_id_seq"',100); select setval('"Slovo_id_seq"',100); select setval('"Predlozhenie_id_seq"',100); select setval('"Golos_id_seq"',100); select setval('"File_id_seq"',100); select setval('"Registration_id_seq"',100);`)
+  await models.sequelize.query(`select setval('"Kopa_id_seq"',100); select setval('"Kopnik_id_seq"',100); select setval('"Slovo_id_seq"',100); select setval('"Predlozhenie_id_seq"',100); select setval('"Golos_id_seq"',100); select setval('"File_id_seq"',100); select setval('"Registration_id_seq"',100);`)
 }
 
 async function init() {
