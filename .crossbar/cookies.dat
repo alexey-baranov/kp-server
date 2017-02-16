@@ -303,3 +303,12 @@
 {"id": "M3fvFCpjUlIPCgJlC5eS8rEI", "modified": "2017-02-15T12:26:29.575Z", "max_age": 604800, "authid": "server", "authrole": "server", "authmethod": "ticket"}
 {"id": "tIEVPYm7AbQ4CEYx5/IRplWe", "created": "2017-02-15T13:30:48.797Z", "max_age": 604800, "authid": null, "authrole": null, "authmethod": null}
 {"id": "tIEVPYm7AbQ4CEYx5/IRplWe", "modified": "2017-02-15T13:30:48.797Z", "max_age": 604800, "authid": "server", "authrole": "server", "authmethod": "ticket"}
+{"id": "otznmHpUo08kgMOpsBDz04vx", "created": "2017-02-16T09:56:00.953Z", "max_age": 604800, "authid": null, "authrole": null, "authmethod": null}
+{"id": "otznmHpUo08kgMOpsBDz04vx", "modified": "2017-02-16T09:56:00.953Z", "max_age": 604800, "authid": "server", "authrole": "server", "authmethod": "ticket"}
+{"id": "5yFWwAvgyBSlb0T2CgDeE4lH", "created": "2017-02-16T10:20:54.737Z", "max_age": 604800, "authid": null, "authrole": null, "authmethod": null}
+{"id": "5yFWwAvgyBSlb0T2CgDeE4lH", "modified": "2017-02-16T10:20:54.737Z", "max_age": 604800, "authid": "LYMT-99EF-3A3C-CYT5-YJSV-PWKN", "authrole": "anonymous", "authmethod": "anonymous"}
+{"id": "5yFWwAvgyBSlb0T2CgDeE4lH", "modified": "2017-02-16T10:20:54.737Z", "max_age": 604800, "authid": "SVEL-SULJ-HHHC-M5US-WFSG-FQS6", "authrole": "anonymous", "authmethod": "anonymous"}
+{"id": "m2Fj6Av9td3AJYQ2Tnp3KGsJ", "created": "2017-02-16T11:46:07.282Z", "max_age": 604800, "authid": null, "authrole": null, "authmethod": null}
+{"id": "m2Fj6Av9td3AJYQ2Tnp3KGsJ", "modified": "2017-02-16T11:46:07.282Z", "max_age": 604800, "authid": "server", "authrole": "server", "authmethod": "ticket"}
+{"id": "ZYRpphD72y7/HChRB5aE2hxI", "created": "2017-02-16T14:23:18.480Z", "max_age": 604800, "authid": null, "authrole": null, "authmethod": null}
+{"id": "ZYRpphD72y7/HChRB5aE2hxI", "modified": "2017-02-16T14:23:18.480Z", "max_age": 604800, "authid": "server", "authrole": "server", "authmethod": "ticket"}
