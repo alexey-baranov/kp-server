@@ -64,31 +64,40 @@ class Server {
 
     this.WAMP.onopen = async(session, details) => {
       try {
-        session.prefix('api', 'ru.kopa');
-        this.log.info("connection.onopen()"/*, session._id, details*/);
+        session.prefix('api', 'ru.kopa')
+        this.log.info("connection.onopen()"/*, session._id, details*/)
+
+        //метасобытия
+        await this.subscribeHelper("wamp.session.on_join", this.session_join.bind(this))
+        await this.subscribeHelper("wamp.session.on_leave", this.session_leave.bind(this))
+
+        //org.kopnik
+        // await this.registerHelper('api:getKopnikSESSION', this.getKopnikSESSION, null, this)
+
 
         //регистрация копника
-        await this.registerHelper('api:Registration.getCountries', this.Registration_getCountries, null, this);
-        await this.registerHelper('api:Registration.getTowns', this.Registration_getTowns, null, this);
-        await this.registerHelper('api:Registration.getStreets', this.Registration_getStreets, null, this);
-        await this.registerHelper('api:Registration.getHouses', this.Registration_getHouses, null, this);
-        // await this.registerHelper('api:Registration.apply', this.Registration_apply, null, this);
+        await this.registerHelper('api:Registration.getCountries', this.Registration_getCountries, null, this)
+        await this.registerHelper('api:Registration.getTowns', this.Registration_getTowns, null, this)
+        await this.registerHelper('api:Registration.getStreets', this.Registration_getStreets, null, this)
+        await this.registerHelper('api:Registration.getHouses', this.Registration_getHouses, null, this)
+        // await this.registerHelper('api:Registration.apply', this.Registration_apply, null, this)
 
-        await this.registerHelper('api:model.create', this.model_create, null, this);
-        await this.registerHelper('api:model.get', this.promiseModel, null, this);
-        await this.registerHelper('api:model.getKOPNIKByEmail', this.getKOPNIKByEmail, null, this);
-        await this.registerHelper('api:model.save', this.model_save, null, this);
-        await this.registerHelper('api:pingPong', this.pingPong, null, this);
-        await this.registerHelper('api:discloseCaller', this.discloseCaller, null, this);
-        await this.registerHelper('api:pingPongDatabase', this.pingPongDatabase, null, this);
-        await this.registerHelper('api:error', this.error, null, this);
-        await this.registerHelper('api:unitTest.cleanTempData', this.Cleaner_clean, null, this);
+        await this.registerHelper('api:model.create', this.model_create, null, this)
+        await this.registerHelper('api:model.destroy', this.model_destroy, null, this)
+        await this.registerHelper('api:model.get', this.promiseModel, null, this)
+        await this.registerHelper('api:model.getKOPNIKByEmail', this.getKOPNIKByEmail, null, this)
+        await this.registerHelper('api:model.save', this.model_save, null, this)
+        await this.registerHelper('api:pingPong', this.pingPong, null, this)
+        await this.registerHelper('api:discloseCaller', this.discloseCaller, null, this)
+        await this.registerHelper('api:pingPongDatabase', this.pingPongDatabase, null, this)
+        await this.registerHelper('api:error', this.error, null, this)
+        await this.registerHelper('api:unitTest.cleanTempData', this.Cleaner_clean, null, this)
 
         //Kopnik
-        await this.registerHelper('api:model.Kopnik.setStarshina', this.Kopnik_setStarshina, null, this);
-        await this.registerHelper('api:model.Kopnik.getDruzhina', this.Kopnik_getDruzhina, null, this);
-        await this.registerHelper('api:model.Kopnik.vote', this.Kopnik_vote, null, this);
-        await this.registerHelper('api:model.Kopnik.verifyRegistration', this.Kopnik_verifyRegistration, null, this);
+        await this.registerHelper('api:model.Kopnik.setStarshina', this.Kopnik_setStarshina, null, this)
+        await this.registerHelper('api:model.Kopnik.getDruzhina', this.Kopnik_getDruzhina, null, this)
+        await this.registerHelper('api:model.Kopnik.vote', this.Kopnik_vote, null, this)
+        await this.registerHelper('api:model.Kopnik.verifyRegistration', this.Kopnik_verifyRegistration, null, this)
         await this.registerHelper('api:model.Kopnik.getRegistrations', this.Kopnik_getRegistrations, null, this);
 
         //Kopa
@@ -140,6 +149,20 @@ class Server {
         this.log.error(er);
       }
     };
+  }
+
+  async session_join(args, kwargs, details) {
+    let sessionAsPlain = Object.assign({}, args[0], {id: args[0].session})
+    if (args[0].authrole != "anonymous") {
+      let KOPNIK = await this.getKOPNIKByEmail([], {email: args[0].authid})
+      sessionAsPlain.owner_id = KOPNIK
+    }
+    let session = await models.Session.create(sessionAsPlain)
+  }
+
+  async session_leave(args, kwargs, details) {
+    let session = models.Session.build({id: "" + args[0]})
+    await session.destroy()
   }
 
   async unitTest_orderProc([x]) {
@@ -503,9 +526,9 @@ class Server {
         email: caller_authid
       }
     })
-    let result= await caller.getRegistrations()
+    let result = await caller.getRegistrations()
     result = result.map(eachResult => {
-      let eachPlainResult= eachResult.get({plain: true})
+      let eachPlainResult = eachResult.get({plain: true})
       delete eachPlainResult.password
       return eachPlainResult
     })
@@ -618,7 +641,7 @@ class Server {
             json: true // Automatically parses the JSON string in the response
           })
           if (!result.success) {
-            throw new Error("Ошибка каптчи: "+result["error-codes"].join(", "))
+            throw new Error("Ошибка каптчи: " + result["error-codes"].join(", "))
           }
         }
         break
@@ -648,29 +671,22 @@ class Server {
       let result = await models[type].create(plain)
       await tran.commit()
 
-      return result.id;
-    }
-    catch (err) {
-      await tran.rollback();
-      throw err;
-    }
+      /**
+       * событие о том что создался новый объект ".*Add" должно уходить после того
+       * как ".model.create" завершится и вернет ответ клиенту
+       * только в этом случае клиент, отправивший запрос получит событие ".*Add"
+       * когда новая модель уже будет доступна из кэша RemoteModel
+       */
 
-    /**
-     * событие о том что создался новый объект ".*Add" должно уходить после того
-     * как ".model.create" завершится и вернет ответ клиенту
-     * только в этом случае клиент, отправивший запрос получит событие ".*Add"
-     * когда новая модель уже будет доступна из кэша RemoteModel
-     */
-
-    // задерживать на секунду не получается
-    // потому что два события над одним объектом прилетают в обратном порядке!
-    // setTimeout(async ()=> {
-
-    setImmediate(async() => {
-      try {
-        switch (type) {
-          case "Registration":
-            let zemliAsRow = await models.sequelize.query(`
+      /**
+       * задерживать на секунду не получается
+       * потому что два события над одним объектом прилетают в обратном порядке!
+       */
+      setImmediate(async() => {
+        try {
+          switch (type) {
+            case "Registration":
+              let zemliAsRow = await models.sequelize.query(`
                             select p.verifier_id, p.id, p.name
                             from
                             (select * from get_zemli(:DOM) ) p
@@ -679,70 +695,162 @@ class Server {
                             order by
                             p.path desc
                             limit 1`,
-              {
-                replacements: {DOM: result.dom_id},
-                type: models.Sequelize.QueryTypes.SELECT
-              })
+                {
+                  replacements: {DOM: result.dom_id},
+                  type: models.Sequelize.QueryTypes.SELECT
+                })
 
-            for (let eachZemlaAsRow of zemliAsRow) {
-              await this.WAMP.session.publish(`api:model.Kopnik.id${eachZemlaAsRow.verifier_id}.registrationAdd`, [result.id], {}, {acknowledge: true})
-            }
-            break
-          case "Kopnik":
-            /*                          копник создается без старшины и выбирает его в процессе общения
-             let starshini = await result.getStarshini();
-             for (let eachStarshina of starshini) {
-             await this.WAMP.session.publish(`api:model.Kopnik.id${eachStarshina.id}.voiskoChange`, [], {voiskoSize: eachStarshina.voiskoSize}, {acknowledge: true});
-             }*/
-            /**
-             * событие о изменения прилетает после того как клиент дождался ответа
-             * об изменения
-             */
-            let doma = await result.getDoma();
-            for (let everyDom of doma) {
-              await this.WAMP.session.publish(`api:model.Zemla.id${everyDom.id}.obshinaChange`, [], {obshinaSize: everyDom.obshinaSize}, {acknowledge: true});
-            }
+              for (let eachZemlaAsRow of zemliAsRow) {
+                await this.WAMP.session.publish(`api:model.Kopnik.id${eachZemlaAsRow.verifier_id}.registrationAdd`, [result.id], {}, {acknowledge: true})
+              }
+              break
+            case "Kopnik":
+              /*                          копник создается без старшины и выбирает его в процессе общения
+               let starshini = await result.getStarshini();
+               for (let eachStarshina of starshini) {
+               await this.WAMP.session.publish(`api:model.Kopnik.id${eachStarshina.id}.voiskoChange`, [], {voiskoSize: eachStarshina.voiskoSize}, {acknowledge: true});
+               }*/
+              /**
+               * событие о изменения прилетает после того как клиент дождался ответа
+               * об изменения
+               */
+              let doma = await result.getDoma();
+              for (let everyDom of doma) {
+                await this.WAMP.session.publish(`api:model.Zemla.id${everyDom.id}.obshinaChange`, [], {obshinaSize: everyDom.obshinaSize}, {acknowledge: true});
+              }
+              break;
+            case "Slovo":
+              await this.WAMP.session.publish(`api:model.Kopa.id${plain.place_id}.slovoAdd`, [result.id], null, {acknowledge: true});
+              break;
+            case "Predlozhenie":
+              await this.WAMP.session.publish(`api:model.Kopa.id${plain.place_id}.predlozhenieAdd`, [result.id], null, {acknowledge: true});
+              break;
+            case "Golos":
+              await this.WAMP.session.publish(`api:model.Predlozhenie.id${plain.for_id}.golosAdd`, [result.id], null, {acknowledge: true});
+              break;
+            case "Kopa":
+              //kopaAdd первый раз прилетает только на компьютеры автора
+              // а потом уже внутри Kopa#invite();
+
+              /**
+               * очень неоптимальный алгоритм. Надо переработат получения списка сессий автора
+               */
+              let CALLER_SESSIONS = []
+              let SESSIONS = await this.WAMP.session.call("wamp.session.list")
+              for (let EACH_SESSION of SESSIONS) {
+                let eachSession = await this.WAMP.session.call("wamp.session.get", [EACH_SESSION])
+                if (eachSession.authid == caller_authid) {
+                  CALLER_SESSIONS.push(EACH_SESSION)
+                }
+              }
+              await this.WAMP.session.publish(`api:model.Zemla.id${plain.place_id}.kopaAdd`, [result.id], null, {
+                acknowledge: true,
+                eligible: CALLER_SESSIONS
+              })
+              break;
+            case "Zemla":
+              /*когда земля только создалась у нее еще нулевая община и поэтому она не меняет общины родителей
+               let parents = await result.getParents();
+               for (let eachParent of parents) {
+               await this.WAMP.session.publish(`api:model.Zemla.id${eachParent.id}.obshinaChange`, [], {obshinaSize: eachParent.obshinaSize}, {acknowledge: true});
+               }
+               */
+              break;
+            case "File":
+              break;
+          }
+        }
+        catch (err) {
+          this.log.error("model_create error", args, {typs: type, plain: plain}, err);
+        }
+      });
+
+      return result.id;
+    }
+    catch (err) {
+      await tran.rollback();
+      throw err;
+    }
+  }
+
+  /**
+   * удалить модель
+   * @param args
+   * @param type тип модели
+   * @param plain модель в плоском виде
+   * @return {*}
+   */
+  async model_destroy(args, {type, id}, {caller_authid}) {
+    let caller = await models.Kopnik.findOne({
+      where: {
+        email: caller_authid
+      }
+    })
+
+    let model = await models[type].findById(id)
+
+    switch (type) {
+      case "Kopa":
+        let result= await model.getResult(),
+          fixedResult
+
+        if (model.owner_id != caller.id) {
+          throw new Error("owner_id != caller.id")
+        }
+        if (fixedResult= result.find(e=>e.state)){
+          throw new Error("can not destroy kopa with fixed result")
+        }
+        break
+      case "Predlozhenie":
+        if (model.owner_id != caller.id) {
+          throw new Error("owner_id != caller.id")
+        }
+        if (model.state){
+          throw new Error("can not destroy fixed result")
+        }
+        break;
+      case "Slovo":
+        if (model.owner_id != caller.id) {
+          throw new Error("owner_id != caller.id")
+        }
+        break;
+      default:
+        throw new Error("Не может быть удалено")
+    }
+
+    let tran = await models.sequelize.transaction()
+
+    try {
+      await model.destroy()
+      await tran.commit()
+    }
+    catch (err) {
+      await tran.rollback();
+      throw err;
+    }
+
+    /**
+     * событие о том что удалился объект ".*Remove" должно уходить после того
+     * как ".model.destroy" завершится и вернет ответ клиенту
+     * только в этом случае повторный запрос не будет содержать удаленный объект
+     */
+
+    setImmediate(async() => {
+      try {
+        switch (type) {
+          case "Predlozhenie":
+            await this.WAMP.session.publish(`api:model.Kopa.id${model.place_id}.predlozhenieDestroy`, [model.id], null, {acknowledge: true})
             break;
           case "Slovo":
-            await this.WAMP.session.publish(`api:model.Kopa.id${plain.place_id}.slovoAdd`, [result.id], null, {acknowledge: true});
-            break;
-          case "Predlozhenie":
-            await this.WAMP.session.publish(`api:model.Kopa.id${plain.place_id}.predlozhenieAdd`, [result.id], null, {acknowledge: true});
-            break;
-          case "Golos":
-            await this.WAMP.session.publish(`api:model.Predlozhenie.id${plain.for_id}.golosAdd`, [result.id], null, {acknowledge: true});
+            await this.WAMP.session.publish(`api:model.Kopa.id${model.place_id}.slovoDestroy`, [model.id], null, {acknowledge: true})
             break;
           case "Kopa":
-            //kopaAdd первый раз прилетает только на компьютеры автора
-            // а потом уже внутри Kopa#invite();
-
-            /**
-             * очень неоптимальный алгоритм. Надо переработат получения списка сессий автора
-             */
-            let CALLER_SESSIONS=[]
-            let SESSIONS= await this.WAMP.session.call("wamp.session.list")
-            for (let EACH_SESSION of SESSIONS){
-              let eachSession= await this.WAMP.session.call("wamp.session.get", [EACH_SESSION])
-              if (eachSession.authid== caller_authid){
-                CALLER_SESSIONS.push(EACH_SESSION)
-              }
-            }
-            await this.WAMP.session.publish(`api:model.Zemla.id${plain.place_id}.kopaAdd`, [result.id], null, {acknowledge: true, eligible: CALLER_SESSIONS})
-            break;
-          case "Zemla":
-            /*когда земля только создалась у нее еще нулевая община и поэтому она не меняет общины родителей
-             let parents = await result.getParents();
-             for (let eachParent of parents) {
-             await this.WAMP.session.publish(`api:model.Zemla.id${eachParent.id}.obshinaChange`, [], {obshinaSize: eachParent.obshinaSize}, {acknowledge: true});
-             }
-             */
-            break;
-          case "File":
+            await this.WAMP.session.publish(`api:model.Zemla.id${model.place_id}.kopaDestroy`, [model.id], null, {acknowledge: true})
             break;
         }
       }
       catch (err) {
-        this.log.error("model_create error", args, {typs: type, plain: plain}, err);
+        this.log.error("model_destroy error", args, {typs: type, id: id}, err);
       }
     });
   }
@@ -761,7 +869,7 @@ class Server {
   async Zemla_promiseKopi(args, {PLACE, BEFORE, count}, {caller_authid}) {
     let BEFORE_FILTER
 
-    count= count?Math.min(count, 25):25
+    count = count ? Math.min(count, 25) : 25
 
     if (!BEFORE)
     /**
@@ -784,8 +892,8 @@ class Server {
           },
           type: models.Sequelize.QueryTypes.SELECT
         });
-      callerKopiCount= callerKopiCount[0].count
-      count= Math.max(count, callerKopiCount)
+      callerKopiCount = callerKopiCount[0].count
+      count = Math.max(count, callerKopiCount)
 
       BEFORE_FILTER = `(
             kopa.invited is not null 
@@ -1037,7 +1145,7 @@ class Server {
       await tran.commit();
       return result
     }
-    catch(err){
+    catch (err) {
       await tran.rollback()
       throw err
     }
@@ -1051,8 +1159,6 @@ class Server {
    * @returns {number}
    */
   async getKOPNIKByEmail(args, kwargs) {
-    this.log.debug("#getKopnikByEmail()", args, kwargs);
-
     let result = await models.Kopnik.findOne({where: {email: kwargs.email}})
 
     return result.id;
@@ -1083,6 +1189,28 @@ class Server {
       }
     }, options)
     this.log.debug(procedure, "registered")
+    return result
+  }
+
+  /**
+   * обертака над стандартной autobahn.Session#subscribe()
+   * и конввертирует обычне Error в autobahn.Error, которые только одни передаются по WAMP
+   *
+   * @type {any}
+   */
+  async subscribeHelper(topic, handler, options) {
+    let result = await this.WAMP.session.subscribe(topic, async(args, kwargs, details) => {
+      try {
+        return await handler(args, kwargs, details)
+      }
+      catch (err) {
+        this.log.error(err)
+        throw new autobahn.Error(err.constructor.name || err.name, [err.message], {
+          stack: err.stack.split("\n")
+        })
+      }
+    }, options)
+    this.log.debug(topic, "subscribed")
     return result
   }
 
