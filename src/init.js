@@ -428,6 +428,32 @@ async function initGolos() {
   await kopnik5.vote(predlozhenie2, 1);
 }
 
+async function initFile() {
+  let file1 = await models.File.create({
+    name:"1.txt",
+    mimeType: "application/octet-stream",
+    size: 10,
+    owner_id: 2,
+    kopa_id: 3,
+    path: 'upload/unittest/1.txt',
+  });
+
+  let file2 = await models.File.create({
+    name:"юникод с пробелами.txt",
+    mimeType: "application/octet-stream",
+    size: 10,
+    owner_id: 2,
+    kopa_id: 3,
+    path: 'upload/unittest/юникод с пробелами.txt',
+  });
+
+  predlozhenie2 = await models.Predlozhenie.create({
+    place_id: kopa3.id,
+    owner_id: kopnik2.id,
+    value: 'Предлагаю ...',
+  });
+}
+
 /**
  * Хранимые процедуры и функции
  */
@@ -515,7 +541,7 @@ async function setSequenceVals() {
    * запас под будущие тесты
    * Zemla_id_seq уже установлена в initZemla()
    */
-  await models.sequelize.query(`select setval('"Kopa_id_seq"',100); select setval('"Kopnik_id_seq"',100); select setval('"Slovo_id_seq"',100); select setval('"Predlozhenie_id_seq"',100); select setval('"Golos_id_seq"',100); select setval('"File_id_seq"',100); select setval('"Registration_id_seq"',100);`)
+  await models.sequelize.query(`select setval('"Kopa_id_seq"',100); select setval('"Kopnik_id_seq"',100); select setval('"Slovo_id_seq"',100); select setval('"Predlozhenie_id_seq"',100); select setval('"Golos_id_seq"',100); select setval('"File_id_seq"',100); select setval('"Registration_id_seq"',100); select setval('"File_id_seq"',100);`)
 }
 
 async function init() {
@@ -527,6 +553,7 @@ async function init() {
   await  initSlovo()
   await  initPredlozhenie()
   await  initGolos()
+  await initFile()
 
   await setSequenceVals()
 }

@@ -8,7 +8,7 @@
  * @returns {Model}
  */
 module.exports = function (sequelize, DataTypes) {
-  return sequelize.define('File', {
+  let File = sequelize.define('File', {
     id: {
       type: DataTypes.BIGINT,
       primaryKey: true,
@@ -18,6 +18,10 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.STRING,
       allowNull: false
     },
+    /**
+     * Относительный путь
+     * относительно корневой папки проекта
+     */
     path: {
       type: DataTypes.TEXT,
       allowNull: false
@@ -32,6 +36,29 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.BIGINT
     }
   }, {
+    indexes: [
+      {
+        fields: ['path']
+      },
+    ],
     instanceMethods: {}
-  });
+  })
+
+  File.associate = function (db) {
+    db.File.belongsTo(db.Kopnik, {
+      as: "owner",
+    })
+    db.File.belongsTo(db.Zemla, {
+    })
+    db.File.belongsTo(db.Kopnik, {
+    })
+    db.File.belongsTo(db.Kopa, {
+    })
+    db.File.belongsTo(db.Predlozhenie, {
+    })
+    db.File.belongsTo(db.Slovo, {
+    })
+  }
+
+  return File
 };

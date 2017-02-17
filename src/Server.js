@@ -669,7 +669,13 @@ class Server {
 
     try {
       let result = await models[type].create(plain)
-      await tran.commit()
+      for(let EACH_ATTACHMENT of plain.attachments){
+        let eachAttachment= await models.File.findById(EACH_ATTACHMENT)
+        if (eachAttachment.owner_id!= caller.id){
+          throw new Error("Нельзя прикрепить чужой файл")
+        }
+        await eachAttachment["set"+type](result)
+      }
 
       /**
        * событие о том что создался новый объект ".*Add" должно уходить после того
@@ -765,6 +771,7 @@ class Server {
         }
       });
 
+      await tran.commit()
       return result.id;
     }
     catch (err) {

@@ -61,7 +61,7 @@ describe('Kopnik', function () {
     })
   })
 
-  describe.only("#getSilaNaKope()", function () {
+  describe("#getSilaNaKope()", function () {
     it("sould return 3/5", async () => {
       kopnik2 = await models.Kopnik.findById(2)
       let sila = await kopnik2.getSilaNaKope(await models.Kopa.findById(3))
