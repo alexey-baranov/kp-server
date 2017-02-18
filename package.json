@@ -4,6 +4,8 @@
   "description": "копное право - сервер",
   "main": "index.js",
   "scripts": {
+    "server": "export NODE_ENV=testing && ./node_modules/babel-cli/bin/babel-node.js --use-strict ./src/index.js",
+    "file-server": "export NODE_ENV=testing && ./node_modules/babel-cli/bin/babel-node.js --use-strict ./src/file-server.index.js",
     "test": "mocha",
     "crossbar": "export NODE_ENV=testing && crossbar start",
     "init": "babel-node --use-strict ./src/init.js",

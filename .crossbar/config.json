@@ -140,41 +140,6 @@
                 "cookie": {
                 }
               }
-            },
-            "upload": {
-              "type": "upload",
-              "realm": "kopa",
-              "role": "anonymous",
-              "directory": "../uploaded",
-              "temp_directory": "../uploaded/tmp",
-              "form_fields": {
-                "file_name": "resumableFilename",
-                "mime_type": "resumableType",
-                "total_size": "resumableTotalSize",
-                "chunk_number": "resumableChunkNumber",
-                "chunk_size": "resumableChunkSize",
-                "total_chunks": "resumableTotalChunks",
-                "content": "file",
-                "on_progress": "on_progress",
-                "session": "session",
-                "chunk_extra": "chunk_extra",
-                "finish_extra": "finish_extra"
-              },
-              "options": {
-                "max_file_size": 200000000,
-                "file_permissions": "0644",
-                "file_types": [
-                  ".csv",
-                  ".txt",
-                  ".pdf",
-                  ".img",
-                  ".png",
-                  ".jpg",
-                  ".bz2",
-                  ".xz",
-                  ".gz"
-                ]
-              }
             }
           }
         }

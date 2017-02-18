@@ -669,12 +669,12 @@ class Server {
 
     try {
       let result = await models[type].create(plain)
-      for(let EACH_ATTACHMENT of plain.attachments){
-        let eachAttachment= await models.File.findById(EACH_ATTACHMENT)
-        if (eachAttachment.owner_id!= caller.id){
+      for (let EACH_ATTACHMENT of plain.attachments) {
+        let eachAttachment = await models.File.findById(EACH_ATTACHMENT)
+        if (eachAttachment.owner_id != caller.id) {
           throw new Error("Нельзя прикрепить чужой файл")
         }
-        await eachAttachment["set"+type](result)
+        await eachAttachment["set" + type](result)
       }
 
       /**
@@ -772,7 +772,7 @@ class Server {
       });
 
       await tran.commit()
-      return result.id;
+      return {id: result.id, created: result.created_at};
     }
     catch (err) {
       await tran.rollback();
@@ -798,13 +798,13 @@ class Server {
 
     switch (type) {
       case "Kopa":
-        let result= await model.getResult(),
+        let result = await model.getResult(),
           fixedResult
 
         if (model.owner_id != caller.id) {
           throw new Error("owner_id != caller.id")
         }
-        if (fixedResult= result.find(e=>e.state)){
+        if (fixedResult = result.find(e => e.state)) {
           throw new Error("can not destroy kopa with fixed result")
         }
         break
@@ -812,7 +812,7 @@ class Server {
         if (model.owner_id != caller.id) {
           throw new Error("owner_id != caller.id")
         }
-        if (model.state){
+        if (model.state) {
           throw new Error("can not destroy fixed result")
         }
         break;
@@ -1016,39 +1016,17 @@ class Server {
    * @param caller_authid
    * @returns {Promise<array>}
    */
-  async Kopa_getResult(args, {PLACE, BEFORE}, {caller_authid}) {
-    var BEFORE_FILTER;
-    if (!BEFORE) {
-      BEFORE_FILTER = `true`;
-    }
-    else {
-      BEFORE_FILTER = `predlozhenie.created_at <  to_timestamp(:BEFORE)`;
-    }
-
-    let resultAsArray = await models.sequelize.query(`
-        select predlozhenie.* 
-            from "Predlozhenie" as predlozhenie
-        where
-            predlozhenie.place_id=:PLACE
-            and ${BEFORE_FILTER}
-        order by
-            predlozhenie.created_at desc
-            limit 25
-            `,
-      {
-        replacements: {
-          "PLACE": PLACE,
-          "BEFORE": BEFORE / 1000
-        },
-        type: models.Sequelize.QueryTypes.SELECT
-      });
-    let RESULT = resultAsArray.map(each => each.id);
+  async Kopa_getResult(args, kwargs, {caller_authid}) {
     let result = await models.Predlozhenie.findAll({
       where: {
-        id: {
-          $in: RESULT
+        place_id: {
+          $eq: args[0]
         },
       },
+      include: [{
+        model: models.File,
+        as: 'attachments'
+      }],
       order: [
         ['created_at', 'asc'],
       ],
@@ -1226,7 +1204,7 @@ class Server {
    * временные объекты заканчиваются на "temp" и находятся в юниттестовых поддеревьях
    */
   async Cleaner_clean(args) {
-    Cleaner.clean(args)
+    await Cleaner.clean(args)
   }
 
   start() {

@@ -446,12 +446,6 @@ async function initFile() {
     kopa_id: 3,
     path: 'upload/unittest/юникод с пробелами.txt',
   });
-
-  predlozhenie2 = await models.Predlozhenie.create({
-    place_id: kopa3.id,
-    owner_id: kopnik2.id,
-    value: 'Предлагаю ...',
-  });
 }
 
 /**
