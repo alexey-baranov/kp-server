@@ -585,12 +585,28 @@ class Server {
    * @param type
    * @param plain
    */
-  async model_save(args, {type, plain}) {
-    var tran = await models.sequelize.transaction();
+  async model_save(args, {type, plain}, {caller_authid}) {
+    let caller = await models.Kopnik.findOne({
+      where: {
+        email: caller_authid
+      }
+    })
+
+    let tran = await models.sequelize.transaction()
 
     try {
-      let model = await models[type].findById(plain.id);
-      await model.update(plain);
+      let model = await models[type].findById(plain.id)
+      await model.update(plain)
+      let attachments=[]
+      for (let EACH_ATTACHMENT of plain.attachments) {
+        let eachAttachment = await models.File.findById(EACH_ATTACHMENT)
+        if (eachAttachment.owner_id != caller.id) {
+          throw new Error("Нельзя прикрепить чужой файл")
+        }
+        await attachments.push(eachAttachment)
+      }
+      await model.setAttachments(attachments)
+
       await tran.commit();
     }
     catch (err) {
@@ -1098,7 +1114,7 @@ class Server {
       throw new Error("Не задан идентификатор модели")
     }
 
-    var tran = await models.sequelize.transaction();
+    // var tran = await models.sequelize.transaction();
     var result = null;
 
     try {
@@ -1127,11 +1143,11 @@ class Server {
           throw new Error("Неизвестный тип")
       }
 
-      await tran.commit();
+      // await tran.commit();
       return result
     }
     catch (err) {
-      await tran.rollback()
+      // await tran.rollback()
       throw err
     }
   }

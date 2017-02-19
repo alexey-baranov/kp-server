@@ -432,7 +432,7 @@ async function initFile() {
   let file1 = await models.File.create({
     name:"1.txt",
     mimeType: "application/octet-stream",
-    size: 10,
+    size: 1523456,
     owner_id: 2,
     kopa_id: 3,
     path: 'upload/unittest/1.txt',
