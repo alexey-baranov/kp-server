@@ -73,6 +73,17 @@
               "permissions": [
                 {
                   "uri": "ru.kopa.registration",
+                  "match": "prefix",
+                  "allow": {
+                    "call": true,
+                    "register": false,
+                    "publish": false,
+                    "subscribe": false
+                  }
+                },
+                {
+                  "uri": "ru.kopa.model.create",
+                  "match": "prefix",
                   "allow": {
                     "call": true,
                     "register": false,

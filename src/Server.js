@@ -9,7 +9,7 @@ var autobahn = require('autobahn')
 let log4js = require("log4js")
 let request = require("request-promise-native")
 
-let config = require("../cfg/config.json")[process.env.NODE_ENV || 'development'];
+let config = require("../cfg/config.json")[process.env.NODE_ENV]
 let models = require("./model")
 let Cleaner = require("./Cleaner")
 
@@ -76,11 +76,11 @@ class Server {
 
 
         //регистрация копника
-        await this.registerHelper('api:Registration.getCountries', this.Registration_getCountries, null, this)
-        await this.registerHelper('api:Registration.getTowns', this.Registration_getTowns, null, this)
-        await this.registerHelper('api:Registration.getStreets', this.Registration_getStreets, null, this)
-        await this.registerHelper('api:Registration.getHouses', this.Registration_getHouses, null, this)
-        // await this.registerHelper('api:Registration.apply', this.Registration_apply, null, this)
+        await this.registerHelper('api:registration.getCountries', this.Registration_getCountries, null, this)
+        await this.registerHelper('api:registration.getTowns', this.Registration_getTowns, null, this)
+        await this.registerHelper('api:registration.getStreets', this.Registration_getStreets, null, this)
+        await this.registerHelper('api:registration.getHouses', this.Registration_getHouses, null, this)
+        // await this.registerHelper('api:registration.apply', this.Registration_apply, null, this)
 
         await this.registerHelper('api:model.create', this.model_create, null, this)
         await this.registerHelper('api:model.destroy', this.model_destroy, null, this)
@@ -526,7 +526,7 @@ class Server {
         email: caller_authid
       }
     })
-    let result = await caller.getRegistrations()
+    let result = await caller.getUnverifiedRegistrations()
     result = result.map(eachResult => {
       let eachPlainResult = eachResult.get({plain: true})
       delete eachPlainResult.password
@@ -597,7 +597,7 @@ class Server {
     try {
       let model = await models[type].findById(plain.id)
       await model.update(plain)
-      let attachments=[]
+      let attachments = []
       for (let EACH_ATTACHMENT of plain.attachments) {
         let eachAttachment = await models.File.findById(EACH_ATTACHMENT)
         if (eachAttachment.owner_id != caller.id) {
@@ -633,21 +633,26 @@ class Server {
 
   /**
    * "Обещает" создать модель
+   * для регистрации назначает и возвращает заверителя
+   *
    * @param args
    * @param type тип модели
    * @param plain модель в плоском виде
    * @return {*}
    */
   async model_create(args, {type, plain}, {caller_authid}) {
-    let caller = await models.Kopnik.findOne({
-      where: {
-        email: caller_authid
-      }
-    })
+    let caller
+    if (type != "Registration") {
+      caller = await models.Kopnik.findOne({
+        where: {
+          email: caller_authid
+        }
+      })
+    }
 
     switch (type) {
       case "Registration":
-        if (caller.id != 2) {
+        if (plain.dom_id > 100 || plain.captchaResponse) {
           let result = await request.post({
             uri: 'https://www.google.com/recaptcha/api/siteverify',
             qs: {
@@ -684,13 +689,27 @@ class Server {
     let tran = await models.sequelize.transaction()
 
     try {
-      let result = await models[type].create(plain)
+      let model = await models[type].create(plain),
+        result = {id: model.id, created: model.created_at},
+        verifier
+
+      if (type == "Registration") {
+        verifier = await model.setupVerifier()
+        result.verifier = verifier.get({plain: true})
+        delete result.verifier.password
+        try {
+          await require("./Mailer").send(model.email, "Registration_create.mustache", "Подтвердите регистрацию kopnik.org", result)
+        }
+        catch(err){
+        }
+      }
+
       for (let EACH_ATTACHMENT of plain.attachments) {
         let eachAttachment = await models.File.findById(EACH_ATTACHMENT)
         if (eachAttachment.owner_id != caller.id) {
           throw new Error("Нельзя прикрепить чужой файл")
         }
-        await eachAttachment["set" + type](result)
+        await eachAttachment["set" + type](model)
       }
 
       /**
@@ -708,23 +727,7 @@ class Server {
         try {
           switch (type) {
             case "Registration":
-              let zemliAsRow = await models.sequelize.query(`
-                            select p.verifier_id, p.id, p.name
-                            from
-                            (select * from get_zemli(:DOM) ) p
-                            where
-                            p.verifier_id is not null
-                            order by
-                            p.path desc
-                            limit 1`,
-                {
-                  replacements: {DOM: result.dom_id},
-                  type: models.Sequelize.QueryTypes.SELECT
-                })
-
-              for (let eachZemlaAsRow of zemliAsRow) {
-                await this.WAMP.session.publish(`api:model.Kopnik.id${eachZemlaAsRow.verifier_id}.registrationAdd`, [result.id], {}, {acknowledge: true})
-              }
+              await this.WAMP.session.publish(`api:model.Kopnik.id${verifier.id}.registrationAdd`, [model.id], {}, {acknowledge: true})
               break
             case "Kopnik":
               /*                          копник создается без старшины и выбирает его в процессе общения
@@ -736,19 +739,19 @@ class Server {
                * событие о изменения прилетает после того как клиент дождался ответа
                * об изменения
                */
-              let doma = await result.getDoma();
+              let doma = await model.getDoma();
               for (let everyDom of doma) {
                 await this.WAMP.session.publish(`api:model.Zemla.id${everyDom.id}.obshinaChange`, [], {obshinaSize: everyDom.obshinaSize}, {acknowledge: true});
               }
               break;
             case "Slovo":
-              await this.WAMP.session.publish(`api:model.Kopa.id${plain.place_id}.slovoAdd`, [result.id], null, {acknowledge: true});
+              await this.WAMP.session.publish(`api:model.Kopa.id${plain.place_id}.slovoAdd`, [model.id], null, {acknowledge: true});
               break;
             case "Predlozhenie":
-              await this.WAMP.session.publish(`api:model.Kopa.id${plain.place_id}.predlozhenieAdd`, [result.id], null, {acknowledge: true});
+              await this.WAMP.session.publish(`api:model.Kopa.id${plain.place_id}.predlozhenieAdd`, [model.id], null, {acknowledge: true});
               break;
             case "Golos":
-              await this.WAMP.session.publish(`api:model.Predlozhenie.id${plain.for_id}.golosAdd`, [result.id], null, {acknowledge: true});
+              await this.WAMP.session.publish(`api:model.Predlozhenie.id${plain.for_id}.golosAdd`, [model.id], null, {acknowledge: true});
               break;
             case "Kopa":
               //kopaAdd первый раз прилетает только на компьютеры автора
@@ -765,7 +768,7 @@ class Server {
                   CALLER_SESSIONS.push(EACH_SESSION)
                 }
               }
-              await this.WAMP.session.publish(`api:model.Zemla.id${plain.place_id}.kopaAdd`, [result.id], null, {
+              await this.WAMP.session.publish(`api:model.Zemla.id${plain.place_id}.kopaAdd`, [model.id], null, {
                 acknowledge: true,
                 eligible: CALLER_SESSIONS
               })
@@ -788,7 +791,8 @@ class Server {
       });
 
       await tran.commit()
-      return {id: result.id, created: result.created_at};
+
+      return result
     }
     catch (err) {
       await tran.rollback();
@@ -982,42 +986,21 @@ class Server {
    * @returns {Promise<array>}
    */
   async Kopa_getDialog(args, {PLACE, BEFORE}, {caller_authid}) {
-    var BEFORE_FILTER;
-    if (!BEFORE) {
-      BEFORE_FILTER = `true`;
-    }
-    else {
-      BEFORE_FILTER = `slovo.created_at <  to_timestamp(:BEFORE)`;
-    }
-
-    let resultAsArray = await models.sequelize.query(`
-        select slovo.* 
-            from "Slovo" as slovo
-        where
-            slovo.place_id=:PLACE
-            and ${BEFORE_FILTER}
-        order by
-            slovo.created_at desc
-            limit 25
-            `,
-      {
-        replacements: {
-          "PLACE": PLACE,
-          "BEFORE": BEFORE / 1000
-        },
-        type: models.Sequelize.QueryTypes.SELECT
-      });
-    let RESULT = resultAsArray.map(each => each.id);
     let result = await models.Slovo.findAll({
       where: {
-        id: {
-          $in: RESULT
+        place_id: {
+          $eq: args[0]
         },
       },
+      include: [{
+        model: models.File,
+        as: 'attachments'
+      }],
       order: [
         ['created_at', 'asc'],
       ],
     });
+
     result = result.map(eachResult => eachResult.get({plain: true}));
     return result;
   }
@@ -1108,14 +1091,14 @@ class Server {
    * @returns {*}
    */
   async promiseModel(args, kwargs) {
-    this.log.debug("#promiseModel()", args, kwargs);
+    this.log.debug("#promiseModel()", args, kwargs)
 
     if (!kwargs.id) {
       throw new Error("Не задан идентификатор модели")
     }
 
     // var tran = await models.sequelize.transaction();
-    var result = null;
+    let result = null;
 
     try {
       switch (kwargs.model) {

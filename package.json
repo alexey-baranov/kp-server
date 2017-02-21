@@ -7,6 +7,7 @@
     "server": "export NODE_ENV=testing && ./node_modules/babel-cli/bin/babel-node.js --use-strict ./src/index.js",
     "file-server": "export NODE_ENV=testing && ./node_modules/babel-cli/bin/babel-node.js --use-strict ./src/file-server.index.js",
     "test": "mocha",
+    "test:watch": "./node_modules/babel-cli/bin/babel-node.js --use-strict /usr/lib/node_modules/mocha/bin/_mocha --timeout 5000 --watch --compilers js:babel-register --recursive ./test",
     "crossbar": "export NODE_ENV=testing && crossbar start",
     "init": "babel-node --use-strict ./src/init.js",
     "import-fias": "babel-node --use-strict ./src/import-fias.js"
@@ -24,10 +25,12 @@
   "dependencies": {
     "autobahn": "^0.10.1",
     "bcrypt": "^0.8.7",
+    "emailjs": "^1.0.8",
     "express": "^4.14.1",
     "express-fileupload": "0.0.7",
     "lodash": "^4.15.0",
     "log4js": "^0.6.38",
+    "mustache": "^2.3.0",
     "pg": "^6.0.3",
     "pg-hstore": "^2.3.2",
     "pg-native": "^1.10.0",

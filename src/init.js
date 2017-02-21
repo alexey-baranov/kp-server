@@ -96,6 +96,7 @@ async function initKopnikFromRegistration() {
     surname: 'Баранов',
     patronymic: 'Юрьевич',
     passport: "1234",
+    skype: "alexey__baranov",
     dom_id: unitTestZemla4.id,
     email: 'alexey_baranov@inbox.ru',
     password: bcrypt.hashSync("qwerty", bcrypt.genSaltSync(/*14*/)),
@@ -108,6 +109,7 @@ async function initKopnikFromRegistration() {
     surname: 'Test',
     patronymic: '2',
     passport: "1234",
+    skype: "skype",
     dom_id: unitTestZemla2.id,
     email: 'unittest2@domain.ru',
     password: bcrypt.hashSync("qwerty", bcrypt.genSaltSync(/*14*/)),
@@ -122,7 +124,8 @@ async function initKopnikFromRegistration() {
     dom_id: unitTestZemla2.id,
     email: 'unittest@domain.ru',
     password: bcrypt.hashSync("qwerty", bcrypt.genSaltSync(/*14*/)),
-    birth: 1983
+    birth: 1983,
+    verifier_id:2
   })
 
   let registration2 = await models.Registration.create({
@@ -133,7 +136,8 @@ async function initKopnikFromRegistration() {
     dom_id: unitTestZemla2.id,
     email: 'unittest@domain.ru',
     password: bcrypt.hashSync("qwerty", bcrypt.genSaltSync(/*14*/)),
-    birth: 1983
+    birth: 1983,
+    verifier_id:2
   })
   await kopnik2.verifyRegistration(registration2, -1)
 
@@ -213,6 +217,8 @@ async function initKopnikFromRegistration() {
 
 }
 
+/*
+
 async function initKopnik() {
   alexey2baranov = await models.Kopnik.create({
     name: 'Алексей',
@@ -221,7 +227,7 @@ async function initKopnik() {
     passport: "1234",
     dom_id: unitTestZemla4.id,
     email: 'alexey_baranov@inbox.ru',
-    password: bcrypt.hashSync("qwerty", bcrypt.genSaltSync(/*14*/)),
+    password: bcrypt.hashSync("qwerty", bcrypt.genSaltSync(/!*14*!/)),
     birth: 1983
   });
 
@@ -233,8 +239,9 @@ async function initKopnik() {
     passport: "1234",
     dom_id: unitTestZemla2.id,
     email: 'unittest2@domain.ru',
-    password: bcrypt.hashSync("qwerty", bcrypt.genSaltSync(/*14*/)),
-    birth: 1983
+    password: bcrypt.hashSync("qwerty", bcrypt.genSaltSync(/!*14*!/)),
+    birth: 1983,
+    skype: "alexey__baranov",
   });
   kopnik3 = await models.Kopnik.create({
     name: 'Unit',
@@ -244,7 +251,7 @@ async function initKopnik() {
     dom_id: unitTestZemla2.id,
     starshina_id: kopnik2.id,
     email: 'unittest3@domain.ru',
-    password: bcrypt.hashSync("qwerty", bcrypt.genSaltSync(/*14*/)),
+    password: bcrypt.hashSync("qwerty", bcrypt.genSaltSync(/!*14*!/)),
     birth: 1983
   });
   kopnik4 = await models.Kopnik.create({
@@ -254,7 +261,7 @@ async function initKopnik() {
     passport: "1234",
     dom_id: unitTestZemla2.id,
     email: 'unittest4@domain.ru',
-    password: bcrypt.hashSync("qwerty", bcrypt.genSaltSync(/*14*/)),
+    password: bcrypt.hashSync("qwerty", bcrypt.genSaltSync(/!*14*!/)),
     birth: 1983
   });
   kopnik5 = await models.Kopnik.create({
@@ -264,15 +271,15 @@ async function initKopnik() {
     passport: "1234",
     dom_id: unitTestZemla2.id,
     email: 'unittest5@domain.ru',
-    password: bcrypt.hashSync("qwerty", bcrypt.genSaltSync(/*14*/)),
+    password: bcrypt.hashSync("qwerty", bcrypt.genSaltSync(/!*14*!/)),
     birth: 1983
   });
 
-  /*
+  /!*
    Этот копник используется внутри тестов голосования Predlozhenie#fix()
    но не должен зафикситься на голосовании по копе на второй замле потому что он в четвертой земле,
    то есть он живет в четвертом доме, а копа во втором доме
-   */
+   *!/
   kopnik6 = await models.Kopnik.create({
     name: 'Unit',
     surname: 'Test',
@@ -281,13 +288,13 @@ async function initKopnik() {
     dom_id: unitTestZemla4.id,
     starshina_id: kopnik2.id,
     email: 'unittest6@domain.ru',
-    password: bcrypt.hashSync("qwerty", bcrypt.genSaltSync(/*14*/)),
+    password: bcrypt.hashSync("qwerty", bcrypt.genSaltSync(/!*14*!/)),
     birth: 1983
   });
 
-  /**
+  /!**
    * Этот копник проверяет рекурсивную вьюшку kopnik-as-druzhe  (kopnik2-kopnik3-kopnik7)
-   */
+   *!/
   kopnik7 = await models.Kopnik.create({
     name: 'Unit',
     surname: 'Test',
@@ -296,10 +303,12 @@ async function initKopnik() {
     dom_id: unitTestZemla2.id,
     starshina_id: kopnik3.id,
     email: 'unittest6@domain.ru',
-    password: bcrypt.hashSync("qwerty", bcrypt.genSaltSync(/*14*/)),
+    password: bcrypt.hashSync("qwerty", bcrypt.genSaltSync(/!*14*!/)),
     birth: 1983
   });
 }
+
+*/
 
 async function initKopa() {
   let FUTURE = new Date(2026, 9 - 1, 1).getTime(),
@@ -555,7 +564,7 @@ async function init() {
 
 module.exports.initSchema = initSchema;
 module.exports.initZemla = initZemla;
-module.exports.initKopnik = initKopnik;
+module.exports.initKopnikFromRegistration = initKopnikFromRegistration
 module.exports.init = init;
 
 init()

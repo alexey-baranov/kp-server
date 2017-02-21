@@ -281,6 +281,7 @@ class FIASImporter {
     let from = Math.floor(parseInt(result[0].min)/1000000)*1000000
     let max = parseInt(result[0].max)
 
+    from = 20900000
     this.logger.info("min: ", from, "max: ", max)
 
     while (from < max) {

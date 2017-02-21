@@ -50,6 +50,9 @@ module.exports = function (sequelize, DataTypes) {
         type: DataTypes.STRING,
         allowNull: false
       },
+      skype:{
+        type: DataTypes.STRING
+      },
       voiskoSize: {
         type: DataTypes.INTEGER,
         defaultValue: 0,
@@ -528,35 +531,22 @@ module.exports = function (sequelize, DataTypes) {
 
         /**
          */
-        async getRegistrations(){
-          let models = require("./index");
+        async getUnverifiedRegistrations(){
+          let models = require("./index")
 
-          let resultAsArray = await sequelize.query(`
-            select reg.*
-            from
-              "Zemla" z
-              join "Zemla" as dom on dom.id= z.id or dom.path like z.path||z.id||'/%'
-              join "Registration" reg on reg.dom_id = dom.id
-            where
-              z.verifier_id= :THIS
-              and reg.state=0`,
-            {
-              replacements: {
-                "THIS": this.id
-              },
-              type: sequelize.Sequelize.QueryTypes.SELECT
-            })
-
-          let RESULT = resultAsArray.map(each => each.id)
           let result = await models.Registration.findAll({
             where: {
-              id: {
-                $in: RESULT
-              },
+              verifier_id:  this.id,
+              deleted_at: null,
+              state: 0,
             },
             order: [
               ['id', 'asc']
             ],
+            include: [{
+              model: models.File,
+              as: 'attachments'
+            }]
           });
           return result
         }

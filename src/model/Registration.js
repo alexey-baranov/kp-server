@@ -8,98 +8,147 @@
  * @returns {Model}
  */
 module.exports = function (sequelize, DataTypes) {
-    let Registration = sequelize.define('Registration', {
-            id: {
-                type: DataTypes.BIGINT,
-                primaryKey: true,
-                autoIncrement: true
-            },
-            state: {
-                type: DataTypes.INTEGER,
-                allowNull: false,
-                defaultValue: 0,
-            },
-            email: {
-                type: DataTypes.STRING
-            },
-            password: {
-                type: DataTypes.STRING
-            },
+  let Registration = sequelize.define('Registration', {
+      id: {
+        type: DataTypes.BIGINT,
+        primaryKey: true,
+        autoIncrement: true
+      },
+      state: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+      },
+      email: {
+        type: DataTypes.STRING
+      },
+      password: {
+        type: DataTypes.STRING
+      },
 
-            name: {
-                type: DataTypes.STRING
-            },
-            surname: {
-                type: DataTypes.STRING
-            },
-            patronymic: {
-                type: DataTypes.STRING
-            },
-            birth: {
-                type: DataTypes.INTEGER,
-                allowNull: false,
-                validate: {
-                    isOlder(value) {
-                        if (new Date().getFullYear() - value < 30) {
-                            throw new Error("Возраст копного мужа должен быть от 30 лет и больше");
-                        }
-                    },
-                }
-            },
-            passport: {
-                type: DataTypes.STRING,
-                allowNull: false
-            },
-            note: {
-                type: DataTypes.TEXT
+      name: {
+        type: DataTypes.STRING
+      },
+      surname: {
+        type: DataTypes.STRING
+      },
+      patronymic: {
+        type: DataTypes.STRING
+      },
+      birth: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          isOlder(value) {
+            if (new Date().getFullYear() - value < 30) {
+              throw new Error("Возраст копного мужа должен быть от 30 лет и больше");
             }
+          },
+        }
+      },
+      passport: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
+      note: {
+        type: DataTypes.TEXT
+      }
+    },
+    {
+      indexes: [],
+      instanceMethods: {
+        async getClosestVerifier(){
+          let models= require("../model")
+
+          let dom= await this.getDom()
+          let resultAsArray = await sequelize.query(`
+            select 
+              ver.*
+            from 
+              get_zemli(2) as z
+              join "Kopnik" ver on ver.id=z.verifier_id
+            where
+              :dom_path2 like z.path||z.id||'/%'
+            order by 
+              z.path 
+            limit 1
+            `,
+            {
+              replacements: {
+                "dom_path2": dom.fullPath
+              },
+              type: sequelize.Sequelize.QueryTypes.SELECT
+            })
+
+          if(!resultAsArray.length){
+            throw new Error("Невозмоно найти заверителя для вашего дома")
+          }
+          let result= await models.Kopnik.findById(resultAsArray[0].id)
+          return result
         },
-        {
-            indexes: [
-            ],
-            instanceMethods: {
-            },
-            hooks: {
-                beforeCreate: async function (sender, options) {
-                },
-                beforeUpdate: function (sender, options) {
-                },
-                afterCreate: async function (sender, options) {
-                    //notify me
-                }
-            },
-            getterMethods: {
-                fullName: function () {
-                    return `${this.name} ${this.surname}`;
-                },
-            },
-            validate: {
-                totalValidation: function () {
-                    if (!this.name || !this.surname) {
-                        throw new Error('Не указано имя')
-                    }
-                }
-            },
-        })
+        async setupVerifier(){
+          let verifier= await this.getClosestVerifier()
 
-    Registration.associate= function(db){
-        db.Registration.belongsTo(db.Zemla, {
-            as: "dom",
-            foreignKey: "dom_id"
-        })
+          this.verifier_id= verifier.id
+          await sequelize.query(`
+            update "Registration" 
+            set 
+              verifier_id= :VERIFIER
+            where
+              id= :THIS
+            `,
+            {
+              replacements: {
+                "VERIFIER": verifier.id,
+                "THIS": this.id
+              },
+              type: sequelize.Sequelize.QueryTypes.UPDATE
+            })
 
-        db.Registration.belongsTo(db.Kopnik, {
-            as: "verifier",
-        })
+          return verifier
+        }
+      },
+      hooks: {
+        beforeCreate: async function (sender, options) {
+        },
+        beforeUpdate: function (sender, options) {
+        },
+        afterCreate: async function (sender, options) {
+          //notify me
+        }
+      },
+      getterMethods: {
+        fullName: function () {
+          return `${this.name} ${this.surname}`;
+        },
+      },
+      validate: {
+        totalValidation: function () {
+          if (!this.name || !this.surname) {
+            throw new Error('Не указано имя')
+          }
+        }
+      },
+    })
 
-        db.Registration.belongsTo(db.Kopnik, {
-            as: "result",
-        })
+  Registration.associate = function (db) {
+    db.Registration.belongsTo(db.Zemla, {
+      as: "dom",
+      foreignKey: "dom_id"
+    })
 
-        db.Registration.hasMany(db.File, {
-            as: "attachments",
-            foreignKey: "registration_id"
-        })
-    }
-    return Registration;
+    db.Registration.belongsTo(db.Kopnik, {
+      as: "verifier",
+    })
+
+    db.Registration.belongsTo(db.Kopnik, {
+      as: "result",
+    })
+
+    db.Registration.hasMany(db.File, {
+      as: "attachments",
+      foreignKey: "registration_id"
+    })
+  }
+  return Registration;
 }

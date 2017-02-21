@@ -6,6 +6,8 @@ let _ = require("lodash");
 let assert = require('chai').assert;
 let autobahn = require("autobahn");
 let fs = require("fs")
+let Mailer = require("../src/Mailer")
+
 let request = require('superagent')
 
 
@@ -88,4 +90,12 @@ describe('Infrastructure', function () {
     })
   })
 
-});
+  it('email', async function () {
+    let message
+    // message = await Mailer.send("alexey2baranov@gmail.com","<h1>Простой текст</h1><p>Я параграф</p>", "Infrastructure.spec.js Юникод!")
+    // assert.equal(!message, false, "message is not empty")
+
+    message = await Mailer.send("alexey2baranov@gmail.com","unit test.mustache", "Infrastructure.spec.js Юникод!", {now: new Date().toLocaleString()})
+    assert.equal(!message, false, "message is not empty")
+  })
+})
