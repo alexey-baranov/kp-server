@@ -1,0 +1,86 @@
+{
+  "development": {
+    "username": "postgres",
+    "password": "irinapg",
+    "database": "kopa",
+    "host": "127.0.0.1",
+    "dialect": "postgres",
+    "define": {
+      "paranoid": true,
+      "timestamps": true,
+      "freezeTableName": true,
+      "underscored": true
+    },
+    "WAMP": {
+      "schema": "ws",
+      "host": "127.0.0.1",
+      "port": "8080",
+      "path": "ws"
+    },
+    "file-server": {
+      "schema": "http",
+      "host": "localhost",
+      "port": "8484",
+      "upload-path": "upload",
+      "download-path": "download"
+    },
+    "server": {
+      "username": "server",
+      "password": "qwerty"
+    },
+    "captcha": {
+      "key": "6Lf78hkUAAAAALDWSItQ9OdDXfM2ZM7JunDSQMuK",
+      "secret": "6Lf78hkUAAAAAO59Qt_G_S35rWDjlbRJBzwEU4eh"
+    },
+    "unittest2": {
+      "username": "unittest2@domain.ru",
+      "password": "qwerty"
+    },
+    "SMTP": {
+      "host": "localhost",
+      "from": "noreply@kopnik.org"
+    }
+  },
+  "testing": {
+    "username": "postgres",
+    "password": "irinapg",
+    "database": "kopa-test",
+    "host": "127.0.0.1",
+    "dialect": "postgres",
+    "define": {
+      "paranoid": true,
+      "timestamps": true,
+      "freezeTableName": true,
+      "underscored": true
+    },
+    "WAMP": {
+      "schema": "ws",
+      "host": "127.0.0.1",
+      "port": "8080",
+      "path": "ws"
+    },
+    "file-server": {
+      "schema": "http",
+      "host": "localhost",
+      "port": "8484",
+      "upload-path": "upload",
+      "download-path": "download"
+    },
+    "server": {
+      "username": "server",
+      "password": "qwerty"
+    },
+    "captcha": {
+      "key": "6Lf78hkUAAAAALDWSItQ9OdDXfM2ZM7JunDSQMuK",
+      "secret": "6Lf78hkUAAAAAO59Qt_G_S35rWDjlbRJBzwEU4eh"
+    },
+    "unittest2": {
+      "username": "unittest2@domain.ru",
+      "password": "qwerty"
+    },
+    "SMTP": {
+      "host": "localhost",
+      "from": "noreply@kopnik.org"
+    }
+  }
+}

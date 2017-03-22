@@ -1,0 +1,29 @@
+{
+    "appenders": [
+        {
+            "type": "console"
+        },
+        {
+            "type": "dateFile",
+            "filename": "log/error.log",
+            "pattern": "-yyyy-MM-dd",
+            "alwaysIncludePattern": false,
+            "layout": {
+                "type": "pattern",
+                "pattern": "[%d{ISO8601}] [%5p] %c - %m"
+            }
+        },
+        {
+            "type": "dateFile",
+            "filename": "log/root.log",
+            "pattern": "-yyyy-MM-dd",
+            "alwaysIncludePattern": false
+        }
+    ],
+    "levels": {
+        "[all]": "DEBUG",
+        "category1": "ERROR",
+        "category2": "DEBUG"
+    },
+    "replaceConsole": true
+}

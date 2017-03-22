@@ -1,0 +1,20 @@
+﻿CREATE or replace FUNCTION get_duplicate_zemli() RETURNS setof "Zemla" AS $$
+DECLARE
+    each_zemla "Zemla";
+    prev_zemla "Zemla";
+    quantity integer := 30;
+BEGIN
+    FOR each_zemla IN SELECT * FROM "Zemla" ORDER BY "AOGUID" LOOP
+    --FOR each_zemla IN SELECT * FROM "Zemla" limit 25 LOOP
+        if (prev_zemla."AOGUID" = each_zemla."AOGUID") then
+            RAISE INFO '%', prev_zemla;
+	    RAISE INFO '%', each_zemla;
+            return next prev_zemla;
+            return next each_zemla;
+        end if;
+        prev_zemla:= each_zemla;
+    END LOOP;
+END;
+$$ LANGUAGE plpgsql;
+
+--select * from get_duplicate_zemli()
