@@ -116,12 +116,39 @@ class Cleaner {
         })
     }
 
+    if (what.length == 0 || what.indexOf("Kopa") != -1) {
+      await models.sequelize.query(`
+                delete from "Kopa"
+                where
+                  id in (
+                    select k2.id 
+                    from 
+                      "Kopa" k2
+                      join "Zemla" z2 on z2.id=k2.place_id
+                    where
+                      z2.path like '/1/%'
+                      and k2.id>100
+                  )
+                 `,
+        {type: models.Sequelize.QueryTypes.DELETE});
+    }
+
+
+    /**
+     * у земли не может быть задан родитель и одновременно путь = "-"
+     * такие земли вероятнее всего во время юнит тестов не прошли установку родителя
+     * и тоже подлежат удалению
+     */
     if (what.length == 0 || what.indexOf("Zemla") != -1) {
       await models.sequelize.query(`
                 delete from "Zemla"
                 where
-                    path like '/1/%'
-                    and id>100
+                    id>100
+                    and (
+                      path like '/1/%'
+                      or path = '-'
+                      or name like 'temp%'
+                    )
                  `,
         {type: models.Sequelize.QueryTypes.DELETE});
 

@@ -5,7 +5,7 @@
 var assert = require('chai').assert;
 let expect= require("chai").expect
 let autobahn = require("autobahn");
-let config = require("../../cfg/config.json")[process.env.NODE_ENV || 'development'];
+let config = require("../../cfg")
 let _ = require("lodash");
 let models = require("../../src/model");
 let Cleaner = require("../../src/Cleaner");
@@ -32,6 +32,15 @@ describe('Kopnik', function () {
       WAMP.open()
     })
     await Cleaner.clean()
+  })
+
+  after(async function () {
+    await new Promise((res, rej) => {
+      WAMP.onclose = function () {
+        res()
+      }
+      WAMP.close()
+    })
   })
 
   let someKopnik1,
@@ -135,8 +144,7 @@ describe('Kopnik', function () {
   })
 
   describe('#create()', function () {
-    it('should setup path', async function (done) {
-      try {
+    it('should setup path', async function () {
         someKopnik1 = await models.Kopnik.create({
           name: "temp",
           surname: "temp",
@@ -156,36 +164,23 @@ describe('Kopnik', function () {
           dom_id: ZEMLA2,
         })
         assert.equal(someKopnik2.path, "/")
-
-        done()
-      }
-      catch (err) {
-        done(err)
-      }
     })
   })
 
   describe("#setStarshina2()", function () {
-    it('should setup path and up voisko starshini', async function (done) {
-      try {
+    it('should setup path and up voisko starshini', async function () {
         await someKopnik2.setStarshina2(someKopnik1);
 
         assert.equal(someKopnik2.path, `/${someKopnik1.id}/`);
 
         await someKopnik1.reload();
         assert.equal(someKopnik1.voiskoSize, 1, "someKopnik1.voiskoSize, 1");
-        done();
-      }
-      catch (err) {
-        done(err);
-      }
-    });
+    })
 
     /*
      * перекидываю обоих на второго
      */
-    it('should setup path for druzhe', async function (done) {
-      try {
+    it('should setup path for druzhe', async function () {
         kopnik2 = await models.Kopnik.findById(KOPNIK2);
 
         await someKopnik1.setStarshina2(kopnik2);
@@ -197,19 +192,12 @@ describe('Kopnik', function () {
         assert.equal(kopnik2.voiskoSize, 5, "kopnik2.voiskoSize, 5");
         assert.equal(someKopnik1.path, `/2/`, "someKopnik1.path, `/2/`");
         assert.equal(someKopnik2.path, `/2/${someKopnik1.id}/`, "someKopnik2.path, `/2/${someKopnik1.id}/`");
-
-        done();
-      }
-      catch (err) {
-        done(err);
-      }
-    });
+    })
 
     /*
      * перекидываю со второго на четвертого копника
      */
-    it('should change voisko size down', async function (done) {
-      try {
+    it('should change voisko size down', async function () {
         kopnik4 = await models.Kopnik.findById(KOPNIK4);
 
         await someKopnik1.setStarshina2(kopnik4);
@@ -221,25 +209,13 @@ describe('Kopnik', function () {
         assert.equal(kopnik2.voiskoSize, 3, "kopnik2.voiskoSize, 3");
         assert.equal(someKopnik1.path, '/4/', "someKopnik1.path, '/4/'");
         assert.equal(someKopnik2.path, `/4/${someKopnik1.id}/`, "someKopnik2.path, `/4/${someKopnik1.id}/`");
+    })
 
-        done();
-      }
-      catch (err) {
-        done(err);
-      }
-    });
-
-    it('should setup druzhe path after change starshina', async function (done) {
-      try {
+    it('should setup druzhe path after change starshina', async function () {
         await someKopnik2.reload();
         assert.equal(someKopnik2.path, `/4/${someKopnik1.id}/`);
-        done();
-      }
-      catch (err) {
-        done(err);
-      }
-    });
-  });
+    })
+  })
 
   describe("voting", function () {
     let somePredlozhenie;

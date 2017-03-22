@@ -11,7 +11,7 @@ let Mailer = require("../src/Mailer")
 let request = require('superagent')
 
 
-let config = require("../cfg/config.json")[process.env.NODE_ENV];
+let config = require("../cfg")
 let model = require("../src/model");
 let models = require("../src/model")
 // let cls = require('continuation-local-storage'),
@@ -68,16 +68,6 @@ describe('Infrastructure', function () {
       // await model.sequelize.query("select 'КОПА'", {type: model.Sequelize.QueryTypes.SELECT});
     })
 
-    it('different transactions async/await', async () => {
-      await Promise.all([1,2].map(async ()=>{
-        let tran= await models.sequelize.transaction()
-        let clsTran= tran.sequelize.constructor.cls.get("transaction")
-        let res= (tran===clsTran)
-        console.log(res)
-        assert.equal(models.sequelize.Sequelize.cls.get('transaction'), tran, "cls.get('transaction')== tran")
-      }))
-    })
-
     it('different transactions async/await 2', async () => {
       await Promise.all([1,2].map(async ()=>{
         let tran= await models.sequelize.transaction()
@@ -99,12 +89,12 @@ describe('Infrastructure', function () {
     })
   })
 
-  it('crossbar', function (done) {
-    WAMP.open();
-    return new Promise(function () {
+  it('crossbar', function () {
+    return new Promise(function (resolve) {
       WAMP.onopen = function () {
-        done();
+        resolve();
       };
+      WAMP.open();
     });
   });
 
@@ -153,7 +143,7 @@ describe('Infrastructure', function () {
     })
   })
 
-  describe.only('email', function () {
+  describe.skip('email', function () {
     it('single call', async function () {
       await Mailer.send(["alexey2baranov@gmail.com", "alexey_baranov@inbox.ru"], "unit test.mustache", "Infrastructure.spec.js Юникод!", {now: new Date().toLocaleString()})
     })

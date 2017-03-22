@@ -3,7 +3,7 @@
  */
 
 var assert = require('chai').assert;
-let config = require("../../../../../cfg/config.json")[process.env.NODE_ENV || 'test'];
+let config = require("../../../../../cfg")
 let _ = require("lodash");
 var Client = require('pg-native');
 let FIASImporter = require("../../../../../src/util/import/Russia/zemla/FIASImporter");
@@ -22,14 +22,14 @@ describe('FIASImporter', function () {
         it("should get Russia id", function () {
             let RUSSIA = fiasImporter.getRUSSIA();
             assert.equal(_.isNumber(RUSSIA), true);
-        });
+        })
     });
 
     describe('#importAddresses()', function () {
         it("should import ADDR.XML", async function () {
             await fiasImporter.importAddresses(__dirname + "/ADDROBJ.XML");
             let result = client.querySync(`select * from "Zemla" where name like 'temp%' order by level`);
-            assert.equal(result.length, 3);
+            assert.equal(result.length, 3)
 
             //республика без PARENTGUID
             assert.equal(result[0].AOGUID, 'address1');
@@ -69,10 +69,10 @@ describe('FIASImporter', function () {
             assert.equal(result[2].parent_id, result[1].id);
             assert.equal(result[3].parent_id, result[2].id);
 
-            assert.equal(result[0].path, `/1/${RUSSIA}/`);
-            assert.equal(result[1].path, `/1/${RUSSIA}/${result[0].id}/`);
-            assert.equal(result[2].path, `/1/${RUSSIA}/${result[0].id}/${result[1].id}/`);
-            assert.equal(result[3].path, `/1/${RUSSIA}/${result[0].id}/${result[1].id}/${result[2].id}/`);
+            assert.equal(result[0].path, `/101/${RUSSIA}/`);
+            assert.equal(result[1].path, `/101/${RUSSIA}/${result[0].id}/`);
+            assert.equal(result[2].path, `/101/${RUSSIA}/${result[0].id}/${result[1].id}/`);
+            assert.equal(result[3].path, `/101/${RUSSIA}/${result[0].id}/${result[1].id}/${result[2].id}/`);
         });
     });
 });

@@ -4,7 +4,9 @@
 
 var assert = require('chai').assert;
 let autobahn = require("autobahn");
-let config = require("../cfg/config.json")[process.env.NODE_ENV || 'development'];
+
+let Cleaner= require("../src/Cleaner")
+let config = require("../cfg")
 let _ = require("lodash");
 let model = require("../src/model");
 
@@ -18,13 +20,13 @@ let UNIT_TEST_ZEMLA_2 = 2,
 
 
 describe('Server', function () {
-    before(function () {
+    before(async function () {
+      await Cleaner.clean()
     });
 
     describe('#promiseKopi()', function (done) {
         let result;
-        it("should return array of obj, invited or initier=me", async function (done) {
-            try {
+        it("should return array of obj, invited or initier=me", async function () {
                 let CHE = new Date(2016, 9 - 1, 1).getTime();
                 result = await server.Zemla_promiseKopi(null, {
                     PLACE: UNIT_TEST_ZEMLA_2,
@@ -36,12 +38,7 @@ describe('Server', function () {
                     assert.equal(_.isObject(result[0]), true);
                     assert.equal(eachResult.owner_id == UNIT_TEST_KOPNIK_2 || eachResult.invited != null, true);
                 }
-                done();
-            }
-            catch (err) {
-                done(err);
-            }
-        });
+        })
 
         it('size should be 4 ', function () {
             assert.equal(result.length, 4);
@@ -54,12 +51,11 @@ describe('Server', function () {
         });
     });
 
-    describe('#promiseKopas(BEFORE)', function (done) {
+    describe('#promisei(BEFORE)', function (done) {
         let result;
-        it("should return array of obj, invited", async function (done) {
-            try {
+        it("should return array of obj, invited", async function () {
                 let CHE = new Date(2016, 9 - 1, 1).getTime();
-                result = await server.promiseKopas(null, {
+                result = await server.Zemla_promiseKopi(null, {
                     PLACE: UNIT_TEST_ZEMLA_2,
                     BEFORE: CHE
                 }, {caller_authid: "unittest2@domain.ru"});
@@ -70,11 +66,6 @@ describe('Server', function () {
                     assert.equal(eachResult.invited != null, true);
                     assert.equal(eachResult.invited < CHE, true);
                 }
-                done();
-            }
-            catch (err) {
-                done(err);
-            }
         });
 
         it('size should be 2 ', function () {

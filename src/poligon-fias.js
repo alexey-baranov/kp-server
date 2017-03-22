@@ -2,7 +2,7 @@
  * Created by alexey2baranov on 08.12.16.
  */
 
-var config = require(__dirname + '/../cfg/config.json')[process.env.NODE_ENV || 'dev'];
+var config = require(__dirname + '/../cfg')
 let log4js = require("log4js"),
     FIASImporter= require("./util/import/Russia/zemla/FIASImporter");
 

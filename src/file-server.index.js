@@ -14,7 +14,7 @@ let models = require("./model")
 
 let app = express()
 
-let config = require("../cfg/config.json")[process.env.NODE_ENV]
+let config = require("../cfg")
 let fileSize= 25*1024*1024
 
 // default options

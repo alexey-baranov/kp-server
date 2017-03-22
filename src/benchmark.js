@@ -5,7 +5,7 @@
  * всего импортируется 25 млн строк
  */
 
-var config = require(__dirname + '/../cfg/config.json')[process.env.NODE_ENV]
+var config = require(__dirname + '/../cfg')
 let log4js = require("log4js"),
     RowBenchmark= require("./util/benchmark/RowBanckmark"),
   models= require("./model")

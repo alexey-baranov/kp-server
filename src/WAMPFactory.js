@@ -1,7 +1,7 @@
 /**
  * Created by alexey2baranov on 8/20/16.
  */
-let config = require("../cfg/config.json")[process.env.NODE_ENV];
+let config = require("../cfg")
 let autobahn = require("autobahn");
 
 class WAMPFactory {

@@ -13,7 +13,7 @@ var autobahn = require('autobahn'),
   request = require("request-promise-native")
 
 
-let config = require("../cfg/config.json")[process.env.NODE_ENV]
+let config = require("../cfg")
 let models = require("./model")
 let Cleaner = require("./Cleaner")
 

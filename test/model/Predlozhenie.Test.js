@@ -5,7 +5,7 @@
 
 var assert = require('chai').assert;
 let autobahn = require("autobahn");
-let config = require("../../cfg/config.json")[process.env.NODE_ENV || 'development'];
+let config = require("../../cfg")
 let _ = require("lodash");
 let models = require("../../src/model");
 let Cleaner = require("../../src/Cleaner");

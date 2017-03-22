@@ -5,7 +5,7 @@
 let fs = require("fs");
 let log4js = require("log4js");
 var Client = require('pg-native');
-var config = require(__dirname + '/../../../cfg/config.json')[process.env.NODE_ENV];
+var config = require(__dirname + '/../../../cfg')
 
 class RowBanckmark {
   constructor() {

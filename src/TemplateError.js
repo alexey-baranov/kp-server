@@ -5,7 +5,7 @@ let _= require("lodash")
 let fs= require("fs")
 let Mustache= require("mustache")
 
-let config = require("../cfg/config.json")[process.env.NODE_ENV]
+let config = require("../cfg")
 
 class TemplateError {
   constructor(template, view) {

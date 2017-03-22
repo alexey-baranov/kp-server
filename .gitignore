@@ -1,7 +1,7 @@
 /nbproject/
 /.idea/
 /node_modules/
-/cfg/
+/cfg/config.private.js
 /github_issues/
 /log/
 /fias/

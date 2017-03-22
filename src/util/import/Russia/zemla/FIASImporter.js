@@ -6,7 +6,7 @@ let sax = require("sax");
 let fs = require("fs");
 let log4js = require("log4js");
 var Client = require('pg-native');
-var config = require(__dirname + '/../../../../../cfg/config.json')[process.env.NODE_ENV];
+var config = require(__dirname + '/../../../../../cfg')
 
 /**
  * https://fias.nalog.ru/Updates.aspx
@@ -147,7 +147,7 @@ class FIASImporter {
       isLastImportedDomFound = false
 
     return new Promise((res, rej) => {
-      logger.debug("загрузка домов...");
+      logger.debug("загрузка домов...")
       var saxStream = sax.createStream(true);
       saxStream.on("error", e => {
         rej(e);
@@ -155,7 +155,7 @@ class FIASImporter {
       saxStream.on("opentag", node => {
         try {
           if (node.name == 'House' && node.attributes.STARTDATE < NOW && NOW < node.attributes.ENDDATE) {
-            if (lastImportedDomGUID && isLastImportedDomFound) {
+            if (!lastImportedDomGUID || isLastImportedDomFound) {
               this.client.executeSync("insert-zemla", [node.attributes.HOUSEGUID, node.attributes.AOGUID, null, node.attributes.HOUSENUM, FIASImporter.HOUSE_LEVEL, '-', NOW, NOW, RUSSIA, RUSSIA]);
             }
             else if (node.attributes.HOUSEGUID == lastImportedDomGUID) {
@@ -253,11 +253,10 @@ class FIASImporter {
   setupParentsAndPaths() {
     let RUSSIA = this.getRUSSIA();
 
-    if (0) {
-      this.logger.debug("updating parent_id, path (level 1)...");
+    this.logger.debug("updating parent_id, path (level 1)...");
 
-      //регионы настраиваются отдельно потому что у них нет PARENTGUID
-      let count = this.client.querySync(`
+    //регионы настраиваются отдельно потому что у них нет PARENTGUID
+    let count = this.client.querySync(`
             update
             "Zemla" z
             
@@ -275,11 +274,11 @@ class FIASImporter {
         `);
 
 
-      //все остальные адреса настраиваются по PARENTGUID
-      for (let eachLevel of [3, 4, 5, 6, 7, 65, 90, 91]) {
-        this.logger.debug(`updating parent_id, path (level ${eachLevel})...`);
+    //все остальные адреса настраиваются по PARENTGUID
+    for (let eachLevel of [3, 4, 5, 6, 7, 65, 90, 91]) {
+      this.logger.debug(`updating parent_id, path (level ${eachLevel})...`);
 
-        this.client.querySync(`
+      this.client.querySync(`
             update 
             "Zemla" z
             
@@ -295,7 +294,6 @@ class FIASImporter {
              and z.level = ${eachLevel}
              and p."AOGUID"=z."PARENTGUID"
         `)
-      }
     }
 
     //99 уровень (дома) не влезают в одну операцию поэтому дробим на 100 мелких
@@ -306,8 +304,6 @@ class FIASImporter {
 
     this.logger.info("min: ", from, "max: ", max)
 
-
-    from= 5590000
     while (from < max) {
       this.logger.info("indexing houses between ", from, " and ", from + step, "...")
       this.client.querySync(`
@@ -362,52 +358,52 @@ module.exports = FIASImporter;
 
 let dublecates = [
   ["668fff0c-452a-4ca3-b968-ef487bb3c3cb", [
-  {
-    "name": "House",
-    "attributes": {
-      "HOUSEID": "8730ea68-b081-4ff6-a607-0dd514856d27",
-      "HOUSEGUID": "668fff0c-452a-4ca3-b968-ef487bb3c3cb",
-      "AOGUID": "8ca4ff42-7c61-4265-899a-f05637cea332",
-      "STRUCNUM": "3",
-      "STRSTATUS": "1",
-      "ESTSTATUS": "0",
-      "STATSTATUS": "0",
-      "IFNSFL": "4825",
-      "IFNSUL": "4825",
-      "OKATO": "42401370000",
-      "OKTMO": "42701000",
-      "POSTALCODE": "398001",
-      "STARTDATE": "2015-09-30",
-      "ENDDATE": "2079-06-06",
-      "UPDATEDATE": "2017-01-20",
-      "COUNTER": "14",
-      "DIVTYPE": "2"
-    }, "isSelfClosing": true
-  },
-  {
-    "name": "House",
-    "attributes": {
-      "HOUSEID": "8b8d2fb9-7b50-4f0a-b4b3-efa875983cb4",
-      "HOUSEGUID": "668fff0c-452a-4ca3-b968-ef487bb3c3cb",
-      "AOGUID": "8ca4ff42-7c61-4265-899a-f05637cea332",
-      "STRUCNUM": "3",
-      "STRSTATUS": "1",
-      "ESTSTATUS": "0",
-      "STATSTATUS": "0",
-      "IFNSFL": "4827",
-      "IFNSUL": "4827",
-      "TERRIFNSFL": "4826",
-      "TERRIFNSUL": "4826",
-      "OKATO": "42401375000",
-      "OKTMO": "42701000",
-      "POSTALCODE": "398001",
-      "STARTDATE": "2013-01-16",
-      "ENDDATE": "2079-06-06",
-      "UPDATEDATE": "2017-01-20",
-      "COUNTER": "11",
-      "DIVTYPE": "0"
-    }, "isSelfClosing": true
-  }]],
+    {
+      "name": "House",
+      "attributes": {
+        "HOUSEID": "8730ea68-b081-4ff6-a607-0dd514856d27",
+        "HOUSEGUID": "668fff0c-452a-4ca3-b968-ef487bb3c3cb",
+        "AOGUID": "8ca4ff42-7c61-4265-899a-f05637cea332",
+        "STRUCNUM": "3",
+        "STRSTATUS": "1",
+        "ESTSTATUS": "0",
+        "STATSTATUS": "0",
+        "IFNSFL": "4825",
+        "IFNSUL": "4825",
+        "OKATO": "42401370000",
+        "OKTMO": "42701000",
+        "POSTALCODE": "398001",
+        "STARTDATE": "2015-09-30",
+        "ENDDATE": "2079-06-06",
+        "UPDATEDATE": "2017-01-20",
+        "COUNTER": "14",
+        "DIVTYPE": "2"
+      }, "isSelfClosing": true
+    },
+    {
+      "name": "House",
+      "attributes": {
+        "HOUSEID": "8b8d2fb9-7b50-4f0a-b4b3-efa875983cb4",
+        "HOUSEGUID": "668fff0c-452a-4ca3-b968-ef487bb3c3cb",
+        "AOGUID": "8ca4ff42-7c61-4265-899a-f05637cea332",
+        "STRUCNUM": "3",
+        "STRSTATUS": "1",
+        "ESTSTATUS": "0",
+        "STATSTATUS": "0",
+        "IFNSFL": "4827",
+        "IFNSUL": "4827",
+        "TERRIFNSFL": "4826",
+        "TERRIFNSUL": "4826",
+        "OKATO": "42401375000",
+        "OKTMO": "42701000",
+        "POSTALCODE": "398001",
+        "STARTDATE": "2013-01-16",
+        "ENDDATE": "2079-06-06",
+        "UPDATEDATE": "2017-01-20",
+        "COUNTER": "11",
+        "DIVTYPE": "0"
+      }, "isSelfClosing": true
+    }]],
   ["4ffc802f-117b-4e22-acb9-1b8fa70bca44", [
     {
       "name": "House",

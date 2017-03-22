@@ -6,7 +6,7 @@ let _ = require("lodash")
 var assert = require('chai').assert
 let autobahn = require("autobahn")
 
-let config = require("../../cfg/config.json")[process.env.NODE_ENV || 'development']
+let config = require("../../cfg")
 let Cleaner= require("../../src/Cleaner")
 let model = require("../../src/model")
 let models = require("../../src/model")
@@ -24,21 +24,32 @@ describe('Zemla', function () {
     await Cleaner.clean()
   })
 
-  it('should set path', async function (done) {
+  after(async function () {
+    await new Promise((res, rej) => {
+      WAMP.onclose = function () {
+        res()
+      }
+      WAMP.close()
+    })
+  })
+
+
+
+  it('should set path', async function () {
     try {
-      var tran = await model.sequelize.transaction();
-      let unitTestZemla3 = await model.Zemla.findById(3);
-      await unitTestZemla3.setParent2(await model.Zemla.findById(1));
+      await model.sequelize.transaction(async ()=>{
+        let unitTestZemla3 = await model.Zemla.findById(3);
+        await unitTestZemla3.setParent2(await model.Zemla.findById(1));
 
-      assert.equal("/1/", unitTestZemla3.path);
+        assert.equal("/1/", unitTestZemla3.path);
 
-      done();
+        throw new Error("rollback")
+      })
     }
     catch (err) {
-      done(err);
-    }
-    finally {
-      tran.rollback();
+      if (err.message!="rollback"){
+        throw err
+      }
     }
   })
 
