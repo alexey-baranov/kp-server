@@ -9,10 +9,19 @@ let log4js = require("log4js"),
 log4js.configure(__dirname + '/../cfg/log.json', {
     reloadSecs: 60,
     cwd: __dirname + "/.."
-});
+})
 
-let fiasImporter= new FIASImporter();
+let fiasImporter= new FIASImporter()
 
-(async function () {
-    await fiasImporter.getHouseRowsByGUID("0123c5ec-3f20-46e8-9e55-2d66acf6976b", __dirname + '/../fias/AS_HOUSE_20161206_3a5fd8b7-66c0-48c5-acb0-48f9117ff727.XML');
-})();
+    fiasImporter.getHouseRowsByGUID(__dirname + '/../fias/AS_HOUSE_20170305_cf62cc8e-6cb9-4b8c-8338-0765c06d134b.XML', [
+      "4cdf6040-0ad1-4592-9ba6-aab4a1e2d321",
+      "4ffc802f-117b-4e22-acb9-1b8fa70bca44",
+      "668fff0c-452a-4ca3-b968-ef487bb3c3cb",
+      "7ba3bb7f-d9f3-4c24-85ba-877c5b6ca16d",
+      "bc92d19b-7d71-440b-ae4b-96a8ecce7a72",
+      "cf442162-ac4e-4ce2-a11e-28ad38bec7bb",
+      "e77cf129-edf2-46db-9e04-21c3b1cb2d8c"
+    ])
+      .then(result=>{
+        console.info("result", JSON.stringify(result))
+      });

@@ -1,6 +1,7 @@
 /**
  * Created by alexey2baranov on 09.12.16.
  */
+let _ = require("lodash")
 let sax = require("sax");
 let fs = require("fs");
 let log4js = require("log4js");
@@ -78,8 +79,8 @@ class FIASImporter {
    * @param HOUSEPath
    */
   async import(ADDROBJPath, HOUSEPath) {
-    // await this.importAddresses(ADDROBJPath);
-    // await this.importHouses(HOUSEPath);
+    await this.importAddresses(ADDROBJPath);
+    await this.importHouses(HOUSEPath);
     await this.setupParentsAndPaths();
     await this.validate()
   }
@@ -138,6 +139,13 @@ class FIASImporter {
       rowsCount = 0,
       RUSSIA = this.getRUSSIA();
 
+    /**
+     * дома загружаются после этого
+     * @type {boolean}
+     */
+    let lastImportedDomGUID/* = "d3c00fe6-301c-4b3b-bff0-9934e064e006"*/,
+      isLastImportedDomFound = false
+
     return new Promise((res, rej) => {
       logger.debug("загрузка домов...");
       var saxStream = sax.createStream(true);
@@ -147,7 +155,14 @@ class FIASImporter {
       saxStream.on("opentag", node => {
         try {
           if (node.name == 'House' && node.attributes.STARTDATE < NOW && NOW < node.attributes.ENDDATE) {
-            this.client.executeSync("insert-zemla", [node.attributes.HOUSEGUID, node.attributes.AOGUID, null, node.attributes.HOUSENUM, FIASImporter.HOUSE_LEVEL, '-', NOW, NOW, RUSSIA, RUSSIA]);
+            if (lastImportedDomGUID && isLastImportedDomFound) {
+              this.client.executeSync("insert-zemla", [node.attributes.HOUSEGUID, node.attributes.AOGUID, null, node.attributes.HOUSENUM, FIASImporter.HOUSE_LEVEL, '-', NOW, NOW, RUSSIA, RUSSIA]);
+            }
+            else if (node.attributes.HOUSEGUID == lastImportedDomGUID) {
+              isLastImportedDomFound = true
+              logger.debug("Last Imported Dom Found")
+            }
+
             rowsCount++;
             if (rowsCount % 100000 == 0) {
               logger.debug("total rows: ", rowsCount);
@@ -199,29 +214,36 @@ class FIASImporter {
     });
   }
 
-  async getHouseRowsByGUID(GUID, path) {
+  async getHouseRowsByGUID(path, GUID) {
     let logger = this.logger,
       NOW = new Date().toISOString(),
       rowsCount = 0,
-      result = [];
+      result = new Map();
+
+    if (!_.isArray(GUID)) {
+      GUID = [GUID]
+    }
 
     return new Promise((res, rej) => {
-      logger.debug(`Поиск строк HOUSEGUID=${GUID}...`);
-      var saxStream = sax.createStream(true);
+      logger.debug(`Поиск домов HOUSEGUID=${GUID}...`)
+      var saxStream = sax.createStream(true)
       saxStream.on("error", e => {
         rej(e);
-      });
+      })
       saxStream.on("opentag", node => {
-        if (node.name == 'House' && node.attributes.HOUSEGUID == GUID) {
-          result.push(node);
-          logger.debug(node);
+        if (node.name == 'House' && GUID.indexOf(node.attributes.HOUSEGUID) != -1) {
+          if (!result.has(node.attributes.HOUSEGUID)) {
+            result.set(node.attributes.HOUSEGUID, [])
+          }
+          result.get(node.attributes.HOUSEGUID).push(node)
+          logger.debug(node)
         }
-      });
+      })
 
       saxStream.on("end", function () {
         logger.debug("Поиск строк завершен");
         res(result);
-      });
+      })
 
       fs.createReadStream(path)
         .pipe(saxStream);
@@ -231,10 +253,11 @@ class FIASImporter {
   setupParentsAndPaths() {
     let RUSSIA = this.getRUSSIA();
 
-    this.logger.debug("updating parent_id, path (level 1)...");
+    if (0) {
+      this.logger.debug("updating parent_id, path (level 1)...");
 
-    //регионы настраиваются отдельно потому что у них нет PARENTGUID
-    let count = this.client.querySync(`
+      //регионы настраиваются отдельно потому что у них нет PARENTGUID
+      let count = this.client.querySync(`
             update
             "Zemla" z
             
@@ -252,12 +275,11 @@ class FIASImporter {
         `);
 
 
-    //все остальные адреса настраиваются по PARENTGUID
-    for (let eachLevel of [3, 4, 5, 6, 7, 65, 90, 91]) {
-      break;
-      this.logger.debug(`updating parent_id, path (level ${eachLevel})...`);
+      //все остальные адреса настраиваются по PARENTGUID
+      for (let eachLevel of [3, 4, 5, 6, 7, 65, 90, 91]) {
+        this.logger.debug(`updating parent_id, path (level ${eachLevel})...`);
 
-      this.client.querySync(`
+        this.client.querySync(`
             update 
             "Zemla" z
             
@@ -273,19 +295,21 @@ class FIASImporter {
              and z.level = ${eachLevel}
              and p."AOGUID"=z."PARENTGUID"
         `)
+      }
     }
 
     //99 уровень (дома) не влезают в одну операцию поэтому дробим на 100 мелких
     let step = 10000,
       result = this.client.querySync(`select min(id) as "min", max(id) as "max" from "Zemla" where country_id=${RUSSIA} and level=99`)
-    let from = Math.floor(parseInt(result[0].min)/1000000)*1000000
+    let from = Math.floor(parseInt(result[0].min) / 10000) * 10000
     let max = parseInt(result[0].max)
 
-    from = 20900000
     this.logger.info("min: ", from, "max: ", max)
 
+
+    from= 5590000
     while (from < max) {
-      this.logger.info("indexing houses between ", from, " and ", from+step, "...")
+      this.logger.info("indexing houses between ", from, " and ", from + step, "...")
       this.client.querySync(`
             update 
             "Zemla" z
@@ -301,16 +325,16 @@ class FIASImporter {
              z.country_id=${RUSSIA}            
              and z.level = ${FIASImporter.HOUSE_LEVEL}
              and p."AOGUID"=z."PARENTGUID"
-             and z.id between ${from} and ${from+step}
+             and z.id between ${from} and ${from + step}
         `)
-      from+= step
+      from += step
     }
 
 
     this.logger.debug("updated parent_id, path");
   }
 
-  validate(){
+  validate() {
     this.logger.info("validating...")
     let result = this.client.querySync(`
       select count(*) as count 
@@ -325,9 +349,9 @@ class FIASImporter {
         )
     `)
 
-    result= result[0].count
-    if (result){
-      throw new Error("Some Zemli not parented. Total errors: "+result)
+    result = +result[0].count
+    if (result) {
+      throw new Error("Some Zemli not parented. Total errors: " + result)
     }
   }
 }
@@ -335,3 +359,415 @@ class FIASImporter {
 FIASImporter.HOUSE_LEVEL = 99;
 
 module.exports = FIASImporter;
+
+let dublecates = [
+  ["668fff0c-452a-4ca3-b968-ef487bb3c3cb", [
+  {
+    "name": "House",
+    "attributes": {
+      "HOUSEID": "8730ea68-b081-4ff6-a607-0dd514856d27",
+      "HOUSEGUID": "668fff0c-452a-4ca3-b968-ef487bb3c3cb",
+      "AOGUID": "8ca4ff42-7c61-4265-899a-f05637cea332",
+      "STRUCNUM": "3",
+      "STRSTATUS": "1",
+      "ESTSTATUS": "0",
+      "STATSTATUS": "0",
+      "IFNSFL": "4825",
+      "IFNSUL": "4825",
+      "OKATO": "42401370000",
+      "OKTMO": "42701000",
+      "POSTALCODE": "398001",
+      "STARTDATE": "2015-09-30",
+      "ENDDATE": "2079-06-06",
+      "UPDATEDATE": "2017-01-20",
+      "COUNTER": "14",
+      "DIVTYPE": "2"
+    }, "isSelfClosing": true
+  },
+  {
+    "name": "House",
+    "attributes": {
+      "HOUSEID": "8b8d2fb9-7b50-4f0a-b4b3-efa875983cb4",
+      "HOUSEGUID": "668fff0c-452a-4ca3-b968-ef487bb3c3cb",
+      "AOGUID": "8ca4ff42-7c61-4265-899a-f05637cea332",
+      "STRUCNUM": "3",
+      "STRSTATUS": "1",
+      "ESTSTATUS": "0",
+      "STATSTATUS": "0",
+      "IFNSFL": "4827",
+      "IFNSUL": "4827",
+      "TERRIFNSFL": "4826",
+      "TERRIFNSUL": "4826",
+      "OKATO": "42401375000",
+      "OKTMO": "42701000",
+      "POSTALCODE": "398001",
+      "STARTDATE": "2013-01-16",
+      "ENDDATE": "2079-06-06",
+      "UPDATEDATE": "2017-01-20",
+      "COUNTER": "11",
+      "DIVTYPE": "0"
+    }, "isSelfClosing": true
+  }]],
+  ["4ffc802f-117b-4e22-acb9-1b8fa70bca44", [
+    {
+      "name": "House",
+      "attributes": {
+        "HOUSEID": "785cf719-7998-4ef3-9f9c-5ea0febaeed5",
+        "HOUSEGUID": "4ffc802f-117b-4e22-acb9-1b8fa70bca44",
+        "AOGUID": "b5625491-6396-435e-91b4-456f51523bc3",
+        "HOUSENUM": "22",
+        "STRSTATUS": "0",
+        "ESTSTATUS": "3",
+        "STATSTATUS": "0",
+        "IFNSFL": "6949",
+        "IFNSUL": "6949",
+        "OKATO": "28247831001",
+        "OKTMO": "28647431101",
+        "POSTALCODE": "171418",
+        "STARTDATE": "2014-01-10",
+        "ENDDATE": "2079-06-06",
+        "UPDATEDATE": "2016-11-14",
+        "COUNTER": "25",
+        "DIVTYPE": "0"
+      }, "isSelfClosing": true
+    }, {
+      "name": "House",
+      "attributes": {
+        "HOUSEID": "24b42a07-d833-416a-9550-c5b15c9a7b1e",
+        "HOUSEGUID": "4ffc802f-117b-4e22-acb9-1b8fa70bca44",
+        "AOGUID": "b5625491-6396-435e-91b4-456f51523bc3",
+        "HOUSENUM": "22кв1",
+        "STRSTATUS": "0",
+        "ESTSTATUS": "3",
+        "STATSTATUS": "0",
+        "IFNSFL": "6949",
+        "IFNSUL": "6949",
+        "OKATO": "28247831001",
+        "OKTMO": "28647431101",
+        "POSTALCODE": "171418",
+        "STARTDATE": "2014-01-10",
+        "ENDDATE": "2079-06-06",
+        "UPDATEDATE": "2016-11-14",
+        "COUNTER": "21",
+        "NORMDOC": "bbbc48bc-437a-48af-9a72-82a693d278bc",
+        "DIVTYPE": "0"
+      }, "isSelfClosing": true
+    }]],
+  ["e77cf129-edf2-46db-9e04-21c3b1cb2d8c",
+    [
+      {
+        "name": "House",
+        "attributes": {
+          "HOUSEID": "7f150da1-c8a2-486f-b766-31aa368b9b02",
+          "HOUSEGUID": "e77cf129-edf2-46db-9e04-21c3b1cb2d8c",
+          "AOGUID": "c7e8f58a-3f94-4a91-95e5-fdc9190f8de2",
+          "HOUSENUM": "43",
+          "STRSTATUS": "0",
+          "ESTSTATUS": "2",
+          "STATSTATUS": "0",
+          "IFNSFL": "6686",
+          "IFNSUL": "6686",
+          "OKATO": "65401905001",
+          "OKTMO": "65701000186",
+          "POSTALCODE": "620907",
+          "STARTDATE": "2016-02-11",
+          "ENDDATE": "2079-06-06",
+          "UPDATEDATE": "2016-11-10",
+          "COUNTER": "61",
+          "NORMDOC": "b716fd46-d09d-49a3-a913-a029b652a920",
+          "DIVTYPE": "2"
+        }, "isSelfClosing": true
+      },
+      {
+        "name": "House",
+        "attributes": {
+          "HOUSEID": "15b258cb-072b-4fa9-83ad-f0af7cff9ec8",
+          "HOUSEGUID": "e77cf129-edf2-46db-9e04-21c3b1cb2d8c",
+          "AOGUID": "c7e8f58a-3f94-4a91-95e5-fdc9190f8de2",
+          "HOUSENUM": "43",
+          "STRSTATUS": "0",
+          "ESTSTATUS": "3",
+          "STATSTATUS": "0",
+          "IFNSFL": "6686",
+          "IFNSUL": "6686",
+          "OKATO": "65401905001",
+          "OKTMO": "65701000186",
+          "POSTALCODE": "620907",
+          "STARTDATE": "2014-01-04",
+          "ENDDATE": "2079-06-06",
+          "UPDATEDATE": "2016-11-10",
+          "COUNTER": "11",
+          "DIVTYPE": "0"
+        }, "isSelfClosing": true
+      }]], ["cf442162-ac4e-4ce2-a11e-28ad38bec7bb", [{
+    "name": "House", "attributes": {
+      "HOUSEID": "cf442162-ac4e-4ce2-a11e-28ad38bec7bb",
+      "HOUSEGUID": "cf442162-ac4e-4ce2-a11e-28ad38bec7bb",
+      "AOGUID": "c7e8f58a-3f94-4a91-95e5-fdc9190f8de2",
+      "HOUSENUM": "1",
+      "STRSTATUS": "0",
+      "ESTSTATUS": "3",
+      "STATSTATUS": "0",
+      "IFNSFL": "6686",
+      "IFNSUL": "6686",
+      "OKATO": "65401905001",
+      "OKTMO": "65701000",
+      "POSTALCODE": "620907",
+      "STARTDATE": "1900-01-01",
+      "ENDDATE": "2014-01-04",
+      "UPDATEDATE": "2012-03-06",
+      "COUNTER": "15",
+      "DIVTYPE": "0"
+    }, "isSelfClosing": true
+  }, {
+    "name": "House", "attributes": {
+      "HOUSEID": "024593fb-308b-47b7-9b5c-37e8feb780ba",
+      "HOUSEGUID": "cf442162-ac4e-4ce2-a11e-28ad38bec7bb",
+      "AOGUID": "c7e8f58a-3f94-4a91-95e5-fdc9190f8de2",
+      "HOUSENUM": "1",
+      "STRSTATUS": "0",
+      "ESTSTATUS": "2",
+      "STATSTATUS": "0",
+      "IFNSFL": "6686",
+      "IFNSUL": "6686",
+      "OKATO": "65401905001",
+      "OKTMO": "65701000186",
+      "POSTALCODE": "620907",
+      "STARTDATE": "2016-02-11",
+      "ENDDATE": "2079-06-06",
+      "UPDATEDATE": "2016-11-10",
+      "COUNTER": "53",
+      "NORMDOC": "2aa4208d-2ea9-481e-9871-c4fe237b7b97",
+      "DIVTYPE": "2"
+    }, "isSelfClosing": true
+  }, {
+    "name": "House", "attributes": {
+      "HOUSEID": "ad6e2908-7228-4ba5-a5cd-da1b860b46ba",
+      "HOUSEGUID": "cf442162-ac4e-4ce2-a11e-28ad38bec7bb",
+      "AOGUID": "c7e8f58a-3f94-4a91-95e5-fdc9190f8de2",
+      "HOUSENUM": "1",
+      "STRSTATUS": "0",
+      "ESTSTATUS": "3",
+      "STATSTATUS": "0",
+      "IFNSFL": "6686",
+      "IFNSUL": "6686",
+      "OKATO": "65401905001",
+      "OKTMO": "65701000186",
+      "POSTALCODE": "620907",
+      "STARTDATE": "2014-01-04",
+      "ENDDATE": "2079-06-06",
+      "UPDATEDATE": "2016-11-10",
+      "COUNTER": "15",
+      "DIVTYPE": "0"
+    }, "isSelfClosing": true
+  }]], ["7ba3bb7f-d9f3-4c24-85ba-877c5b6ca16d", [{
+    "name": "House", "attributes": {
+      "HOUSEID": "7ba3bb7f-d9f3-4c24-85ba-877c5b6ca16d",
+      "HOUSEGUID": "7ba3bb7f-d9f3-4c24-85ba-877c5b6ca16d",
+      "AOGUID": "965065bd-1445-45e4-bff6-e40a966805ca",
+      "HOUSENUM": "2",
+      "STRSTATUS": "0",
+      "ESTSTATUS": "2",
+      "STATSTATUS": "0",
+      "IFNSFL": "4177",
+      "IFNSUL": "4177",
+      "TERRIFNSFL": "4105",
+      "TERRIFNSUL": "4105",
+      "OKATO": "30402000000",
+      "OKTMO": "30607101",
+      "STARTDATE": "1900-01-01",
+      "ENDDATE": "2011-12-13",
+      "UPDATEDATE": "2012-02-20",
+      "COUNTER": "7",
+      "DIVTYPE": "0"
+    }, "isSelfClosing": true
+  }, {
+    "name": "House", "attributes": {
+      "HOUSEID": "bbf984c7-97ce-4f5a-86dd-b6aef178449c",
+      "HOUSEGUID": "7ba3bb7f-d9f3-4c24-85ba-877c5b6ca16d",
+      "AOGUID": "965065bd-1445-45e4-bff6-e40a966805ca",
+      "HOUSENUM": "2",
+      "STRSTATUS": "0",
+      "ESTSTATUS": "2",
+      "STATSTATUS": "0",
+      "IFNSFL": "4177",
+      "IFNSUL": "4177",
+      "TERRIFNSFL": "4105",
+      "TERRIFNSUL": "4105",
+      "OKATO": "30402000000",
+      "OKTMO": "30607101",
+      "POSTALCODE": "684000",
+      "STARTDATE": "2011-12-13",
+      "ENDDATE": "2079-06-06",
+      "UPDATEDATE": "2017-01-17",
+      "COUNTER": "305",
+      "NORMDOC": "be36b29c-fb8a-43e2-9909-5137fce54c03",
+      "DIVTYPE": "0"
+    }, "isSelfClosing": true
+  }, {
+    "name": "House", "attributes": {
+      "HOUSEID": "d03eea64-3978-444f-8c23-e6a72bfab72f",
+      "HOUSEGUID": "7ba3bb7f-d9f3-4c24-85ba-877c5b6ca16d",
+      "AOGUID": "965065bd-1445-45e4-bff6-e40a966805ca",
+      "HOUSENUM": "2б",
+      "STRSTATUS": "0",
+      "ESTSTATUS": "2",
+      "STATSTATUS": "17",
+      "IFNSFL": "4177",
+      "IFNSUL": "4177",
+      "TERRIFNSFL": "4105",
+      "TERRIFNSUL": "4105",
+      "OKATO": "30402000000",
+      "OKTMO": "30607101",
+      "POSTALCODE": "684000",
+      "STARTDATE": "2013-12-09",
+      "ENDDATE": "2079-06-06",
+      "UPDATEDATE": "2017-01-17",
+      "COUNTER": "370",
+      "NORMDOC": "2c3878a1-2f2d-49bb-bbf0-b5eb15edf9a7",
+      "DIVTYPE": "0"
+    }, "isSelfClosing": true
+  }]], ["bc92d19b-7d71-440b-ae4b-96a8ecce7a72", [{
+    "name": "House", "attributes": {
+      "HOUSEID": "bc92d19b-7d71-440b-ae4b-96a8ecce7a72",
+      "HOUSEGUID": "bc92d19b-7d71-440b-ae4b-96a8ecce7a72",
+      "AOGUID": "c7e8f58a-3f94-4a91-95e5-fdc9190f8de2",
+      "HOUSENUM": "3А",
+      "STRSTATUS": "0",
+      "ESTSTATUS": "3",
+      "STATSTATUS": "0",
+      "IFNSFL": "6686",
+      "IFNSUL": "6686",
+      "OKATO": "65401905001",
+      "OKTMO": "65701000",
+      "POSTALCODE": "620907",
+      "STARTDATE": "1900-01-01",
+      "ENDDATE": "2014-01-04",
+      "UPDATEDATE": "2012-03-06",
+      "COUNTER": "48",
+      "DIVTYPE": "0"
+    }, "isSelfClosing": true
+  }, {
+    "name": "House", "attributes": {
+      "HOUSEID": "4d32a73f-a2eb-45ff-b8a7-b49d7b16721f",
+      "HOUSEGUID": "bc92d19b-7d71-440b-ae4b-96a8ecce7a72",
+      "AOGUID": "c7e8f58a-3f94-4a91-95e5-fdc9190f8de2",
+      "HOUSENUM": "3А",
+      "STRSTATUS": "0",
+      "ESTSTATUS": "3",
+      "STATSTATUS": "0",
+      "IFNSFL": "6686",
+      "IFNSUL": "6686",
+      "OKATO": "65401905001",
+      "OKTMO": "65701000186",
+      "POSTALCODE": "620907",
+      "STARTDATE": "2014-01-04",
+      "ENDDATE": "2079-06-06",
+      "UPDATEDATE": "2016-11-10",
+      "COUNTER": "48",
+      "DIVTYPE": "0"
+    }, "isSelfClosing": true
+  }, {
+    "name": "House", "attributes": {
+      "HOUSEID": "45ea8cb7-abce-431a-95b1-e38c9ea10bdc",
+      "HOUSEGUID": "bc92d19b-7d71-440b-ae4b-96a8ecce7a72",
+      "AOGUID": "c7e8f58a-3f94-4a91-95e5-fdc9190f8de2",
+      "HOUSENUM": "3а",
+      "STRSTATUS": "0",
+      "ESTSTATUS": "2",
+      "STATSTATUS": "0",
+      "IFNSFL": "6686",
+      "IFNSUL": "6686",
+      "OKATO": "65401905001",
+      "OKTMO": "65701000186",
+      "POSTALCODE": "620907",
+      "STARTDATE": "2016-02-11",
+      "ENDDATE": "2079-06-06",
+      "UPDATEDATE": "2016-11-10",
+      "COUNTER": "68",
+      "NORMDOC": "64f2faf1-0ab8-4008-b54a-f06933cdf333",
+      "DIVTYPE": "2"
+    }, "isSelfClosing": true
+  }]], ["4cdf6040-0ad1-4592-9ba6-aab4a1e2d321", [{
+    "name": "House", "attributes": {
+      "HOUSEID": "289dcb21-eefc-4274-aeee-a5285ef9bf4c",
+      "HOUSEGUID": "4cdf6040-0ad1-4592-9ba6-aab4a1e2d321",
+      "AOGUID": "c7e8f58a-3f94-4a91-95e5-fdc9190f8de2",
+      "HOUSENUM": "1А",
+      "STRSTATUS": "0",
+      "ESTSTATUS": "3",
+      "STATSTATUS": "0",
+      "IFNSFL": "6686",
+      "IFNSUL": "6686",
+      "OKATO": "65401905001",
+      "OKTMO": "65701000186",
+      "POSTALCODE": "620907",
+      "STARTDATE": "2014-01-04",
+      "ENDDATE": "2079-06-06",
+      "UPDATEDATE": "2016-11-10",
+      "COUNTER": "49",
+      "DIVTYPE": "0"
+    }, "isSelfClosing": true
+  }, {
+    "name": "House", "attributes": {
+      "HOUSEID": "4cdf6040-0ad1-4592-9ba6-aab4a1e2d321",
+      "HOUSEGUID": "4cdf6040-0ad1-4592-9ba6-aab4a1e2d321",
+      "AOGUID": "c7e8f58a-3f94-4a91-95e5-fdc9190f8de2",
+      "HOUSENUM": "1А",
+      "STRSTATUS": "0",
+      "ESTSTATUS": "3",
+      "STATSTATUS": "0",
+      "IFNSFL": "6686",
+      "IFNSUL": "6686",
+      "OKATO": "65401905001",
+      "OKTMO": "65701000",
+      "POSTALCODE": "620907",
+      "STARTDATE": "1900-01-01",
+      "ENDDATE": "2014-01-04",
+      "UPDATEDATE": "2012-03-06",
+      "COUNTER": "49",
+      "DIVTYPE": "0"
+    }, "isSelfClosing": true
+  }, {
+    "name": "House", "attributes": {
+      "HOUSEID": "df21f9ea-fe19-4c87-8e66-b1c1213aa741",
+      "HOUSEGUID": "4cdf6040-0ad1-4592-9ba6-aab4a1e2d321",
+      "AOGUID": "c7e8f58a-3f94-4a91-95e5-fdc9190f8de2",
+      "HOUSENUM": "1а",
+      "STRSTATUS": "0",
+      "ESTSTATUS": "2",
+      "STATSTATUS": "0",
+      "IFNSFL": "6686",
+      "IFNSUL": "6686",
+      "OKATO": "65401905001",
+      "OKTMO": "65701000186",
+      "POSTALCODE": "620907",
+      "STARTDATE": "2016-02-11",
+      "ENDDATE": "2079-06-06",
+      "UPDATEDATE": "2016-11-10",
+      "COUNTER": "66",
+      "NORMDOC": "721d164c-9051-4925-bc72-43ce077ef493",
+      "DIVTYPE": "1"
+    }, "isSelfClosing": true
+  }]]
+]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

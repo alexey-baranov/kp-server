@@ -2,18 +2,26 @@
  * Created by alexey2baranov on 8/26/16.
  */
 
-var assert = require('chai').assert;
-let autobahn = require("autobahn");
-let config = require("../../cfg/config.json")[process.env.NODE_ENV || 'development'];
-let _ = require("lodash");
-let model = require("../../src/model");
+let _ = require("lodash")
+var assert = require('chai').assert
+let autobahn = require("autobahn")
 
-// let WAMP = require("../../src/WAMPFactory").getWAMP();
+let config = require("../../cfg/config.json")[process.env.NODE_ENV || 'development']
+let Cleaner= require("../../src/Cleaner")
+let model = require("../../src/model")
+let models = require("../../src/model")
+
+let WAMP = require("../../src/WAMPFactory").getWAMP()
 
 describe('Zemla', function () {
-  before(function () {
-    let result = Cleaner.clean();
-    return result;
+  before(async function () {
+    await new Promise((res, rej) => {
+      WAMP.onopen = function () {
+        res()
+      }
+      WAMP.open()
+    })
+    await Cleaner.clean()
   })
 
   it('should set path', async function (done) {
@@ -32,5 +40,22 @@ describe('Zemla', function () {
     finally {
       tran.rollback();
     }
+  })
+
+  describe("#getGolosovanti()", function () {
+    let golosovanti
+    before(async() => {
+      let zemla2 = await models.Zemla.findById(2)
+      golosovanti = await zemla2.getGolosovanti()
+    })
+
+    it.skip('should not return kopnik behind starshina', async() => {
+      assert.equal(golosovanti.find(each => each.id == 3 || each.id == 7), null, "kopnik behind starshina")
+    })
+
+    it('should return array of Kopnik', async() => {
+      assert.equal(_.isArray(golosovanti), true, "_.isArray(golosovanti)")
+      assert.equal(golosovanti.length, 5, "golosovanti.length")
+    })
   })
 })

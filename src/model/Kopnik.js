@@ -21,7 +21,8 @@ module.exports = function (sequelize, DataTypes) {
         defaultValue: "kopnik",
       },
       email: {
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
+        unique: true
       },
       password: {
         type: DataTypes.STRING
@@ -74,6 +75,45 @@ module.exports = function (sequelize, DataTypes) {
       ],
       instanceMethods: {
         /**
+         * Старшина в доме для копника
+         * @param zemla
+         */
+        async getStarshinaNaKope(kopa){
+          let place= await kopa.getPlace()
+          let result= await this.getStarshinaVDome(place)
+
+          return result
+        },
+        /**
+         * Старшина в доме для копника
+         * @param zemla
+         */
+        async getStarshinaVDome(zemla){
+          let dom= await this.getDom()
+          /**
+           * проверочка проживает ли копник вообще в этом доме
+           * если залетный, то старшины не может быть
+           */
+          if (!dom.fullPath.startsWith(zemla.fullPath)) {
+            throw new Error(`Kopnik ${this.fullName} doesn't live into ${zemla.name}`)
+          }
+
+          /**
+           * и если старшина проживает на этом доме, то тоже не имеет права,
+           * т.к. оно перешло к старшина
+           * Старшины иду в reverce() порядке чтобы первым вышел самый старший
+           * кто проживает в доме
+           */
+
+          let starshini= (await this.getStarshini()).reverse()
+          for (let eachStarshina of starshini) {
+            let eachStarshinaDom = await eachStarshina.getDom()
+            if (eachStarshinaDom.fullPath.startsWith(zemla.fullPath)) {
+              return eachStarshina
+            }
+          }
+        },
+        /**
          * На копе собираются несколько земель, поэтому сила уменьшается пропорционально общему количеству
          * @param kopa
          * @return {Promise.<void>}
@@ -91,7 +131,7 @@ module.exports = function (sequelize, DataTypes) {
         },
         /**
          * относительная сила на земле зависит от общего числа копников в дружине и общего числа копников вообще на земле
-         * (часть войска которая проживает на земле копы) / sum(kopa.place.obshina_size)
+         * (часть войска которая проживает на земле копы) / obshina_size
          *
          * @param {Zemla} zemla
          */
@@ -281,7 +321,7 @@ module.exports = function (sequelize, DataTypes) {
 
         /**
          *
-         * @param {Kopnik} value
+         * @param {Zemla} value
          */
         setDom2: async function (value) {
           //сначала уронил общины прежнеих родительских земель
@@ -299,7 +339,7 @@ module.exports = function (sequelize, DataTypes) {
           await this.save(["dom_id"]);
 
           //теперь поднял общины новой земли и ее родительских земель
-          await this.obshinaUp(1, true);
+          await value.obshinaUp(1, true)
         },
 
         /**

@@ -4,13 +4,20 @@
   "description": "копное право - сервер",
   "main": "index.js",
   "scripts": {
-    "server": "export NODE_ENV=testing && ./node_modules/babel-cli/bin/babel-node.js --use-strict ./src/index.js",
-    "file-server": "export NODE_ENV=testing && ./node_modules/babel-cli/bin/babel-node.js --use-strict ./src/file-server.index.js",
-    "test": "mocha",
-    "test:watch": "./node_modules/babel-cli/bin/babel-node.js --use-strict /usr/lib/node_modules/mocha/bin/_mocha --timeout 5000 --watch --compilers js:babel-register --recursive ./test",
-    "crossbar": "export NODE_ENV=testing && crossbar start",
+    "development": "export NODE_ENV=development",
+    "testing": "export NODE_ENV=testing",
+    "production": "export NODE_ENV=production",
+    "server": "./node_modules/babel-cli/bin/babel-node.js --use-strict ./src/index.js",
+    "file-server": "./node_modules/babel-cli/bin/babel-node.js --use-strict ./src/file-server.index.js",
+    "test": "./node_modules/babel-cli/bin/babel-node.js --use-strict ./node_modules/mocha/bin/_mocha --timeout 5000 --compilers js:babel-register --recursive --timeout 5000 ./test",
+    "test:watch": "./node_modules/babel-cli/bin/babel-node.js --use-strict ./node_modules/mocha/bin/_mocha --watch --timeout 5000 --compilers js:babel-register --recursive --timeout 5000 ./test",
+
+    "crossbar": "crossbar start",
     "init": "babel-node --use-strict ./src/init.js",
-    "import-fias": "babel-node --use-strict ./src/import-fias.js"
+    "download-fias": "wget -O ./fias/fias.rar http://fias.nalog.ru/Public/Downloads/20170306/fias_xml.rar && cd ./fias && unrar e ./fias.rar && cd ..",
+    "import-fias": "./node_modules/babel-cli/bin/babel-node.js --use-strict ./src/import-fias.js",
+    "poligon-fias": "./node_modules/babel-cli/bin/babel-node.js --use-strict ./src/poligon-fias.js",
+    "benchmark": "./node_modules/babel-cli/bin/babel-node.js --use-strict ./src/benchmark.js"
   },
   "repository": {
     "type": "git",
@@ -40,7 +47,8 @@
     "sax": "git+https://github.com/isaacs/sax-js.git#v1.2.1",
     "sequelize": "^3.23.6",
     "string.prototype.padstart": "^3.0.0",
-    "superagent": "^3.4.3"
+    "superagent": "^3.4.3",
+    "urlencode": "^1.1.0"
   },
   "devDependencies": {
     "babel-cli": "^6.22.2",
@@ -48,10 +56,10 @@
     "babel-plugin-transform-es2015-destructuring": "^6.22.0",
     "babel-plugin-transform-es2015-parameters": "^6.11.4",
     "continuation-local-storage": "^3.2.0",
+    "mocha": "^3.2.0",
     "pg": "^6.1.0",
     "pg-native": "^1.10.0",
     "pg-promise": "^5.4.7",
-    "pg-sync": "^0.2.0",
     "sax": "git+https://github.com/isaacs/sax-js.git#v1.2.1",
     "uuid": "^3.0.1"
   }

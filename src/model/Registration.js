@@ -65,17 +65,15 @@ module.exports = function (sequelize, DataTypes) {
             select 
               ver.*
             from 
-              get_zemli(2) as z
-              join "Kopnik" ver on ver.id=z.verifier_id
-            where
-              :dom_path2 like z.path||z.id||'/%'
+              get_zemli(:DOM) as dom
+              join "Kopnik" ver on ver.id=dom.verifier_id
             order by 
-              z.path 
+              dom.path desc 
             limit 1
             `,
             {
               replacements: {
-                "dom_path2": dom.fullPath
+                "DOM": dom.id
               },
               type: sequelize.Sequelize.QueryTypes.SELECT
             })

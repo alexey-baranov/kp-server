@@ -5,9 +5,13 @@
 /**
  * Created by alexey2baranov on 8/7/16.
  */
-var autobahn = require('autobahn')
-let log4js = require("log4js")
-let request = require("request-promise-native")
+var autobahn = require('autobahn'),
+  bcrypt = require("bcrypt"),
+  fs = require("fs"),
+  log4js = require("log4js"),
+  Mustache = require("mustache"),
+  request = require("request-promise-native")
+
 
 let config = require("../cfg/config.json")[process.env.NODE_ENV]
 let models = require("./model")
@@ -22,7 +26,7 @@ let Cleaner = require("./Cleaner")
  * @type {any}
  */
 autobahn.Session.prototype.registerHelper = function (procedure, endpoint, options, context) {
-  return this.register(procedure, function endpointWithoutContext(args, kwargs) {
+  return this.register(procedure, function (args, kwargs) {
     try {
       if (context) {
         return endpoint.call(context, args, kwargs);
@@ -32,7 +36,8 @@ autobahn.Session.prototype.registerHelper = function (procedure, endpoint, optio
       }
     }
     catch (err) {
-      throw new autobahn.Error(err.constructor.name, [], {message: err.message, stack: err.stack.split("\n")});
+      let kwargs = {message: err.message, stack: err.stack.split("\n")}
+      throw new autobahn.Error(err.constructor.name, [], kwargs)
     }
   }, options);
 };
@@ -40,7 +45,7 @@ autobahn.Session.prototype.registerHelper = function (procedure, endpoint, optio
 class Server {
   constructor() {
     this.log = log4js.getLogger(Server.name);
-    this.log.info("starting...");
+    this.log.info("starting...", config.WAMP, `${config.WAMP.schema}://${config.WAMP.host}:${config.WAMP.port}/${config.WAMP.path}`);
 
     this.WAMP = new autobahn.Connection({
       url: `${config.WAMP.schema}://${config.WAMP.host}:${config.WAMP.port}/${config.WAMP.path}`,
@@ -66,6 +71,8 @@ class Server {
       try {
         session.prefix('api', 'ru.kopa')
         this.log.info("connection.onopen()"/*, session._id, details*/)
+        //очищаю таблицу сессий
+        await models.Session.destroy({truncate: true, force:true})
 
         //метасобытия
         await this.subscribeHelper("wamp.session.on_join", this.session_join.bind(this))
@@ -120,6 +127,10 @@ class Server {
         await this.registerHelper('api:unitTest.orderProc', this.unitTest_orderProc, null, this);
 
 
+        /*        setInterval(async ()=>{
+         await this.WAMP.session.publish(`api:keepAlive`, [], null, {acknowledge: true})
+         },1000)*/
+
         let tick = 0;
         this.tickInterval = setInterval(() => {
           /*
@@ -153,7 +164,7 @@ class Server {
 
   async session_join(args, kwargs, details) {
     let sessionAsPlain = Object.assign({}, args[0], {id: args[0].session})
-    if (args[0].authrole != "anonymous") {
+    if (args[0].authrole != "anonymous" && args[0].authrole != "server") {
       let KOPNIK = await this.getKOPNIKByEmail([], {email: args[0].authid})
       sessionAsPlain.owner_id = KOPNIK
     }
@@ -181,6 +192,14 @@ class Server {
     return x * x;
   }
 
+  /**
+   * Список стран для страницы регистрации
+   * @param args
+   * @param term
+   * @param details
+   * @return {Promise.<*>}
+   * @constructor
+   */
   async Registration_getCountries(args, {term}, details) {
     try {
       let result = await models.sequelize.query(`
@@ -207,6 +226,15 @@ class Server {
     }
   }
 
+  /**
+   * список городов для страницы регистрации
+   * @param args
+   * @param term
+   * @param COUNTRY
+   * @param details
+   * @return {Promise.<*>}
+   * @constructor
+   */
   async Registration_getTowns(args, {term, COUNTRY}, details) {
     try {
       let result = await models.sequelize.query(`
@@ -237,6 +265,15 @@ class Server {
     }
   }
 
+  /**
+   * список улиц для страницы регистрации
+   * @param args
+   * @param term
+   * @param TOWN
+   * @param details
+   * @return {Promise.<*>}
+   * @constructor
+   */
   async Registration_getStreets(args, {term, TOWN}, details) {
     try {
       let result = await models.sequelize.query(`
@@ -265,6 +302,15 @@ class Server {
     }
   }
 
+  /**
+   * список домов для страницы регистрации
+   * @param args
+   * @param term
+   * @param STREET
+   * @param details
+   * @return {Promise.<*>}
+   * @constructor
+   */
   async Registration_getHouses(args, {term, STREET}, details) {
     try {
       let result = await models.sequelize.query(`
@@ -418,17 +464,25 @@ class Server {
 
   async Kopnik_vote(args, {SUBJECT, value}, details) {
     value = parseInt(value);
-    let tran = await models.sequelize.transaction();
+    let tran = await models.sequelize.transaction(),
+      caller,
+      subject,
+      voteResult
 
     try {
-      let kopnik = await models.Kopnik.findOne({
+      caller = await models.Kopnik.findOne({
         where: {
           email: details.caller_authid
         }
       });
-      var subject = await models.Predlozhenie.findById(SUBJECT);
+      subject = await models.Predlozhenie.findById(SUBJECT)
+      let place = await models.Kopa.findById(subject.place_id)
+      if (await caller.getStarshinaNaKope(place)) {
+        // throw new Error(`Вы не можете созывать копу на ${place.name}. На ${place.name} за вас выступает старшина, к которому вы должны обратиться.`)
+        throw new Error(`vote_under_starshina`)
+      }
 
-      var voteResult = await kopnik.vote(subject, value);
+      voteResult = await caller.vote(subject, value);
       await tran.commit();
     }
     catch (err) {
@@ -454,6 +508,24 @@ class Server {
         this.log.error("Kopnik_vote error", SUBJECT, value, err);
       }
     });
+
+    /**
+     * уведомления
+     */
+    setImmediate(async() => {
+      try {
+        if (subject.state) {
+          subject.owner = await subject.getOwner()
+          subject.place = await subject.getPlace()
+          let golosovanti = await subject.place.getGolosovanti(),
+            emails = golosovanti.map(eachGolosovant => eachGolosovant.email)
+          await require("./Mailer").sendSilent(emails, "Predlozhenie_fix.mustache", "Утверждено предложение caller.org", result)
+        }
+      }
+      catch (err) {
+        this.log.error(err)
+      }
+    })
   }
 
   async Kopnik_getDruzhina(args, {KOPNIK}, {caller_authid}) {
@@ -542,29 +614,77 @@ class Server {
    * @param details
    * @constructor
    */
-  async Kopa_invite(args, {id}, details) {
-    var tran = await models.sequelize.transaction();
+  async Kopa_invite(args, {id}, {caller_authid}) {
+    let tran = await models.sequelize.transaction(),
+      caller,
+      kopa
 
     try {
-      var kopa = await models.Kopa.findById(id);
+      caller = await models.Kopnik.findOne({
+        where: {
+          email: caller_authid
+        }
+      })
+
+      kopa = await models.Kopa.findById(id)
+
+      if (kopa.owner_id != caller.id) {
+        throw new Error("kopa.owner_id!= caller.id")
+      }
+
+      if (await caller.getStarshinaNaKope(kopa)) {
+        throw new Error("kopa_under_starshina")
+      }
+
       kopa.invited = new Date();
 
-      await kopa.save();
-      await tran.commit();
+      await kopa.save()
+      await tran.commit()
     }
     catch (err) {
       await tran.rollback();
       throw err;
     }
+
     setImmediate(async() => {
-      await this.WAMP.session.publish(`api:model.Kopa.id${id}.change`)
-      await this.WAMP.session.publish(`api:model.Zemla.id${kopa.place_id}.kopaAdd`, [id])
-    });
+      try {
+        /**
+         * события
+         */
+        await this.WAMP.session.publish(`api:model.Kopa.id${id}.change`)
+        await this.WAMP.session.publish(`api:model.Zemla.id${kopa.place_id}.kopaAdd`, [id])
+
+        let golosovanti = await kopa.getGolosovanti(),
+        golosovantiEmails = golosovanti.map(eachGolosovant => eachGolosovant.email)
+
+        let golosovantiSessions= await models.Session.findAll({
+          where:{
+            "authid": {
+              $in: golosovantiEmails
+            }
+          }
+        }),
+          GOLOSOVANTI_SESSIONS= golosovantiSessions.map(eachSession=>+eachSession.id)
+        await this.WAMP.session.publish(`api:Application.notification`, null, {eventType: "kopaAdd", data: kopa.get({plain:true})}, {
+          acknowledge: true,
+          eligible: GOLOSOVANTI_SESSIONS
+        })
+
+        /**
+         * почта
+         */
+        kopa.owner = caller
+        await require("./Mailer").send(golosovantiEmails, "Kopa_invite.mustache", "Новая копа", kopa)
+      }
+      catch (err) {
+        this.log.error(err)
+      }
+    })
   }
 
   async Kopa_setQuestion(args, {id, value}, details) {
     var tran = await models.sequelize.transaction();
-
+2
     try {
       var kopa = await models.Kopa.findById(id);
       kopa.question = value;
@@ -642,6 +762,8 @@ class Server {
    */
   async model_create(args, {type, plain}, {caller_authid}) {
     let caller
+    this.log.debug("model_create", type, plain)
+
     if (type != "Registration") {
       caller = await models.Kopnik.findOne({
         where: {
@@ -665,15 +787,31 @@ class Server {
             throw new Error("Ошибка каптчи: " + result["error-codes"].join(", "))
           }
         }
+        plain.password = bcrypt.hashSync(plain.password, bcrypt.genSaltSync(/*14*/))
         break
       case "Kopa":
         if (plain.owner_id != caller.id) {
-          throw new Error("plain.owner_id!= caller.id");
+          throw new Error("plain.owner_id!= caller.id")
         }
+        let place = await models.Zemla.findById(plain.place_id)
+
+        if (await caller.getStarshinaVDome(place)) {
+          throw new Error("kopa_under_starshina")
+        }
+        /*
+         if (caller.getSilaNaZemle() < 0.01) {
+         throw new Error(`Вы не можете созывать копу на ${place.name}, т.к. у вас недостаточно авторитета (сил) для того чтобы созвать копников. По правилам kopnik.org для того чтобы созвать копу необходимо иметь хотя бы 1% от общего количества голосов. Для ${place.name} это составляет ${Math.ceil(place.obshinaSize / 100)} голосов. В подобном случае вы должны обратиться к своему старшине, для того чтобы он от своего имени созвал копу.`)
+         }
+         */
         break;
       case "Predlozhenie":
         if (plain.owner_id != caller.id) {
           throw new Error("plain.owner_id!= caller.id");
+        }
+        let place2 = await models.Kopa.findById(plain.place_id)
+
+        if (await caller.getStarshinaNaKope(place2)) {
+          throw new Error("predlozhenie_under_starshina")
         }
         break;
       case "Golos":
@@ -683,27 +821,33 @@ class Server {
         if (plain.owner_id != caller.id) {
           throw new Error("plain.owner_id!= caller.id");
         }
+        let place3 = await models.Kopa.findById(plain.place_id),
+          starshinaNaKope
+        if (await caller.getStarshinaNaKope(place3)) {
+          throw new Error("slovo under starshina")
+        }
         break;
     }
 
     let tran = await models.sequelize.transaction()
 
     try {
+      /**
+       * в конце этого try стоит return model, поэтому все делается внутри него
+       * а ничего после уже не выполнится
+       */
       let model = await models[type].create(plain),
         result = {id: model.id, created: model.created_at},
         verifier
-
-      if (type == "Registration") {
-        verifier = await model.setupVerifier()
-        result.verifier = verifier.get({plain: true})
-        delete result.verifier.password
-        try {
-          await require("./Mailer").send(model.email, "Registration_create.mustache", "Подтвердите регистрацию kopnik.org", result)
-        }
-        catch(err){
-        }
+      switch (type) {
+        case "Registration":
+          verifier = await model.setupVerifier()
+          result.verifier = verifier.get({plain: true})
+          delete result.verifier.password
+          break
+        case "Kopa":
+          break
       }
-
       for (let EACH_ATTACHMENT of plain.attachments) {
         let eachAttachment = await models.File.findById(EACH_ATTACHMENT)
         if (eachAttachment.owner_id != caller.id) {
@@ -711,6 +855,7 @@ class Server {
         }
         await eachAttachment["set" + type](model)
       }
+
 
       /**
        * событие о том что создался новый объект ".*Add" должно уходить после того
@@ -790,6 +935,30 @@ class Server {
         }
       });
 
+      /**
+       * уведомления тоже асинхронно, чтобы не задерживать результат клиенту
+       */
+      setImmediate(async() => {
+        try {
+          switch (type) {
+            case "Registration":
+              await require("./Mailer").sendSilent(model.email, "Registration_create.mustache", "Подтвердите регистрацию kopnik.org", result)
+              break;
+            case "Predlozhenie":
+              model.owner = caller
+              model.place = await model.getPlace()
+              let golosovanti = await model.place.getGolosovanti(),
+                emails = golosovanti.map(eachGolosovant => eachGolosovant.email)
+              await require("./Mailer").sendSilent(emails, "Predlozhenie_create.mustache", "Новое голосование kopnik.org", result)
+              break
+          }
+        }
+        catch (err) {
+          this.log.error("model_create error", args, {typs: type, plain: plain}, err);
+        }
+      })
+
+
       await tran.commit()
 
       return result
@@ -797,6 +966,11 @@ class Server {
     catch (err) {
       await tran.rollback();
       throw err;
+    }
+
+    switch (type) {
+      case "Registration":
+        break
     }
   }
 
@@ -977,12 +1151,7 @@ class Server {
    * Копа
    */
   /**
-   * слова до BEFORE
    * отсортированные по дате создания
-   * @param args
-   * @param PLACE
-   * @param BEFORE
-   * @param caller_authid
    * @returns {Promise<array>}
    */
   async Kopa_getDialog(args, {PLACE, BEFORE}, {caller_authid}) {

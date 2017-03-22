@@ -151,6 +151,7 @@ async function initKopnikFromRegistration() {
     password: bcrypt.hashSync("qwerty", bcrypt.genSaltSync(/*14*/)),
     birth: 1983
   })
+
   kopnik3 = await kopnik2.verifyRegistration(registration3, 1)
   await kopnik3.setStarshina2(kopnik2)
 
@@ -208,7 +209,7 @@ async function initKopnikFromRegistration() {
     passport: "1234",
     dom_id: unitTestZemla2.id,
     starshina_id: kopnik3.id,
-    email: 'unittest6@domain.ru',
+    email: 'unittest7@domain.ru',
     password: bcrypt.hashSync("qwerty", bcrypt.genSaltSync(/*14*/)),
     birth: 1983
   })

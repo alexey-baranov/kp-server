@@ -10,7 +10,8 @@ let _ = require("lodash");
 let models = require("../../src/model");
 let Cleaner = require("../../src/Cleaner");
 
-// let WAMP = require("../../src/WAMPFactory").getWAMP();
+let WAMP = require("../../src/WAMPFactory").getWAMP();
+
 let kopnik2,
   kopnik4,
   KOPNIK = 2,
@@ -23,12 +24,76 @@ let kopnik2,
 
 
 describe('Kopnik', function () {
-  before(function () {
-    return Cleaner.clean()
+  before(async function () {
+    await new Promise((res, rej) => {
+      WAMP.onopen = function () {
+        res()
+      }
+      WAMP.open()
+    })
+    await Cleaner.clean()
   })
 
   let someKopnik1,
     someKopnik2;
+
+  describe("#getStarshinaVDome()", function () {
+    it('should return null', async() => {
+      let kopnik2= await models.Kopnik.findById(2)
+      let starshinaVDome= await kopnik2.getStarshinaVDome(await models.Zemla.findById(2))
+
+      assert.equal(starshinaVDome, null)
+    })
+    it('should return most starshina', async() => {
+      let kopnik7= await models.Kopnik.findById(7)
+      let starshinaVDome= await kopnik7.getStarshinaVDome(await models.Zemla.findById(1))
+
+      assert.equal(starshinaVDome.id, 2, "starshinaVDome.id, 2")
+    })
+    it('should throw error', (done) => {
+      let zemla2
+      models.Zemla.findById(2)
+        .then(localZemla2=>{
+          zemla2= localZemla2
+          return models.Kopnik.findById(6)
+        })
+        .then ((kopnik6)=>{
+          return kopnik6.getStarshinaVDome(zemla2)
+        })
+        .then((starshinaVDome)=>{
+          done(new Error(starshinaVDome))
+        },
+          ()=>done())
+    })
+  })
+
+  describe("#getStarshinaNaKope()", function () {
+    it('should return null', async() => {
+      let kopnik2= await models.Kopnik.findById(2)
+      let starshinaNaKope= await kopnik2.getStarshinaNaKope(await models.Kopa.findById(3))
+
+      assert.equal(starshinaNaKope, null)
+    })
+    it('should return most starshina', async() => {
+      let kopnik7= await models.Kopnik.findById(7)
+      let starshinaNaKope= await kopnik7.getStarshinaNaKope(await models.Kopa.findById(3))
+
+      assert.equal(starshinaNaKope.id, 2, "starshinaNaKope.id, 2")
+    })
+    it('should throw error', (done) => {
+      (async ()=>{
+        let kopa3= await models.Kopa.findById(3)
+        let kopnik6 = await models.Kopnik.findById(6)
+        try {
+          kopnik6.getStarshinaNaKope(kopa3)
+          done(new Error(starshinaNaKope))
+        }
+        catch(err){
+          done()
+        }
+      })()
+    })
+  })
 
   describe("#isDom()", function () {
     it("sould return false for foreign zemla", async () => {
@@ -70,7 +135,6 @@ describe('Kopnik', function () {
   })
 
   describe('#create()', function () {
-
     it('should setup path', async function (done) {
       try {
         someKopnik1 = await models.Kopnik.create({

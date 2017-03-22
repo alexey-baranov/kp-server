@@ -10,7 +10,7 @@
 module.exports = function (sequelize, DataTypes) {
   let result = sequelize.define('Session', {
     id: {
-      type: DataTypes.STRING,
+      type: DataTypes.BIGINT,
       primaryKey: true,
     },
     authid: {

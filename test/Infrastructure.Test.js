@@ -14,6 +14,8 @@ let request = require('superagent')
 let config = require("../cfg/config.json")[process.env.NODE_ENV];
 let model = require("../src/model");
 let models = require("../src/model")
+// let cls = require('continuation-local-storage'),
+//   namespace = cls.createNamespace('Sequelize');
 
 
 let WAMP = require("../src/WAMPFactory").getWAMP();
@@ -32,9 +34,70 @@ describe('Infrastructure', function () {
     });
   });
 
-  it('database', async() => {
-    await model.sequelize.query("select 'КОПА'", {type: model.Sequelize.QueryTypes.SELECT});
-  });
+  describe("database", function () {
+    it('query', async() => {
+      await model.sequelize.query("select 'КОПА'", {type: model.Sequelize.QueryTypes.SELECT});
+    })
+
+    it('different transactions', (done) => {
+      let counter = 0
+
+      model.sequelize.transaction(function (t1) {
+        if (models.sequelize.Sequelize.cls.get('transaction') !== t1) {
+          done("transaction !== t1")
+        }
+        else if (++counter == 2) {
+          done()
+        }
+        return Promise.resolve()
+      })
+
+      model.sequelize.transaction(function (t2) {
+        models.sequelize.query("select 777", {type: model.Sequelize.QueryTypes.SELECT});
+
+        if (models.sequelize.Sequelize.cls.get('transaction') !== t2) {
+          done("transaction !== t2")
+        }
+        else if (++counter == 2) {
+          done()
+        }
+        return Promise.resolve()
+      })
+
+      // let tran1= await model.sequelize.transaction()
+      // await model.sequelize.query("select 'КОПА'", {type: model.Sequelize.QueryTypes.SELECT});
+    })
+
+    it('different transactions async/await', async () => {
+      await Promise.all([1,2].map(async ()=>{
+        let tran= await models.sequelize.transaction()
+        let clsTran= tran.sequelize.constructor.cls.get("transaction")
+        let res= (tran===clsTran)
+        console.log(res)
+        assert.equal(models.sequelize.Sequelize.cls.get('transaction'), tran, "cls.get('transaction')== tran")
+      }))
+    })
+
+    it('different transactions async/await 2', async () => {
+      await Promise.all([1,2].map(async ()=>{
+        let tran= await models.sequelize.transaction()
+        for(let x=0; x<10; x++){
+          await await models.sequelize.query(`select * from "Kopnik" where id= `+x, {type: model.Sequelize.QueryTypes.SELECT});
+        }
+      }))
+    })
+
+    it('different transactions async/await 3', async () => {
+      await Promise.all([1,2].map(async ()=>{
+        return models.sequelize.transaction(async function(){
+          for(let x=0; x<10; x++){
+            await models.sequelize.query(`select * from "Kopnik" where id= `+x, {type: model.Sequelize.QueryTypes.SELECT});
+          }
+        })
+      }))
+      console.log("all done")
+    })
+  })
 
   it('crossbar', function (done) {
     WAMP.open();
@@ -90,12 +153,20 @@ describe('Infrastructure', function () {
     })
   })
 
-  it('email', async function () {
-    let message
-    // message = await Mailer.send("alexey2baranov@gmail.com","<h1>Простой текст</h1><p>Я параграф</p>", "Infrastructure.spec.js Юникод!")
-    // assert.equal(!message, false, "message is not empty")
+  describe.only('email', function () {
+    it('single call', async function () {
+      await Mailer.send(["alexey2baranov@gmail.com", "alexey_baranov@inbox.ru"], "unit test.mustache", "Infrastructure.spec.js Юникод!", {now: new Date().toLocaleString()})
+    })
 
-    message = await Mailer.send("alexey2baranov@gmail.com","unit test.mustache", "Infrastructure.spec.js Юникод!", {now: new Date().toLocaleString()})
-    assert.equal(!message, false, "message is not empty")
+    it('batch call', async function () {
+      await Promise.all([
+        Mailer.send(["alexey2baranov@gmail.com", "unittest1@domain.ru"], "unit test.mustache", "Infrastructure.spec.js Юникод!", {now: new Date().toLocaleString()}),
+        Mailer.send(["unittest2@domain.ru", "unittest2@domain.ru"], "unit test.mustache", "Infrastructure.spec.js Юникод!", {now: new Date().toLocaleString()}),
+        Mailer.send(["unittest4@domain.ru", "unittest5@domain.ru"], "unit test.mustache", "Infrastructure.spec.js Юникод!", {now: new Date().toLocaleString()}),
+        Mailer.send(["alexey2baranov@gmail.com", "unittest1@domain.ru"], "unit test.mustache", "Infrastructure.spec.js Юникод!", {now: new Date().toLocaleString()}),
+        Mailer.send(["unittest2@domain.ru", "unittest2@domain.ru"], "unit test.mustache", "Infrastructure.spec.js Юникод!", {now: new Date().toLocaleString()}),
+        Mailer.send(["unittest4@domain.ru", "unittest5@domain.ru"], "unit test.mustache", "Infrastructure.spec.js Юникод!", {now: new Date().toLocaleString()}),
+      ])
+    })
   })
 })
