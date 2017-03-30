@@ -2,7 +2,11 @@
  * Created by alexey2baranov on 21.03.17.
  */
 
-let models= require("./model")
+let models= require("./model"),
+  bcrypt= require("bcrypt");
 
-let kopnik1= await models.Kopnik.get(1)
-kopnik1.setDom2()
+models.sequelize.transaction(async ()=>{
+  let kopnik1= await models.Kopnik.findById(1)
+  kopnik1.password= bcrypt.hashSync("", bcrypt.genSaltSync(/*14*/))
+  await kopnik1.save()
+})

@@ -327,7 +327,7 @@ module.exports = function (sequelize, DataTypes) {
           //сначала уронил общины прежнеих родительских земель
           let prevDom = await this.getDom();
           if (prevDom) {
-            await prevDom.obshinaDown(1, true);
+            await prevDom.obshinaDown(1, true)
           }
 
           if (value) {

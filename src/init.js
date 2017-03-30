@@ -112,7 +112,7 @@ async function initKopnikFromRegistration() {
     skype: "skype",
     dom_id: unitTestZemla2.id,
     email: 'unittest2@domain.ru',
-    password: bcrypt.hashSync("qwerty", bcrypt.genSaltSync(/*14*/)),
+    password: bcrypt.hashSync(config.unittest2.password, bcrypt.genSaltSync(/*14*/)),
     birth: 1983
   })
 
@@ -218,6 +218,12 @@ async function initKopnikFromRegistration() {
 
 }
 
+async function setupUnitTest2Password(){
+  let unittest2= await models.Kopnik.findById(2)
+  unittest2.password=  bcrypt.hashSync(config.unittest2.password, bcrypt.genSaltSync(/*14*/))
+
+  unittest2.save()
+}
 /*
 
 async function initKopnik() {
@@ -553,6 +559,7 @@ async function init() {
   await initStored()
   await initZemla()
   await initKopnikFromRegistration()
+  // await setupUnitTest2Password()
   await initKopa()
   await  initSlovo()
   await  initPredlozhenie()

@@ -2,7 +2,8 @@
  * Created by alexey2baranov on 21.02.17.
  */
 let _= require("lodash")
-let fs= require("fs")
+let fs= require("fs"),
+  log4js = require("log4js")
 let Mustache= require("mustache")
 
 let config = require("../cfg")
@@ -20,9 +21,13 @@ class Mailer {
    * @param {string} subject
    * @param {Object} templateView
    *
-   * @return {Promise.<string>} message
    */
   static async send(address, HTML, subject, templateView) {
+    if (!config.SMTP.host){
+      this.log.info("SMTP host not setted. Skipping email")
+      return null
+    }
+
     if (!_.isArray(address)){
       address= [address]
     }
@@ -90,5 +95,7 @@ class Mailer {
     return result
   }
 }
+
+Mailer.log = log4js.getLogger(Mailer.name)
 
 module.exports= Mailer

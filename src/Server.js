@@ -743,6 +743,7 @@ class Server {
   async model_create(args, {type, plain}, {caller_authid}) {
     let caller,
       model,
+      place,
       verifier,
       result
     this.log.debug("model_create", type, plain)
@@ -776,7 +777,7 @@ class Server {
         if (plain.owner_id != caller.id) {
           throw new Error("plain.owner_id!= caller.id")
         }
-        let place = await models.Zemla.findById(plain.place_id)
+        place = await models.Zemla.findById(plain.place_id)
 
         if (await caller.getStarshinaVDome(place)) {
           throw new Error("kopa_under_starshina")
@@ -791,9 +792,8 @@ class Server {
         if (plain.owner_id != caller.id) {
           throw new Error("plain.owner_id!= caller.id");
         }
-        let place2 = await models.Kopa.findById(plain.place_id)
-
-        if (await caller.getStarshinaNaKope(place2)) {
+        place = await models.Kopa.findById(plain.place_id)
+        if (await caller.getStarshinaNaKope(place)) {
           throw new Error("predlozhenie_under_starshina")
         }
         break;
@@ -804,15 +804,14 @@ class Server {
         if (plain.owner_id != caller.id) {
           throw new Error("plain.owner_id!= caller.id");
         }
-        let place3 = await models.Kopa.findById(plain.place_id),
-          starshinaNaKope
-        if (await caller.getStarshinaNaKope(place3)) {
+        place = await models.Kopa.findById(plain.place_id)
+        if (await caller.getStarshinaNaKope(place)) {
           throw new Error("slovo under starshina")
         }
         break;
     }
 
-    result= await models.sequelize.transaction(async() => {
+    result = await models.sequelize.transaction(async() => {
       /**
        * в конце этого try стоит return model, поэтому все делается внутри него
        * а ничего после уже не выполнится
@@ -877,9 +876,9 @@ class Server {
           case "Predlozhenie":
             await this.WAMP.session.publish(`api:model.Kopa.id${plain.place_id}.predlozhenieAdd`, [model.id], null, {acknowledge: true});
             break;
-          case "Golos":
-            await this.WAMP.session.publish(`api:model.Predlozhenie.id${plain.for_id}.golosAdd`, [model.id], null, {acknowledge: true});
-            break;
+          /*          case "Golos":
+           await this.WAMP.session.publish(`api:model.Predlozhenie.id${plain.for_id}.golosAdd`, [model.id], null, {acknowledge: true});
+           break;*/
           case "Kopa":
             //kopaAdd первый раз прилетает только на компьютеры автора
             // а потом уже внутри Kopa#invite();
@@ -918,7 +917,7 @@ class Server {
     });
 
     /**
-     * уведомления тоже асинхронно, чтобы не задерживать результат клиенту
+     * почта тоже асинхронно, чтобы не задерживать результат клиенту
      */
     setImmediate(async() => {
       try {
@@ -937,6 +936,37 @@ class Server {
       }
       catch (err) {
         this.log.error("model_create error", args, {typs: type, plain: plain}, err);
+      }
+    })
+
+    /**
+     * динь-динь notification
+     */
+    setImmediate(async() => {
+      switch (type) {
+        case "Predlozhenie":
+        case "Slovo":
+          let golosovanti = await place.getGolosovanti(),
+            golosovantiEmails = golosovanti.map(eachGolosovant => eachGolosovant.email)
+
+          let golosovantiSessions = await models.Session.findAll({
+              where: {
+                "authid": {
+                  $in: golosovantiEmails
+                }
+              }
+            }),
+            GOLOSOVANTI_SESSIONS = golosovantiSessions.map(eachSession => +eachSession.id)
+
+          await this.WAMP.session.publish(`api:Application.notification`, null, {
+              eventType: type == "Predlozhenie" ? "predlozhenieAdd" : "slovoAdd",
+              data: model.get({plain: true})
+            },
+            {
+              acknowledge: true,
+              eligible: GOLOSOVANTI_SESSIONS
+            })
+          break
       }
     })
 
@@ -988,9 +1018,9 @@ class Server {
         throw new Error("Не может быть удалено")
     }
 
-    await models.sequelize.transaction(
+    await models.sequelize.transaction(async() => {
       await model.destroy()
-    )
+    })
 
     /**
      * событие о том что удалился объект ".*Remove" должно уходить после того
@@ -1015,7 +1045,7 @@ class Server {
       catch (err) {
         this.log.error("model_destroy error", args, {typs: type, id: id}, err);
       }
-    });
+    })
   }
 
   /**
@@ -1077,6 +1107,7 @@ class Server {
         where
             kopa.place_id=:PLACE
             and ${BEFORE_FILTER}
+            and kopa.deleted_at is null
         order by
             kopa.invited desc nulls first,
             kopa.created_at desc
