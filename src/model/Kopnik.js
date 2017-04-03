@@ -635,9 +635,9 @@ module.exports = function (sequelize, DataTypes) {
       foreignKey: "starshina_id"
     })
 
-    db.Kopnik.hasMany(db.Kopnik, {
-      as: "druzhina",
-      foreignKey: "starshina_id"
+    db.Kopnik.hasMany(db.PushSubscription, {
+      as: "subscriptions",
+      foreignKey: "owner_id"
     })
 
     db.Kopnik.hasMany(db.File, {

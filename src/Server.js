@@ -81,6 +81,8 @@ class Server {
         //org.kopnik
         // await this.registerHelper('api:getKopnikSESSION', this.getKopnikSESSION, null, this)
 
+        //Application
+        await this.registerHelper('api:Application.addPushSubscription', this.Application_addPushSubscription, null, this)
 
         //регистрация копника
         await this.registerHelper('api:registration.getCountries', this.Registration_getCountries, null, this)
@@ -108,7 +110,6 @@ class Server {
         await this.registerHelper('api:model.Kopnik.getRegistrations', this.Kopnik_getRegistrations, null, this);
 
         //Kopa
-        // await this.registerHelper('api:model.Kopa.setQuestion', this.Kopa_setQuestion, null, this);
         await this.registerHelper('api:model.Kopa.invite', this.Kopa_invite, null, this);
         await this.registerHelper('api:model.Kopa.getDialog', this.Kopa_getDialog, null, this);
         await this.registerHelper('api:model.Kopa.getResult', this.Kopa_getResult, null, this);
@@ -174,6 +175,27 @@ class Server {
   async session_leave(args, kwargs, details) {
     let session = models.Session.build({id: "" + args[0]})
     await session.destroy()
+  }
+
+  async Application_addPushSubscription(args, kwargs, {caller_authid}) {
+    let result,
+      caller = await models.Kopnik.findOne({
+      where: {
+        email: caller_authid
+      }
+    })
+    await models.sequelize.transaction(async() => {
+      let subscriptions = await models.PushSubscription.findAll({where: {owner_id: caller.id}, order: "id"})
+      for (let EACH_SUBSCRIPTION = 0; EACH_SUBSCRIPTION <= subscriptions.length - models.PushSubscription.maxCountPerKopnik; EACH_SUBSCRIPTION++) {
+        await subscriptions[EACH_SUBSCRIPTION].destroy({force: true})
+      }
+      result= await models.PushSubscription.create({
+        endpoint: args[0],
+        owner_id: caller.id
+      })
+    })
+
+    return result
   }
 
   async unitTest_orderProc([x]) {
@@ -1060,15 +1082,25 @@ class Server {
    * @returns {*}
    */
   async Zemla_promiseKopi(args, {PLACE, BEFORE, count}, {caller_authid}) {
+    let caller = await models.Kopnik.findOne({
+        where: {
+          email: caller_authid
+        }
+      }),
+      place = await models.Zemla.findById(PLACE)
+
+    if (!await caller.isDom(place)) {
+      throw new Error(`Permission denied: foreign zemla ${place.name}`)
+    }
+
     let BEFORE_FILTER
 
     count = count ? Math.min(count, 25) : 25
-
-    if (!BEFORE)
     /**
      * свои копы должны в любом случае уйти при первом запрсое
      * потому что у них даты созвания и это геморно обрабатывать
-     */{
+     */
+    if (!BEFORE) {
       let callerKopiCount = await models.sequelize.query(`
         select count(*) as count
             from "Kopa" as kopa
@@ -1077,6 +1109,7 @@ class Server {
             kopa.place_id=:PLACE
             and kopa.invited is null 
             and kopnik.email=:caller_authid
+            and kopa.deleted_at is null
             `,
         {
           replacements: {
@@ -1139,7 +1172,6 @@ class Server {
     return result
   }
 
-
   /**
    * Копа
    */
@@ -1166,7 +1198,6 @@ class Server {
     result = result.map(eachResult => eachResult.get({plain: true}));
     return result;
   }
-
 
   /**
    * Предложения созданные до BEFORE
@@ -1245,6 +1276,52 @@ class Server {
     return results[0].result;
   }
 
+  async getPermission(type, model, caller, permission) {
+    this.log.debug("#getPermission()", type, model.id, caller.fullName, permission)
+    switch (permission) {
+      case "read":
+        switch (type/*model.$modelOptions.name.singular*/) {
+          case "Zemla":
+            return true
+          case "Kopa":
+            return await caller.isDom(await model.getPlace())
+          case "Golos":
+            var predlozhenie = await model.getSubject(),
+              kopa = await predlozhenie.getPlace(),
+              zemla = await kopa.getPlace()
+            return await caller.isDom(zemla)
+          case "Slovo":
+          case "Predlozhenie":
+            var kopa = await model.getPlace(),
+              zemla = await kopa.getPlace()
+            return await caller.isDom(zemla)
+          case "Registration":
+            return caller.id == (await model.getClosestVerifier()).id
+          case "Kopnik":
+            return true
+          case "File":
+            let parent
+            if (parent = await model.getKopa()) {
+              return await this.getPermission("Kopa", parent, caller, permission)
+            }
+            if (parent = await model.getSlovo()) {
+              return await this.getPermission("Slovo", parent, caller, permission)
+            }
+            else if (parent = await model.getPredlozhenie()) {
+              return await this.getPermission("Predlozhenie", parent, caller, permission)
+            }
+            else {
+              return true
+            }
+          default:
+            throw new Error("Неизвестный тип")
+        }
+        break
+      default:
+        throw new Error("unknown permission=" + permission)
+    }
+  }
+
   /**
    * "Обещает" вернуть модель
    *
@@ -1252,49 +1329,51 @@ class Server {
    * @param kwargs
    * @returns {*}
    */
-  async promiseModel(args, kwargs) {
+  async promiseModel(args, kwargs, {caller_authid}) {
     this.log.debug("#promiseModel()", args, kwargs)
+    let caller = await models.Kopnik.findOne({
+      where: {
+        email: caller_authid
+      }
+    })
 
     if (!kwargs.id) {
       throw new Error("Не задан идентификатор модели")
     }
 
-    // var tran = await models.sequelize.transaction();
-    let result = null;
+    let result,
+      model
 
-    try {
-      switch (kwargs.model) {
-        case "Zemla":
-        case "Kopa":
-        case "Golos":
-        case "Slovo":
-        case "Registration":
-        case "Kopnik":
-        case "Predlozhenie":
-          result = await models[kwargs.model].findById(kwargs.id, {
-            include: [{
-              model: models.File,
-              as: 'attachments'
-            }]
-          });
-          result = result.get({plain: true});
-          delete result.password;
-          break;
-        case "File":
-          result = await models[kwargs.model].findById(kwargs.id);
-          result = result.get({plain: true});
-          break;
-        default:
-          throw new Error("Неизвестный тип")
-      }
+    switch (kwargs.model) {
+      case "Zemla":
+      case "Kopa":
+      case "Golos":
+      case "Slovo":
+      case "Registration":
+      case "Kopnik":
+      case "Predlozhenie":
+        model = await models[kwargs.model].findById(kwargs.id, {
+          include: [{
+            model: models.File,
+            as: 'attachments'
+          }]
+        });
+        result = model.get({plain: true});
+        delete result.password;
+        break;
+      case "File":
+        model = await models[kwargs.model].findById(kwargs.id);
+        result = model.get({plain: true});
+        break;
+      default:
+        throw new Error("Неизвестный тип")
+    }
 
-      // await tran.commit();
-      return result
+    if (!await this.getPermission(kwargs.model, model, caller, "read")) {
+      throw new Error(`Permission denied: ${kwargs.model}:${model.id} read for ${caller.name}`)
     }
-    catch (err) {
-      // await tran.rollback()
-      throw err
-    }
+
+    return result
   }
 
   /**

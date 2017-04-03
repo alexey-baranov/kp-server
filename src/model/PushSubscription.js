@@ -8,35 +8,21 @@
  * @returns {Model}
  */
 module.exports = function (sequelize, DataTypes) {
-  let result = sequelize.define('Session', {
+  let result = sequelize.define('PushSubscription', {
     id: {
       type: DataTypes.BIGINT,
       primaryKey: true,
+      autoIncrement: true
     },
-    authid: {
-      type: DataTypes.STRING,
+    endpoint: {
+      type: DataTypes.TEXT,
     },
-    authmethod: {
-      type: DataTypes.STRING,
-    },
-    authprovider: {
-      type: DataTypes.STRING,
-    },
-    authrole: {
-      type: DataTypes.STRING,
-    },
-    transport: {
-      type: DataTypes.JSON,
-    },
-    note: {
-      type: DataTypes.TEXT
-    }
   }, {
     indexes: [
-      {
-        unique: false,
-        fields: ['authid']
-      }
+      // {
+      //   unique: false,
+      //   fields: ['authid']
+      // }
     ]
   })
 
@@ -45,6 +31,8 @@ module.exports = function (sequelize, DataTypes) {
       as: "owner",
     });
   }
+
+  result.maxCountPerKopnik= 5
 
   return result
 };
