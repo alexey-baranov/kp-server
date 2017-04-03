@@ -31,9 +31,11 @@ let zemla,
   kopnik,
   kopa,
   kopa3,
+  kopa8,
   slovo,
   predlozhenie,
   predlozhenie2,
+  predlozhenie4,
   golos;
 
 async function initSchema() {
@@ -75,7 +77,6 @@ async function initSchema() {
 
 async function initZemla() {
   unitTestZemla1 = await models.Zemla.create({name: 'Rus', path: "/", level: -1})
-  await models.sequelize.query(`update "Zemla" set verifier_id=2 where id =1`)
   zemla = unitTestZemla2 = await (await models.Zemla.create({name: 'Country1', level: 0})).setParent2(unitTestZemla1)
   unitTestZemla3 = await (await models.Zemla.create({name: 'Region1', level: 1, country_id: 2})).setParent2(unitTestZemla2)
   unitTestZemla4 = await (await models.Zemla.create({name: 'Country2', level: 0})).setParent2(unitTestZemla1)
@@ -115,6 +116,7 @@ async function initKopnikFromRegistration() {
     password: bcrypt.hashSync(config.unittest2.password, bcrypt.genSaltSync(/*14*/)),
     birth: 1983
   })
+  await models.sequelize.query(`update "Zemla" set verifier_id=2 where id =1`)
 
   let registration1 = await models.Registration.create({
     name: 'registration1',
@@ -216,6 +218,18 @@ async function initKopnikFromRegistration() {
   kopnik7 = await kopnik2.verifyRegistration(registration7, 1)
   await kopnik7.setStarshina2(kopnik3)
 
+  let registration8 = await models.Registration.create({
+    name: 'permission denied on load',
+    surname: 'Test',
+    patronymic: '8',
+    passport: "1234",
+    dom_id: unitTestZemla4.id,
+    email: 'unittest8@domain.ru',
+    password: bcrypt.hashSync("qwerty", bcrypt.genSaltSync(/*14*/)),
+    birth: 1983
+  })
+
+  await models.sequelize.query(`update "Zemla" set verifier_id=6 where id =4`)
 }
 
 async function setupUnitTest2Password(){
@@ -381,6 +395,13 @@ async function initKopa() {
     });
     await kopa7.setPlace(Zemla);
     await kopa7.setOwner(kopnik2);
+
+    kopa8 = await models.Kopa.create({
+      question: 'открыл шестой копник на четверной земле',
+      invited: new Date(CHE - 2 * 3600 * 1000),
+      place_id: 4,
+      owner_id: 6
+    });
   }
 }
 
@@ -404,6 +425,12 @@ async function initSlovo() {
     owner_id: kopnik2.id,
     value: 'я ЗА!',
   });
+
+  await models.Slovo.create({
+    place_id: kopa8.id,
+    owner_id: kopnik6.id,
+    value: 'permission denied',
+  })
 
   /*    await models.sequelize.query(`
    update "Slovo"
@@ -436,12 +463,20 @@ async function initPredlozhenie() {
     owner_id: kopnik2.id,
     value: 'Считаю ...',
   });
+
+
+  predlozhenie4 = await models.Predlozhenie.create({
+    place_id: kopa8.id,
+    owner_id: kopnik6.id,
+    value: 'permission denied',
+  });
 }
 
 async function initGolos() {
   // await kopnik2.vote(predlozhenie,1);
   await kopnik4.vote(predlozhenie2, 1);
   await kopnik5.vote(predlozhenie2, 1);
+  await kopnik6.vote(predlozhenie4, 1);
 }
 
 async function initFile() {
