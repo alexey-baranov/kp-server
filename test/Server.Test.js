@@ -79,19 +79,28 @@ describe('Server', function () {
 
   describe.only('addPushSubscription()', function () {
     it("shluld subscribe", async() => {
-      let subscription = await server.Application_addPushSubscription(['unit test subscription'], {}, {caller_authid: "unittest2@domain.ru"})
+      let subscription = await server.Application_addPushSubscription([{
+        endpoint: 'unit test subscription',
+        keys: {p256dh: "p256dh", auth: "auth"}
+      }], {}, {caller_authid: "unittest2@domain.ru"})
       await model.PushSubscription.findById(subscription.id)
     })
 
     it("shluld delete last one", async() => {
       for (let i = 0; i < model.PushSubscription.maxCountPerKopnik; i++) {
-        await server.Application_addPushSubscription(['unit test subscription'], {}, {caller_authid: "unittest2@domain.ru"})
+        await server.Application_addPushSubscription([{
+          endpoint: 'unit test subscription',
+          keys: {p256dh: "p256dh", auth: "auth"}
+        }], {}, {caller_authid: "unittest2@domain.ru"})
       }
       //1. получить подписки до добавления
       let subscriptionsBefore = await model.PushSubscription.findAll({where: {owner_id: 2}, order: "id"})
       assert.equal(subscriptionsBefore.length, model.PushSubscription.maxCountPerKopnik, "subscriptions.length, " + model.PushSubscription.maxCountPerKopnik)
       //2. добавить подписку
-      let subscription = await server.Application_addPushSubscription(['unit test subscription'], {}, {caller_authid: "unittest2@domain.ru"})
+      let subscription = await server.Application_addPushSubscription([{
+        endpoint: 'unit test subscription',
+        keys: {p256dh: "p256dh", auth: "auth"}
+      }], {}, {caller_authid: "unittest2@domain.ru"})
       assert.equal(await model.PushSubscription.findById(subscription.id) != null, true, "model.PushSubscription.findById(SUBSCRIPTION)!= null")
       //3. получить подписки после добавления
       let subscriptionsAfter = await model.PushSubscription.findAll({where: {owner_id: 2}, order: "id"})
@@ -100,6 +109,29 @@ describe('Server', function () {
       assert.equal(subscriptionsAfter[1].id, subscriptionsBefore[2].id, "0")
       assert.equal(subscriptionsAfter[2].id, subscriptionsBefore[3].id, "0")
       assert.equal(subscriptionsAfter[3].id, subscriptionsBefore[4].id, "0")
+    })
+
+    it.only("should push", async() => {
+      console.log("refresh browser to add correct webpush subscription into database")
+      const webpush = require('web-push');
+
+      webpush.setGCMAPIKey(/*'<Your GCM API Key Here>'*/config.FCM.serverKey);
+      webpush.setVapidDetails('mailto:alexey2baranov@gmail.com', config.VAPID.publicKey, config.VAPID.privateKey)
+
+      // This is the same output of calling JSON.stringify on a PushSubscription
+      let subscriptions = await model.PushSubscription.findAll({where: {owner_id: 2}})
+      const pushSubscription = subscriptions[subscriptions.length - 1].value
+
+      let result = await webpush.sendNotification(pushSubscription, JSON.stringify({
+        notification: {
+          title: 'unit test title',
+          options: {
+            body: 'unit test body',
+            tag: "unit test tag" + new Date()
+          }
+        }
+      }))
+      // assert.equal(result.success,1)
     })
   })
 })

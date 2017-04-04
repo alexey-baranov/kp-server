@@ -192,7 +192,7 @@ class Server {
         await subscriptions[EACH_SUBSCRIPTION].destroy({force: true})
       }
       result= await models.PushSubscription.create({
-        endpoint: args[0],
+        value: args[0],
         owner_id: caller.id
       })
     })

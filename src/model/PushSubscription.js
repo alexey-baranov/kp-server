@@ -14,8 +14,8 @@ module.exports = function (sequelize, DataTypes) {
       primaryKey: true,
       autoIncrement: true
     },
-    endpoint: {
-      type: DataTypes.TEXT,
+    value: {
+      type: DataTypes.JSON,
     },
   }, {
     indexes: [

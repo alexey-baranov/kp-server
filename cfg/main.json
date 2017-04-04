@@ -39,6 +39,14 @@
     "SMTP": {
       "host": "localhost",
       "from": "noreply@kopnik.org"
+    },
+    "FCM":{
+      "serverKey":"AAAAPzuy5_M:APA91bF1sw8KpHaCGZi8GA61T3q3q1irL6rHDNAf8M5OK9w7TYvViohFqfd_f5l_xtWJkZsZF7OWkg23cXBgrPwHmrb3kj_64y2TLKcTC4xHMF8fZRzb9pu_X4e2Ull3eRXyyHruh9qF",
+      "senderID": "271584520179"
+    },
+    "VAPID":{
+      "publicKey":"BLz7OwXHhSA1BPc9jVPpy0lTooMfjvP9bb5lmXSjfqtubBDPq_IOCaK6PLbtfz8gbdQ5jpadza9Ap-53AM_9Y4s",
+      "privateKey":"Wp_CWZxkpaEwgro5asbIK7f57Yq3z2_K02sow-_krKc"
     }
   },
   "testing": {
@@ -81,6 +89,14 @@
     "SMTP": {
       "host": "localhost",
       "from": "noreply@kopnik.org"
+    },
+    "FCM":{
+      "serverKey":"AAAAPzuy5_M:APA91bF1sw8KpHaCGZi8GA61T3q3q1irL6rHDNAf8M5OK9w7TYvViohFqfd_f5l_xtWJkZsZF7OWkg23cXBgrPwHmrb3kj_64y2TLKcTC4xHMF8fZRzb9pu_X4e2Ull3eRXyyHruh9qF",
+      "senderID": "271584520179"
+    },
+    "VAPID":{
+      "publicKey":"BLz7OwXHhSA1BPc9jVPpy0lTooMfjvP9bb5lmXSjfqtubBDPq_IOCaK6PLbtfz8gbdQ5jpadza9Ap-53AM_9Y4s",
+      "privateKey":"Wp_CWZxkpaEwgro5asbIK7f57Yq3z2_K02sow-_krKc"
     }
   }
 }
