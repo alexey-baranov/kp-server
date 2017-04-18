@@ -121,6 +121,8 @@ class FIASImporter {
 
       saxStream.on("end", function () {
         logger.debug("загрузка адресов завершена. ИТОГО:", rowsCount);
+        logger.debug("перевод городов федерального значения (уровень 1) в города уровня 4");
+        this.client.executeSync(`update "Zemla" set level = 4 where country_id=${RUSSIA} and level=1 and "SHORTNAME"='г'`);
         res(rowsCount);
       });
 

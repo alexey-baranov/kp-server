@@ -75,9 +75,9 @@ describe('Server', function () {
     it('should be ordered invited', function () {
       assert.equal(result[0].invited < result[1].invited, true);
     });
-  });
+  })
 
-  describe.only('addPushSubscription()', function () {
+  describe('addPushSubscription()', function () {
     it("shluld subscribe", async() => {
       let subscription = await server.Application_addPushSubscription([{
         endpoint: 'unit test subscription',
@@ -110,29 +110,43 @@ describe('Server', function () {
       assert.equal(subscriptionsAfter[2].id, subscriptionsBefore[3].id, "0")
       assert.equal(subscriptionsAfter[3].id, subscriptionsBefore[4].id, "0")
     })
+  })
 
-    it.only("should push", async() => {
+  describe("#push()", function () {
+    before(() => {
       console.log("refresh browser to add correct webpush subscription into database")
-      const webpush = require('web-push');
+    })
 
-      webpush.setGCMAPIKey(/*'<Your GCM API Key Here>'*/config.FCM.serverKey);
-      webpush.setVapidDetails('mailto:alexey2baranov@gmail.com', config.VAPID.publicKey, config.VAPID.privateKey)
-
+    it("should push", async() => {
       // This is the same output of calling JSON.stringify on a PushSubscription
       let subscriptions = await model.PushSubscription.findAll({where: {owner_id: 2}})
       const pushSubscription = subscriptions[subscriptions.length - 1].value
 
-      let result = await webpush.sendNotification(pushSubscription, JSON.stringify({
-        notification: {
-          title: 'unit test title',
-          options: {
-            body: 'unit test body',
-            tag: "unit test tag" + new Date()
-          }
-        }
-      }))
-      // assert.equal(result.success,1)
+      let whom=await model.Kopnik.findById(2)
+
+      await server.push(
+        {
+          eventType: "kopaAdd",
+          model: (await model.Kopa.findById(3)).get({plain: true})
+        },
+        whom
+      )
+      await server.push(
+        {
+          eventType: "predlozhenieAdd",
+          model: (await model.Predlozhenie.findById(3)).get({plain: true})
+        },
+        whom
+      )
+      await server.push(
+        {
+          eventType: "slovoAdd",
+          model: (await model.Slovo.findById(3)).get({plain: true})
+        },
+        whom
+      )
     })
+
   })
 })
 

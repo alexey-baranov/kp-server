@@ -113,8 +113,9 @@ describe('Infrastructure', function () {
       });
   });
 
-  describe('file-server', function () {
+  describe.only('file-server', function () {
     it('#upload()', async() => {
+      console.log(config)
       let response = await request
         .post(`${config["file-server"].schema}://${config["file-server"].host}:${config["file-server"].port}/${config["file-server"]["upload-path"]}`)
         .field("OWNER", 2)

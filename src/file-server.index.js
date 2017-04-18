@@ -15,6 +15,8 @@ let models = require("./model")
 let app = express()
 
 let config = require("../cfg")
+console.log("config", config)
+
 let fileSize= 25*1024*1024
 
 // default options
@@ -70,6 +72,9 @@ app.post('/'+config["file-server"]["upload-path"], function (req, res) {
 
 app.get('/download', async function (req, res) {
   try {
+    if (!req.query.path.startsWith("upload")){
+      throw new Error("serve upload folder only")
+    }
     let file = await models.File.findOne({where: {path: req.query.path}})
     let data = fs.readFileSync(__dirname + "/../" + req.query.path)
 
@@ -93,5 +98,5 @@ app.get('/download', async function (req, res) {
 })
 
 app.listen(config["file-server"].port, function () {
-  console.log('Example app listening on port ' + config["file-server"].port)
+  console.log('file server listening on port ' + config["file-server"].port)
 })

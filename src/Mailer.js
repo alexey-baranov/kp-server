@@ -23,8 +23,14 @@ class Mailer {
    *
    */
   static async send(address, HTML, subject, templateView) {
+    if (arguments.length==4){
+      HTML= Mailer.renderTemplate(HTML, templateView)
+    }
+
+    log4js.getLogger(Mailer.name).debug("HTML", HTML)
+
     if (!config.SMTP.host){
-      this.log.info("SMTP host not setted. Skipping email")
+      require("log4js").getLogger(Mailer.name).info("SMTP host not setted. Skipping email")
       return null
     }
 
@@ -36,10 +42,6 @@ class Mailer {
         host: config.SMTP.host,
         ssl: false
       })
-    }
-
-    if (arguments.length==4){
-      HTML= Mailer.renderTemplate(HTML, templateView)
     }
 
     let errors=[]

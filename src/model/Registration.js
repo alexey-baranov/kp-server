@@ -117,7 +117,7 @@ module.exports = function (sequelize, DataTypes) {
       },
       getterMethods: {
         fullName: function () {
-          return `${this.name} ${this.surname}`;
+          return `${this.surname} ${this.name} ${this.patronymic}`;
         },
       },
       validate: {

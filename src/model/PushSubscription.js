@@ -16,7 +16,7 @@ module.exports = function (sequelize, DataTypes) {
     },
     value: {
       type: DataTypes.JSON,
-    },
+    }
   }, {
     indexes: [
       // {
@@ -27,12 +27,15 @@ module.exports = function (sequelize, DataTypes) {
   })
 
   result.associate = function (db) {
-    db.Session.belongsTo(db.Kopnik, {
+    db.PushSubscription.belongsTo(db.Kopnik, {
       as: "owner",
-    });
+    })
+     db.PushSubscription.belongsTo(db.Session, {
+     // as: "owner",
+     })
   }
 
-  result.maxCountPerKopnik= 5
+  result.maxCountPerKopnik = 5
 
   return result
 };

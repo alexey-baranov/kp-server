@@ -44,7 +44,8 @@ async function initSchema() {
       type: models.Sequelize.QueryTypes.SELECT
     });
 
-
+  await models.PushSubscription.drop({cascade:true})
+  await models.Session.drop({cascade:true})
   await models.File.drop({cascade: true})
   await models.Golos.drop({cascade: true})
   await models.Predlozhenie.drop({cascade: true})
@@ -99,7 +100,7 @@ async function initKopnikFromRegistration() {
     passport: "1234",
     skype: "alexey__baranov",
     dom_id: unitTestZemla4.id,
-    email: 'alexey_baranov@inbox.ru',
+    email: 'alexey2baranov@gmail.com',
     password: bcrypt.hashSync("qwerty", bcrypt.genSaltSync(/*14*/)),
     birth: 1983
   })
@@ -385,7 +386,7 @@ async function initKopa() {
       question: 'далеко впереди',
       planned: new Date(FUTURE + 1 * 3600 * 1000),
     });
-    await kopa6.setPlace(Zemla);
+    await kopa6.setPlace(unitTestZemla1);
     await kopa6.setOwner(kopnik2);
 
     var kopa7 = await models.Kopa.create({
@@ -393,7 +394,7 @@ async function initKopa() {
       planned: new Date(CHE - 2 * 3600 * 1000),
       invited: new Date(CHE - 2 * 3600 * 1000)
     });
-    await kopa7.setPlace(Zemla);
+    await kopa7.setPlace(unitTestZemla1);
     await kopa7.setOwner(kopnik2);
 
     kopa8 = await models.Kopa.create({

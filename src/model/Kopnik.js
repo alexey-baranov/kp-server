@@ -51,7 +51,7 @@ module.exports = function (sequelize, DataTypes) {
         type: DataTypes.STRING,
         allowNull: false
       },
-      skype:{
+      skype: {
         type: DataTypes.STRING
       },
       voiskoSize: {
@@ -79,8 +79,8 @@ module.exports = function (sequelize, DataTypes) {
          * @param zemla
          */
         async getStarshinaNaKope(kopa){
-          let place= await kopa.getPlace()
-          let result= await this.getStarshinaVDome(place)
+          let place = await kopa.getPlace()
+          let result = await this.getStarshinaVDome(place)
 
           return result
         },
@@ -89,13 +89,13 @@ module.exports = function (sequelize, DataTypes) {
          * @param zemla
          */
         async getStarshinaVDome(zemla){
-          let dom= await this.getDom()
+          let dom = await this.getDom()
           /**
            * проверочка проживает ли копник вообще в этом доме
            * если залетный, то старшины не может быть
            */
           if (!dom.fullPath.startsWith(zemla.fullPath)) {
-            throw new Error(`Kopnik ${this.fullName} doesn't live into ${zemla.name}`)
+            throw new Error(`Kopnik ${this.surname} ${this.name} ${this.patronymic} doesn't live into ${zemla.name}`)
           }
 
           /**
@@ -105,7 +105,7 @@ module.exports = function (sequelize, DataTypes) {
            * кто проживает в доме
            */
 
-          let starshini= (await this.getStarshini()).reverse()
+          let starshini = (await this.getStarshini()).reverse()
           for (let eachStarshina of starshini) {
             let eachStarshinaDom = await eachStarshina.getDom()
             if (eachStarshinaDom.fullPath.startsWith(zemla.fullPath)) {
@@ -126,7 +126,7 @@ module.exports = function (sequelize, DataTypes) {
          * @param zemla
          */
         async isDom(zemla){
-          let dom= await this.getDom()
+          let dom = await this.getDom()
           return dom.fullPath.startsWith(zemla.fullPath)
         },
         /**
@@ -136,14 +136,14 @@ module.exports = function (sequelize, DataTypes) {
          * @param {Zemla} zemla
          */
         async getSilaNaZemle(zemla){
-          let dom= await this.getDom()
+          let dom = await this.getDom()
 
           //еопник не проживает на земле
-          if (! await this.isDom(zemla)){
+          if (!await this.isDom(zemla)) {
             return 0
           }
 
-          let voiskoNaZemle= await sequelize.query(`
+          let voiskoNaZemle = await sequelize.query(`
             select count(*) as count
             from 
               "Kopnik" dr
@@ -160,9 +160,9 @@ module.exports = function (sequelize, DataTypes) {
               type: sequelize.Sequelize.QueryTypes.INSERT
             })
 
-          voiskoNaZemle= +voiskoNaZemle[0].count
+          voiskoNaZemle = +voiskoNaZemle[0].count
 
-          let result= (voiskoNaZemle+1)/zemla.obshinaSize
+          let result = (voiskoNaZemle + 1) / zemla.obshinaSize
           return result
         },
 
@@ -222,32 +222,89 @@ module.exports = function (sequelize, DataTypes) {
          * Устанавливает старшину в локальную переменную
          * устанавливает путь себе и всей дружине
          *
+         * rebalanceResult в результате функции - изменения которые отправятся клиентам
+         * это могут быть просто totalZa, totalProtiv, а могут быть и golos, actioni: "remove"
+         * для предложений которые копник голосовал, а они теперь под голосованием старшины
+         *
          * @param {Kopnik} value
          */
         setStarshina2: async function (value) {
+          let models = require("./index"),
+            /**
+             * это объединенная карта из разголосованых предложений
+             * и предложений старых и новых старшин
+             * PREDLOZHENIE -> {predlozhenie, voteResult:[, ...]}
+             * @type {Map}
+             */
+            modifiedPredlozhenia = new Map()
+
           //проверяю не является ли старшина моим дружинником
           if (value && this.isKopnikInVoisko(value)) {
             throw new Error("Копник, которого назначают старшиной, в данный момент состоит в дружине. Чтобы выбрать его старшиной, сначала он должен выйти из дружины");
           }
           //проверяю не является ли копник сам себе старшиной
           if (value && this.id == value.id) {
-            throw new Error("нельзя назначить себя старшиной");
+            throw new Error("нельзя назначить себя старшиной")
           }
+          //предыдущие старшины, поотом пересчитаю их голосования
+          let prevStarshini = await this.getStarshini()
           //сначала уронил войско старшин
-          await this.voiskoDown();
+          await this.voiskoDown()
 
           if (value) {
-            this.starshina_id = value.id;
+            //предложения которые надо разголосовать потому что за них голосуют старшины
+            let zemliUnderStarshini = []
+            for (let eachStarshina of [value].concat(await value.getStarshini())) {
+              zemliUnderStarshini = zemliUnderStarshini.concat(await eachStarshina.getDoma())
+            }
+            let unvotePredlozheniaAsArray = await sequelize.query(`
+              select p.id as "PREDLOZHENIE", voter.id as "KOPNIK"
+              from 
+                "Predlozhenie" p
+                join "Kopa" k on k.id= p.place_id
+                join "Zemla" z on z.id= k.place_id
+                join "Golos" g on g.subject_id= p.id  
+                join "Kopnik" voter on voter.id= g.owner_id
+              where
+                p.deleted_at is null
+                and p.state is null
+                and z.id in (:ZEMLI_UNDER_STARSHINI)
+                and g.deleted_at is null
+                and k.deleted_at is null
+                and (
+                  voter.id= :THIS
+                  or voter.path like :THIS_FULL_PATH || '%' 
+                )
+`,
+              {
+                replacements: {
+                  "ZEMLI_UNDER_STARSHINI": zemliUnderStarshini.map(each => each.id),
+                  "THIS": this.id,
+                  "THIS_FULL_PATH": this.fullPath,
+                },
+                type: sequelize.Sequelize.QueryTypes.SELECT
+              })
+
+            for (let eachUnvotePredlozhenieAsArray of unvotePredlozheniaAsArray) {
+              let eachUnvotePredlozhenie = await models.Predlozhenie.findById(eachUnvotePredlozhenieAsArray["PREDLOZHENIE"]),
+                eachKopnik = await models.Kopnik.findById(eachUnvotePredlozhenieAsArray["KOPNIK"]),
+                eachUnvoteResult = await eachKopnik.vote(eachUnvotePredlozhenie, 0)
+              if (!modifiedPredlozhenia.has(eachUnvotePredlozhenie.id)) {
+                modifiedPredlozhenia.set(eachUnvotePredlozhenie.id, {
+                  predlozhenie: eachUnvotePredlozhenie,
+                  voteResult: []
+                })
+              }
+              modifiedPredlozhenia.get(eachUnvotePredlozhenie.id).voteResult.push(eachUnvoteResult)
+            }
+            this.starshina_id = value.id
           }
           else {
             this.starshina_id = null;
           }
-          await this.save(["starshina_id"]);
+          await this.save(["starshina_id"])
 
           //сменил путь себе и войску
-          `
-                    
-                    `;
           await sequelize.query(`
                                 update "Kopnik"
                                 set
@@ -264,13 +321,62 @@ module.exports = function (sequelize, DataTypes) {
                 "fullPath": this.fullPath,
               },
               type: sequelize.Sequelize.QueryTypes.UPDATE
-            });
+            })
 
           //установил локально путь, в БД он уже установлен выше
           this.setupPath(value);
           //теперь поднял войско новых старшин
           await this.voiskoUp();
-          return this;
+          //новые старшины для переголосовки текущих голосований
+          let starshini = await this.getStarshini()
+
+          /**
+           * предложения старшин
+           */
+          let starshiniPredlozheniaAsArray = await sequelize.query(`
+            select p.*
+            from 
+              "Predlozhenie" p
+              join "Golos" g on g.subject_id= p.id
+            where
+              p.deleted_at is null
+              and g.deleted_at is null
+              and p.state is null
+              and g.owner_id in (:STARSHINI)
+`,
+            {
+              replacements: {
+                "STARSHINI": prevStarshini.concat(starshini).map(each => each.id),
+              },
+              type: sequelize.Sequelize.QueryTypes.SELECT
+            })
+
+          let starshiniPredlozhenia = await models.Predlozhenie.findAll({
+            where: {
+              id: {
+                $in: starshiniPredlozheniaAsArray.map(each => each.id)
+              }
+            }
+          })
+
+          for (let eachStarshinaPredlozhenie of starshiniPredlozhenia) {
+            await eachStarshinaPredlozhenie.rebalance()
+
+            if (!modifiedPredlozhenia.has(eachStarshinaPredlozhenie.id)) {
+              modifiedPredlozhenia.set(eachStarshinaPredlozhenie.id, {
+                predlozhenie: eachStarshinaPredlozhenie
+              })
+            }
+            else {
+              modifiedPredlozhenia.get(eachStarshinaPredlozhenie.id).predlozhenie= eachStarshinaPredlozhenie
+            }
+          }
+
+          return {
+            prevStarshini,
+            starshini,
+            modifiedPredlozhenia
+          }
         },
 
         /**
@@ -394,7 +500,7 @@ module.exports = function (sequelize, DataTypes) {
           for (let eachStarshina of starshini) {
             let eachStarshinaDom = await eachStarshina.getDom();
             if (eachStarshinaDom.fullPath.startsWith(place.fullPath)) {
-              throw new Error(`${place} is dom for my starshina ${eachStarshina}`);
+              throw new Error(`${place.id}:${place.name} is dom for my starshina ${eachStarshina.fullName}`);
             }
           }
 
@@ -406,30 +512,14 @@ module.exports = function (sequelize, DataTypes) {
             }
           });
 
-          //проголосовать
+          //проголосовать ЗА или ПРОТИВ
           if (value) {
             //переголосовка
             if (golos) {
-              result = {golos: golos, action: "update"};
-              golos.value = value;
-              await sequelize.query(`
-                            update "Golos" 
-                            set 
-                                value= :value,
-                                updated_at= current_timestamp
-                            
-                            where
-                                subject_id= ${predlozhenie.id}
-                                and (
-                                    id= ${golos.id}
-                                    or parent_id = ${golos.id}
-                                )`,
-                {
-                  replacements: {
-                    "value": value
-                  },
-                  type: sequelize.Sequelize.QueryTypes.UPDATE
-                });
+              golos.value = value
+              await golos.save(["value"])
+
+              result = {golos: golos, action: "update"}
             }
             //первый раз голосую
             else {
@@ -438,51 +528,16 @@ module.exports = function (sequelize, DataTypes) {
                 subject_id: predlozhenie.id,
                 value: value,
                 owner_id: this.id
-              });
+              })
               result = {golos: golos, action: "add"};
-              /**
-               * и теперь все голоса моего войска
-               * последний like в запросе отвечате за то что в зачет идут голоса только тех
-               * копников, которые проживают на территории копы
-               */
-              await sequelize.query(`
-                            insert into "Golos" (subject_id, value, owner_id, parent_id, created_at, updated_at)
-                            (
-                                select ${predlozhenie.id}, :value, k.id, ${golos.id}, current_timestamp, current_timestamp
-                                from 
-                                    "Kopnik" k
-                                     join "Zemla" d on d.id= k.dom_id
-                                where
-                                    k.path like '${this.fullPath}%'
-                                    and d.path||d.id||'/' like '${place.fullPath}%' 
-                            )`,
-                {
-                  replacements: {
-                    "value": value
-                  },
-                  type: sequelize.Sequelize.QueryTypes.INSERT
-                });
             }
           }
           //unvote(0)
           else {
-            //отказ от предыдущего голоса => результат={remove:golos}
+            //отказ от предыдущего голоса
             if (golos) {
               result = {golos: golos, action: "remove"};
-              await sequelize.query(`
-                            delete from "Golos" 
-                            where
-                                subject_id= ${predlozhenie.id}
-                                and (
-                                    id= ${golos.id}
-                                    or parent_id = ${golos.id}
-                                )`,
-                {
-                  replacements: {
-                    "value": value
-                  },
-                  type: sequelize.Sequelize.QueryTypes.DELETE
-                });
+              await golos.destroy()
             }
             //странная ситуация, когда делается отказ, а голоса нет => результат={} ничего не удалилось и не создалось
             else {
@@ -490,32 +545,9 @@ module.exports = function (sequelize, DataTypes) {
             }
           }
 
-
           //подсчет итогов голосования
-          let totals = await sequelize.query(`
-                        select
-                            (select count(*) from "Golos" g where subject_id= ${predlozhenie.id} and value=1) "za",
-                            (select count(*) from "Golos" g where subject_id= ${predlozhenie.id} and value=-1) "protiv"
-                            `,
-            {
-              replacements: {
-                "value": value
-              },
-              type: sequelize.Sequelize.QueryTypes.SELECT
-            });
-          predlozhenie.totalZa = parseInt(totals[0].za);
-          predlozhenie.totalProtiv = parseInt(totals[0].protiv);
-
-          if (predlozhenie.totalZa / place.obshinaSize > 7 / 8) {
-            predlozhenie.state = 1;
-          }
-          else if (predlozhenie.totalProtiv / place.obshinaSize > 7 / 8) {
-            predlozhenie.state = -1;
-          }
-
-          await predlozhenie.save(["totalZa", "totalProtiv", "state"]);
-
-          return result;
+          await predlozhenie.rebalance()
+          return result
         },
 
         /**
@@ -541,11 +573,11 @@ module.exports = function (sequelize, DataTypes) {
            * Если нашлась хоть одна земля где я заверитель, то я ее заверю
            */
           for (let eachZemlaAsRow of zemliAsRow) {
-            subject.state= state
+            subject.state = state
             await subject.save(["state"])
             await subject.setVerifier(this)
 
-            if (state>0) {
+            if (state > 0) {
               let result = await Kopnik.create({
                 email: subject.email,
                 password: subject.password,
@@ -562,7 +594,7 @@ module.exports = function (sequelize, DataTypes) {
               await subject.setResult(result);
               return result
             }
-            else{
+            else {
               return
             }
           }
@@ -576,7 +608,7 @@ module.exports = function (sequelize, DataTypes) {
 
           let result = await models.Registration.findAll({
             where: {
-              verifier_id:  this.id,
+              verifier_id: this.id,
               deleted_at: null,
               state: 0,
             },
@@ -606,7 +638,7 @@ module.exports = function (sequelize, DataTypes) {
       },
       getterMethods: {
         fullName: function () {
-          return `${this.name} ${this.surname}`;
+          return `${this.surname} ${this.name} ${this.patronymic}`
         },
         fullPath: function () {
           return `${this.path}${this.id}/`;
