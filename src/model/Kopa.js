@@ -31,10 +31,23 @@ module.exports = function (sequelize, DataTypes) {
          * пока заглушка - первые 100 копников
          */
         async getGolosovanti(){
-          let place= await this.getPlace(),
-            result= await place.getGolosovanti()
+          let place = await this.getPlace(),
+            result = await place.getGolosovanti()
 
           return result
+        }
+      },
+      hooks: {
+        /**
+         * удалить все слова и предложения
+         * иначе они маячат внутри setStarshina() когда переголосовка текущих предложений
+         * @param sender
+         * @param options
+         * @return {Promise.<void>}
+         */
+        async beforeDestroy (sender, options) {
+          let childs = (await sender.getDialog()).concat(await sender.getResult())
+          await Promise.all(childs.map(eachChild => eachChild.destroy()))
         }
       }
     }

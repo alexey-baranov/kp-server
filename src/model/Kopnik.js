@@ -473,13 +473,13 @@ module.exports = function (sequelize, DataTypes) {
          * @return {{golos, action:"add"|"update"|"remove" }} добавил или удалил или поменял голосили
          */
         vote: async function (predlozhenie, value) {
-          let models = require("./index");
-          let result = {};
+          let models = require("./index")
+          let result = {}
 
-          let kopa = await predlozhenie.getPlace();
-          let place = await kopa.getPlace();
-          let dom = await this.getDom();
-          let starshini = await this.getStarshini();
+          let kopa = await predlozhenie.getPlace()
+          let place = await kopa.getPlace()
+          let dom = await this.getDom()
+          let starshini = await this.getStarshini()
 
           if (predlozhenie.state) {
             throw new Error("Predlozhenie is fixed. state=" + predlozhenie.state);
@@ -489,7 +489,7 @@ module.exports = function (sequelize, DataTypes) {
            * если залетный, то не имеет
            */
           if (!dom.fullPath.startsWith(place.fullPath)) {
-            throw new Error(`${place} is not ${this} dom `);
+            throw new Error(`${place} is not ${this} dom `)
           }
 
           /**
@@ -498,9 +498,9 @@ module.exports = function (sequelize, DataTypes) {
            *
            */
           for (let eachStarshina of starshini) {
-            let eachStarshinaDom = await eachStarshina.getDom();
+            let eachStarshinaDom = await eachStarshina.getDom()
             if (eachStarshinaDom.fullPath.startsWith(place.fullPath)) {
-              throw new Error(`${place.id}:${place.name} is dom for my starshina ${eachStarshina.fullName}`);
+              throw new Error(`${place.id}:${place.name} is dom for my starshina ${eachStarshina.fullName}`)
             }
           }
 

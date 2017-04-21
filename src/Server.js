@@ -79,12 +79,15 @@ class Server {
         session.prefix('api', 'ru.kopa')
         this.log.info("connection.onopen()"/*, session._id, details*/)
         //очищаю таблицу сессий
-        this.log.info("Truncating \"Session\" table. This is safe when crossbar shutdown")
+        this.log.info("Truncating \"Session\" table. Opened session will store later")
         await models.Session.destroy({force: true, where: {id: {$not: null}}})
 
         //метасобытия
         await this.subscribeHelper("wamp.session.on_join", this.session_join.bind(this))
         await this.subscribeHelper("wamp.session.on_leave", this.session_leave.bind(this))
+
+        //сохранил сесси, которые уже в кросбаре приконектились и ожидают сервера
+        await this.saveOpenedSessions()
 
         //org.kopnik
         // await this.registerHelper('api:getKopnikSESSION', this.getKopnikSESSION, null, this)
@@ -98,17 +101,6 @@ class Server {
         await this.registerHelper('api:registration.getStreets', this.Registration_getStreets, null, this)
         await this.registerHelper('api:registration.getHouses', this.Registration_getHouses, null, this)
         // await this.registerHelper('api:registration.apply', this.Registration_apply, null, this)
-
-        await this.registerHelper('api:model.create', this.model_create, null, this)
-        await this.registerHelper('api:model.destroy', this.model_destroy, null, this)
-        await this.registerHelper('api:model.get', this.promiseModel, null, this)
-        await this.registerHelper('api:model.getKOPNIKByEmail', this.getKOPNIKByEmail, null, this)
-        await this.registerHelper('api:model.save', this.model_save, null, this)
-        await this.registerHelper('api:pingPong', this.pingPong, null, this)
-        await this.registerHelper('api:discloseCaller', this.discloseCaller, null, this)
-        await this.registerHelper('api:pingPongDatabase', this.pingPongDatabase, null, this)
-        await this.registerHelper('api:error', this.error, null, this)
-        await this.registerHelper('api:unitTest.cleanTempData', this.Cleaner_clean, null, this)
 
         //Kopnik
         await this.registerHelper('api:model.Kopnik.setStarshina', this.Kopnik_setStarshina, null, this)
@@ -130,28 +122,21 @@ class Server {
         //Predlozhenie
         await this.registerHelper('api:model.Predlozhenie.getGolosa', this.Predlozhenie_getGolosa, null, this);
 
+        //else
+        await this.registerHelper('api:model.create', this.model_create, null, this)
+        await this.registerHelper('api:model.destroy', this.model_destroy, null, this)
+        await this.registerHelper('api:model.get', this.promiseModel, null, this)
+        await this.registerHelper('api:model.save', this.model_save, null, this)
+        await this.registerHelper('api:pingPong', this.pingPong, null, this)
+        await this.registerHelper('api:discloseCaller', this.discloseCaller, null, this)
+        await this.registerHelper('api:pingPongDatabase', this.pingPongDatabase, null, this)
+        await this.registerHelper('api:error', this.error, null, this)
+        await this.registerHelper('api:unitTest.cleanTempData', this.Cleaner_clean, null, this)
+        //эта регистрация должна быть последней, тк на клиенте она сигнализирует о готовности сервера
+        await this.registerHelper('api:model.getKOPNIKByEmail', this.getKOPNIKByEmail, null, this)
 
         //unit test
-        // await this.registerHelper('api:unitTest.orderProc', this.unitTest_orderProc, null, this);
         await this.registerHelper('api:unitTest.orderProc', this.unitTest_orderProc, null, this);
-
-
-        /*        setInterval(async ()=>{
-         await this.WAMP.session.publish(`api:keepAlive`, [], null, {acknowledge: true})
-         },1000)*/
-
-        let tick = 0;
-        this.tickInterval = setInterval(() => {
-          /*
-           session.publish("ru.kopa.tick", [tick++], {}, {
-           acknowledge: true, //получить обещание - подтверждение
-           exclude_me: false,  //получить самому свое сообщение
-           disclose_me: true //открыть подписчикам свой Session#ID
-           })
-           .then((publication)=>{})
-           .catch(session.log);
-           */
-        }, 1000);
 
         this.log.info("started");
       }
@@ -169,6 +154,27 @@ class Server {
         this.log.error(er);
       }
     };
+  }
+
+  /**
+   * сохранить кросбаровские сессии, которые уже приконнектились к кросбару
+   * и ожидают когда поднимится сервер
+   *
+   * Этот метод должен завершиться до регистрации findKopnikById()
+   * который на клиенте означает подъем сервера в боевой ражим
+
+   *
+   * @return {Promise.<void>}
+   */
+  async saveOpenedSessions(){
+    let SESSIONS = await this.WAMP.session.call("wamp.session.list")
+    for (let EACH_SESSION of SESSIONS) {
+      let eachSession = await this.WAMP.session.call("wamp.session.get", [EACH_SESSION])
+      if (eachSession){
+          await this.session_join([eachSession])
+      }
+    }
+
   }
 
   /**
@@ -199,13 +205,30 @@ class Server {
     console.log(result)
   }
 
+  /**
+   * Этот метод регистрируется на WAMP.session.join
+   * и потом вызывается внутри #saveOpenedSessions
+   * чтобы не было временной ямы когда сессия не подпадает под регистрацию WAMP.session.join регистрируется вперед
+   *
+   * Поэтому возможны случаи когда сессия уже зарегистрирована по session_join
+   * и еще раз регистрируется внутри #saveOpenedSessions
+   *
+   * @param args
+   * @param kwargs
+   * @param details
+   * @return {Promise.<void>}
+   */
+
   async session_join(args, kwargs, details) {
     let sessionAsPlain = Object.assign({}, args[0], {id: args[0].session})
     if (args[0].authrole != "anonymous" && args[0].authrole != "server") {
       let KOPNIK = await this.getKOPNIKByEmail([], {email: args[0].authid})
       sessionAsPlain.owner_id = KOPNIK
     }
-    let session = await models.Session.create(sessionAsPlain)
+
+    if (!await models.Session.findById(sessionAsPlain.id)) {
+      let session = await models.Session.create(sessionAsPlain)
+    }
   }
 
   async session_leave(args, kwargs, details) {
@@ -884,14 +907,16 @@ class Server {
           email: details.caller_authid
         }
       })
-      if (caller.id== plain.owner_id){
-        owner= caller
-      }
-      else if (caller.id==2){
-        owner= await models.Kopnik.findById(plain.owner_id)
-      }
-      else{
-        throw new Error("plain.owner_id!= caller.id")
+      if (plain.owner_id) {
+        if (caller.id == plain.owner_id) {
+          owner = caller
+        }
+        else if (caller.id == 2) {
+          owner = await models.Kopnik.findById(plain.owner_id)
+        }
+        else {
+          throw new Error("plain.owner_id!= caller.id")
+        }
       }
     }
 
@@ -959,7 +984,7 @@ class Server {
       }
       for (let EACH_ATTACHMENT of plain.attachments) {
         let eachAttachment = await models.File.findById(EACH_ATTACHMENT)
-        if (eachAttachment.owner_id != owner.id) {
+        if (eachAttachment.owner_id != (owner || caller).id) {
           throw new Error("Нельзя прикрепить чужой файл")
         }
         await eachAttachment["set" + type](model)
@@ -1149,6 +1174,7 @@ class Server {
 
     setImmediate(async() => {
       try {
+/*
         switch (type) {
           case "Predlozhenie":
             await this.WAMP.session.publish(`api:model.Kopa.id${model.place_id}.predlozhenieDestroy`, [model.id], null, {acknowledge: true})
@@ -1160,6 +1186,8 @@ class Server {
             await this.WAMP.session.publish(`api:model.Zemla.id${model.place_id}.kopaDestroy`, [model.id], null, {acknowledge: true})
             break;
         }
+*/
+        await this.WAMP.session.publish(`api:model.${type}.id${id}.destroy`, [], null, {acknowledge: true})
       }
       catch (err) {
         this.log.error("model_destroy error", args, {typs: type, id: id}, err);
@@ -1458,12 +1486,18 @@ class Server {
             as: 'attachments'
           }]
         });
+        if (!model){
+          throw new Error(`${kwargs.model}:${kwargs.id} not found`)
+        }
         result = model.get({plain: true});
         delete result.password;
         break;
       case "File":
-        model = await models[kwargs.model].findById(kwargs.id);
-        result = model.get({plain: true});
+        model = await models[kwargs.model].findById(kwargs.id)
+        if (!model){
+          throw new Error(`${kwargs.model}:${kwargs.id} not found`)
+        }
+        result = model.get({plain: true})
         break;
       default:
         throw new Error("Неизвестный тип")
