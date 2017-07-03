@@ -195,14 +195,20 @@ class Server {
 
     let result = await Promise.all(subscriptions.map(async(eachSubscription) => {
       if (!eachSubscription.session_id || eachSubscription.session_id != SKIP_SESSION) {
-        let result = await webpush.sendNotification(eachSubscription.value, JSON.stringify(what))
-        if (result.status > 299) {
-          throw new Error(result)
+        try {
+          let result = await webpush.sendNotification(eachSubscription.value, JSON.stringify(what))
+          if (result.status > 299) {
+            this.log.error("push to", eachSubscription.getOwner().fullName, result)
+          }
+          return result
         }
-        return result
+        catch(err){
+          this.log.error("push to", eachSubscription.getOwner().fullName, err)
+          return err
+        }
       }
     }))
-    console.log(result)
+    // console.log(result)
   }
 
   /**
