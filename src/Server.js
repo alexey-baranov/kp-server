@@ -976,7 +976,7 @@ class Server {
       switch (type) {
         case "Registration":
           verifier = await model.setupVerifier()
-          result.verifier = verifier.get({plain: true})
+          result.verifier = model.verifier = verifier.get({plain: true})
           delete result.verifier.password
           break
         case "Kopa":
