@@ -1310,24 +1310,64 @@ class Server {
    * отсортированные по дате создания
    * @returns {Promise<array>}
    */
-  async Kopa_getDialog(args, {PLACE, BEFORE}, {caller_authid}) {
+  async Kopa_getDialog(args, {PLACE, BEFORE, count}, {caller_authid}) {
+    let caller = await models.Kopnik.findOne({
+        where: {
+          email: caller_authid
+        }
+      }),
+      place = await models.Kopa.findById(PLACE),
+      zemla= await place.getPlace()
+
+    if (!await caller.isDom(zemla)) {
+      throw new Error(`Permission denied: foreign kopa ${place.name}`)
+    }
+
+    let BEFORE_FILTER
+    if (BEFORE){
+      BEFORE_FILTER= "and slovo.id <  :BEFORE"
+    }
+    else{
+      BEFORE_FILTER=""
+    }
+
+    /**
+     * свои копы должны в любом случае уйти при первом запрсое
+     * потому что у них даты созвания и это геморно обрабатывать
+     */
+
+    let resultAsArray = await models.sequelize.query(`
+        select slovo.*
+            from "Slovo" as slovo
+            join "Kopnik" as kopnik on kopnik.id= slovo.owner_id
+        where
+            slovo.place_id=:PLACE
+            ${BEFORE_FILTER}
+            and slovo.deleted_at is null
+        limit :count
+            `,
+      {
+        replacements: {
+          "PLACE": PLACE,
+          "BEFORE": BEFORE,
+          "count": count
+        },
+        type: models.Sequelize.QueryTypes.SELECT
+      });
+
+    let RESULT = resultAsArray.map(each => each.id);
     let result = await models.Slovo.findAll({
       where: {
-        place_id: {
-          $eq: args[0]
+        id: {
+          $in: RESULT
         },
       },
-      include: [{
-        model: models.File,
-        as: 'attachments'
-      }],
       order: [
-        ['created_at', 'asc'],
+        ['id', 'asc']
       ],
     });
-
     result = result.map(eachResult => eachResult.get({plain: true}));
-    return result;
+    return result
   }
 
   /**
