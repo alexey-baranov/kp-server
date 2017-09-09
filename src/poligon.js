@@ -3,12 +3,13 @@
  */
 
 let models= require("./model"),
-  bcrypt= require("bcrypt");
+  bcrypt= require("bcrypt"),
+  Mailer= require("./Mailer")
 
 models.sequelize.transaction(async ()=>{
-  let kopnik1= await models.Kopnik.findById(101)
-  // kopnik1.password= bcrypt.hashSync("", bcrypt.genSaltSync(/*14*/))
-  // await kopnik1.save()
+  let kopniks= await models.Kopnik.findAll()
 
-  await kopnik1.setDom2(await models.Zemla.findById(/*17687399*/24625348))
+  console.log(kopniks.map(eachKopnik=>eachKopnik.email))
+
+  await require("./Mailer").send(kopniks.map(eachKopnik=>eachKopnik.email), "Kopa_invite.mustache", "Новая копа", await models.Kopa.findById(176))
 })
