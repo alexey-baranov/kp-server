@@ -74,7 +74,7 @@ class Server {
     webpush.setGCMAPIKey(/*'<Your GCM API Key Here>'*/config.FCM.serverKey);
     webpush.setVapidDetails('mailto:alexey2baranov@gmail.com', config.VAPID.publicKey, config.VAPID.privateKey)
 
-    this.WAMP.onopen = async(session, details) => {
+    this.WAMP.onopen = async (session, details) => {
       try {
         session.prefix('api', 'ru.kopa')
         this.log.info("connection.onopen()"/*, session._id, details*/)
@@ -166,12 +166,12 @@ class Server {
    *
    * @return {Promise.<void>}
    */
-  async saveOpenedSessions(){
+  async saveOpenedSessions() {
     let SESSIONS = await this.WAMP.session.call("wamp.session.list")
     for (let EACH_SESSION of SESSIONS) {
       let eachSession = await this.WAMP.session.call("wamp.session.get", [EACH_SESSION])
-      if (eachSession){
-          await this.session_join([eachSession])
+      if (eachSession) {
+        await this.session_join([eachSession])
       }
     }
 
@@ -193,7 +193,7 @@ class Server {
     this.log.debug("push", what, whom.map(eachWhom => eachWhom.fullName))
     let subscriptions = await models.PushSubscription.findAll({where: {owner_id: {$in: whom.map(eachWhom => eachWhom.id)}}})
 
-    let result = await Promise.all(subscriptions.map(async(eachSubscription) => {
+    let result = await Promise.all(subscriptions.map(async (eachSubscription) => {
       if (!eachSubscription.session_id || eachSubscription.session_id != SKIP_SESSION) {
         try {
           let result = await webpush.sendNotification(eachSubscription.value, JSON.stringify(what))
@@ -202,7 +202,7 @@ class Server {
           }
           return result
         }
-        catch(err){
+        catch (err) {
           this.log.error("push to", eachSubscription.getOwner().fullName, err)
           return err
         }
@@ -257,7 +257,7 @@ class Server {
           email: details.caller_authid
         }
       })
-    await models.sequelize.transaction(async() => {
+    await models.sequelize.transaction(async () => {
       //1. загрузил все подписки копника
       let subscriptions = await models.PushSubscription.findAll({where: {owner_id: caller.id}, order: "id"})
       //2. подчистить имеющиеся подписки
@@ -284,7 +284,7 @@ class Server {
   async unitTest_orderProc([x]) {
     // await this.WAMP.session.publish(`api:unitTest.orderTopic`, [x], null, {acknowledge: true});
 
-    setImmediate(async() => {
+    setImmediate(async () => {
       // process.nextTick(async()=> {
       try {
         await this.WAMP.session.publish(`api:unitTest.orderTopic`, [x], null, {acknowledge: true});
@@ -450,7 +450,7 @@ class Server {
       prevParents,
       parents
 
-    await models.sequelize.transaction(async() => {
+    await models.sequelize.transaction(async () => {
       zemla = await models.Zemla.findById(ZEMLA);
       parent = PARENT ? await models.Zemla.findById(PARENT) : null;
 
@@ -464,7 +464,7 @@ class Server {
      * событие о изменения прилетает после того как клиент дождался ответа
      * об изменения
      */
-    setImmediate(async() => {
+    setImmediate(async () => {
       try {
         //сначала роняю войско
         for (let eachParent of prevParents) {
@@ -492,12 +492,12 @@ class Server {
       throw new Error("can't set starshina for another kopnik")
     }
 
-    await models.sequelize.transaction(async() => {
+    await models.sequelize.transaction(async () => {
       var kopnik = await models.Kopnik.findById(KOPNIK)
       var starshina = STARSHINA ? await models.Kopnik.findById(STARSHINA) : null
 
       //старшины запоминаются на момент транзакции. в момент публикаций их войско будет уже меньше на войско копника
-      let {prevStarshini, starshini, modifiedPredlozhenia}= await kopnik.setStarshina2(starshina)
+      let {prevStarshini, starshini, modifiedPredlozhenia} = await kopnik.setStarshina2(starshina)
 
 
       //войско тоже запоминается на момент транзакции потому что в setImmediate возможно будет уже поздно
@@ -522,7 +522,7 @@ class Server {
        * событие о изменения прилетает после того как клиент дождался ответа
        * об изменения
        */
-      setImmediate(async() => {
+      setImmediate(async () => {
         try {
           //себе и всему войску объявляю что у них сменился старшина
           for (let eachKopnikAsPlain of [kopnik].concat(voiskoAsPlain)) {
@@ -575,12 +575,12 @@ class Server {
      * события
      */
     try {
-      if (_.isObject(delta) && !_.isArray(delta)){
-        delta= [delta]
+      if (_.isObject(delta) && !_.isArray(delta)) {
+        delta = [delta]
       }
       let localDelta
-      if (delta){
-        localDelta= delta.map(eachDelta=>{
+      if (delta) {
+        localDelta = delta.map(eachDelta => {
           // console.log("eachDelta", eachDelta)
           return {
             action: eachDelta.action,
@@ -594,11 +594,11 @@ class Server {
         totalProtiv: instance.totalProtiv,
         state: instance.state,
         delta: localDelta
-/*
-        GOLOS: voteResult ? voteResult.golos.id : null,
-        action: voteResult ? voteResult.action : null,
-        value: voteResult ? voteResult.golos.value : null
-*/
+        /*
+         GOLOS: voteResult ? voteResult.golos.id : null,
+         action: voteResult ? voteResult.action : null,
+         value: voteResult ? voteResult.golos.value : null
+         */
       }, {acknowledge: true})
     }
     catch (err) {
@@ -658,7 +658,7 @@ class Server {
     await models.sequelize.transaction(/*{
        isolationLevel: models.Sequelize.Transaction.ISOLATION_LEVELS.READ_COMMITTED
        },*/
-      async() => {
+      async () => {
         caller = await models.Kopnik.findOne({
           where: {
             email: details.caller_authid
@@ -668,7 +668,7 @@ class Server {
           kopnik = caller
         }
         else if (caller.id == 2) {
-          kopnik= await models.Kopnik.findById(KOPNIK)
+          kopnik = await models.Kopnik.findById(KOPNIK)
         }
         else {
           throw new Error("can't vote for another kopnik")
@@ -687,7 +687,7 @@ class Server {
     /**
      * извещаем всех о ребалансе голосов
      */
-    setImmediate(async() => {
+    setImmediate(async () => {
       await this.notifyPredlozhenieRebalance(subject, voteResult)
     })
   }
@@ -716,7 +716,7 @@ class Server {
       result,
       subject
 
-    await models.sequelize.transaction(async() => {
+    await models.sequelize.transaction(async () => {
       caller = await models.Kopnik.findOne({
         where: {
           email: details.caller_authid
@@ -728,7 +728,7 @@ class Server {
       // await subject.destroy()
     })
 
-    setImmediate(async() => {
+    setImmediate(async () => {
       try {
         /**
          * события о том что появился новый копник всем заинтересованным общинам
@@ -776,7 +776,7 @@ class Server {
     let caller,
       kopa
 
-    await models.sequelize.transaction(async() => {
+    await models.sequelize.transaction(async () => {
       caller = await models.Kopnik.findOne({
         where: {
           email: details.caller_authid
@@ -798,7 +798,7 @@ class Server {
       await kopa.save()
     })
 
-    setImmediate(async() => {
+    setImmediate(async () => {
       try {
         /**
          * события
@@ -859,7 +859,7 @@ class Server {
       }
     })
 
-    await models.sequelize.transaction(async() => {
+    await models.sequelize.transaction(async () => {
       let model = await models[type].findById(plain.id)
       await model.update(plain)
       let attachments = []
@@ -975,7 +975,7 @@ class Server {
         break;
     }
 
-    result = await models.sequelize.transaction(async() => {
+    result = await models.sequelize.transaction(async () => {
       model = await models[type].create(plain)
       result = {id: model.id, created: model.created_at}
 
@@ -1009,7 +1009,7 @@ class Server {
      * задерживать на секунду не получается
      * потому что два события над одним объектом прилетают в обратном порядке!
      */
-    setImmediate(async() => {
+    setImmediate(async () => {
       /**
        * события
        */
@@ -1168,7 +1168,7 @@ class Server {
         throw new Error("Не может быть удалено")
     }
 
-    await models.sequelize.transaction(async() => {
+    await models.sequelize.transaction(async () => {
       await model.destroy()
     })
 
@@ -1178,21 +1178,21 @@ class Server {
      * только в этом случае повторный запрос не будет содержать удаленный объект
      */
 
-    setImmediate(async() => {
+    setImmediate(async () => {
       try {
-/*
-        switch (type) {
-          case "Predlozhenie":
-            await this.WAMP.session.publish(`api:model.Kopa.id${model.place_id}.predlozhenieDestroy`, [model.id], null, {acknowledge: true})
-            break;
-          case "Slovo":
-            await this.WAMP.session.publish(`api:model.Kopa.id${model.place_id}.slovoDestroy`, [model.id], null, {acknowledge: true})
-            break;
-          case "Kopa":
-            await this.WAMP.session.publish(`api:model.Zemla.id${model.place_id}.kopaDestroy`, [model.id], null, {acknowledge: true})
-            break;
-        }
-*/
+        /*
+         switch (type) {
+         case "Predlozhenie":
+         await this.WAMP.session.publish(`api:model.Kopa.id${model.place_id}.predlozhenieDestroy`, [model.id], null, {acknowledge: true})
+         break;
+         case "Slovo":
+         await this.WAMP.session.publish(`api:model.Kopa.id${model.place_id}.slovoDestroy`, [model.id], null, {acknowledge: true})
+         break;
+         case "Kopa":
+         await this.WAMP.session.publish(`api:model.Zemla.id${model.place_id}.kopaDestroy`, [model.id], null, {acknowledge: true})
+         break;
+         }
+         */
         await this.WAMP.session.publish(`api:model.${type}.id${id}.destroy`, [], null, {acknowledge: true})
       }
       catch (err) {
@@ -1208,25 +1208,35 @@ class Server {
    *
    * @param args
    * @param PLACE
-   * @param BEFORE timestamp msec
+   * @param BEFORE kopa.id
    * @param caller_authid
    * @returns {*}
    */
-  async Zemla_promiseKopi(args, {PLACE, BEFORE, count}, {caller_authid}) {
+  async Zemla_promiseKopi(args, {PLACE, BEFORE, count, UNTIL}, {caller_authid}) {
+    let until
+    if (UNTIL) {
+      until= await models.Kopa.findById(UNTIL)
+      if (!until.invited) {
+        throw new Error(`getKopi() not implemented until non-invited kopa`)
+      }
+    }
     let caller = await models.Kopnik.findOne({
         where: {
           email: caller_authid
         }
       }),
-      place = await models.Zemla.findById(PLACE)
+      place = await models.Zemla.findById(PLACE),
+      before
 
     if (!await caller.isDom(place)) {
       throw new Error(`Permission denied: foreign zemla ${place.name}`)
     }
 
-    let BEFORE_FILTER
+    let SELF_KOPI_FILTER="",
+      BEFORE_FILTER="",
+      UNTIL_FILTER="",
+      LIMIT=""
 
-    count = count ? Math.min(count, 25) : 25
     /**
      * свои копы должны в любом случае уйти при первом запрсое
      * потому что у них даты созвания и это геморно обрабатывать
@@ -1252,37 +1262,71 @@ class Server {
       callerKopiCount = callerKopiCount[0].count
       count = Math.max(count, callerKopiCount)
 
-      BEFORE_FILTER = `(
-            kopa.invited is not null 
-            or (
-                kopa.invited is null 
-                and kopnik.email=:caller_authid
-                )
-            )`
+      SELF_KOPI_FILTER = `
+        and (
+          kopa.invited is not null 
+          or (
+            kopa.invited is null 
+            and kopnik.email=:caller_authid
+          )
+        )`
     }
     else {
-      BEFORE_FILTER = `kopa.invited <  to_timestamp(:BEFORE)`;
+      /**
+       * 0.000000001% что внутри одного таймстампа будет две копы
+       */
+      /**
+       * COALESCE потому что before иожет быть последняя своя копа и тогда invited == null
+       */
+      before= await models.Kopa.findById(BEFORE)
+      BEFORE_FILTER = `
+        and (
+          kopa.invited < COALESCE(:invitedBefore, CURRENT_TIMESTAMP) 
+          or kopa.invited = :invitedBefore and kopa.id < :BEFORE
+        )`;
     }
 
+    if (UNTIL) {
+      UNTIL_FILTER = `and (
+          kopa.invited > :invitedUntil
+          ${BEFORE?"":"or kopa.invited is null"}
+          or (
+            kopa.invited = :invitedUntil
+            and kopa.id >= :UNTIL
+          )
+        )`
+    }
+    else {
+      LIMIT = "limit :count"
+    }
+
+    /**
+     * еще отсортировать копы по id, чтобы внутри 1сек таймстампа они были тоже отсортированы
+     */
     let resultAsArray = await models.sequelize.query(`
         select kopa.*
             from "Kopa" as kopa
             join "Kopnik" as kopnik on kopnik.id= kopa.owner_id
         where
             kopa.place_id=:PLACE
-            and ${BEFORE_FILTER}
+            ${BEFORE_FILTER}
+            ${SELF_KOPI_FILTER}
+            ${UNTIL_FILTER}
             and kopa.deleted_at is null
         order by
             kopa.invited desc nulls first,
-            kopa.created_at desc
-            limit :count
+            kopa.id desc
+            ${LIMIT}
             `,
       {
         replacements: {
-          "PLACE": PLACE,
-          "BEFORE": Math.floor(BEFORE / 1000),
-          "caller_authid": caller_authid,
-          "count": count
+          PLACE,
+          BEFORE,
+          UNTIL,
+          caller_authid,
+          count,
+          invitedUntil: until?until.invited:null,
+          invitedBefore: before?before.invited:null
         },
         type: models.Sequelize.QueryTypes.SELECT
       });
@@ -1310,25 +1354,39 @@ class Server {
    * отсортированные по дате создания
    * @returns {Promise<array>}
    */
-  async Kopa_getDialog(args, {PLACE, BEFORE, count}, {caller_authid}) {
+  async Kopa_getDialog(args, {PLACE, BEFORE, count, UNTIL}, {caller_authid}) {
+    if (BEFORE && UNTIL && BEFORE <= UNTIL) {
+      throw new Error(`BEFORE (${BEFORE} < ${UNTIL}) UNTIL`)
+    }
     let caller = await models.Kopnik.findOne({
         where: {
           email: caller_authid
         }
       }),
       place = await models.Kopa.findById(PLACE),
-      zemla= await place.getPlace()
+      zemla = await place.getPlace()
 
     if (!await caller.isDom(zemla)) {
       throw new Error(`Permission denied: foreign kopa ${place.name}`)
     }
 
-    let BEFORE_FILTER
-    if (BEFORE){
-      BEFORE_FILTER= "and slovo.id <  :BEFORE"
+    let BEFORE_FILTER,
+      UNTIL_FILTER,
+      LIMIT
+    if (BEFORE) {
+      BEFORE_FILTER = "and slovo.id <  :BEFORE"
     }
-    else{
-      BEFORE_FILTER=""
+    else {
+      BEFORE_FILTER = ""
+    }
+
+    if (UNTIL) {
+      UNTIL_FILTER = "and slovo.id >= :UNTIL"
+      LIMIT = ""
+    }
+    else {
+      UNTIL_FILTER = ""
+      LIMIT = "limit :count"
     }
 
     /**
@@ -1343,14 +1401,17 @@ class Server {
         where
             slovo.place_id=:PLACE
             ${BEFORE_FILTER}
+            ${UNTIL_FILTER}
             and slovo.deleted_at is null
-        limit :count
+        order by slovo.id desc
+        ${LIMIT}
             `,
       {
         replacements: {
-          "PLACE": PLACE,
-          "BEFORE": BEFORE,
-          "count": count
+          PLACE,
+          BEFORE,
+          UNTIL,
+          count
         },
         type: models.Sequelize.QueryTypes.SELECT
       });
@@ -1449,7 +1510,7 @@ class Server {
 
   async getPermission(type, model, caller, permission) {
     this.log.debug("#getPermission()", type, model.id, caller.fullName, permission)
-    if (caller.id==2 && permission=="read"){
+    if (caller.id == 2 && permission == "read") {
       return true
     }
     switch (permission) {
@@ -1532,7 +1593,7 @@ class Server {
             as: 'attachments'
           }]
         });
-        if (!model){
+        if (!model) {
           throw new Error(`${kwargs.model}:${kwargs.id} not found`)
         }
         result = model.get({plain: true});
@@ -1540,7 +1601,7 @@ class Server {
         break;
       case "File":
         model = await models[kwargs.model].findById(kwargs.id)
-        if (!model){
+        if (!model) {
           throw new Error(`${kwargs.model}:${kwargs.id} not found`)
         }
         result = model.get({plain: true})
@@ -1577,7 +1638,7 @@ class Server {
    * @type {any}
    */
   async registerHelper(procedure, endpoint, options, context) {
-    let result = await this.WAMP.session.register(procedure, async(args, kwargs, details) => {
+    let result = await this.WAMP.session.register(procedure, async (args, kwargs, details) => {
       try {
         if (context) {
           return await endpoint.call(context, args, kwargs, details)
@@ -1604,7 +1665,7 @@ class Server {
    * @type {any}
    */
   async subscribeHelper(topic, handler, options) {
-    let result = await this.WAMP.session.subscribe(topic, async(args, kwargs, details) => {
+    let result = await this.WAMP.session.subscribe(topic, async (args, kwargs, details) => {
       try {
         return await handler(args, kwargs, details)
       }
