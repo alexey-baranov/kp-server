@@ -43,10 +43,14 @@ module.exports = function (sequelize, DataTypes) {
          */
         async rebalance(){
           const models = require("./index")
-          let golosa = await this.getGolosa(),
-            za = golosa.filter(eachGolos => eachGolos.value),
-            protiv = golosa.filter(eachGolos => !eachGolos.value),
-            kopa = await this.getPlace(),
+          let golosa = await this.getGolosa()
+          let za = golosa.filter(eachGolos => {
+            return eachGolos.value==1
+          })
+          let protiv = golosa.filter(eachGolos => {
+            return eachGolos.value==-1
+          })
+          let kopa = await this.getPlace(),
             zemla = await kopa.getPlace()
 
           if (za.length) {
@@ -73,7 +77,7 @@ module.exports = function (sequelize, DataTypes) {
           }
 
           if (protiv.length) {
-            protivCountAsArray = await sequelize.query(`
+            let protivCountAsArray = await sequelize.query(`
             select count(*) as count
             from
               "Kopnik" k
