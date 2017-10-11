@@ -35,23 +35,64 @@ describe('Infrastructure', function () {
   });
 
   describe("database", function () {
-    it('query', async() => {
+    it('query', async () => {
       await model.sequelize.query("select 'КОПА'", {type: model.Sequelize.QueryTypes.SELECT});
     })
 
-    it('different transactions', (done) => {
-      let counter = 0
 
-      model.sequelize.transaction(function (t1) {
+    describe.only('cls transaction github issue', () => {
+      it('async/await syntax', (done) => {
+        models.sequelize.transaction(async (t1) => {
+          await model.sequelize.query("select 1", {type: model.Sequelize.QueryTypes.SELECT})
+          await model.sequelize.query("select 2", {type: model.Sequelize.QueryTypes.SELECT})
+          await model.sequelize.query("select 3", {type: model.Sequelize.QueryTypes.SELECT})
+          if (models.sequelize.Sequelize.cls.get('transaction') !== t1) {
+            done("transaction !== t1")
+          }
+          else{
+            done()
+          }
+        })
+      })
+
+      it('then.then.then syntax', (done) => {
+        models.sequelize.transaction((t1) => {
+          return model.sequelize.query("select 1", {type: model.Sequelize.QueryTypes.SELECT})
+            .then(() => {
+              return model.sequelize.query("select 2", {type: model.Sequelize.QueryTypes.SELECT})
+            })
+            .then(() => {
+              return model.sequelize.query("select 3", {type: model.Sequelize.QueryTypes.SELECT})
+            })
+            .then(() => {
+              if (models.sequelize.Sequelize.cls.get('transaction') !== t1) {
+                done("transaction !== t1")
+              }
+              else {
+                done()
+              }
+            })
+        })
+      })
+    })
+
+    it('different transactions', (done) => {
+      let counter = 0;
+
+      models.sequelize.transaction(async (t1) => {
+        await model.sequelize.query("select 1", {type: model.Sequelize.QueryTypes.SELECT})
+        await model.sequelize.query("select 2", {type: model.Sequelize.QueryTypes.SELECT})
+        await model.sequelize.query("select 3", {type: model.Sequelize.QueryTypes.SELECT})
         if (models.sequelize.Sequelize.cls.get('transaction') !== t1) {
           done("transaction !== t1")
         }
+
         else if (++counter == 2) {
           done()
         }
         return Promise.resolve()
-      })
 
+      })
       model.sequelize.transaction(function (t2) {
         models.sequelize.query("select 777", {type: model.Sequelize.QueryTypes.SELECT});
 
@@ -64,24 +105,25 @@ describe('Infrastructure', function () {
         return Promise.resolve()
       })
 
+
       // let tran1= await model.sequelize.transaction()
       // await model.sequelize.query("select 'КОПА'", {type: model.Sequelize.QueryTypes.SELECT});
     })
 
     it('different transactions async/await 2', async () => {
-      await Promise.all([1,2].map(async ()=>{
-        let tran= await models.sequelize.transaction()
-        for(let x=0; x<10; x++){
-          await await models.sequelize.query(`select * from "Kopnik" where id= `+x, {type: model.Sequelize.QueryTypes.SELECT});
+      await Promise.all([1, 2].map(async () => {
+        let tran = await models.sequelize.transaction()
+        for (let x = 0; x < 10; x++) {
+          await await models.sequelize.query(`select * from "Kopnik" where id= ` + x, {type: model.Sequelize.QueryTypes.SELECT});
         }
       }))
     })
 
     it('different transactions async/await 3', async () => {
-      await Promise.all([1,2].map(async ()=>{
-        return models.sequelize.transaction(async function(){
-          for(let x=0; x<10; x++){
-            await models.sequelize.query(`select * from "Kopnik" where id= `+x, {type: model.Sequelize.QueryTypes.SELECT});
+      await Promise.all([1, 2].map(async () => {
+        return models.sequelize.transaction(async function () {
+          for (let x = 0; x < 10; x++) {
+            await models.sequelize.query(`select * from "Kopnik" where id= ` + x, {type: model.Sequelize.QueryTypes.SELECT});
           }
         })
       }))
@@ -113,8 +155,8 @@ describe('Infrastructure', function () {
       });
   });
 
-  describe.only('file-server', function () {
-    it('#upload()', async() => {
+  describe('file-server', function () {
+    it('#upload()', async () => {
       console.log(config)
       let response = await request
         .post(`${config["file-server"].schema}://${config["file-server"].host}:${config["file-server"].port}/${config["file-server"]["upload-path"]}`)

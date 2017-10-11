@@ -190,7 +190,7 @@ class Server {
     if (!_.isArray(whom)) {
       whom = [whom]
     }
-    this.log.debug("push", what, whom.map(eachWhom => eachWhom.fullName))
+    this.log.debug("push", what, whom.map(eachWhom => eachWhom.fullName),SKIP_SESSION )
     let subscriptions = await models.PushSubscription.findAll({where: {owner_id: {$in: whom.map(eachWhom => eachWhom.id)}}})
 
     let result = await Promise.all(subscriptions.map(async (eachSubscription) => {
@@ -233,7 +233,15 @@ class Server {
     }
 
     if (!await models.Session.findById(sessionAsPlain.id)) {
-      let session = await models.Session.create(sessionAsPlain)
+      this.log.debug("session_join", sessionAsPlain)
+      try {
+        let session = await models.Session.create(sessionAsPlain)
+        this.log.debug("session_join session.id=", session.id)
+      }
+      catch(err){
+        this.log.error("session_join", err)
+        throw err
+      }
     }
   }
 
@@ -251,6 +259,7 @@ class Server {
    * @constructor
    */
   async Application_addPushSubscription(args, kwargs, details) {
+    this.log.debug("Application_addPushSubscription", args[0], details)
     let result,
       caller = await models.Kopnik.findOne({
         where: {
@@ -292,7 +301,7 @@ class Server {
       catch (err) {
         this.log.error("unitTest_orderProc", err);
       }
-    }, 1000);
+    }, 1000)
 
     return x * x;
   }
