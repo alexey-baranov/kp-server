@@ -59,23 +59,17 @@ module.exports = function (sequelize, DataTypes) {
         defaultValue: 0,
         allowNull: false
       },
-      path: {
-        type: DataTypes.TEXT
-      },
       note: {
         type: DataTypes.TEXT
       }
     },
     {
       indexes: [
-        {
-          fields: ['path'],
-          operator: 'text_pattern_ops'
-        },
+
       ],
       instanceMethods: {
         /**
-         * Старшина в доме для копника
+         * Старшина на копе
          * @param zemla
          */
         async getStarshinaNaKope(kopa){
@@ -143,29 +137,29 @@ module.exports = function (sequelize, DataTypes) {
             return 0
           }
 
-          let voiskoNaZemle = await sequelize.query(`
+          let voiskoSizeNaZemle = await sequelize.query(`
             select count(*) as count
             from 
-              "Kopnik" dr
-               join "Zemla" drDom on drDom.id= dr.dom_id
+              "KopnikTree" tree
+              join "Kopnik" dr on dr.id= tree.mladshii_id
+              join "Zemla" drDom on drDom.id= dr.dom_id
             where
-              dr.path like :fullPath || '%'
+              tree.starshii_id= :THIS
               and drDom.path||drDom.id||'/' like :zemlaFullPath ||'%' 
             `,
             {
               replacements: {
-                fullPath: this.fullPath,
+                THIS: this.id,
                 zemlaFullPath: zemla.fullPath,
               },
-              type: sequelize.Sequelize.QueryTypes.INSERT
+              type: sequelize.Sequelize.QueryTypes.SELECT
             })
 
-          voiskoNaZemle = +voiskoNaZemle[0].count
+          voiskoSizeNaZemle = +voiskoSizeNaZemle[0].count
 
-          let result = (voiskoNaZemle + 1) / zemla.obshinaSize
+          let result = (voiskoSizeNaZemle) / zemla.obshinaSize
           return result
         },
-
         /**
          * поднимает войско старшины и его старшин на величину своего войска
          * (после входа в дружину)
@@ -184,7 +178,6 @@ module.exports = function (sequelize, DataTypes) {
               type: sequelize.Sequelize.QueryTypes.UPDATE
             });
         },
-
         /**
          * опускает войско старшины и его старшин на величину своего войска
          * (после выхода из дружины)
@@ -203,36 +196,46 @@ module.exports = function (sequelize, DataTypes) {
               type: sequelize.Sequelize.QueryTypes.UPDATE
             })
         },
-        setupPath: async function (starshina) {
-          if (starshina === undefined) {
-            starshina = await this.getStarshina()
-          }
-          this.path = starshina ? starshina.fullPath : "/"
-        },
-
         /**
          * состоит ли копник в войске
          */
         isKopnikInVoisko: function (kopnik) {
-          let result = kopnik.path.startsWith(this.fullPath);
-          return result;
+          let result= sequelize.query(`
+                                select *
+                                from 
+                                  "KopnikTree"
+                                where
+                                  starshii_id= :THIS
+                                  and mladshii_id= :KOPNIK
+                                  and mladshii_id <> :THIS
+                                   `,
+            {
+              replacements: {
+                "THIS": this.id,
+                "KOPNIK": kopnik.id
+              },
+              type: sequelize.Sequelize.QueryTypes.SELECT
+            })
+          return result.length>0;
         },
-
         /**
-         * Устанавливает старшину в локальную переменную
-         * устанавливает путь себе и всей дружине
-         *
-         * rebalanceResult в результате функции - изменения которые отправятся клиентам
-         * это могут быть просто totalZa, totalProtiv, а могут быть и golos, actioni: "remove"
-         * для предложений которые копник голосовал, а они теперь под голосованием старшины
-         *
+         * перестроил дерево старшин
          * @param {Kopnik} value
+         *
+         * @return {object} {prevStarshini, newStarshini, modifiedResults}
+         * в modifiedResults - разголосованные и просоо перебалансированные предложения
+         * это могут быть элементы двух типов
+         * 1. golos, action: "remove" totalZa, totalProtiv для предложений которые я или дружина голосовали, а они теперь под голосованием старшины
+         * 2. totalZa, totalProtiv для предложений проголосовванных новыми старшинами, где произошоо усиление
+         *
          */
         setStarshina2: async function (value) {
           let models = require("./index"),
             /**
-             * это объединенная карта из разголосованых предложений
-             * и предложений старых и новых старшин
+             * это объединенная карта из разголосованых мной и моей дружиной предложений
+             * (то есть таих где мой голос и голоса моей дружины больше не учитывается)
+             * и перебалансированные предложения новых старшин
+             * (там баланс поменялся в их пользу хотя по количество голосовавших не изменилось)
              * PREDLOZHENIE -> {predlozhenie, voteResult:[, ...]}
              * @type {Map}
              */
@@ -252,29 +255,36 @@ module.exports = function (sequelize, DataTypes) {
           await this.voiskoDown()
 
           if (value) {
-            //предложения которые надо разголосовать потому что за них голосуют старшины
+            /**
+             * предложения, на которых надо отменить мой голос
+             * или надо отменить голос моих дружинников,
+             * потому что за них голосуют мои новые старшины
+             */
             let zemliUnderStarshini = []
             for (let eachStarshina of [value].concat(await value.getStarshini())) {
               zemliUnderStarshini = zemliUnderStarshini.concat(await eachStarshina.getDoma())
             }
+            /**
+             * все мои предложения на землях под старшиной
+             * все предложения моей дружины на землях под старшиной
+             * будут разголосованы.
+            */
             let unvotePredlozheniaAsArray = await sequelize.query(`
-              select p.id as "PREDLOZHENIE", voter.id as "KOPNIK"
-              from 
+              select p.id as "PREDLOZHENIE", tree.mladshii_id as "VOTER"
+              from
                 "Predlozhenie" p
                 join "Kopa" k on k.id= p.place_id
                 join "Zemla" z on z.id= k.place_id
-                join "Golos" g on g.subject_id= p.id  
-                join "Kopnik" voter on voter.id= g.owner_id
+                join "Golos" g on g.subject_id= p.id
+                join "KopnikTree" tree on tree.mladshii_id = g.owner_id 
               where
-                p.deleted_at is null
-                and p.state is null
+                p.state is null
                 and z.id in (:ZEMLI_UNDER_STARSHINI)
-                and g.deleted_at is null
+                and p.deleted_at is null
                 and k.deleted_at is null
-                and (
-                  voter.id= :THIS
-                  or voter.path like :THIS_FULL_PATH || '%' 
-                )
+                and z.deleted_at is null
+                and g.deleted_at is null
+                and tree.starshii_id = :THIS
 `,
               {
                 replacements: {
@@ -285,10 +295,15 @@ module.exports = function (sequelize, DataTypes) {
                 type: sequelize.Sequelize.QueryTypes.SELECT
               })
 
+            /**
+             * возможно тоо два и более моих дружинника раньше голосовали на своей земле самостоятельно
+             * а после того как я выбрал старшину из их земли, они оба должны разголосовать предложения на своей земле
+             * таким образом на каждое предложение возможно несколько разголосовок
+             */
             for (let eachUnvotePredlozhenieAsArray of unvotePredlozheniaAsArray) {
               let eachUnvotePredlozhenie = await models.Predlozhenie.findById(eachUnvotePredlozhenieAsArray["PREDLOZHENIE"]),
-                eachKopnik = await models.Kopnik.findById(eachUnvotePredlozhenieAsArray["KOPNIK"]),
-                eachUnvoteResult = await eachKopnik.vote(eachUnvotePredlozhenie, 0)
+                eachVoter = await models.Kopnik.findById(eachUnvotePredlozhenieAsArray["VOTER"]),
+                eachUnvoteResult = await eachVoter.vote(eachUnvotePredlozhenie, 0)
               if (!modifiedPredlozhenia.has(eachUnvotePredlozhenie.id)) {
                 modifiedPredlozhenia.set(eachUnvotePredlozhenie.id, {
                   predlozhenie: eachUnvotePredlozhenie,
@@ -304,34 +319,44 @@ module.exports = function (sequelize, DataTypes) {
           }
           await this.save(["starshina_id"])
 
-          //сменил путь себе и войску
-          await sequelize.query(`
-                                update "Kopnik"
-                                set
-                                    path= overlay(path placing :starshinaFullPath from 1 for :prevStarshinaFullPathLength)
-                                where
-                                    id = :THIS
-                                    or path like :fullPath||'%'
-`,
+          /**
+           * перестроил дерево копников
+           * https://www.percona.com/blog/2011/02/14/moving-subtrees-in-closure-table/
+           */
+          let SQL= `
+            DELETE FROM "KopnikTree"
+            WHERE mladshii_id IN (SELECT mladshii_id FROM "KopnikTree" WHERE starshii_id = :THIS)
+            AND starshii_id NOT IN (SELECT mladshii_id FROM "KopnikTree" WHERE starshii_id = :THIS);
+            `
+          if (value){
+            SQL+= `
+            INSERT INTO "KopnikTree" (starshii_id, mladshii_id, created_at, updated_at)
+            SELECT supertree.starshii_id, subtree.mladshii_id, :NOW, :NOW
+            FROM
+              "KopnikTree" AS supertree,
+              "KopnikTree" AS subtree
+            WHERE
+              subtree.starshii_id = :THIS
+              AND supertree.mladshii_id = :STARSHINA;
+            `
+          }
+          await sequelize.query(SQL,
             {
               replacements: {
-                "prevStarshinaFullPathLength": this.path.length,
-                "starshinaFullPath": value ? value.fullPath : '/',
                 "THIS": this.id,
-                "fullPath": this.fullPath,
+                "STARSHINA": value?value.id:null,
+                "NOW": new Date()
               },
               type: sequelize.Sequelize.QueryTypes.UPDATE
             })
 
-          //установил локально путь, в БД он уже установлен выше
-          this.setupPath(value);
           //теперь поднял войско новых старшин
           await this.voiskoUp();
           //новые старшины для переголосовки текущих голосований
           let starshini = await this.getStarshini()
 
           /**
-           * предложения старшин
+           * предложения новых старшин
            */
           let starshiniPredlozheniaAsArray = await sequelize.query(`
             select p.*
@@ -346,7 +371,7 @@ module.exports = function (sequelize, DataTypes) {
 `,
             {
               replacements: {
-                "STARSHINI": prevStarshini.concat(starshini).map(each => each.id),
+                "STARSHINI": prevStarshini.concat(starshini).map(each => each.id).concat(-1),
               },
               type: sequelize.Sequelize.QueryTypes.SELECT
             })
@@ -378,34 +403,37 @@ module.exports = function (sequelize, DataTypes) {
             modifiedPredlozhenia
           }
         },
-
         /**
          * возвращает массив старшин от непосредственного до самого верхнего
          * @return {*}
          */
         getStarshini: async function () {
           let starshiniAsPlain = await sequelize.query(`
-                                select *
-                                    from get_starshini(${this.id})`,
+            select *
+            from 
+            "KopnikTree" tree
+            where
+            mladshii_id=:THIS
+            and starshii_id<>:THIS
+            `,
             {
               replacements: {
-                "path": this.path,
+                "THIS": this.id,
               },
               type: sequelize.Sequelize.QueryTypes.SELECT
             });
-          let STARSHINI = starshiniAsPlain.map(eachStarshinaAsPlain => eachStarshinaAsPlain.id);
+          let STARSHINI = starshiniAsPlain.map(eachStarshinaAsPlain => eachStarshinaAsPlain.starshii_id)
           let result = Kopnik.findAll({
             where: {
               id: {
                 $in: STARSHINI
               }
             },
-            order: [["path", "desc"]]
+            order: [["voiskoSize", "asc"]]
           });
 
           return result;
         },
-
         /**
          * Возвращает все войско,
          * то есть дружину и дружину дружинников и т.д. все х по дереву
@@ -424,7 +452,6 @@ module.exports = function (sequelize, DataTypes) {
           });
           return result;
         },
-
         /**
          *
          * @param {Zemla} value
@@ -447,7 +474,6 @@ module.exports = function (sequelize, DataTypes) {
           //теперь поднял общины новой земли и ее родительских земель
           await value.obshinaUp(1, true)
         },
-
         /**
          * возвращает массив домов от непосредственного до самого верхнего
          * @return {*}
@@ -459,7 +485,6 @@ module.exports = function (sequelize, DataTypes) {
 
           return result;
         },
-
         /**
          * голосует за предложение
          * перешло из Golos.create() потому что голосование не всегда связано с созданием голоса,
@@ -549,7 +574,6 @@ module.exports = function (sequelize, DataTypes) {
           await predlozhenie.rebalance()
           return result
         },
-
         /**
          * Заверить регистрацию создать по ней копника
          * @param {Registration} subject
@@ -600,7 +624,6 @@ module.exports = function (sequelize, DataTypes) {
           }
           throw new Error(`У вас нет прав заверять эту регистрацию`)
         },
-
         /**
          */
         async getUnverifiedRegistrations(){
@@ -625,23 +648,29 @@ module.exports = function (sequelize, DataTypes) {
       },
       hooks: {
         beforeCreate: async function (sender, options) {
-          await sender.setupPath()
+          if (sender.starshina_id){
+            throw new Error("Нельзя создавать копника с назначенным старшиной")
+          }
         },
         beforeUpdate: function (sender, options) {
           // return sender.setupPath()
         },
         afterCreate: async function (sender, options) {
+          let models = require("./index")
+
           await sender.voiskoUp()
           let dom = await sender.getDom()
           await dom.obshinaUp(1, true)
+
+          await models.KopnikTree.create({
+            starshii_id: sender.id,
+            mladshii_id: sender.id,
+          })
         }
       },
       getterMethods: {
         fullName: function () {
           return `${this.surname} ${this.name} ${this.patronymic}`
-        },
-        fullPath: function () {
-          return `${this.path}${this.id}/`;
         },
       },
       validate: {
@@ -651,7 +680,6 @@ module.exports = function (sequelize, DataTypes) {
           }
         }
       },
-
     })
   Kopnik.associate = function (db) {
     db.Kopnik.belongsTo(db.Zemla, {
@@ -676,9 +704,12 @@ module.exports = function (sequelize, DataTypes) {
       as: "attachments",
       foreignKey: "kopnik_id"
     })
-  }
-  return Kopnik;
-};
 
-let Golos = require("./Golos");
-let Registration = require("./Registration");
+    db.Kopnik.belongsToMany(db.Kopnik, { through: db.KopnikTree, as: "starshii", foreignKey: "starshii_id" })
+    db.Kopnik.belongsToMany(db.Kopnik, { through: db.KopnikTree, as: "mladshii", foreignKey: "mladshii_id" })
+  }
+  return Kopnik
+}
+
+// let Golos = require("./Golos")
+// let Registration = require("./Registration")

@@ -233,10 +233,10 @@ class Server {
     }
 
     if (!await models.Session.findById(sessionAsPlain.id)) {
-      this.log.debug("session_join", sessionAsPlain)
+      // this.log.debug("session_join", sessionAsPlain)
       try {
         let session = await models.Session.create(sessionAsPlain)
-        this.log.debug("session_join session.id=", session.id)
+        // this.log.debug("session_join session.id=", session.id)
       }
       catch(err){
         this.log.error("session_join", err)
@@ -509,21 +509,23 @@ class Server {
       let {prevStarshini, starshini, modifiedPredlozhenia} = await kopnik.setStarshina2(starshina)
 
 
-      //войско тоже запоминается на момент транзакции потому что в setImmediate возможно будет уже поздно
-      //часть войска убежит или еще что-то за это время
-      var voiskoAsPlain = await models.sequelize.query(`
-                                select id
+      /**
+       * сам копник и его войско- младшие для нового старшины
+       * войско тоже запоминается на момент транзакции потому что в setImmediate возможно будет уже поздно
+       * часть войска убежит или еще что-то за это время
+       */
+      let mladshiiTreeAsRows = await models.sequelize.query(`
+                                select mladshii_id
                                 from
-                                    "Kopnik"
+                                    "KopnikTree" tree
+                                    join "Kopnik" k on k.id= tree.mladshii_id
                                 where
-                                    path like :fullPath||'%'
+                                    starshii_id = :KOPNIK
                                 order by 
-                                    path
+                                    k."voiskoSize" desc 
                                 `,
         {
-          replacements: {
-            "fullPath": kopnik.fullPath,
-          },
+          replacements: {KOPNIK,},
           type: models.Sequelize.QueryTypes.SELECT
         })
 
@@ -534,8 +536,8 @@ class Server {
       setImmediate(async () => {
         try {
           //себе и всему войску объявляю что у них сменился старшина
-          for (let eachKopnikAsPlain of [kopnik].concat(voiskoAsPlain)) {
-            await this.WAMP.session.publish(`api:model.Kopnik.id${eachKopnikAsPlain.id}.starshinaChange`, [], {
+          for (let eachMladshiiTreeAsRow of mladshiiTreeAsRows) {
+            await this.WAMP.session.publish(`api:model.Kopnik.id${eachMladshiiTreeAsRow.mladshii_id}.starshinaChange`, [], {
               KOPNIK,
               STARSHINA,
             }, {acknowledge: true});
@@ -577,6 +579,8 @@ class Server {
         }
       })
     })
+
+    this.log.info(1234)
   }
 
   async notifyPredlozhenieRebalance(instance, delta = null) {
