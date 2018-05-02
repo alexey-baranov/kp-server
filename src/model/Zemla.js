@@ -51,13 +51,6 @@ module.exports = function (sequelize, DataTypes) {
     },
     {
       indexes: [
-        //HMAO 1192053
-        //быстрый поиск подземель
-        {
-          unique: false,
-          fields: ['path'],
-          operator: 'text_pattern_ops'
-        },
         {
           unique: false,
           fields: ["level"],
@@ -129,20 +122,6 @@ module.exports = function (sequelize, DataTypes) {
               type: sequelize.Sequelize.QueryTypes.UPDATE
             });
         },
-        setupPath: async function (parent) {
-          if (parent === undefined) {
-            parent = await this.getParent();
-          }
-          if (parent) {
-            this.path = parent.fullPath;
-          }
-          // else if (this.name =="UnitTest1" || this.name=="Zemla1"){
-          //   this.path= "test://"
-          // }
-          else {
-            this.path = "/";
-          }
-        },
         /**
          * Устанавливает родителя в локальную переменную
          * устанавливает путь себе и всем дочкам
@@ -151,40 +130,45 @@ module.exports = function (sequelize, DataTypes) {
          */
         setParent2: async function (value) {
           //сначала уронил общину родительских земель
-          await this.obshinaDown();
+          await this.obshinaDown()
 
+          this.parent_id = value ? value.id : null
+          await this.save(["parent_id"])
+
+          /**
+           * перестроил дерево земель
+           * https://www.percona.com/blog/2011/02/14/moving-subtrees-in-closure-table/
+           */
+          let SQL = `
+            DELETE FROM "ZemlaTree"
+            WHERE menshe_id IN (SELECT menshe_id FROM "ZemlaTree" WHERE bolshe_id = :THIS)
+            AND bolshe_id NOT IN (SELECT menshe_id FROM "ZemlaTree" WHERE bolshe_id = :THIS);
+            `
           if (value) {
-            this.parent_id = value.id;
+            SQL += `
+            INSERT INTO "ZemlaTree" (bolshe_id, menshe_id, deep, created_at, updated_at)
+            SELECT supertree.bolshe_id, subtree.menshe_id, supertree.deep+subtree.deep+1, :NOW, :NOW
+            FROM
+              "ZemlaTree" AS supertree,
+              "ZemlaTree" AS subtree
+            WHERE
+              subtree.bolshe_id = :THIS
+              AND supertree.menshe_id = :PARENT;
+            `
           }
-          else {
-            this.parent_id = null;
-          }
-          await this.save(["parent_id"]);
-
-          //сменил путь себе и дочкам
-          await sequelize.query(`
-                                update "Zemla"
-                                set
-                                    path= replace(path, :prevParentFullPath, :parentFullPath)
-                                where
-                                    id = :THIS
-                                    or path like :fullPath||'%'
-                                `,
+          await sequelize.query(SQL,
             {
               replacements: {
-                "prevParentFullPath": this.path,
-                "parentFullPath": value.fullPath,
                 "THIS": this.id,
-                "fullPath": this.fullPath,
+                "PARENT": value ? value.id : null,
+                "NOW": new Date()
               },
               type: sequelize.Sequelize.QueryTypes.UPDATE
-            });
+            })
 
-          //установил локально путь
-          this.setupPath(value);
           //теперь поднял общину новых родительских земель
-          await this.obshinaUp();
-          return this;
+          await this.obshinaUp()
+          return this
         },
 
         /**
@@ -192,28 +176,38 @@ module.exports = function (sequelize, DataTypes) {
          * @return {*}
          */
         getParents: async function () {
+          let models = require("./index")
+
           let parentsAsPlain = await sequelize.query(`
-                                select *
-                                from get_zemli(${this.id})
-                                where id <> ${this.id}
-                                `,
+            select *
+            from
+              "ZemlaTree" tree
+            where
+              menshe_id = :THIS
+              and bolshe_id <> :THIS
+            order by
+              deep
+            `,
             {
               replacements: {
-                "path": this.path,
+                "THIS": this.id,
               },
               type: sequelize.Sequelize.QueryTypes.SELECT
             });
-          let PARENTS = parentsAsPlain.map(eachParentAsPlain => eachParentAsPlain.id);
-          let result = Zemla.findAll({
+
+
+          let PARENTS = parentsAsPlain.map(eachParentAsPlain => eachParentAsPlain.bolshe_id)
+          let result = await Zemla.findAll({
             where: {
               id: {
                 $in: PARENTS
               }
             },
-            order: [["path", "desc"]]
-          });
-
-          return result;
+          })
+          result.sort((a,b)=>{
+            return PARENTS.indexOf(a.id)<PARENTS.indexOf(b.id)?-1:1
+          })
+          return result
         },
 
         /**
@@ -242,10 +236,10 @@ module.exports = function (sequelize, DataTypes) {
               type: sequelize.Sequelize.QueryTypes.SELECT
             })
 
-          let GOLOSOVANTI = golosovantiAsRow.map(eachGolosovant=>eachGolosovant.id)
+          let GOLOSOVANTI = golosovantiAsRow.map(eachGolosovant => eachGolosovant.id)
 
 
-          let result= await models.Kopnik.findAll({
+          let result = await models.Kopnik.findAll({
             where: {
               id: {
                 $in: GOLOSOVANTI
@@ -298,11 +292,26 @@ module.exports = function (sequelize, DataTypes) {
       },
       hooks: {
         beforeCreate: async function (sender, options) {
-          await sender.setupPath();
-          // await sender.obshinaUp(); //что апать то? у новой земли еще нет общины
         },
         beforeUpdate: function (sender, options) {
           // return sender.setupPath();
+        },
+
+        afterCreate: async function (sender, options) {
+          let models = require("./index")
+          await models.ZemlaTree.create({
+            bolshe_id: sender.id,
+            menshe_id: sender.id,
+            deep: 0,
+          })
+
+          if (sender.parent_id) {
+            await sender.setParent2(await sender.getParent())
+          }
+
+          // проверить что раньше - этот код или строка в вызывающей функции
+          // done
+          let x = 1
         }
       },
       getterMethods: {
@@ -348,6 +357,9 @@ module.exports = function (sequelize, DataTypes) {
       as: "attachments",
       foreignKey: "zemla_id"
     })
+
+    db.Zemla.belongsToMany(db.Zemla, {through: db.ZemlaTree, as: "bolshe", foreignKey: "bolshe_id"})
+    db.Zemla.belongsToMany(db.Zemla, {through: db.ZemlaTree, as: "menshe", foreignKey: "menshe_id"})
   }
 
   return Zemla;

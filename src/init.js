@@ -612,6 +612,9 @@ module.exports.initKopnikFromRegistration = initKopnikFromRegistration
 module.exports.init = init;
 
 init()
+  .then(()=>{
+    console.log("all done")
+  })
   .catch(function (err) {
     console.error(err, err.stack);
-  });
+  })

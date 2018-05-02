@@ -290,13 +290,12 @@ module.exports = function (sequelize, DataTypes) {
                 replacements: {
                   "ZEMLI_UNDER_STARSHINI": zemliUnderStarshini.map(each => each.id),
                   "THIS": this.id,
-                  "THIS_FULL_PATH": this.fullPath,
                 },
                 type: sequelize.Sequelize.QueryTypes.SELECT
               })
 
             /**
-             * возможно тоо два и более моих дружинника раньше голосовали на своей земле самостоятельно
+             * возможно что два и более моих дружинника раньше голосовали на своей земле самостоятельно
              * а после того как я выбрал старшину из их земли, они оба должны разголосовать предложения на своей земле
              * таким образом на каждое предложение возможно несколько разголосовок
              */
