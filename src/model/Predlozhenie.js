@@ -41,7 +41,7 @@ module.exports = function (sequelize, DataTypes) {
          * пересчитывает тоталЗа, тоталПротв и стейт и сохраняет в БД
          * @return {Promise.<void>}
          */
-        async rebalance(){
+/*        async rebalance(){
           const models = require("./index")
           let golosa = await this.getGolosa()
           let za = golosa.filter(eachGolos => {
@@ -110,7 +110,7 @@ module.exports = function (sequelize, DataTypes) {
           }
 
           await this.save(["totalZa", "totalProtiv", "state"])
-        },
+        },*/
 
 
       }

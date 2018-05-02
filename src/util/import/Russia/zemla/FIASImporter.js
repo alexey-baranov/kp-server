@@ -7,6 +7,7 @@ let fs = require("fs");
 let log4js = require("log4js");
 var Client = require('pg-native');
 var config = require(__dirname + '/../../../../../cfg')
+const models= require("../../../../model")
 
 /**
  * https://fias.nalog.ru/Updates.aspx
@@ -54,8 +55,8 @@ class FIASImporter {
     this.client.connectSync(`postgresql://${config.username}:${config.password}@${config.host}:5432/${config.database}`);
 
     this.client.prepareSync('insert-zemla',
-      `insert into "Zemla" ("AOGUID", "PARENTGUID", "SHORTNAME", name, level, path, created_at, updated_at, parent_id, country_id) 
-                values ($1::character varying(255), $2::character varying(255), $3::character varying(255), $4::character varying(255), $5::integer, $6::text, $7::timestamp with time zone, $8::timestamp with time zone, $9::bigint, $10::bigint)
+      `insert into "Zemla" ("AOGUID", "PARENTGUID", "SHORTNAME", name, level, created_at, updated_at, parent_id, country_id) 
+                values ($1::character varying(255), $2::character varying(255), $3::character varying(255), $4::character varying(255), $5::integer, $6::timestamp with time zone, $7::timestamp with time zone, $8::bigint, $9::bigint)
                 returning id`, 10);
   }
 
@@ -63,7 +64,7 @@ class FIASImporter {
    * возвращает идентификатор России
    */
   getRUSSIA() {
-    let result = this.client.querySync(`select * from "Zemla" where name='Россия' and parent_id=101`);
+    let result = this.client.querySync(`select * from "Zemla" where name='Россия' and parent_id=1001`);
     if (!result.length) {
       throw new Error("Не найдена Россия");
     }
@@ -81,7 +82,7 @@ class FIASImporter {
   async import(ADDROBJPath, HOUSEPath) {
     await this.importAddresses(ADDROBJPath);
     await this.importHouses(HOUSEPath);
-    await this.setupParentsAndPaths();
+    // await this.setupParentsAndPaths();
     await this.validate()
   }
 
@@ -106,7 +107,7 @@ class FIASImporter {
       saxStream.on("opentag", node => {
         try {
           if (node.name == 'Object' && node.attributes.LIVESTATUS == 1) {
-            this.client.executeSync("insert-zemla", [node.attributes.AOGUID, node.attributes.PARENTGUID ? node.attributes.PARENTGUID : null, node.attributes.SHORTNAME, node.attributes.OFFNAME, node.attributes.AOLEVEL, '-', NOW, NOW, RUSSIA, RUSSIA]);
+            this.client.executeSync("insert-zemla", [node.attributes.AOGUID, node.attributes.PARENTGUID ? node.attributes.PARENTGUID : null, node.attributes.SHORTNAME, node.attributes.OFFNAME, node.attributes.AOLEVEL, NOW, NOW, RUSSIA, RUSSIA]);
             rowsCount++;
             if (rowsCount % 100000 == 0) {
               logger.debug("total rows: ", rowsCount);
@@ -121,8 +122,8 @@ class FIASImporter {
 
       saxStream.on("end", function () {
         logger.debug("загрузка адресов завершена. ИТОГО:", rowsCount);
-        logger.debug("перевод городов федерального значения (уровень 1) в города уровня 4");
-        this.client.executeSync(`update "Zemla" set level = 4 where country_id=${RUSSIA} and level=1 and "SHORTNAME"='г'`);
+        // logger.debug("перевод городов федерального значения (уровень 1) в города уровня 4");
+        // this.client.executeSync(`update "Zemla" set level = 4 where country_id=${RUSSIA} and level=1 and "SHORTNAME"='г'`);
         res(rowsCount);
       });
 
@@ -158,7 +159,7 @@ class FIASImporter {
         try {
           if (node.name == 'House' && node.attributes.STARTDATE < NOW && NOW < node.attributes.ENDDATE) {
             if (!lastImportedDomGUID || isLastImportedDomFound) {
-              this.client.executeSync("insert-zemla", [node.attributes.HOUSEGUID, node.attributes.AOGUID, null, node.attributes.HOUSENUM, FIASImporter.HOUSE_LEVEL, '-', NOW, NOW, RUSSIA, RUSSIA]);
+              this.client.executeSync("insert-zemla", [node.attributes.HOUSEGUID, node.attributes.AOGUID, null, node.attributes.HOUSENUM, FIASImporter.HOUSE_LEVEL, NOW, NOW, RUSSIA, RUSSIA]);
             }
             else if (node.attributes.HOUSEGUID == lastImportedDomGUID) {
               isLastImportedDomFound = true

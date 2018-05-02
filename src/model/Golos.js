@@ -56,11 +56,6 @@ module.exports = function (sequelize, DataTypes) {
       as: "subject",
       foreignKey: "subject_id"
     });
-
-    db.Golos.hasMany(db.File, {
-      as: "attachments",
-      foreignKey: "golos_id"
-    });
   }
 
   return result

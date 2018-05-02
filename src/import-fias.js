@@ -17,8 +17,8 @@ log4js.configure(__dirname + '/../cfg/log.json', {
 let fiasImporter= new FIASImporter();
 
 (async function () {
-    // await fiasImporter.import(__dirname + '/../fias/AS_ADDROBJ_20170305_05242212-9cbb-4910-a9dc-03b86da3cb13.XML', __dirname + '/../fias/AS_HOUSE_20170305_cf62cc8e-6cb9-4b8c-8338-0765c06d134b.XML');
-  await fiasImporter.setupParentsAndPaths();
+  await fiasImporter.import(__dirname + '/../fias/AS_ADDROBJ_20180426_659a8aed-0bf6-4492-b93f-501ccd0dba98.XML', __dirname + '/../fias/AS_HOUSE_20180426_d54d5982-aed5-40e5-af5e-d5b3c98f0768.XML');
+  // await fiasImporter.setupParentsAndPaths();
 })();
 
 

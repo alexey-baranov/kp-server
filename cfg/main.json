@@ -1,8 +1,8 @@
 {
   "development": {
     "username": "postgres",
-    "password": "irinapg",
-    "database": "kopa",
+    "password": "postgres",
+    "database": "kp-development",
     "host": "127.0.0.1",
     "dialect": "postgres",
     "define": {
@@ -51,8 +51,8 @@
   },
   "testing": {
     "username": "postgres",
-    "password": "irinapg",
-    "database": "kopa-test",
+    "password": "postgres",
+    "database": "kp-testing",
     "host": "127.0.0.1",
     "dialect": "postgres",
     "define": {

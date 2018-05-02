@@ -26,17 +26,7 @@ module.exports = function (sequelize, DataTypes) {
       }
     },
     {
-      instanceMethods: {
-        /**
-         * пока заглушка - первые 100 копников
-         */
-        async getGolosovanti(){
-          let place = await this.getPlace(),
-            result = await place.getGolosovanti()
-
-          return result
-        }
-      },
+      instanceMethods: {},
       hooks: {
         /**
          * удалить все слова и предложения
@@ -54,11 +44,6 @@ module.exports = function (sequelize, DataTypes) {
   )
 
   Kopa.associate = function (db) {
-    db.Kopa.belongsTo(db.Zemla, {
-      as: "place",
-      foreignKey: "place_id"
-    });
-
     db.Kopa.belongsTo(db.Kopnik, {
       as: "owner",
       foreignKey: "owner_id"
@@ -78,6 +63,8 @@ module.exports = function (sequelize, DataTypes) {
       as: "attachments",
       foreignKey: "kopa_id"
     })
+
+    db.Kopa.belongsToMany(db.Kopa, { through: db.KopnikKopa, as: "kopa", foreignKey: "kopa_id" })
   }
 
   return Kopa

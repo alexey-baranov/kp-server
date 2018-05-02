@@ -48,15 +48,13 @@ module.exports = function (sequelize, DataTypes) {
     db.File.belongsTo(db.Kopnik, {
       as: "owner",
     })
-    db.File.belongsTo(db.Zemla, {
-    })
-    db.File.belongsTo(db.Kopnik, {
-    })
     db.File.belongsTo(db.Kopa, {
     })
     db.File.belongsTo(db.Predlozhenie, {
     })
     db.File.belongsTo(db.Slovo, {
+    })
+    db.File.belongsTo(db.Registration, {
     })
   }
 

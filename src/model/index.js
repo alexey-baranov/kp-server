@@ -10,13 +10,12 @@ var env = process.env.NODE_ENV || 'development'
 var config = require(__dirname + '/../../cfg')
 var db = {}
 
-Sequelize.cls = require('continuation-local-storage').createNamespace('Sequelize')
+// Sequelize.cls = require('continuation-local-storage').createNamespace('Sequelize')
+const namespace = require('cls-hooked').createNamespace('Sequelize')
+Sequelize.useCLS(namespace)
 
-if (config.use_env_variable) {
-    var sequelize = new Sequelize(process.env[config.use_env_variable])
-} else {
-    var sequelize = new Sequelize(config.database, config.username, config.password, config)
-}
+var sequelize = new Sequelize(config.database, config.username, config.password, config)
+
 
 fs
     .readdirSync(__dirname)

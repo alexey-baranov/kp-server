@@ -20,7 +20,8 @@
     "import-fias": "./node_modules/babel-cli/bin/babel-node.js --use-strict ./src/import-fias.js",
     "poligon-fias": "./node_modules/babel-cli/bin/babel-node.js --use-strict ./src/poligon-fias.js",
     "benchmark": "./node_modules/babel-cli/bin/babel-node.js --use-strict ./src/benchmark.js",
-    "poligon": "./node_modules/babel-cli/bin/babel-node.js --use-strict ./src/poligon.js"
+    "poligon": "./node_modules/babel-cli/bin/babel-node.js --use-strict ./src/poligon.js",
+    "db": "docker run -p 5432:5432 --env POSTGRES_PASSWORD=postgres -v ~/kp-db:/var/lib/postgresql/data alexey2baranov/kp-db"
   },
   "repository": {
     "type": "git",
@@ -36,33 +37,30 @@
     "autobahn": "^0.10.1",
     "bcrypt": "^0.8.7",
     "chai": "^3.5.0",
+    "cls-hooked": "^4.2.2",
+    "continuation-local-storage": "^3.2.1",
     "emailjs": "^1.0.12",
-    "express": "^4.15.4",
+    "express": "^4.16.3",
     "express-fileupload": "0.0.7",
-    "lodash": "^4.15.0",
+    "lodash": "^4.17.10",
     "log4js": "^0.6.38",
     "mustache": "^2.3.0",
-    "pg-hstore": "^2.3.2",
-    "request": "^2.74.0",
-    "request-promise": "^4.2.1",
-    "request-promise-native": "^1.0.4",
-    "sequelize": "^3.30.4",
-    "string.prototype.padstart": "^3.0.0",
-    "superagent": "^3.6.0",
-    "urlencode": "^1.1.0",
-    "web-push": "^3.2.2"
-  },
-  "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-plugin-transform-async-to-generator": "^6.24.1",
-    "babel-plugin-transform-es2015-destructuring": "^6.22.0",
-    "babel-plugin-transform-es2015-parameters": "^6.24.1",
-    "continuation-local-storage": "^3.2.0",
-    "mocha": "^3.5.0",
     "pg": "^6.4.2",
+    "pg-hstore": "^2.3.2",
     "pg-native": "^1.10.1",
     "pg-promise": "^5.9.7",
+    "request": "^2.85.0",
+    "request-promise": "^4.2.2",
+    "request-promise-native": "^1.0.5",
     "sax": "git+https://github.com/isaacs/sax-js.git#v1.2.1",
-    "uuid": "^3.1.0"
+    "sequelize": "^4.37.6",
+    "string.prototype.padstart": "^3.0.0",
+    "superagent": "^3.8.3",
+    "urlencode": "^1.1.0",
+    "uuid": "^3.2.1",
+    "web-push": "^3.3.0"
+  },
+  "devDependencies": {
+    "mocha": "^3.5.3"
   }
 }

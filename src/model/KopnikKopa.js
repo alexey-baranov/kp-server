@@ -10,18 +10,15 @@
  * @returns {Model}
  */
 module.exports = function (sequelize, DataTypes) {
-  let KopnikTree = sequelize.define('KopnikTree', {
+  let KopnikKopa = sequelize.define('KopnikKopa', {
     id: {
       type: DataTypes.BIGINT,
       primaryKey: true,
       autoIncrement: true
     },
-    deep: {
-      type: DataTypes.INTEGER
-    },
   })
 
-  KopnikTree.associate = function (db) {
+  KopnikKopa.associate = function (db) {
   }
-  return KopnikTree;
+  return KopnikKopa;
 }
