@@ -19,7 +19,19 @@ module.exports = function (sequelize, DataTypes) {
     deep: {
       type: DataTypes.INTEGER
     },
-  })
+  },
+    {
+      indexes: [
+        //индексы для быстрого поиска строк необходимы индексы на внешние ключи
+        {
+          unique: false,
+          fields: ['bolshe_id'],
+        },
+        {
+          unique: false,
+          fields: ['menshe_id'],
+        }
+      ]})
 
   ZemlaTree.associate = function (db) {
   }

@@ -19,7 +19,19 @@ module.exports = function (sequelize, DataTypes) {
     deep: {
       type: DataTypes.INTEGER
     },
-  })
+  },
+    {
+      indexes: [
+        //индексы для быстрого поиска строк необходимы индексы на внешние ключи
+        {
+          unique: false,
+          fields: ['starshii_id'],
+        },
+        {
+          unique: false,
+          fields: ['mladshii_id'],
+        }
+      ]})
 
   KopnikTree.associate = function (db) {
   }

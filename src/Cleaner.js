@@ -20,10 +20,9 @@ class Cleaner {
                     from 
                       "Slovo" s2
                       join "Kopa" k2 on k2.id= s2.place_id
-                      join "Zemla" z2 on z2.id=k2.place_id
                     where
-                      z2.path like '/1/%'
-                      and s2.id>100
+                      s2.id>1000
+                      and k2.owner_id<1000
                   )
                  `,
         {type: models.Sequelize.QueryTypes.DELETE});
@@ -39,11 +38,10 @@ class Cleaner {
                       "Golos" g2
                       join "Predlozhenie" p2 on p2.id= g2.subject_id
                       join "Kopa" k2 on k2.id= p2.place_id
-                      join "Zemla" z2 on z2.id=k2.place_id
                     where
-                      z2.path like '/1/%'
-                      and g2.id>100
-                  )            
+                      g2.id>1000
+                      and k2.owner_id<1000
+                  )
                  `,
         {type: models.Sequelize.QueryTypes.DELETE});
     }
@@ -57,10 +55,9 @@ class Cleaner {
                     from 
                       "Predlozhenie" p2
                       join "Kopa" k2 on k2.id= p2.place_id
-                      join "Zemla" z2 on z2.id=k2.place_id
                     where
-                      z2.path like '/1/%'
-                      and p2.id>100
+                      p2.id>1000
+                      and k2.owner_id<1000
                   )
                  `,
         {type: models.Sequelize.QueryTypes.DELETE});
@@ -76,8 +73,8 @@ class Cleaner {
                       "Registration" r2
                       join "Zemla" z2 on z2.id=r2.dom_id
                     where
-                      z2.path like '/1/%'
-                      and r2.id>100
+                      r2.id>1000
+                      and z2.id<1000
                   )
 `,
         {type: models.Sequelize.QueryTypes.DELETE});
@@ -93,24 +90,18 @@ class Cleaner {
                       "Kopnik" k2
                       join "Zemla" z2 on z2.id=k2.dom_id
                     where
-                      k2.id>100
-                      and z2.path like '/1/%'
+                      k2.id>1000
+                      and z2.id<1000
                   )
                  `,
         {type: models.Sequelize.QueryTypes.DELETE})
 
       await models.sequelize.query(`
-                update "Kopnik"
+                update "Kopnik" as k
                 set 
-                    "voiskoSize"= 
-                    case id 
-                        when 2 then 3 
-                        when 3 then 1 
-                        ELSE 0 
-                    END
+                    "voiskoSize"= (select value from voisko_size where voisko_size.id=k.id)
                 where
-                    id>1 
-                    and id < 100`,
+                  id < 1000`,
         {
           type: models.sequelize.Sequelize.QueryTypes.UPDATE
         })
@@ -118,52 +109,32 @@ class Cleaner {
 
     if (what.length == 0 || what.indexOf("Kopa") != -1) {
       await models.sequelize.query(`
-                delete from "Kopa"
+                delete from "Kopa" k
                 where
-                  id in (
-                    select k2.id 
-                    from 
-                      "Kopa" k2
-                      join "Zemla" z2 on z2.id=k2.place_id
-                    where
-                      z2.path like '/1/%'
-                      and k2.id>100
-                  )
+                  k.id>1000
+                  and k.owner_id<1000
                  `,
         {type: models.Sequelize.QueryTypes.DELETE});
     }
 
 
     /**
-     * у земли не может быть задан родитель и одновременно путь = "-"
-     * такие земли вероятнее всего во время юнит тестов не прошли установку родителя
-     * и тоже подлежат удалению
      */
     if (what.length == 0 || what.indexOf("Zemla") != -1) {
       await models.sequelize.query(`
                 delete from "Zemla"
                 where
-                    id>100
+                    id>1001
                     and (
-                      path like '/1/%'
-                      or path = '-'
+                      parent_id<1000
                       or name like 'temp%'
                     )
                  `,
         {type: models.Sequelize.QueryTypes.DELETE});
 
       await models.sequelize.query(`
-                update "Zemla"
-                set 
-                    "obshinaSize"= 
-                case id 
-                    when 1 then 6 
-                    when 2 then 5 
-                    when 4 then 1 
-                    ELSE 0 
-                END
-                where
-                    id < 100`,
+                    select 1
+                    `,
         {
           type: models.sequelize.Sequelize.QueryTypes.UPDATE
         })

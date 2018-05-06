@@ -67,6 +67,11 @@ module.exports = function (sequelize, DataTypes) {
           fields: ['AOGUID'],
           operator: 'varchar_pattern_ops'
         },
+        {
+          unique: false,
+          fields: ['PARENTGUID'],
+          operator: 'varchar_pattern_ops'
+        },
         //индексы для быстрого удаления строк необходимы индексы на внешние ключи
         {
           unique: false,

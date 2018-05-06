@@ -427,77 +427,152 @@ async function initFile() {
  */
 async function initStored() {
   await models.sequelize.query(`
-        CREATE OR REPLACE FUNCTION get_zemli(IN zemla_id bigint) RETURNS SETOF "Zemla" AS
-        $BODY$
-        DECLARE
-            current_zemla_id bigint;
-            current_zemla "Zemla";
-        BEGIN
-            current_zemla_id:= zemla_id;
-        
-            while (current_zemla_id is not null) loop
-                select * from "Zemla" where id= current_zemla_id into current_zemla;
-                return next current_zemla;
-                current_zemla_id:= current_zemla.parent_id;
-            end loop;
-            
-            return;
-        END;
-        $BODY$
-        LANGUAGE plpgsql VOLATILE NOT LEAKPROOF;
-`,
-    {
-      replacements: {},
-      type: models.Sequelize.QueryTypes.SELECT
-    });
+    CREATE OR REPLACE FUNCTION public.get_voisko_size(kopnik_id bigint)
+      RETURNS BIGINT AS
+    $BODY$
+    
+      SELECT count(*)-1
+      FROM 
+        "KopnikTree" kt
+      WHERE 
+        kt.starshii_id = kopnik_id
+    
+    $BODY$
+      LANGUAGE sql VOLATILE
+      COST 100;
+    ALTER FUNCTION public.get_voisko_size(bigint)
+      OWNER TO postgres;
+  `)
 
   await models.sequelize.query(`
-        CREATE OR REPLACE FUNCTION get_full_zemla(IN zemla_id bigint, IN start_level int, IN end_level int) RETURNS text AS
-        $BODY$
-            select 
-            string_agg(name, ', ') as result
-            from (
-                select * 
-                from
-                get_zemli(zemla_id) 
-                where 
-                level between start_level and end_level
-                order by 
-                level
-            ) zemli
-        $BODY$
-        LANGUAGE sql VOLATILE NOT LEAKPROOF;
-`,
-    {
-      replacements: {},
-      type: models.Sequelize.QueryTypes.SELECT
-    });
+    CREATE OR REPLACE FUNCTION public.get_obshina_size(zemla_id bigint)
+      RETURNS BIGINT AS
+    $BODY$
+    
+    select count(*)
+    from 
+      "Kopnik" k 
+      join "ZemlaTree" zt on zt.menshe_id=k.dom_id
+    where 
+      zt.bolshe_id= zemla_id
+      and k.deleted_at is null
+    
+    $BODY$
+      LANGUAGE sql VOLATILE
+      COST 100;
+    ALTER FUNCTION public.get_obshina_size(bigint)
+      OWNER TO postgres;
+  `)
 
   await models.sequelize.query(`
-        CREATE OR REPLACE FUNCTION get_starshini(kopnik_id bigint)
-          RETURNS SETOF "Kopnik" AS
+    CREATE OR REPLACE FUNCTION public.get_zemli(zemla_id bigint)
+      RETURNS setof "Zemla" AS
+    $BODY$
+    
+    select z.*
+    from 
+      "Zemla" z 
+      join "ZemlaTree" zt on zt.bolshe_id=z.id
+    where 
+      zt.menshe_id=zemla_id
+    order by
+      deep desc
+    
+    $BODY$
+      LANGUAGE sql VOLATILE
+      COST 100;
+    ALTER FUNCTION public.get_zemli(bigint)
+      OWNER TO postgres;
+      
+    CREATE OR REPLACE FUNCTION public.get_bolshii(zemla_id bigint)
+      RETURNS setof "Zemla" AS
+    $BODY$
+    
+    select *
+    from 
+      get_zemli(zemla_id)
+    where 
+      id<>zemla_id
+    
+    $BODY$
+      LANGUAGE sql VOLATILE
+      COST 100;
+    ALTER FUNCTION public.get_bolshii(bigint)
+      OWNER TO postgres;
+`)
+
+  await models.sequelize.query(`
+        CREATE OR REPLACE FUNCTION public.get_full_zemla(
+            zemla_id bigint,
+            start_level integer,
+            end_level integer)
+          RETURNS text AS
         $BODY$
-        DECLARE
-            current_starshina_id bigint;
-            current_starshina "Kopnik";
-        BEGIN
-            select starshina_id from "Kopnik" where id= kopnik_id into current_starshina_id;
+                    select 
+                    string_agg(name, ', ') as result
+                    from (
+                        select * 
+                        from
+                        "Zemla" z 
+                        join "ZemlaTree" zt on zt.bolshe_id = z.id
+                        where 
+                        zt.menshe_id=zemla_id
+                        and z.level between start_level and end_level
+                        order by 
+                        level
+                    ) zemli
+                $BODY$
+          LANGUAGE sql VOLATILE
+          COST 100;
+        ALTER FUNCTION public.get_full_zemla(bigint, integer, integer)
+          OWNER TO postgres;
+          
+        CREATE OR REPLACE FUNCTION public.get_full_zemla_reverse(
+            zemla_id bigint,
+            start_level integer,
+            end_level integer)
+          RETURNS text AS
+        $BODY$
+                    select 
+                    string_agg(name, ', ') as result
+                    from (
+                        select * 
+                        from
+                        "Zemla" z 
+                        join "ZemlaTree" zt on zt.bolshe_id = z.id
+                        where 
+                        zt.menshe_id=zemla_id
+                        and z.level between start_level and end_level
+                        order by 
+                        level desc
+                    ) zemli
+                $BODY$
+          LANGUAGE sql VOLATILE
+          COST 100;
+        ALTER FUNCTION public.get_full_zemla(bigint, integer, integer)
+          OWNER TO postgres;          
+`)
+
+  await models.sequelize.query(`
+        CREATE OR REPLACE FUNCTION public.get_starshii(kopnik_id bigint)
+          RETURNS setof "Kopnik" AS
+        $BODY$
         
-            while (current_starshina_id is not null) loop
-                select * from "Kopnik" where id= current_starshina_id into current_starshina;
-                return next current_starshina;
-                current_starshina_id:= current_starshina.starshina_id;
-            end loop;
-            
-            return;
-        END;
+        select k.*
+        from 
+          "Kopnik" k 
+          join "KopnikTree" kt on kt.starshii_id=k.id
+        where 
+          kt.mladshii_id=kopnik_id
+          and kt.starshii_id<>kopnik_id
+        order by
+          deep desc
         $BODY$
-        LANGUAGE plpgsql VOLATILE NOT LEAKPROOF;
-`,
-    {
-      replacements: {},
-      type: models.Sequelize.QueryTypes.SELECT
-    });
+          LANGUAGE sql VOLATILE
+          COST 100;
+        ALTER FUNCTION public.get_starshii(bigint)
+          OWNER TO postgres;
+`)
 }
 
 /**

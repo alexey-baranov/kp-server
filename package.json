@@ -15,13 +15,13 @@
     "test": "./node_modules/babel-cli/bin/babel-node.js --use-strict ./node_modules/mocha/bin/_mocha --timeout 5000 --compilers js:babel-register --recursive --timeout 5000 ./test",
     "test:watch": "./node_modules/babel-cli/bin/babel-node.js --use-strict ./node_modules/mocha/bin/_mocha --watch --timeout 5000 --compilers js:babel-register --recursive --timeout 5000 ./test",
     "crossbar": "crossbar start",
-    "init": "babel-node --use-strict ./src/init.js",
+    "init": "node --use-strict ./src/init.js",
     "download-fias": "wget -O ./fias/fias.rar http://fias.nalog.ru/Public/Downloads/20180426/fias_xml.rar && cd ./fias && unrar e ./fias.rar && cd ..",
     "import-fias": "node --use-strict ./src/import-fias.js",
     "poligon-fias": "./node_modules/babel-cli/bin/babel-node.js --use-strict ./src/poligon-fias.js",
     "benchmark": "./node_modules/babel-cli/bin/babel-node.js --use-strict ./src/benchmark.js",
     "poligon": "./node_modules/babel-cli/bin/babel-node.js --use-strict ./src/poligon.js",
-    "db": "docker run -p 5432:5432 --env POSTGRES_PASSWORD=postgres -v ~/kp-db:/var/lib/postgresql/data alexey2baranov/kp-db"
+    "backup-db": "/usr/bin/pg_dump --host localhost --port 5432 --username 'postgres' --no-password  --format directory --verbose --file '/home/alexey/kp-development.backup' 'kp-development'"
   },
   "repository": {
     "type": "git",
@@ -37,6 +37,7 @@
     "autobahn": "^0.10.1",
     "bcrypt": "^0.8.7",
     "chai": "^3.5.0",
+    "cls-bluebird": "^2.1.0",
     "cls-hooked": "^4.2.2",
     "continuation-local-storage": "^3.2.1",
     "emailjs": "^1.0.12",
@@ -45,6 +46,7 @@
     "lodash": "^4.17.10",
     "log4js": "^0.6.38",
     "mustache": "^2.3.0",
+    "node-expat": "^2.3.16",
     "pg": "^6.4.2",
     "pg-hstore": "^2.3.2",
     "pg-native": "^1.10.1",
