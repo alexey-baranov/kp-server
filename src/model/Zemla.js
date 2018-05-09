@@ -125,11 +125,11 @@ module.exports = function (sequelize, DataTypes) {
      * перестроил дерево земель
      * https://www.percona.com/blog/2011/02/14/moving-subtrees-in-closure-table/
      */
-    let SQL = `
-            DELETE FROM "ZemlaTree"
-            WHERE menshe_id IN (SELECT menshe_id FROM "ZemlaTree" WHERE bolshe_id = :THIS)
-            AND bolshe_id NOT IN (SELECT menshe_id FROM "ZemlaTree" WHERE bolshe_id = :THIS);
-            `
+    let SQL = ""
+            // DELETE FROM "ZemlaTree"
+            // WHERE menshe_id IN (SELECT menshe_id FROM "ZemlaTree" WHERE bolshe_id = :THIS)
+            // AND bolshe_id NOT IN (SELECT menshe_id FROM "ZemlaTree" WHERE bolshe_id = :THIS);
+
     if (value) {
       SQL += `
             INSERT INTO "ZemlaTree" (bolshe_id, menshe_id, deep, created_at, updated_at)

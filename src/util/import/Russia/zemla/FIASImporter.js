@@ -10,12 +10,18 @@ let expat = require('node-expat')
 
 /**
  * https://fias.nalog.ru/Updates.aspx
- * импортируется 25 млн строк
+ * импортируется 28 млн строк
  *
  * Импорт идет 2,5 часа на адреса без индексов по 4 сек на каждую тыс записей
  * и 24 часа на дома по 4 сек на каждую тыс записей
  * Всего импортируется 25 млн строк
+ * Установка родителей идет по 7 сек на тысячу и занимает примерно 3 дня
+ *
  * !!!На NODE_ENV=development импортируется в 5 раз медленнее!!!
+ *
+ * На время импорта нужно закомментировать часть setParent2() - удаление строк из ZemlaTree,
+ * потому что каждоя такое удаление проходит Сиквенссканом по ошибке планеровщика
+ * и занимает около 30 секунд (после 25 миллионов строк)!!!
  *
  * Часть адресов (AOGUID: 'a68a172f-cefc-496b-b070-38887a6e6a82',) на момент парсинья еще не имеют пропарсеных родителей из-за неправильного порядка записей в XML
  * поэтому в таблицу земель добавляется колонка PARENTGUID и после полной загрузки по этой колонке назначаются родители
@@ -314,17 +320,23 @@ class FIASImporter {
    * @param parent
    * @returns {Promise<void>}
    */
-  async setupParentsRecurs(parent){
+  async setParentRecursive(zemla, parent){
+    // delete from "ZemlaTree" where id > 27943305
+
+    await zemla.setParent2(parent)
+
+    //дома пропускаем, потому что у них нет дочек
+    if (zemla.level== FIASImporter.HOUSE_LEVEL){
+      return
+    }
+
     //найти деток
     let childs = await models.Zemla.findAll({
       where:{
-        PARENTGUID: parent.AOGUID,
+        PARENTGUID: zemla.AOGUID,
         country_id: await this.getRUSSIA(),
       }
     })
-
-    //присвоить всем деткам себя
-    await Promise.all(childs.map(eachChild=>eachChild.setParent2(parent)))
 
     //если totalCount перевалил через следующую тысячу вывожу его
     let modBefore= FIASImporter.totalCount % 1000
@@ -335,11 +347,7 @@ class FIASImporter {
 
     //повторить тоже самое для всех деток
     for(let eachChild of childs){
-      //дома пропускаем, потому что у них нет дочек
-      if (eachChild.level== FIASImporter.HOUSE_LEVEL){
-        return
-      }
-      await this.setupParentsRecurs(eachChild)
+      await this.setParentRecursive(eachChild, zemla)
     }
   }
 
@@ -359,8 +367,7 @@ class FIASImporter {
 
 
       for(let eachRegion of regions) {
-        await eachRegion.setParent2(Russia)
-        await this.setupParentsRecurs(eachRegion)
+        await this.setParentRecursive(eachRegion, Russia)
       }
 
       this.logger.debug("updating parents done");

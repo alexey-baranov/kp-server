@@ -10,8 +10,11 @@ module.exports= {
       query:{
         type: Sequelize.QueryTypes.SELECT
       },
+      dialectOptions:{
+        statement_timeout: 10*60*1000, //10 min
+      },
       logging: function(e){
-        // console.log(e)
+        console.log(e)
       },
       // pool configuration used to pool database connections
       pool: {
@@ -64,6 +67,9 @@ module.exports= {
       dialect: "postgres",
       query:{
         type: Sequelize.QueryTypes.SELECT
+      },
+      dialectOptions:{
+        statement_timeout: 10*60*1000, //10 min
       },
       logging: function(e){
         // console.log(e)
@@ -119,6 +125,9 @@ module.exports= {
       dialect: "postgres",
       query:{
         type: Sequelize.QueryTypes.SELECT
+      },
+      dialectOptions:{
+        statement_timeout: 10*60*1000, //10 min
       },
       logging: function(e){
         console.log(e)

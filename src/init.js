@@ -502,7 +502,7 @@ async function initStored() {
 `)
 
   await models.sequelize.query(`
-        CREATE OR REPLACE FUNCTION public.get_full_zemla(
+        CREATE OR REPLACE FUNCTION public.get_zemla_full_name(
             zemla_id bigint,
             start_level integer,
             end_level integer)
@@ -524,10 +524,10 @@ async function initStored() {
                 $BODY$
           LANGUAGE sql VOLATILE
           COST 100;
-        ALTER FUNCTION public.get_full_zemla(bigint, integer, integer)
+        ALTER FUNCTION public.get_zemla_full_name(bigint, integer, integer)
           OWNER TO postgres;
           
-        CREATE OR REPLACE FUNCTION public.get_full_zemla_reverse(
+        CREATE OR REPLACE FUNCTION public.get_zemla_full_name_reverse(
             zemla_id bigint,
             start_level integer,
             end_level integer)
@@ -549,7 +549,7 @@ async function initStored() {
                 $BODY$
           LANGUAGE sql VOLATILE
           COST 100;
-        ALTER FUNCTION public.get_full_zemla(bigint, integer, integer)
+        ALTER FUNCTION public.get_zemla_full_name_reverse(bigint, integer, integer)
           OWNER TO postgres;          
 `)
 
