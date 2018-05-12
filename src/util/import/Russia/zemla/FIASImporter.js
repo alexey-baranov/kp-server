@@ -17,6 +17,8 @@ let expat = require('node-expat')
  * Всего импортируется 25 млн строк
  * Установка родителей идет по 7 сек на тысячу и занимает примерно 3 дня
  *
+ * Примерный объекм БД ФИАС будет 64Гб
+ *
  * !!!На NODE_ENV=development импортируется в 5 раз медленнее!!!
  *
  * На время импорта нужно закомментировать часть setParent2() - удаление строк из ZemlaTree,
@@ -72,7 +74,7 @@ class FIASImporter {
     if (!FIASImporter.Russia) {
       let result = await models.Zemla.findOne({
         where: {
-          parent_id: 1001,
+          level: 0,
           name: "Россия"
         }
       })
@@ -361,7 +363,8 @@ class FIASImporter {
     let regions = await models.Zemla.findAll({
       where:{
         country_id: Russia.id,
-        level: 1
+        level: 1,
+        //id: 1247954 //выстроить деревья толко для ХМАО
       }
     })
 

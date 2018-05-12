@@ -11,7 +11,7 @@ let log4js = require("log4js"),
   models= require("./model")
 
 
-log4js.configure(__dirname + '/../cfg/log.json', {
+log4js.configure(__dirname + '/../cfg/log.js', {
     reloadSecs: 60,
     cwd: __dirname + "/.."
 });

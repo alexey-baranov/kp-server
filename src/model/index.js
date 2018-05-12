@@ -7,6 +7,7 @@ delete pg.native
 var basename = path.basename(module.filename)
 var env = process.env.NODE_ENV || 'development'
 var config = require(__dirname + '/../../cfg')
+
 var db = {}
 
 const Promise = require('bluebird');

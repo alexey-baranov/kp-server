@@ -18,7 +18,7 @@ new Promise(function(res){
 
 let log4js= require("log4js");
 
-log4js.configure(__dirname+'/../cfg/log.json', {
+log4js.configure(__dirname+'/../cfg/log.js', {
     reloadSecs: 60,
     cwd: __dirname+"/.."
 });

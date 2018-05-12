@@ -9,7 +9,7 @@ const config = require(__dirname + '/../cfg')
 let log4js = require("log4js"),
     ClosureTreeMigrater= require("./util/migration/zemla/ClosureTreeMigrater");
 
-log4js.configure(__dirname + '/../cfg/log.json', {
+log4js.configure(__dirname + '/../cfg/log.js', {
     reloadSecs: 60,
     cwd: __dirname + "/.."
 });

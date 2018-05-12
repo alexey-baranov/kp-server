@@ -2,6 +2,7 @@
   "name": "kp-sequelizejs",
   "version": "0.0.1",
   "description": "копное право - сервер",
+  "test": "export NODE_ENV=testing && jest",
   "main": "index.js",
   "scripts": {
     "development": "export NODE_ENV=development",
@@ -12,7 +13,6 @@
     "server:development": "export NODE_ENV=development && ./node_modules/babel-cli/bin/babel-node.js --use-strict --inspect=48646 ./src/index.js",
     "server-inspect": "./node_modules/babel-cli/bin/babel-node.js --use-strict --inspect=5858 ./src/index.js",
     "file-server": "./node_modules/babel-cli/bin/babel-node.js --use-strict ./src/file-server.index.js",
-    "test": "./node_modules/babel-cli/bin/babel-node.js --use-strict ./node_modules/mocha/bin/_mocha --timeout 5000 --compilers js:babel-register --recursive --timeout 5000 ./test",
     "test:watch": "./node_modules/babel-cli/bin/babel-node.js --use-strict ./node_modules/mocha/bin/_mocha --watch --timeout 5000 --compilers js:babel-register --recursive --timeout 5000 ./test",
     "crossbar": "crossbar start",
     "init": "node --use-strict ./src/init.js",
@@ -21,7 +21,8 @@
     "poligon-fias": "./node_modules/babel-cli/bin/babel-node.js --use-strict ./src/poligon-fias.js",
     "benchmark": "./node_modules/babel-cli/bin/babel-node.js --use-strict ./src/benchmark.js",
     "poligon": "./node_modules/babel-cli/bin/babel-node.js --use-strict ./src/poligon.js",
-    "backup-db": "/usr/bin/pg_dump --host localhost --port 5432 --username 'postgres' --no-password  --format directory --verbose --file '/home/alexey/kp-development.backup' 'kp-development'"
+    "backup-db": "/usr/bin/pg_dump --host localhost --port 5432 --username 'postgres' --no-password  --format directory --verbose --file '/home/alexey/kp-development.backup' 'kp-development'",
+    "test": "jest --bail --runInBand"
   },
   "repository": {
     "type": "git",
@@ -35,34 +36,39 @@
   "homepage": "https://github.com/alexey2baranov/kp-sequelizejs#readme",
   "dependencies": {
     "autobahn": "^0.10.1",
+    "axios": "^0.18.0",
+    "axios-debug-log": "^0.4.0",
     "bcrypt": "^0.8.7",
+    "body-parser": "^1.18.2",
     "chai": "^3.5.0",
     "cls-bluebird": "^2.1.0",
     "cls-hooked": "^4.2.2",
     "continuation-local-storage": "^3.2.1",
+    "cors": "^2.8.4",
     "emailjs": "^1.0.12",
     "express": "^4.16.3",
+    "express-async-errors": "^2.1.2",
     "express-fileupload": "0.0.7",
     "lodash": "^4.17.10",
-    "log4js": "^0.6.38",
+    "log4js": "^2.5.3",
     "mustache": "^2.3.0",
     "node-expat": "^2.3.16",
     "pg": "^6.4.2",
-    "pg-hstore": "^2.3.2",
-    "pg-native": "^1.10.1",
-    "pg-promise": "^5.9.7",
     "request": "^2.85.0",
     "request-promise": "^4.2.2",
     "request-promise-native": "^1.0.5",
-    "sax": "git+https://github.com/isaacs/sax-js.git#v1.2.1",
     "sequelize": "^4.37.6",
-    "string.prototype.padstart": "^3.0.0",
-    "superagent": "^3.8.3",
     "urlencode": "^1.1.0",
     "uuid": "^3.2.1",
     "web-push": "^3.3.0"
   },
   "devDependencies": {
+    "jest": "^22.4.3",
     "mocha": "^3.5.3"
+  },
+  "jest": {
+    "verbose": false,
+    "testEnvironment": "node",
+    "setupTestFrameworkScriptFile": "./test/bootstrap.js"
   }
 }
