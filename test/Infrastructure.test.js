@@ -3,29 +3,29 @@
  */
 
 let _ = require("lodash"),
-  fs = require("fs"),
-   // log4js= require("./bootstrap"),
-   log4js= require("log4js"),
+  expect = require('chai').expect,
+  log4js= require("log4js"),
 
   config = require("../cfg"),
   models = require("../src/model"),
   api= require("../src/axios")
 
-describe('Infrastructure', function () {
+describe('Infrastructure', function () {``
   describe("log", function(){
     it("log", function(){
+
       log4js.getLogger().debug("you should see 3 messages")
       log4js.getLogger().error("you should see 3 messages")
       log4js.getLogger("api").debug("!!!YOU SHOULD NOT SEE ME!!!!")
       log4js.getLogger("api.subapi").debug("!!!YOU SHOULD NOT SEE ME!!!!")
       log4js.getLogger("api").info("you should see 3 messages")
-      // console.log("this is console message")
+      console.log("this is console message")
     })
   })
   describe("database", function () {
     it('simple query', async () => {
       let result= await models.sequelize.query("select 'КОПА' as test")
-      expect(result[0].test).toMatch('КОПА')
+      expect(result[0].test).match(/КОПА/)
     })
 
     describe('cls transaction github issue', () => {
@@ -45,12 +45,12 @@ describe('Infrastructure', function () {
 
       it('then.then.then syntax', (done) => {
         models.sequelize.transaction((t1) => {
-          return models.sequelize.query("select 1", {type: models.Sequelize.QueryTypes.SELECT})
+          return models.sequelize.query("select 1")
             .then(() => {
-              return models.sequelize.query("select 2", {type: models.Sequelize.QueryTypes.SELECT})
+              return models.sequelize.query("select 2")
             })
             .then(() => {
-              return models.sequelize.query("select 3", {type: models.Sequelize.QueryTypes.SELECT})
+              return models.sequelize.query("select 3")
             })
             .then(() => {
               if (models.sequelize.Sequelize.cls.get('transaction') !== t1) {
@@ -64,7 +64,7 @@ describe('Infrastructure', function () {
       })
     })
 
-    it('different transactions', (done) => {
+    it('two parallel transactions', (done) => {
       let counter = 0;
 
       models.sequelize.transaction(async (t1) => {
@@ -78,9 +78,8 @@ describe('Infrastructure', function () {
         else if (++counter == 2) {
           done()
         }
-        return Promise.resolve()
-
       })
+
       models.sequelize.transaction(function (t2) {
         models.sequelize.query("select 777");
 
@@ -97,83 +96,63 @@ describe('Infrastructure', function () {
       // let tran1= await models.sequelize.transaction()
       // await models.sequelize.query("select 'КОПА'", {type: models.Sequelize.QueryTypes.SELECT});
     })
-
-    it('different transactions async/await 2', async () => {
-      await Promise.all([1, 2].map(async () => {
-        let tran = await models.sequelize.transaction()
-        for (let x = 0; x < 10; x++) {
-          await await models.sequelize.query(`select * from "Kopnik" where id= ` + x);
-        }
-      }))
-    })
-
-    it('different transactions async/await 3', async () => {
-      await Promise.all([1, 2].map(async () => {
-        return models.sequelize.transaction(async function () {
-          for (let x = 0; x < 10; x++) {
-            await models.sequelize.query(`select * from "Kopnik" where id= ` + x, {type: models.Sequelize.QueryTypes.SELECT});
-          }
-        })
-      }))
-    })
   })
 
   describe("server", ()=>{
-    it('simple', async ()=> {
-      let response= await api.get("unittest/simple")
-      expect(response.data).toBe("unittest")
+    it('simple-get', async ()=> {
+      let response= await api.get("unittest/simple-get")
+      expect(response.data).equal("unittest")
     })
-
-    it('instance', async ()=> {
-      let response= await api.get("unittest/simple")
-      expect(response.data).toBe("unittest")
+    it('simple-post', async ()=> {
+      let response= await api.post("unittest/simple-post", "unittest")
+      expect(response.data).deep.equal({unittest:""})
     })
+    it('simple-all', async ()=> {
+      let response= await api.get("unittest/simple-all")
+      expect(response.data).equal("unittest")
 
+      response= await api.post("unittest/simple-all")
+      expect(response.data).equal("unittest")
+    })
     it('json', async ()=> {
-      let response= await api.get("unittest/json")
-      expect(response.data).toEqual({unittest:"unittest"})
+      let response= await api.post("unittest/json", {unittest:"unittest"})
+      expect(response.data).a("object")
+        .deep.equal({unittest:"unittest"})
+      // await expect(abc).throw().instanceOf(TypeError).property("message", "message")
     })
 
     /**
-     * при ошибке оригинальное сообщение и стек хранится в err.response.data.message
+     * при ошибке 404 в дата лежит строка типа "status code 404"
      * а ошибка которая выбрасывается в клиенте имеет служебное сообщение "Error with status code 404 или 500"
      */
     it('status404', async ()=> {
-      let expectation= expect(api.get("unittest/status404")).rejects
-
-      await expectation.toThrow(Error)
-      await expectation.toThrow("status code 404")
+      await expect(api.get("unittest/status404")).rejectedWith(Error, /404/)
     })
 
     /**
      * при ошибке оригинальное сообщение и стек хранится в err.response.data.message
      * а ошибка которая выбрасывается в клиенте имеет служебное сообщение "Error with status code 404 или 500"
      */
-    it('throw', async ()=> {
-      try {
-        await api.get("unittest/throw")
-      }
-      catch(err){
-        expect(err.response.data.name).toMatch("Error")
-        expect(err.response.data.message).toMatch("unittest")
-        expect(err.response.data.stack).toBeTruthy()
-      }
+    it('throw (status 500)', async ()=> {
+      await expect(api.get("unittest/throw"))
+        .rejectedWith(Error, /500/).eventually
+        .property("response")
+        .property("data")
+        .all.key(["name","message", "stack"])
     })
 
     it('async', async ()=> {
-      let response= await api.get("unittest/async")
-      expect(response.data).toEqual("unittest")
+      let result=await api.get("unittest/async")
+      expect(result).property("data", "unittest")
     })
 
-    it('asyncthrow', async ()=> {
-      try {
-        let response = await api.get("unittest/asyncthrow")
-        let x=1;
-      }
-      catch(err){
-        expect(err.response.data.message).toMatch("asyncthrow")
-        expect(err.response.data.stack).toBeTruthy()
-      }
+    it('asyncthrow (status 500)', async ()=> {
+        await expect(api.get("unittest/asyncthrow"))
+          .rejectedWith(Error,/500/)
+          .eventually
+          .property("response")
+          .property("data")
+          .all.keys(["name", "message", "stack"])
     })
   })
 

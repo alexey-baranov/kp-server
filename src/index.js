@@ -10,25 +10,26 @@ let axios= require("axios"),
 
 let config= require("../cfg"),
   unittestRoute=require("./route/unittest"),
-  registrationRoute=require("./route/registration")
+  registerRoute=require("./route/register")
 
 
-log4js.configure(config.log)
+log4js.configure(config.log )
 log4js.getLogger().level = "debug"
-
 
 let app = express()
 app.use(cors({
+
   origin: '*',
   methods: ['GET', 'POST']
 }))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
-app.use("/api/registration", registrationRoute)
+app.use("/api/register", registerRoute)
 app.use("/api/unittest", unittestRoute)
 
 app.use(function(err,req,res,next){
+  log4js.getLogger("express").error(err)
   res.status(500).json({
     name:err.constructor.name,
     message: err.message,

@@ -1,4 +1,4 @@
-#registration.js /registration
+#register.test.js /registration
 
 
 - создать регистрацию

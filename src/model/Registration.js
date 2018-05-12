@@ -14,19 +14,10 @@ module.exports = function (sequelize, DataTypes) {
         primaryKey: true,
         autoIncrement: true
       },
-      state: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        defaultValue: 0,
-      },
-      email: {
-        type: DataTypes.STRING
-      },
-      password: {
-        type: DataTypes.STRING
-      },
-
       name: {
+        type: DataTypes.STRING
+      },
+      prozvishe: {
         type: DataTypes.STRING
       },
       surname: {
@@ -52,60 +43,33 @@ module.exports = function (sequelize, DataTypes) {
       },
       note: {
         type: DataTypes.TEXT
-      }
+      },
+      password: {
+        type: DataTypes.STRING
+      },
+      email: {
+        type: DataTypes.TEXT
+      },
+      skype: {
+        type: DataTypes.TEXT
+      },
+      viber: {
+        type: DataTypes.TEXT
+      },
+      whatsapp: {
+        type: DataTypes.TEXT
+      },
+      telegram: {
+        type: DataTypes.TEXT
+      },
+      state: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+      },
     },
     {
       indexes: [],
-      instanceMethods: {
-        async getClosestVerifier(){
-          let models= require("../model")
-
-          let dom= await this.getDom()
-          let resultAsArray = await sequelize.query(`
-            select 
-              ver.*
-            from 
-              get_zemli(:DOM) as dom
-              join "Kopnik" ver on ver.id=dom.verifier_id
-            order by 
-              dom.path desc 
-            limit 1
-            `,
-            {
-              replacements: {
-                "DOM": dom.id
-              },
-              type: sequelize.Sequelize.QueryTypes.SELECT
-            })
-
-          if(!resultAsArray.length){
-            throw new Error("Невозмоно найти заверителя для вашего дома")
-          }
-          let result= await models.Kopnik.findById(resultAsArray[0].id)
-          return result
-        },
-        async setupVerifier(){
-          let verifier= await this.getClosestVerifier()
-
-          this.verifier_id= verifier.id
-          await sequelize.query(`
-            update "Registration" 
-            set 
-              verifier_id= :VERIFIER
-            where
-              id= :THIS
-            `,
-            {
-              replacements: {
-                "VERIFIER": verifier.id,
-                "THIS": this.id
-              },
-              type: sequelize.Sequelize.QueryTypes.UPDATE
-            })
-
-          return verifier
-        }
-      },
       hooks: {
         beforeCreate: async function (sender, options) {
         },
@@ -129,6 +93,63 @@ module.exports = function (sequelize, DataTypes) {
       },
     })
 
+
+  Registration.prototype.getClosestVerifier = async function () {
+    let models = require("../model")
+
+    let dom = await this.getDom()
+    let resultAsArray = await sequelize.query(`
+            select 
+              ver.*
+            from 
+              "ZemlaTree" zt 
+              join "Zemla" z on z.id= zt.bolshe_id 
+              join "Kopnik" ver on ver.id=z.verifier_id
+            where
+              zt.menshe_id=:DOM
+            order by 
+              zt.deep
+            limit 1
+            `,
+      {
+        replacements: {
+          "DOM": dom.id
+        }
+      })
+
+    if (!resultAsArray.length) {
+      throw new Error("Невозмоно найти заверителя для вашего дома")
+    }
+    let result = await models.Kopnik.findById(resultAsArray[0].id)
+    return result
+  }
+
+  Registration.prototype.setupVerifier = async function () {
+    let verifier = await this.getClosestVerifier()
+
+/*
+    this.verifier_id = verifier.id
+    await sequelize.query(`
+            update "Registration"
+            set
+              verifier_id= :VERIFIER
+            where
+              id= :THIS
+            `,
+      {
+        replacements: {
+          "VERIFIER": verifier.id,
+          "THIS": this.id
+        },
+        type: sequelize.Sequelize.QueryTypes.UPDATE
+      })
+*/
+    await this.setVerifier(verifier)
+
+    return verifier
+  }
+
+
   Registration.associate = function (db) {
     db.Registration.belongsTo(db.Zemla, {
       as: "dom",
@@ -148,5 +169,5 @@ module.exports = function (sequelize, DataTypes) {
       foreignKey: "registration_id"
     })
   }
-  return Registration;
+  return Registration
 }

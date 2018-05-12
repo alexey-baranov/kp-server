@@ -5,13 +5,12 @@
 /**
  * Created by alexey2baranov on 8/7/16.
  */
-const autobahn = require('autobahn'),
-  bcrypt = require("bcrypt"),
+const bcrypt = require("bcrypt"),
   fs = require("fs"),
   _ = require("lodash"),
   log4js = require("log4js"),
   Mustache = require("mustache"),
-  request = require("request-promise-native"),
+  // request = require("request-promise-native"),
   webpush = require('web-push')
 
 
@@ -27,22 +26,7 @@ let Cleaner = require("./Cleaner")
  *
  * @type {any}
  */
-autobahn.Session.prototype.registerHelper = function (procedure, endpoint, options, context) {
-  return this.register(procedure, function (args, kwargs) {
-    try {
-      if (context) {
-        return endpoint.call(context, args, kwargs);
-      }
-      else {
-        return endpoint(args, kwargs);
-      }
-    }
-    catch (err) {
-      let kwargs = {message: err.message, stack: err.stack.split("\n")}
-      throw new autobahn.Error(err.constructor.name, [], kwargs)
-    }
-  }, options);
-};
+
 /**
  * curl --header "Authorization: key=AAAAPzuy5_M:APA91bF1sw8KpHaCGZi8GA61T3q3q1irL6rHDNAf8M5OK9w7TYvViohFqfd_f5l_xtWJkZsZF7OWkg23cXBgrPwHmrb3kj_64y2TLKcTC4xHMF8fZRzb9pu_X4e2Ull3eRXyyHruh9qF" --header "Content-Type: application/json" https://android.googleapis.com/gcm/send -d "{\"registration_ids\":[\"f2Q7o8trCps:APA91bG9ul1J1tLDD0D3Bh2YZ1YZ7IWGklGs914-a7IjlBiXIQaE1lI7VgwstKjclwTlqCTPI7_wYL4_TFiqLmqpfmgF0yg2ZzSs3uo_yL8kElWluh8sHJgjkHv0ky6cGmcqnPGaMltQ\"]}"
  */

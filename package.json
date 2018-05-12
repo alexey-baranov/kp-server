@@ -22,7 +22,7 @@
     "benchmark": "./node_modules/babel-cli/bin/babel-node.js --use-strict ./src/benchmark.js",
     "poligon": "./node_modules/babel-cli/bin/babel-node.js --use-strict ./src/poligon.js",
     "backup-db": "/usr/bin/pg_dump --host localhost --port 5432 --username 'postgres' --no-password  --format directory --verbose --file '/home/alexey/kp-development.backup' 'kp-development'",
-    "test": "jest --bail --runInBand"
+    "test": "export NODE_ENV=test && mocha"
   },
   "repository": {
     "type": "git",
@@ -35,17 +35,13 @@
   },
   "homepage": "https://github.com/alexey2baranov/kp-sequelizejs#readme",
   "dependencies": {
-    "autobahn": "^0.10.1",
     "axios": "^0.18.0",
-    "axios-debug-log": "^0.4.0",
     "bcrypt": "^0.8.7",
     "body-parser": "^1.18.2",
-    "chai": "^3.5.0",
+    "chai-as-promised": "^7.1.1",
     "cls-bluebird": "^2.1.0",
     "cls-hooked": "^4.2.2",
-    "continuation-local-storage": "^3.2.1",
     "cors": "^2.8.4",
-    "emailjs": "^1.0.12",
     "express": "^4.16.3",
     "express-async-errors": "^2.1.2",
     "express-fileupload": "0.0.7",
@@ -54,17 +50,15 @@
     "mustache": "^2.3.0",
     "node-expat": "^2.3.16",
     "pg": "^6.4.2",
-    "request": "^2.85.0",
-    "request-promise": "^4.2.2",
-    "request-promise-native": "^1.0.5",
     "sequelize": "^4.37.6",
     "urlencode": "^1.1.0",
     "uuid": "^3.2.1",
     "web-push": "^3.3.0"
   },
   "devDependencies": {
-    "jest": "^22.4.3",
-    "mocha": "^3.5.3"
+    "chai": "^4.1.2",
+    "mocha": "^5.1.1",
+    "nodemon": "^1.17.4"
   },
   "jest": {
     "verbose": false,

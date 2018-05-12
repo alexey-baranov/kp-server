@@ -3,14 +3,12 @@
  */
 
 var assert = require('chai').assert;
-let autobahn = require("autobahn");
 
 let Cleaner = require("../src/Cleaner")
 let config = require("../cfg")
 let _ = require("lodash");
 let model = require("../src/model");
 
-let WAMP = require("../src/WAMPFactory");
 let Server = require("../src/Server");
 let server = new Server();
 

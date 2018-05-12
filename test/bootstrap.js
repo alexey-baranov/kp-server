@@ -1,7 +1,2 @@
-let log4js= require("log4js"),
-
-  config= require("../cfg")
-
-log4js.configure(config.log)
-
-module.exports= log4js
+require("log4js").configure(require("../cfg").log)
+require("chai").use(require("chai-as-promised"))

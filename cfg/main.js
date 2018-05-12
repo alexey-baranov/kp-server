@@ -168,7 +168,7 @@ module.exports= {
         },
         db:{
           appenders: ["console", "file"],
-          level: "info"
+          level: "debug"
         },
         default: {
           appenders: ["console", "file"],

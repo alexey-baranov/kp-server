@@ -86,13 +86,12 @@ async function initZemli() {
   let house1= await (await models.Zemla.create({name: 'House1', level: 99, country_id: 2})).setParent2(street1)
 }
 
-async function initZemlaAndRussia() {
-  Zemla = await models.Zemla.create({name: 'Земля', level: -1})
-  Russia = await (await models.Zemla.create({name: 'Россия', level: 0})).setParent2(Zemla)
+async function initRussia() {
+  Russia = await models.Zemla.create({name: 'Россия', level: 0})
 }
 
 async function initKopnikFromRegistration() {
-  alexey2baranov = await models.Kopnik.create({
+  await models.Kopnik.create({
     name: 'Unit',
     surname: 'Test',
     patronymic: '1',
@@ -611,7 +610,7 @@ async function init() {
   await initFile()
   await setSequenceVals()
 
-  await initZemlaAndRussia()
+  await initRussia()
   await initAlexeyBaranov()
 }
 

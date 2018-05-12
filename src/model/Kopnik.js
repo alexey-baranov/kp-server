@@ -42,6 +42,9 @@ module.exports = function (sequelize, DataTypes) {
       name: {
         type: DataTypes.STRING
       },
+      prozvishe: {
+        type: DataTypes.STRING
+      },
       surname: {
         type: DataTypes.STRING
       },

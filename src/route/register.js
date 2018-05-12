@@ -1,5 +1,5 @@
 let axios= require("axios"),
-  bcrypt= require("bcrypt")
+  bcrypt= require("bcrypt"),
   express = require('express'),
   router = express.Router()
 
@@ -13,6 +13,7 @@ let config= require("../../cfg"),
  * @param {object}  req.body.kwargs
  * @param {object}  req.body.kwargs.plain - плоский объект
  * @param {string}  req.body.kwargs.plain.name
+ * @param {string}  req.body.kwargs.plain.prozvishe
  * @param {string}  req.body.kwargs.plain.surname
  * @param {string}  req.body.kwargs.plain.patronymic
  * @param {Date}    req.body.kwargs.plain.birth
@@ -30,7 +31,7 @@ let config= require("../../cfg"),
  * @param {Number}  req.body.kwargs.plain.state
  * @param {Number}  req.body.kwargs.plain.captchaResponse
  */
-router.get('/create', async function(req, res) {
+router.all('/index', async function(req, res) {
   let args = req.body.args,
     kwargs = req.body.kwargs,
     plain = kwargs.plain,
@@ -46,12 +47,13 @@ router.get('/create', async function(req, res) {
       throw new Error("Ошибка каптчи: " + result.data["error-codes"].join(", "))
     }
   }
+  plain.state=0
   plain.password = bcrypt.hashSync(plain.password, bcrypt.genSaltSync(/*14*/))
 
   let model,
     result
   await models.sequelize.transaction(async () => {
-    model = await models[type].create(plain)
+    model = await models.Registration.create(plain)
     result = {id: model.id, created: model.created_at}
 
     let verifier = await model.setupVerifier()
@@ -67,12 +69,11 @@ router.get('/create', async function(req, res) {
     }
   })
 
-  res.json(result)
+  res.status(200).json(result)
 })
 
-// define the about route
-router.get('/', function(req, res) {
-  res.send('registration')
+router.get('/', async function(req, res) {
+  res.json({info:"регистрация"})
 })
 
 module.exports = router

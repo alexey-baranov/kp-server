@@ -4,11 +4,18 @@ let express = require('express'),
 let config= require("../../cfg")
 
 
-router.get('/simple', (req, res) =>{
+router.get('/simple-get', (req, res) =>{
   res.send("unittest")
 })
-router.get('/json', (req, res) =>{
-  res.json({unittest:"unittest"})
+router.post('/simple-post', (req, res) =>{
+  res.send(req.body)
+})
+router.all('/simple-all', (req, res) =>{
+  res.send("unittest")
+})
+
+router.post('/json', (req, res) =>{
+  res.json(req.body)
 })
 router.get('/status404', (req, res) =>{
   res.status(404).send("not found")

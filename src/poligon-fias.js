@@ -6,10 +6,7 @@ var config = require(__dirname + '/../cfg')
 let log4js = require("log4js"),
     FIASImporter= require("./util/import/Russia/zemla/FIASImporter");
 
-log4js.configure(__dirname + '/../cfg/log.js', {
-    reloadSecs: 60,
-    cwd: __dirname + "/.."
-})
+log4js.configure(config.log)
 
 let fiasImporter= new FIASImporter()
 
