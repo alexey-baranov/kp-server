@@ -105,14 +105,15 @@ async function initKopnikFromRegistration() {
 
   //unit test
   kopnik = kopnik2 = await models.Kopnik.create({
-    name: 'Unit',
-    surname: 'Test',
+    name: 'Unit2',
+    surname: 'Test2',
     patronymic: '2',
     passport: "1234",
-    skype: "skype",
+    skype: "skype2",
     dom_id: unitTestZemla2.id,
-    email: 'unittest2@domain.ru',
-    password: bcrypt.hashSync(config.unittest2.password, bcrypt.genSaltSync(/*14*/)),
+    email: config.unittest.Kopnik.unittest2.email,
+    telegram: config.unittest.Kopnik.unittest2.telegram,
+    password: bcrypt.hashSync("qwerty", bcrypt.genSaltSync(1)),
     birth: 1983
   })
   await models.sequelize.query(`update "Zemla" set verifier_id=2 where id =1`)
@@ -248,7 +249,7 @@ async function initAlexeyBaranov(){
 
 async function setupUnitTest2Password(){
   let unittest2= await models.Kopnik.findById(2)
-  unittest2.password=  bcrypt.hashSync(config.unittest2.password, bcrypt.genSaltSync(/*14*/))
+  unittest2.password=  bcrypt.hashSync(config.unittest.Kopnik.unittest2.password, bcrypt.genSaltSync(/*14*/))
 
   unittest2.save()
 }
@@ -421,6 +422,15 @@ async function initFile() {
   });
 }
 
+async function initSession() {
+  await models.Session.create(Object.assign(
+    config.unittest.Session.session1,
+    {
+      owner_id: kopnik2.id,
+      visited: new Date()
+    }
+  ))
+}
 /**
  * Хранимые процедуры и функции
  */
@@ -595,6 +605,7 @@ async function setSequenceVals() {
   await models.sequelize.query(`select setval('"Slovo_id_seq"',1000);`)
   await models.sequelize.query(`select setval('"Zemla_id_seq"',1000);`)
   await models.sequelize.query(`select setval('"ZemlaTree_id_seq"',1000);`)
+  await models.sequelize.query(`select setval('"Session_id_seq"',1000);`)
 }
 
 async function init() {
@@ -603,6 +614,7 @@ async function init() {
   await initZemli()
   await initKopnikFromRegistration()
   // await setupUnitTest2Password()
+  await initSession()
   await initKopa()
   await  initSlovo()
   await  initPredlozhenie()

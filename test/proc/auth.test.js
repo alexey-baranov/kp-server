@@ -14,56 +14,64 @@ let _ = require("lodash"),
   api= require("../../src/axios")
 
 /**
- * тестирует процесс регистрации
+ * тестирует процесс аутентификации
  */
-describe("register", function(){
-  beforeAll(async ()=>{
-    // await Cleaner.clean(["Registration"])
+describe("auth process", function(){
+  before(async ()=>{
+    await Cleaner.clean(["Registration"])
   })
 
-  it('/auth/index', async () => {
-    let response = await api.post("auth/index", {
-      kwargs: {
-        plain: {
-          name: "unit",
-          prozvishe: "prozvishe",
-          surname: "test",
-          patronymic: "unittest",
-          birth: 1900,
-          passport: "passport",
-          password: "password",
-          note: "note",
-          attachments: [],
-          email: "email@domain.ru",
-          skype: "skype",
-          viber: "viber",
-          whatsapp: "whatsapp",
-          telegram: "telegram",
-          dom_id: 4
+  describe('/api/auth/index', () => {
+    it ("success auth", async ()=>{
+      let response = await api.post("auth/index", {
+        login: config.unittest.Kopnik.unittest2.telegram,
+        password: config.unittest.Kopnik.unittest2.password,
+      })
+
+      //1. проверяю что клиент получил от сервера
+      let data= response.data
+      expect(data).property("auth_token").a("string")
+
+      let user_= data.user
+      expect(user_).property("id")
+      expect(user_).property("name")
+      expect(user_).property("surname")
+      expect(user_).property("prozvishe")
+      expect(user_).not.property("password")
+
+      //2. проверяю что сохранилось в БД
+      let session= await models.Session.findOne({
+        where:{
+          token:data.auth_token
         }
-      }})
+      })
+      expect(session).property("owner_id", user_.id)
+      expect(session).property("ip", "127.0.0.1")
+      expect(session).property("userAgent").match(/axios/)
 
-    //1. проверяю что клиент получил от сервера
-    let plain= response.data
-    expect(plain).property("id")
-    expect(plain).property("created")
-    expect(plain).not.property("password")
+      //3. пробую еще раз по собой
+      let response2 = await api.post("auth/index", {
+        login: config.unittest.Kopnik.unittest2.telegram,
+        password: config.unittest.Kopnik.unittest2.password,
+      })
 
-    plain = plain.verifier
-    expect(plain).property("name")
-    expect(plain).property("prozvishe")
-    expect(plain).property("surname")
-    expect(plain).property("patronymic")
-    expect(plain).property("skype")
-    expect(plain).property("viber")
-    expect(plain).property("whatsapp")
-    expect(plain).property("telegram")
-    expect(plain).not.property("password")
+      //4. сверяю что второй раз регистрация это та же регистрация что и в первый раз
+      let data2= response2.data
+      expect(data2).property("auth_token").equal(data.auth_token)
+    })
 
-    //2. проверяю что сохранилось в БД
-    let model= await models.Registration.findById(plain.id)
+    it ("incorrect user", async ()=>{
+      let expectaion= await expect(api.post("auth/index", {
+        login: config.unittest.Kopnik.unittest2.telegram + "XXX",
+        password: config.unittest.Kopnik.unittest2.password,
+      })).rejectedWith(Error)
+    })
 
-    let verifier = await model.getVerifier()
-    expect(verifier).instanceOf(models.Kopnik)
+    it ("incorrect password", async ()=>{
+      let expectaion= await expect(api.post("auth/index", {
+        login: config.unittest.Kopnik.unittest2.telegram,
+        password: config.unittest.Kopnik.unittest2.password + "XXX",
+      })).rejectedWith(Error)
+    })
   })
 })

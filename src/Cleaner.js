@@ -80,6 +80,24 @@ class Cleaner {
         {type: models.Sequelize.QueryTypes.DELETE});
     }
 
+    if (what.length == 0 || what.indexOf("Session") != -1) {
+      await models.sequelize.query(`
+                delete from "Session"
+                where
+                  id in (
+                    select s2.id 
+                    from 
+                      "Session" s2
+                      join "kopnik" k2 on k2.id= s2.owner_id
+                      join "Zemla" z2 on z2.id= k2.dom_id
+                    where
+                      s2.id>1000
+                      and z2.id<1000
+                  )
+`,
+        {type: models.Sequelize.QueryTypes.DELETE});
+    }
+
     if (what.length == 0 || what.indexOf("Kopnik") != -1) {
       await models.sequelize.query(`
                 delete from "Kopnik"

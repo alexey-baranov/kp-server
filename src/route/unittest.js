@@ -31,6 +31,9 @@ router.get('/asyncthrow', async (req, res) =>{
   let result= await Promise.resolve("unittest")
   throw new Error("asyncthrow")
 })
+router.all('/getSession', async (req, res) =>{
+  res.json(req.session)
+})
 
 
 module.exports = router

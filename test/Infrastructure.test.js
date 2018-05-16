@@ -3,6 +3,7 @@
  */
 
 let _ = require("lodash"),
+  bcrypt= require("bcrypt"),
   expect = require('chai').expect,
   log4js= require("log4js"),
 
@@ -10,7 +11,19 @@ let _ = require("lodash"),
   models = require("../src/model"),
   api= require("../src/axios")
 
-describe('Infrastructure', function () {``
+describe('Infrastructure', function () {
+  describe("bcrypt", function(){
+    it("bcrypt", async function(){
+      let password="qwerty"
+
+      let hash= bcrypt.hashSync("qwerty", bcrypt.genSaltSync(10))
+
+      let match= bcrypt.compareSync(password, hash)
+
+      expect(match).true
+    })
+  })
+
   describe("log", function(){
     it("log", function(){
 
@@ -22,6 +35,7 @@ describe('Infrastructure', function () {``
       console.log("this is console message")
     })
   })
+
   describe("database", function () {
     it('simple query', async () => {
       let result= await models.sequelize.query("select 'КОПА' as test")
@@ -135,7 +149,8 @@ describe('Infrastructure', function () {``
      */
     it('throw (status 500)', async ()=> {
       await expect(api.get("unittest/throw"))
-        .rejectedWith(Error, /500/).eventually
+        .rejectedWith(Error, /500/)
+        .eventually
         .property("response")
         .property("data")
         .all.key(["name","message", "stack"])
@@ -153,6 +168,32 @@ describe('Infrastructure', function () {``
           .property("response")
           .property("data")
           .all.keys(["name", "message", "stack"])
+    })
+
+    /**
+     * тестирует автоматическую установку сессии в мидлваре сервера
+     */
+    describe("automatic session set in middleware by token", function(){
+      it ("GET", async ()=> {
+        let response = await api.get("/unittest/getSession", {
+          params: {
+            auth_token: "qwerty"
+          }
+        })
+
+        expect(response.data)
+          .property("id")
+          .equal("1")
+      })
+
+      it ("POST", async ()=> {
+        let response = await api.post("/unittest/getSession", {
+          auth_token: "qwerty"
+        })
+        expect(response.data)
+          .property("id")
+          .equal("1")
+      })
     })
   })
 

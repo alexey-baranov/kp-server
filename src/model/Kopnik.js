@@ -22,10 +22,10 @@ module.exports = function (sequelize, DataTypes) {
       },
       email: {
         type: DataTypes.STRING,
-        unique: true
       },
       telegram: {
         type: DataTypes.STRING,
+        unique: true
       },
       whatsapp: {
         type: DataTypes.STRING,
@@ -502,10 +502,12 @@ module.exports = function (sequelize, DataTypes) {
      * создать по ней копника
      * @param {Registration} subject
      * @param {Number} state 1-da, 2-reject
+     *
+     * @returns {Kopnik | null} созданный копник или ничего, если регистрация отклонена
      */
     Kopnik.prototype.verifyRegistration = async function (subject, state){
       //а уполномочен ли я заверять регистрацию
-      let zemliAsRow = await sequelize.query(`
+      let zemli_ = await sequelize.query(`
                             select p.verifier_id, p.id, p.name
                             from
                             (select * from get_zemli(:DOM) ) p
@@ -513,28 +515,32 @@ module.exports = function (sequelize, DataTypes) {
                             p.verifier_id= :THIS
                             limit 1`,
         {
-          replacements: {DOM: subject.dom_id, THIS: this.id},
-          type: sequelize.Sequelize.QueryTypes.SELECT
+          replacements: {DOM: subject.dom_id, THIS: this.id}
         })
 
       /**
        * Если нашлась хоть одна земля где я заверитель, то я ее заверю
        */
-      for (let eachZemlaAsRow of zemliAsRow) {
+      if (zemli_.length) {
         subject.state = state
         await subject.save(["state"])
         await subject.setVerifier(this)
 
+        //создаю копника если положительная регистрация
         if (state > 0) {
           let result = await Kopnik.create({
             email: subject.email,
+            skype: subject.skype,
+            whatsapp: subject.whatsapp,
+            viber: subject.viber,
+            telegram: subject.telegram,
             password: subject.password,
             name: subject.name,
+            prozvishe: subject.prozvishe,
             surname: subject.surname,
             patronymic: subject.patronymic,
             birth: subject.birth,
             passport: subject.passport,
-            note: subject.note,
 
             dom_id: subject.dom_id,
           })
@@ -542,12 +548,13 @@ module.exports = function (sequelize, DataTypes) {
           await subject.setResult(result);
           return result
         }
-        else {
-          return
-        }
       }
-      throw new Error(`У вас нет прав заверять эту регистрацию`)
-    },
+      //я не заверитель
+      else{
+        throw new Error(`У вас нет прав заверять эту регистрацию`)
+      }
+    }
+
     /**
      */
     Kopnik.prototype.getUnverifiedRegistrations = async function(){

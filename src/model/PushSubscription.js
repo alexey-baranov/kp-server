@@ -27,9 +27,6 @@ module.exports = function (sequelize, DataTypes) {
   })
 
   result.associate = function (db) {
-    db.PushSubscription.belongsTo(db.Kopnik, {
-      as: "owner",
-    })
   }
 
   result.maxCountPerKopnik = 5

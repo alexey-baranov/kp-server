@@ -206,13 +206,27 @@ module.exports= {
         underscored: true
       },
     },
-    captcha: {
-      key: "6Lf78hkUAAAAALDWSItQ9OdDXfM2ZM7JunDSQMuK",
-      secret: "6Lf78hkUAAAAAO59Qt_G_S35rWDjlbRJBzwEU4eh"
-    },
-    unittest2: {
-      username: "unittest2@domain.ru",
-      password: "qwerty"
+    unittest:{
+      captcha: {
+        // key: "6Lf78hkUAAAAALDWSItQ9OdDXfM2ZM7JunDSQMuK",
+        // secret: "6Lf78hkUAAAAAO59Qt_G_S35rWDjlbRJBzwEU4eh"
+        key: "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI",
+        secret: "6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe"
+      },
+      Kopnik:{
+        unittest2: {
+          email: "unittest2@domain.ru",
+          telegram: "telegram2",
+          password: "qwerty"
+        },
+      },
+      Session:{
+        session1:{
+          token:"qwerty",
+          ip:"127.0.0.1",
+          userAgent: "unit-test-user-agent"
+        }
+      }
     },
     FCM: {
       serverKey: "AAAAPzuy5_M:APA91bF1sw8KpHaCGZi8GA61T3q3q1irL6rHDNAf8M5OK9w7TYvViohFqfd_f5l_xtWJkZsZF7OWkg23cXBgrPwHmrb3kj_64y2TLKcTC4xHMF8fZRzb9pu_X4e2Ull3eRXyyHruh9qF",
