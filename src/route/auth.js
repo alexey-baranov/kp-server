@@ -21,13 +21,14 @@ let axios= require("axios"),
  * @return {{auth_token:string, user: {id:string, name:string, surname:string, skype:string, dom_id:Number}}}
  */
 router.all('/index', async function(req, res) {
-  let result = await axios.post('https://www.google.com/recaptcha/api/siteverify',
-    {
+  let response = await axios.get('https://www.google.com/recaptcha/api/siteverify',{
+    params: {
       secret: config.unittest.captcha.secret,
-      response: req.body.captchaResponse
-    })
-  if (result.status != 200) {
-    throw new Error("Ошибка каптчи: " + result.data["error-codes"].join(", "))
+      response: "unit test captcha response"
+    }
+  })
+  if (!response.data.success) {
+    throw new Error("Ошибка каптчи: " + response.data["error-codes"].join(", "))
   }
 
   let user = await models.Kopnik.findOne({

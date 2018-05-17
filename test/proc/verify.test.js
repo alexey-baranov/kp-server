@@ -25,6 +25,12 @@ describe("auth process", function(){
     it ("success", async ()=> {
       let telegram
 
+      //1. сбросил координаты дома
+      let dom7 = await models.Zemla.findById(7)
+      dom7.shirota= dom7.dolgota= null
+      await dom7.save()
+
+      //2. создал регистрацию на доме
       let registration = await models.Registration.create({
           name: "unit",
           prozvishe: "prozvishe",
@@ -40,9 +46,10 @@ describe("auth process", function(){
           viber: "viber",
           whatsapp: "whatsapp",
           telegram: telegram= new Date().toISOString(),
-          dom_id: 4
+          dom_id: dom7.id
       })
 
+      //3. подтвердил регистрацию и заодно создал копника и установил координаты дома
       let response = await api.get("verify/index", {
         params: {
           registration_id: registration.id,
@@ -58,6 +65,10 @@ describe("auth process", function(){
       //2. проверяю что сохранилось в БД
       let kopnik = await models.Kopnik.findById(kopnik_.id)
       expect(kopnik).property("telegram", telegram)
+
+      let dom= await kopnik.getDom()
+      expect(dom).property("dolgota", 73.382522)
+      expect(dom).property("shirota", 61.250755)
     })
   })
 })

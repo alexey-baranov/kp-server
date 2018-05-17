@@ -36,6 +36,13 @@ module.exports = function (sequelize, DataTypes) {
         allowNull: false,
         defaultValue: 0,
       },
+      dolgota: {
+        type: DataTypes.FLOAT
+      },
+      shirota: {
+        type: DataTypes.FLOAT
+      },
+
       /**
        obshinaSize: {
         type: DataTypes.INTEGER,
@@ -156,63 +163,63 @@ module.exports = function (sequelize, DataTypes) {
     // await this.obshinaUp()
 
     return this
-  },
+  }
 
-    /**
-     * поднимает общину своих родительских земель (и свою взависимотси от параметра includeMe)
-     * на величину своей общины (после входа в состав земли)
-     * @return {Promise}
-     */
-    /*        obshinaUp: function (on, includeMe) {
-              return sequelize.query(`
-                                    update "Zemla"
-                                        set "obshinaSize"= "obshinaSize"+ :delta
-                                    where
-                                        id in (
-                                            select id from get_zemli(${this.id})
-                                            where ${includeMe ? 'true' : 'false'} or id<>${this.id}
-                                        )`,
-                {
-                  replacements: {
-                    "delta": on === undefined ? this.obshinaSize : on,
-                    "includeMe": includeMe ? true : false,
-                  },
-                  type: sequelize.Sequelize.QueryTypes.UPDATE
-                });
-            },*/
+  /**
+   * поднимает общину своих родительских земель (и свою взависимотси от параметра includeMe)
+   * на величину своей общины (после входа в состав земли)
+   * @return {Promise}
+   */
+  /*        obshinaUp: function (on, includeMe) {
+            return sequelize.query(`
+                                  update "Zemla"
+                                      set "obshinaSize"= "obshinaSize"+ :delta
+                                  where
+                                      id in (
+                                          select id from get_zemli(${this.id})
+                                          where ${includeMe ? 'true' : 'false'} or id<>${this.id}
+                                      )`,
+              {
+                replacements: {
+                  "delta": on === undefined ? this.obshinaSize : on,
+                  "includeMe": includeMe ? true : false,
+                },
+                type: sequelize.Sequelize.QueryTypes.UPDATE
+              });
+          },*/
 
-    /**
-     * опускает общину своих родительских земель (и свою взависимотси от параметра includeMe)
-     * на величину своей общины (после выхода из состава родительской земли)
-     * @return {Promise}
-     */
-    /*        obshinaDown: function (on, includeMe) {
-              return sequelize.query(`
-                                    update "Zemla"
-                                        set "obshinaSize"= "obshinaSize"- :delta
-                                    where
-                                        id in (
-                                            select id from get_zemli(${this.id})
-                                            where ${includeMe ? 'true' : 'false'} or id<>${this.id}
-                                        )`,
-                {
-                  replacements: {
-                    "path": this.path,
-                    "delta": on === undefined ? this.obshinaSize : on,
-                    "includeMe": includeMe ? true : false,
-                  },
-                  type: sequelize.Sequelize.QueryTypes.UPDATE
-                });
-            },*/
+  /**
+   * опускает общину своих родительских земель (и свою взависимотси от параметра includeMe)
+   * на величину своей общины (после выхода из состава родительской земли)
+   * @return {Promise}
+   */
+  /*        obshinaDown: function (on, includeMe) {
+            return sequelize.query(`
+                                  update "Zemla"
+                                      set "obshinaSize"= "obshinaSize"- :delta
+                                  where
+                                      id in (
+                                          select id from get_zemli(${this.id})
+                                          where ${includeMe ? 'true' : 'false'} or id<>${this.id}
+                                      )`,
+              {
+                replacements: {
+                  "path": this.path,
+                  "delta": on === undefined ? this.obshinaSize : on,
+                  "includeMe": includeMe ? true : false,
+                },
+                type: sequelize.Sequelize.QueryTypes.UPDATE
+              });
+          },*/
 
-    /**
-     * возвращает массив родительских земель от непосредственного до самого верхнего
-     * @return {*}
-     */
-    Zemla.prototype.getParents= async function () {
-      let models = require("./index")
+  /**
+   * возвращает массив родительских земель от непосредственного до самого верхнего
+   * @return {*}
+   */
+  Zemla.prototype.getParents = async function () {
+    let models = require("./index")
 
-      let parentsAsPlain = await sequelize.query(`
+    let parentsAsPlain = await sequelize.query(`
             select *
             from
               "ZemlaTree" tree
@@ -222,107 +229,133 @@ module.exports = function (sequelize, DataTypes) {
             order by
               deep
             `,
-        {
-          replacements: {
-            "THIS": this.id,
-          },
-          type: sequelize.Sequelize.QueryTypes.SELECT
-        });
-
-
-      let PARENTS = parentsAsPlain.map(eachParentAsPlain => eachParentAsPlain.bolshe_id)
-      let result = await Zemla.findAll({
-        where: {
-          id: {
-            $in: PARENTS
-          }
+      {
+        replacements: {
+          "THIS": this.id,
         },
-      })
-      result.sort((a, b) => {
-        return PARENTS.indexOf(a.id) < PARENTS.indexOf(b.id) ? -1 : 1
-      })
-      return result
-    },
+        type: sequelize.Sequelize.QueryTypes.SELECT
+      });
 
-    /**
-     * пока заглушка - первые 100 копников
-     */
-    /*async getGolosovanti(){
-      let models = require("../model")
 
-      let golosovantiAsRow = await sequelize.query(`
-        select g.*
-        from
-          "Kopnik" g
-          join "Zemla" dom on dom.id= g.dom_id
-        where
-          dom.id= :THIS
-          or dom.path like :fullPath || '%'
-        order by
-          "voiskoSize"
-        limit 100
-        `,
+    let PARENTS = parentsAsPlain.map(eachParentAsPlain => eachParentAsPlain.bolshe_id)
+    let result = await Zemla.findAll({
+      where: {
+        id: {
+          $in: PARENTS
+        }
+      },
+    })
+    result.sort((a, b) => {
+      return PARENTS.indexOf(a.id) < PARENTS.indexOf(b.id) ? -1 : 1
+    })
+    return result
+  }
+
+  /**
+   * обновляет свои координаты
+   * и сохраняет их в БД
+   */
+  Zemla.prototype.updateGeolocation= async function(){
+    let axios= require("axios")
+    let fullName= (await sequelize.query('select get_zemla_full_name(:THIS, 0, 99)',
         {
           replacements: {
-            "THIS": this.id,
-            "fullPath": this.fullPath
-          },
-          type: sequelize.Sequelize.QueryTypes.SELECT
-        })
-
-      let GOLOSOVANTI = golosovantiAsRow.map(eachGolosovant => eachGolosovant.id)
-
-
-      let result = await models.Kopnik.findAll({
-        where: {
-          id: {
-            $in: GOLOSOVANTI
+            THIS: this.id
           }
+        }))[0].get_zemla_full_name,
+      response= await axios.get("https://geocode-maps.yandex.ru/1.x/", {
+        params: {
+          format: "json",
+          geocode: fullName.match("Country")?"Россия Сургут Дзержинского 9/2 ":fullName
         }
       })
 
-      return result
+    let geolocation= response.data.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos.split(" ")
+    this.dolgota = geolocation[0]
+    this.shirota = geolocation[1]
 
-      /!**
-       * (
-       *  что копник сам проживает на земле
-       * )
-       * and (
-       *  что старшины нет
-       *  or(
-       *      старшина не проживает на земле
-       *    )
-       * )
-       *!/
-      golosovantiAsRow = await sequelize.query(`
-        select *
-        from
-          "Kopnik" g
-          join "Zemla" dom on dom.id= g.dom_id
-          left join "Kopnik" s on s.id= g.starshina_id
-          left join "Zemla" stDom on stDom.id= s.dom_id
-        where
-          (
-            dom.id= :THIS
-            or dom.path like :fullPath || '%'
+    await this.save({fields:["dolgota", "shirota"]})
+  }
+
+  /**
+   * пока заглушка - первые 100 копников
+   */
+  /*async getGolosovanti(){
+    let models = require("../model")
+
+    let golosovantiAsRow = await sequelize.query(`
+      select g.*
+      from
+        "Kopnik" g
+        join "Zemla" dom on dom.id= g.dom_id
+      where
+        dom.id= :THIS
+        or dom.path like :fullPath || '%'
+      order by
+        "voiskoSize"
+      limit 100
+      `,
+      {
+        replacements: {
+          "THIS": this.id,
+          "fullPath": this.fullPath
+        },
+        type: sequelize.Sequelize.QueryTypes.SELECT
+      })
+
+    let GOLOSOVANTI = golosovantiAsRow.map(eachGolosovant => eachGolosovant.id)
+
+
+    let result = await models.Kopnik.findAll({
+      where: {
+        id: {
+          $in: GOLOSOVANTI
+        }
+      }
+    })
+
+    return result
+
+    /!**
+     * (
+     *  что копник сам проживает на земле
+     * )
+     * and (
+     *  что старшины нет
+     *  or(
+     *      старшина не проживает на земле
+     *    )
+     * )
+     *!/
+    golosovantiAsRow = await sequelize.query(`
+      select *
+      from
+        "Kopnik" g
+        join "Zemla" dom on dom.id= g.dom_id
+        left join "Kopnik" s on s.id= g.starshina_id
+        left join "Zemla" stDom on stDom.id= s.dom_id
+      where
+        (
+          dom.id= :THIS
+          or dom.path like :fullPath || '%'
+        )
+        and (
+          starhina_id is null
+          or not (
+            stDom.id= :THIS
+            or stDom.path like :fullPath || '%'
           )
-          and (
-            starhina_id is null
-            or not (
-              stDom.id= :THIS
-              or stDom.path like :fullPath || '%'
-            )
-          )
-        )`,
-        {
-          replacements: {
-            "path": this.path,
-            "delta": on === undefined ? this.obshinaSize : on,
-            "includeMe": includeMe ? true : false,
-          },
-          type: sequelize.Sequelize.QueryTypes.UPDATE
-        });
-    },*/
+        )
+      )`,
+      {
+        replacements: {
+          "path": this.path,
+          "delta": on === undefined ? this.obshinaSize : on,
+          "includeMe": includeMe ? true : false,
+        },
+        type: sequelize.Sequelize.QueryTypes.UPDATE
+      });
+  },*/
 
 
   Zemla.associate = function (db) {

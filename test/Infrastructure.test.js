@@ -3,6 +3,7 @@
  */
 
 let _ = require("lodash"),
+  axios= require("axios"),
   bcrypt= require("bcrypt"),
   expect = require('chai').expect,
   log4js= require("log4js"),
@@ -12,8 +13,7 @@ let _ = require("lodash"),
   api= require("../src/axios")
 
 describe('Infrastructure', function () {
-  describe("bcrypt", function(){
-    it("bcrypt", async function(){
+  it("bcrypt", async function(){
       let password="qwerty"
 
       let hash= bcrypt.hashSync("qwerty", bcrypt.genSaltSync(10))
@@ -21,6 +21,31 @@ describe('Infrastructure', function () {
       let match= bcrypt.compareSync(password, hash)
 
       expect(match).true
+    })
+
+  describe("captch", function(){
+    it("success", async function() {
+      let response = await axios.get('https://www.google.com/recaptcha/api/siteverify',{
+        params: {
+          secret: config.unittest.captcha.secret,
+          response: "unit test captcha response"
+        }
+      })
+      expect(response.data).property("success", true)
+    })
+
+    it("fail", async function() {
+      let response = await axios.get('https://www.google.com/recaptcha/api/siteverify', {
+        params: {
+          secret: "somewrongsecretkey",
+          response: "unit test captcha response"
+        }
+      })
+
+      expect(response.data).property("success", false)
+      expect(response.data["error-codes"])
+        .instanceof(Array)
+        .lengthOf(2)
     })
   })
 

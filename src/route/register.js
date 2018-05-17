@@ -37,18 +37,20 @@ let config= require("../../cfg"),
 router.all('/index', async function(req, res) {
   let registration_ = req.body.registration
 
-  let result = await axios.post('https://www.google.com/recaptcha/api/siteverify',
-    {
+  let response = await axios.get('https://www.google.com/recaptcha/api/siteverify',{
+    params: {
       secret: config.unittest.captcha.secret,
-      response: req.body.captchaResponse
-    })
-  if (result.status != 200) {
-    throw new Error("Ошибка каптчи: " + result.data["error-codes"].join(", "))
+      response: "unit test captcha response"
+    }
+  })
+  if (!response.data.success) {
+    throw new Error("Ошибка каптчи: " + response.data["error-codes"].join(", "))
   }
   registration_.state = 0
   registration_.password = await bcrypt.hash(registration_.password, 1)
 
-  let registration
+  let registration,
+    result
   await models.sequelize.transaction(async () => {
     registration = await models.Registration.create(registration_)
     result = {id: registration.id, created: registration.created_at}

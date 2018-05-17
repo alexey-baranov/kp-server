@@ -5,7 +5,11 @@ let express = require('express'),
   models= require("../model")
 
 /**
- * @summary Заверение регистрации
+ * @summary
+ * Заверить регистрацию
+ * Создать копника
+ * Установить координаты
+ *
  *
  * @param {object}  req
  * @param {object}  req.query
@@ -18,9 +22,18 @@ router.get('/index', async function(req, res) {
   let user = await req.session.getOwner(),
     registration= await models.Registration.findById(req.query.registration_id),
     kopnik= await user.verifyRegistration(registration, req.query.state),
-    kopnik_= kopnik.get({plain:true})
+    kopnik_
 
-  delete kopnik_.password
+  if (req.query.state) {
+    kopnik_ = kopnik.get({plain: true})
+    delete kopnik_.password
+
+    let dom= await kopnik.getDom()
+    if (!dom.dolgota || !dom.shirota){
+      await dom.updateGeolocation()
+    }
+  }
+
   res.json(kopnik_)
 })
 
